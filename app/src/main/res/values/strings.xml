@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Gravo</string>
+    <string name="testing_placeholder">This app is currently under develoment.</string>
+    <string name="cart">Cart</string>
 </resources>
