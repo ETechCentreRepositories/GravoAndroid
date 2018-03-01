@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="transparent">#00000000</color>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#D5DBDB</color>
     <color name="colorAccent">#7F8C8D</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_pressed">#90FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="black_pressed">#90000000</color>
     <color name="brand_orange">#F4602E</color>
     <color name="brand_yellow">#FFDB49</color>
     <color name="brand_blue">#33C0C4</color>
     <color name="brand_purple">#6B45A4</color>
+    <color name="brand_green_pressed">#904BC399</color>
     <color name="brand_green">#4BC399</color>
+    <color name="facebook_blue">#4267B2</color>
+    <color name="facebook_blue_pressed">#904267B2</color>
+    <color name="google_orange">#C43333</color>
+    <color name="google_orange_pressed">#90C43333</color>
 </resources>

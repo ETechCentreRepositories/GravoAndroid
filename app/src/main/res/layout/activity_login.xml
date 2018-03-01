@@ -6,7 +6,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:weightSum="2"
-    tools:context="com.greenravolution.gravo.Login.MainActivity">
+    tools:context="com.greenravolution.gravo.Login.LoginActivity">
+
 
     <RelativeLayout
         android:layout_width="match_parent"

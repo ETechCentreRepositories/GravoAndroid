@@ -1,12 +1,18 @@
-package com.greenravolution.gravo;
+package com.greenravolution.gravo.Login;
 
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.greenravolution.gravo.Adapters.LoginPagerAdapter;
+import com.greenravolution.gravo.R;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -15,26 +21,36 @@ import java.util.TimerTask;
 import me.relex.circleindicator.CircleIndicator;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
+
+    private static final Integer[] IMAGES = {R.drawable.login_rc_1, R.drawable.login_rc_2, R.drawable.login_rc_3};
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-    private static final Integer[] IMAGES= {R.drawable.rc1,R.drawable.rc2};
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            Window w = getWindow();
+            w.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -48,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        for(int i=0;i<IMAGES.length;i++)
+        for (int i = 0; i < IMAGES.length; i++)
             ImagesArray.add(IMAGES[i]);
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new LoginPagerAdapter(MainActivity.this,ImagesArray));
+        mPager.setAdapter(new LoginPagerAdapter(LoginActivity.this, ImagesArray));
         CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator);
         indicator.setViewPager(mPager);
 
