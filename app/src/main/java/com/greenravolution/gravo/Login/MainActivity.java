@@ -1,24 +1,12 @@
 package com.greenravolution.gravo.Login;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.greenravolution.gravo.Adapters.LoginPagerAdapter;
 import com.greenravolution.gravo.R;
-
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import me.relex.circleindicator.CircleIndicator;
 
 
 public class MainActivity extends AppCompatActivity {

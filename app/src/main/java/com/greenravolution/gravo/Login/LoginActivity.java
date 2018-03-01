@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final Integer[] IMAGES = {R.drawable.login_rc_1, R.drawable.login_rc_2, R.drawable.login_rc_3};
     private static ViewPager mPager;
     private static int currentPage = 0;
-    private static int NUM_PAGES = 0;
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
 
     @Override
@@ -42,25 +41,6 @@ public class LoginActivity extends AppCompatActivity {
             w.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.nav_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.cart:
-                Toast.makeText(this, "Cart still unavailable", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                break;
-        }
-        return true;
     }
 
     private void init() {
