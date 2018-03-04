@@ -55,12 +55,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toRegister = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(toRegister);
-                finish();
             }
         });
-
-
-
     }
 
     private void init() {
