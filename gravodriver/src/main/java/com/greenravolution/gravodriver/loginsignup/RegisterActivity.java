@@ -58,12 +58,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (ete.getText().toString().isEmpty()
-                        && etfn.getText().toString().isEmpty()
-                        && etln.getText().toString().isEmpty()
-                        && etnum.getText().toString().isEmpty()
-                        && etic.getText().toString().isEmpty()
-                        && etpw.getText().toString().isEmpty()
-                        && etli.getText().toString().isEmpty()) {
+                        || etfn.getText().toString().isEmpty()
+                        || etln.getText().toString().isEmpty()
+                        || etnum.getText().toString().isEmpty()
+                        || etic.getText().toString().isEmpty()
+                        || etpw.getText().toString().isEmpty()
+                        || etli.getText().toString().isEmpty()) {
 
                     Snackbar.make(rl, "Please fill in all fields!", Snackbar.LENGTH_LONG).show();
 
