@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl"
+    android:background="#000"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical"
+    tools:context="com.greenravolution.gravodriver.loginsignup.RegisterActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="@string/create_account"
+        app:titleTextAppearance="@style/ToolbarTitle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="10dp"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:weightSum="8">
+
+        <EditText
+            android:id="@+id/getEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_email_padding"
+            android:hint="@string/login_hint_email"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/getFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/grey_text_box"
+                android:drawableStart="@drawable/ic_account_padding"
+                android:hint="First Name"
+                android:inputType="textEmailAddress"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
+                android:textSize="15sp"
+                tools:ignore="NestedWeights" />
+
+            <EditText
+                android:id="@+id/getLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/grey_text_box"
+                android:hint="Last Name"
+                android:inputType="textEmailAddress"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/getPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_lock_padding"
+            android:hint="Choose a Password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/getNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_phone_padding"
+            android:hint="Mobile number"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/getNRIC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_account_padding"
+            android:hint="NRIC Number"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/getLiscense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_car_padding"
+            android:hint="Vehicle Liscense Number"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
+
+        <!--is the remember me rly necessary?-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ctnc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:buttonTint="@color/grey"
+
+                android:shadowColor="@color/white"
+                android:text="I have read the "
+                android:textColor="@color/grey"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/btnc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="terms and conditions"
+                android:textColor="@color/brand_pink"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/signup"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_brand_green_round"
+            android:text="@string/create_account"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

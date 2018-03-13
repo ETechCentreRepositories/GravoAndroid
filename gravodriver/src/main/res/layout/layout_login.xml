@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000"
+    android:fitsSystemWindows="false"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.greenravolution.gravodriver.loginsignup.LoginActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:titleTextAppearance="@style/ToolbarTitle"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        app:title="@string/login"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_below="@id/toolbar"
+        android:foregroundGravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="#000"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/resultError"/>
+        <EditText
+            android:drawableStart="@drawable/ic_account_padding"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/grey_text_box"
+            android:padding="10dp"
+            android:id="@+id/getEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey" />
+
+        <EditText
+            android:drawableStart="@drawable/ic_lock_padding"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/grey_text_box"
+            android:padding="10dp"
+            android:id="@+id/getPassword"
+            android:layout_width="match_parent"
+            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:hint="@string/login_hint_password"
+            android:inputType="textPassword"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey" />
+
+        <!--is the remember me rly necessary?-->
+        <CheckBox
+            android:id="@+id/rbmMe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:buttonTint="@color/grey"
+            android:shadowColor="@color/white"
+            android:text="Remember me"
+            android:textColor="@color/grey" />
+
+        <Button
+            android:id="@+id/login"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/btn_brand_green_round"
+            android:text="@string/login"
+            android:textColor="@color/white" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</RelativeLayout>
