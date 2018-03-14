@@ -19,7 +19,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".loginsignup.Login" />
         <activity android:name=".loginsignup.LoginActivity" />
-        <activity android:name=".loginsignup.RegisterActivity"></activity>
+        <activity android:name=".loginsignup.RegisterActivity" />
+        <activity android:name=".TransactionDetails"></activity>
     </application>
 
 </manifest>

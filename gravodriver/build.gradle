@@ -39,4 +39,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     //Card View library
     implementation 'com.android.support:cardview-v7:26.1.0'
+    //maps
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
 }
