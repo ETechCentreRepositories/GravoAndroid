@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">GravoDriver</string>
+    <string name="instructions">
+Place your fingertip on the Home button to verify your identity
+</string>
+    <string name="app_name">Gravo Collector</string>
     <string name="splash_icon_description">Splash icon xml</string>
     <string name="login">Login</string>
     <string name="create_account">Create Account</string>

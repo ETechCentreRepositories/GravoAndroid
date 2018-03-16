@@ -36,7 +36,7 @@
             android:id="@+id/resultError"/>
         <EditText
             android:drawableStart="@drawable/ic_account_padding"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/grey_text_box"
             android:padding="10dp"
             android:id="@+id/getEmail"
@@ -52,7 +52,7 @@
 
         <EditText
             android:drawableStart="@drawable/ic_lock_padding"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/grey_text_box"
             android:padding="10dp"

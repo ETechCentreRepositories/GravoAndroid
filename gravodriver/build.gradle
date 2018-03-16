@@ -41,4 +41,7 @@ dependencies {
     implementation 'com.android.support:cardview-v7:26.1.0'
     //maps
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    //stepper
+    implementation 'com.github.travijuu:numberpicker:1.0.7'
+
 }

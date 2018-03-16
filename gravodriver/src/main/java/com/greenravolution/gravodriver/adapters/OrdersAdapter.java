@@ -3,12 +3,11 @@ package com.greenravolution.gravodriver.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,93 +23,114 @@ import java.util.ArrayList;
  * Created by user on 13/3/2018.
  */
 
-public class OrdersAdapter extends ArrayAdapter<Orders> {
+public class OrdersAdapter extends BaseAdapter {
 
-    private final Context context;
-    private ArrayList<Orders> orders;
-    private AdapterView.OnItemClickListener onItemClickListener;
+    private Context context;
+    private LayoutInflater inflater = null;
+    private ArrayList<Orders> orders = new ArrayList<>();
 
-
-    public OrdersAdapter(Context context, ArrayList<Orders> orders) {
-        super(context, -1, orders);
+    public OrdersAdapter(Context context, final ArrayList<Orders> orders) {
         this.context = context;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.orders = orders;
     }
 
-    @NonNull
+
+    @Override
+    public int getCount() {
+        return orders.size();
+    }
+
+    @Override
+    public Orders getItem(int position) {
+        return orders.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        final Orders order = getItem(position);
         final ViewHolder holder;
+        try {
+            if (view == null) {
+                view = inflater.inflate(R.layout.schedule_item, null);
+                holder = new ViewHolder();
+                holder.tt = view.findViewById(R.id.pickupTitle);
+                holder.ta = view.findViewById(R.id.pickupAddress);
+                holder.tpc = view.findViewById(R.id.pickupPostal);
+                holder.tst = view.findViewById(R.id.pickupTiming);
+                holder.botw = view.findViewById(R.id.botw);
+                holder.barr = view.findViewById(R.id.barr);
+                holder.bmap = view.findViewById(R.id.bmap);
+                holder.llarr = view.findViewById(R.id.llarr);
+                holder.llotw = view.findViewById(R.id.llotw);
 
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.schedule_item, parent, false);
-            holder = new ViewHolder();
-            holder.tt = convertView.findViewById(R.id.pickupTitle);
-            holder.ta = convertView.findViewById(R.id.pickupAddress);
-            holder.tpc = convertView.findViewById(R.id.pickupPostal);
-            holder.tst = convertView.findViewById(R.id.pickupTiming);
-            holder.botw = convertView.findViewById(R.id.botw);
-            holder.barr = convertView.findViewById(R.id.barr);
-            holder.bmap = convertView.findViewById(R.id.bmap);
-            holder.llarr = convertView.findViewById(R.id.llarr);
-            holder.llotw = convertView.findViewById(R.id.llotw);
-            holder.llarr.setVisibility(View.GONE);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
 
-            holder.botw.setTag(holder);
-
+            holder.llotw.setVisibility(View.GONE);
             String title = "Pickup " + String.valueOf(position + 1);
-            String address = orders.get(position).getAddress();
-            String postal = orders.get(position).getPostal();
-            String timing = orders.get(position).getTiming();
-
             holder.tt.setText(title);
-            holder.ta.setText(address);
-            holder.tpc.setText(postal);
-            holder.tst.setText(timing);
+            holder.ta.setText(order.getAddress());
+            holder.tpc.setText(order.getPostal());
+            holder.tst.setText(order.getTiming());
 
-            holder.botw.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    holder.llotw.setVisibility(View.GONE);
-                    holder.llarr.setVisibility(View.VISIBLE);
-                }
-            });
+//            holder.botw.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    holder.llarr.setVisibility(View.VISIBLE);
+//                    holder.llotw.setVisibility(View.GONE);
+//                }
+//            });
+
             holder.barr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), "Driver Arrived for " + holder.tt.getText().toString(), Toast.LENGTH_SHORT).show();
                     /// TODO: 14/3/2018 intent to transaction page add in details
-                    Intent intent = new Intent(getContext(), TransactionDetails.class);
-                    intent.putExtra("details", orders.get(position).getDetails());
-                    getContext().startActivity(intent);
+                    Intent intent = new Intent(context, TransactionDetails.class);
+                    Orders orders = getItem(position);
+                    intent.putExtra("details", orders.getDetails());
+                    intent.putExtra("address", orders.getAddress());
+                    intent.putExtra("transaction_id", orders.getTransaction_id());
+                    context.startActivity(intent);
                 }
             });
+
             holder.bmap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Create a Uri from an intent string. Use the result to create an Intent.
-                    String url ="https://www.google.com/maps/dir/?api=1&destination="+orders.get(position).getPostal()+"&travelmode=driving";
+                    String url = "https://www.google.com/maps/dir/?api=1&destination=" + orders.get(position).getPostal() + "&travelmode=driving";
                     // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     // Make the Intent explicit by setting the Google Maps package
                     mapIntent.setPackage("com.google.android.apps.maps");
                     // Attempt to start an activity that can handle the Intent
-                    getContext().startActivity(mapIntent);
+                    context.startActivity(mapIntent);
                 }
             });
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+
+
+        } catch (Exception ex) {
+            Log.d("CHECK", "Error at TrackerAdapter");
+            Log.d("CHECK", Log.getStackTraceString(ex));
         }
-        return convertView;
+        return view;
     }
 
-    public static class ViewHolder {
+
+    private class ViewHolder {
         LinearLayout llotw, llarr;
         Button botw, barr, bmap;
         TextView tt, ta, tpc, tst;
     }
+
 
 }

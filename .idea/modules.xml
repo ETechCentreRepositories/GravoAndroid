@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GravoAndroid.iml" filepath="$PROJECT_DIR$/GravoAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gravocollector/gravocollector.iml" filepath="$PROJECT_DIR$/gravocollector/gravocollector.iml" />
       <module fileurl="file://$PROJECT_DIR$/gravodriver/gravodriver.iml" filepath="$PROJECT_DIR$/gravodriver/gravodriver.iml" />
     </modules>
   </component>

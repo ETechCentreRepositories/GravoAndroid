@@ -1,1 +1,1 @@
-include ':app', ':gravodriver'
+include ':app', ':gravodriver', ':gravocollector'
