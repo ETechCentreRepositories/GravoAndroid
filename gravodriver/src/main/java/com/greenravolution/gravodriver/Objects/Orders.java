@@ -1,10 +1,12 @@
 package com.greenravolution.gravodriver.Objects;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 14/3/2018.
  */
 
-public class Orders {
+public class Orders  implements Serializable{
     private String title;
     private String address;
     private String postal;

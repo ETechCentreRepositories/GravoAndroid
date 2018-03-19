@@ -16,7 +16,31 @@ public class Rates {
     public Rates(){
 
     }
-    public String getRates(int waste_id, int waste_item, int weight){
+
+    public double getRate(int waste_id, int waste_item){
+        switch(waste_id){
+            case 1:
+                //Paper
+                switch(waste_item){
+                    case 1:
+                        //newspaper
+                        return 0.10;
+                }
+            case 2:
+                switch(waste_item){
+                    case 7 :
+                        //aluminium
+                        return 0.20;
+                }
+            case 3:
+                //E-Waste
+            case 4:
+                //Bulk
+        }
+        return 0.00;
+
+    }
+    public double getRates(int waste_id, int waste_item, int weight){
         switch(waste_id){
             case 1:
                 //Paper
@@ -24,23 +48,21 @@ public class Rates {
                     case 1:
                         //newspaper
                         double rate =  0.10;
-                        double price = rate* weight;
-                        return String.valueOf(price);
+                        return rate* weight;
                 }
             case 2:
                 switch(waste_item){
                     case 7 :
                         //aluminium
                         double rate =  0.20;
-                        double price = rate* weight;
-                        return String.valueOf(price);
+                        return rate* weight;
                 }
             case 3:
                 //E-Waste
             case 4:
                 //Bulk
         }
-        return "No Price";
+        return 0.00;
 
     }
     public String getItem(int waste_id, int waste_item){
@@ -128,8 +150,8 @@ public class Rates {
                     int waste_item = detail.getInt("waste_item");
                     int weight = detail.getInt("weight");
                     Rates getRates = new Rates();
-                    String itemPrice = getRates.getRates(item, waste_item, weight);
-                    price = price + Double.parseDouble(itemPrice);
+                    double itemPrice = getRates.getRates(item, waste_item, weight);
+                    price = price + itemPrice;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -157,8 +179,8 @@ public class Rates {
                     int waste_item = detail.getInt("waste_item");
                     int getWeight = detail.getInt("weight");
                     Rates getRates = new Rates();
-                    String itemPrice = getRates.getRates(item, waste_item, getWeight);
-                    price = price + Double.parseDouble(itemPrice);
+                    double itemPrice = getRates.getRates(item, waste_item, getWeight);
+                    price = price + itemPrice;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -11,6 +11,10 @@
         android:layout_margin="5dp"
 
         android:elevation="5dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:padding="5dp"
@@ -33,7 +37,7 @@
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
-                <TextView
+                <Spinner
                     android:id="@+id/getTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,7 +59,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/getTitle"
-                    android:text="$3.30"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -68,47 +71,47 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                        <TextView
-                            android:gravity="center"
-                            android:id="@+id/weightDesc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginEnd="20dp"
-                            android:text="Weight"
-                            android:textSize="15sp" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/weightDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="20dp"
+                        android:text="Weight"
+                        android:textSize="15sp" />
 
-                        <LinearLayout
-                            android:id="@+id/number_picker"
+                    <LinearLayout
+                        android:id="@+id/number_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnMinusWeight"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@mipmap/ic_minus" />
+
+                        <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="20dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
+                            android:hint="10kg"
+                            android:id="@+id/getWeight"
+                            android:textSize="15sp" />
 
-                            <Button
-                                android:id="@+id/btnMinusWeight"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@mipmap/ic_minus" />
+                        <Button
+                            android:id="@+id/btnPlusWeight"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@mipmap/ic_plus" />
 
-                            <EditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginStart="5dp"
-                                android:hint="10kg"
-                                android:id="@+id/getWeight"
-                                android:textSize="15sp" />
-
-                            <Button
-                                android:id="@+id/btnPlusWeight"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@mipmap/ic_plus" />
-
-                        </LinearLayout>
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -134,13 +137,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="$0.11/kg"
                         android:textSize="15sp" />
 
 
                 </RelativeLayout>
 
             </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/grey"/>
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_margin="10dp"
+            android:background="@drawable/btn_brand_green_round"
+            android:id="@+id/btnAdd"
+            android:text="confirm"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         </LinearLayout>
 

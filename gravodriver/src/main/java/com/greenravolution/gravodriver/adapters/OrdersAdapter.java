@@ -17,6 +17,7 @@ import com.greenravolution.gravodriver.Objects.Orders;
 import com.greenravolution.gravodriver.R;
 import com.greenravolution.gravodriver.TransactionDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
