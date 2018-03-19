@@ -1,151 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#10000000"
+    android:background="@color/grey"
     android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
 
-        android:elevation="5dp">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="5dp"
+            android:background="@color/grey" />
 
-        <LinearLayout
-            android:padding="5dp"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal">
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:background="@color/grey" />
-
-            <RelativeLayout
+            <TextView
+                android:id="@+id/getTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Paper | Old Newspaper" />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@mipmap/ic_cross" />
+
+            <TextView
+                android:id="@+id/getPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/getTitle"
+                android:text="$3.30"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/getPrice"
+                android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/getTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:text="Paper | Old Newspaper" />
+                    android:text="Weight" />
 
-                <Button
-                    android:id="@+id/btnDelete"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@mipmap/ic_cross" />
-
-                <TextView
-                    android:id="@+id/getPrice"
+                <com.travijuu.numberpicker.library.NumberPicker
+                    android:id="@+id/number_picker"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/getTitle"
-                    android:text="$3.30"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <RelativeLayout
-                    android:padding="5dp"
-                    android:id="@+id/llWeight"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/getPrice"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                        <TextView
-                            android:gravity="center"
-                            android:id="@+id/weightDesc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginEnd="20dp"
-                            android:text="Weight"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:id="@+id/number_picker"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginStart="20dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/btnMinusWeight"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@mipmap/ic_minus" />
-
-                            <EditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginStart="5dp"
-                                android:hint="10kg"
-                                android:id="@+id/getWeight"
-                                android:textSize="15sp" />
-
-                            <Button
-                                android:id="@+id/btnPlusWeight"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@mipmap/ic_plus" />
-
-                        </LinearLayout>
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/llWeight"
-                    android:gravity="center"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:id="@+id/rateDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:gravity="center"
-                        android:text="Price / kg"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/getRate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:text="$0.11/kg"
-                        android:textSize="15sp" />
-
-
-                </RelativeLayout>
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    numberpicker:custom_layout="@layout/picker_layout"
+                    numberpicker:focusable="false"
+                    numberpicker:max="10"
+                    numberpicker:min="0"
+                    numberpicker:unit="1"
+                    numberpicker:value="-5" />
 
             </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
 
 </LinearLayout>
