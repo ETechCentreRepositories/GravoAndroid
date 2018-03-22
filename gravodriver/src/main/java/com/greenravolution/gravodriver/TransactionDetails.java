@@ -56,9 +56,6 @@ public class TransactionDetails extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        TextView testing = findViewById(R.id.testingJSONString);
-
-        //        String jsonString = intent.getStringExtra("details");
 
         String title = intent.getStringExtra("transaction_id");
         String address = intent.getStringExtra("address");
@@ -68,98 +65,31 @@ public class TransactionDetails extends AppCompatActivity {
         String date = df.format(Calendar.getInstance().getTime());
         ttiming.setText(String.format("Arrival Time: %s", date));
 
-    }
+        String detailString;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Intent intent = getIntent();
         int trans_id = intent.getIntExtra("id",-1);
 
         try {
-            String detailString = getTransacionDetails(trans_id);
+
+            detailString = getTransacionDetails(trans_id);
             JSONArray details = new JSONArray(detailString);
             for (int position = 0; position < details.length(); position++) {
                 JSONObject detail = details.getJSONObject(position);
                 final int item = detail.getInt("cat_id");
                 final int weight = detail.getInt("weight");
-                final Rates getRates = new Rates();
-                double price = Double.parseDouble(getRates.getRates(item, weight));
-                double rate = getRates.getRate(item);
-                String category = getRates.getItem(item);
-                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                assert inflater != null;
-                View view = inflater.inflate(R.layout.item_details, null);
-                final TextView getWeight = view.findViewById(R.id.getWeight);
-                final TextView getPrice = view.findViewById(R.id.getPrice);
-                final TextView getRate = view.findViewById(R.id.getRate);
-                TextView getTitle = view.findViewById(R.id.getTitle);
-                ImageView itemImg = view.findViewById(R.id.getImage);
-                final Button plus = view.findViewById(R.id.btnPlus);
-                Button minus = view.findViewById(R.id.btnMinus);
-                final DecimalFormat df2 = new DecimalFormat("#.##");
-                itemImg.setBackgroundColor(getResources().getColor(getRates.getImageColour(item)));
-                itemImg.setImageResource(getRates.getImage(item));
-                getTitle.setText(category);
-                getPrice.setText(String.format("$%s", df2.format(price)));
-                getRate.setText(String.format("$%s/KG", df2.format(rate)));
-                getWeight.setText(String.valueOf(weight));
-
-
-                plus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int getweight = Integer.parseInt(getWeight.getText().toString());
-                        getweight = getweight + 1;
-                        getWeight.setText(String.valueOf(getweight));
-                        Rates getRates = new Rates();
-                        double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                        getPrice.setText(String.format("$%s", df2.format(price)));
-
-                    }
-                });
-                plus.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        final Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if(plus.isPressed()) {
-                                    int getweight = Integer.parseInt(getWeight.getText().toString());
-                                    getweight = getweight + 1;
-                                    getWeight.setText(String.valueOf(getweight));
-                                    Rates getRates = new Rates();
-                                    double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                                    getPrice.setText(String.format("$%s", df2.format(price)));
-                                }
-                                else
-                                    timer.cancel();
-                            }
-                        },100,200);
-                        return true;
-                    }
-                });
-                minus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int getweight = Integer.parseInt(getWeight.getText().toString());
-                        getweight = getweight - 1;
-                        getWeight.setText(String.valueOf(getweight));
-                        Rates getRates = new Rates();
-                        double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                        getPrice.setText(String.format("$%s", df2.format(price)));
-                    }
-                });
-
-                items.addView(view);
+                items.addView(initView(item, weight));
 
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
@@ -175,6 +105,8 @@ public class TransactionDetails extends AppCompatActivity {
     public String getTransacionDetails(int id){
         ArrayList<OrderDetails> details = new ArrayList<>();
         ArrayList<OrderDetails> selectedDetails = new ArrayList<>();
+        details.clear();
+        selectedDetails.clear();
         //get details of items
         details.add(new OrderDetails(1, 1,20,2.20,1));
         details.add(new OrderDetails(2, 4,30,6.30,2));
@@ -198,5 +130,84 @@ public class TransactionDetails extends AppCompatActivity {
         JSONString.append("]");
         Log.e("JSONString", JSONString.toString());
         return JSONString.toString();
+    }
+
+    public View initView(int getItem, int getWeighs){
+        final int item = getItem;
+        final int weight = getWeighs;
+        final Rates getRates = new Rates();
+        double price = Double.parseDouble(getRates.getRates(item, weight));
+        double rate = getRates.getRate(item);
+        String category = getRates.getItem(item);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        View view = inflater.inflate(R.layout.item_details, null);
+        final TextView getWeight = view.findViewById(R.id.getWeight);
+        final TextView getPrice = view.findViewById(R.id.getPrice);
+        final TextView getRate = view.findViewById(R.id.getRate);
+        TextView getTitle = view.findViewById(R.id.getTitle);
+        ImageView itemImg = view.findViewById(R.id.getImage);
+        final Button plus = view.findViewById(R.id.btnPlus);
+        Button minus = view.findViewById(R.id.btnMinus);
+        final DecimalFormat df2 = new DecimalFormat("#.##");
+        itemImg.setBackgroundColor(getResources().getColor(getRates.getImageColour(item)));
+        itemImg.setImageResource(getRates.getImage(item));
+        getTitle.setText(category);
+        getPrice.setText(String.format("$%s", df2.format(price)));
+        getRate.setText(String.format("$%s/KG", df2.format(rate)));
+        getWeight.setText(String.valueOf(weight));
+
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int getweight = Integer.parseInt(getWeight.getText().toString());
+                getweight = getweight + 1;
+                getWeight.setText(String.valueOf(getweight));
+                Rates getRates = new Rates();
+                double price = Double.parseDouble((getRates.getRates(item, getweight)));
+                getPrice.setText(String.format("$%s", df2.format(price)));
+
+            }
+        });
+        plus.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int getweight = Integer.parseInt(getWeight.getText().toString());
+                getweight = getweight + 5;
+                getWeight.setText(String.valueOf(getweight));
+                Rates getRates = new Rates();
+                double price = Double.parseDouble((getRates.getRates(item, getweight)));
+                getPrice.setText(String.format("$%s", df2.format(price)));
+                return false;
+            }
+
+        });
+        minus.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int getweight = Integer.parseInt(getWeight.getText().toString());
+                getweight = getweight - 5;
+                getWeight.setText(String.valueOf(getweight));
+                Rates getRates = new Rates();
+                double price = Double.parseDouble((getRates.getRates(item, getweight)));
+                getPrice.setText(String.format("$%s", df2.format(price)));
+                return false;
+            }
+
+        });
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int getweight = Integer.parseInt(getWeight.getText().toString());
+                getweight = getweight - 1;
+                getWeight.setText(String.valueOf(getweight));
+                Rates getRates = new Rates();
+                double price = Double.parseDouble((getRates.getRates(item, getweight)));
+                getPrice.setText(String.format("$%s", df2.format(price)));
+            }
+        });
+
+    return view;
     }
 }

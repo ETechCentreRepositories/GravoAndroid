@@ -43,5 +43,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
     //stepper
     implementation 'com.github.travijuu:numberpicker:1.0.7'
+    //ProgressBar
+    implementation 'com.wang.avi:library:2.1.3'
 
 }

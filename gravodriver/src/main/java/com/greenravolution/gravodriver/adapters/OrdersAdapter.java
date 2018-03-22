@@ -107,7 +107,7 @@ public class OrdersAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     // Create a Uri from an intent string. Use the result to create an Intent.
-                    String url = "https://www.google.com/maps/dir/?api=1&destination=" + orders.get(position).getPostal() + "&travelmode=driving";
+                    String url = "https://www.google.com/maps/dir/?api=1&destination=" + orders.get(position).getAddress()+ "&travelmode=driving";
                     // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     // Make the Intent explicit by setting the Google Maps package

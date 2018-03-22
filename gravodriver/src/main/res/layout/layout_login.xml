@@ -1,71 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000"
     android:fitsSystemWindows="false"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="com.greenravolution.gravodriver.loginsignup.LoginActivity">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        app:titleTextAppearance="@style/ToolbarTitle"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        app:title="@string/login"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
         app:navigationIcon="@drawable/ic_arrow_back"
-        android:layout_height="?attr/actionBarSize"/>
+        app:title="@string/login"
+        app:titleTextAppearance="@style/ToolbarTitle" />
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_below="@id/toolbar"
-        android:foregroundGravity="center"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:background="#000"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_gravity="center"
+        android:background="#000"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
         <TextView
+            android:layout_marginBottom="5dp"
+            android:id="@+id/resultError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:id="@+id/resultError"/>
+            android:textAlignment="center" />
+
         <EditText
-            android:drawableStart="@drawable/ic_account_padding"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/grey_text_box"
-            android:padding="10dp"
             android:id="@+id/getEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_account_padding"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:padding="10dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
 
         <EditText
-            android:drawableStart="@drawable/ic_lock_padding"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/grey_text_box"
-            android:padding="10dp"
             android:id="@+id/getPassword"
             android:layout_width="match_parent"
-            android:textSize="15sp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/grey_text_box"
+            android:drawableStart="@drawable/ic_lock_padding"
             android:hint="@string/login_hint_password"
             android:inputType="textPassword"
+            android:padding="10dp"
             android:textColor="@color/grey"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/grey"
+            android:textSize="15sp" />
 
         <!--is the remember me rly necessary?-->
         <CheckBox
@@ -98,7 +102,25 @@
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"
             android:textAlignment="center"
-            android:textSize="12sp"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="12sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/avi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:gravity="center">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:indicatorColor="@color/brand_yellow"
+            app:indicatorName="TriangleSkewSpinIndicator" />
+
+    </LinearLayout>
+
 </RelativeLayout>
