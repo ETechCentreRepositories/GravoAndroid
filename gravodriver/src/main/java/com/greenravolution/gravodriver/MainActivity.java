@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
 import com.greenravolution.gravodriver.adapters.OrdersAdapter;
 import com.greenravolution.gravodriver.functions.Rates;
@@ -58,20 +59,6 @@ public class MainActivity extends AppCompatActivity {
         orders.setAdapter(oad);
         oad.notifyDataSetChanged();
 
-        oal.add(new Orders(1, "#0020", "Pickup 1", "Blk 279 Tampines Street 22 #08-220", "S520279", "10am - 12pm", "[{'id':1,'waste_id':1,'waste_item':1,'weight':20},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30}]", 0));
-        oal.add(new Orders(2, "#0021", "Pickup 2", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", "[{'id':1,'waste_id':1,'waste_item':1,'weight':20},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30}]", 0));
-        oal.add(new Orders(3, "#0022", "Pickup 3", "Blk 279 Tampines Street 22 #08-220", "S520279", "12pm - 2pm", "[{'id':1,'waste_id':1,'waste_item':1,'weight':20},{'id':1,'waste_id':2,'waste_item':7,'weight':30}]", 1));
-        oal.add(new Orders(4, "#0023", "Pickup 4", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", "[{'id':1,'waste_id':1,'waste_item':1,'weight':20},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30}]", 0));
-        oal.add(new Orders(5, "#0024", "Pickup 5", "Blk 279 Tampines Street 22 #08-220", "S520279", "10am - 12pm", "[{'id':1,'waste_id':1,'waste_item':1,'weight':20},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30}]", 0));
-        oal.add(new Orders(6, "#0025", "Pickup 6", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", "[{'id':1,'waste_id':1,'waste_item':1,'weight':20},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30},{'id':1,'waste_id':2,'waste_item':7,'weight':30}]", 0));
-
-        int getTotalWeight = rates.GetTotalWeight(oal);
-        int getCollectedWeight = rates.GetCollectedWeight(oal);
-        double totalPrices = rates.EstimateAmountPayment(oal);
-        double amountPaid = rates.EstimateAmountPaid(oal);
-
-        totalWeight.setText(String.format("Total Weight Collected: %sKG / %sKG", String.valueOf(getCollectedWeight), String.valueOf(getTotalWeight)));
-        totalPrice.setText(String.format("Estimated Amount Paid: $%s0 / $%s0", String.valueOf(amountPaid), String.valueOf(totalPrices)));
 
     }
 
@@ -177,10 +164,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        oal.clear();
+        oal.addAll(getTransactions());
+        int getTotalWeight = rates.GetTotalWeight(oal);
+        int getCollectedWeight = rates.GetCollectedWeight(oal);
+        double totalPrices = rates.EstimateAmountPayment(oal);
+        double amountPaid = rates.EstimateAmountPaid(oal);
+
+        totalWeight.setText(String.format("Total Weight Collected: %sKG / %sKG", String.valueOf(getCollectedWeight), String.valueOf(getTotalWeight)));
+        totalPrice.setText(String.format("Estimated Amount Paid: $%s0 / $%s0", String.valueOf(amountPaid), String.valueOf(totalPrices)));
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
     }
+    public ArrayList<Orders> getTransactions(){
+        ArrayList<Orders> orders = new ArrayList<>();
+        //get list of items
+        orders.add(new Orders(1, "#0020", "Pickup 1", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
+        orders.add(new Orders(2, "#0021", "Pickup 2", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm", 0));
+        orders.add(new Orders(3, "#0022", "Pickup 3", "Blk 279 Tampines Street 22 #08-220", "520279", "12pm - 2pm",1));
+        orders.add(new Orders(4, "#0023", "Pickup 4", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm",0));
+        orders.add(new Orders(5, "#0024", "Pickup 5", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
+        orders.add(new Orders(6, "#0025", "Pickup 6", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", 0));
+
+        return orders;
+    }
+
+
 }

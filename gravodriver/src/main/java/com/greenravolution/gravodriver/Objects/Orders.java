@@ -9,40 +9,21 @@ public class Orders {
     private String address;
     private String postal;
     private String timing;
-    private String details;
     private int id;
     private int status_id;
     private String transaction_id;
 
-    public Orders(int id, String transaction_id, String title, String address, String postal, String timing, String details, int status_id) {
+    public Orders(int id, String transaction_id, String title, String address, String postal, String timing, int status_id) {
         this.title = title;
         this.address = address;
         this.postal = postal;
         this.timing = timing;
-        this.details = details;
         this.id = id;
         this.status_id = status_id;
         this.transaction_id = transaction_id;
     }
 
-    public Orders(int id,String title, String address, String postal, String timing, String details, int status_id) {
-        this.title = title;
-        this.address = address;
-        this.postal = postal;
-        this.timing = timing;
-        this.details = details;
-        this.id = id;
-        this.status_id = status_id;
-    }
 
-    public Orders(int id,String title, String address, String postal, String timing, int status_id) {
-        this.title = title;
-        this.address = address;
-        this.postal = postal;
-        this.timing = timing;
-        this.id = id;
-        this.status_id = status_id;
-    }
 
     public String getTransaction_id() {
         return transaction_id;
@@ -90,14 +71,6 @@ public class Orders {
 
     public void setTiming(String timing) {
         this.timing = timing;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 
     public int getId() {

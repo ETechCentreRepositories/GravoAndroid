@@ -96,9 +96,9 @@ public class OrdersAdapter extends BaseAdapter {
                     /// TODO: 14/3/2018 intent to transaction page add in details
                     Intent intent = new Intent(context, TransactionDetails.class);
                     Orders orders = getItem(position);
-                    intent.putExtra("details", orders.getDetails());
                     intent.putExtra("address", orders.getAddress());
                     intent.putExtra("transaction_id", orders.getTransaction_id());
+                    intent.putExtra("id", orders.getId());
                     context.startActivity(intent);
                 }
             });
