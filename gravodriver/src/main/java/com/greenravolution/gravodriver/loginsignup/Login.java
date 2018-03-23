@@ -1,6 +1,7 @@
 package com.greenravolution.gravodriver.loginsignup;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.greenravolution.gravodriver.R;
 import com.greenravolution.gravodriver.adapters.PageViewerAdapter;
@@ -28,6 +31,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Button login, register;
     private ViewPager mPager;
     private ArrayList<String> textArray = new ArrayList<String>();
+    RelativeLayout img;
 
 
     @Override
@@ -40,18 +44,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         Window w = getWindow();
         w.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         w.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        img = findViewById(R.id.mainLayout);
+        AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
+        progressDrawable.start();
     }
 
     @Override
     public void onClick(View v) {
+        AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
+
 
         switch (v.getId()) {
             case R.id.login:
                 Intent itl = new Intent(Login.this, LoginActivity.class);
+
+                progressDrawable.stop();
                 startActivityForResult(itl,1);
                 break;
             case R.id.register:
                 Intent itr = new Intent(Login.this, RegisterActivity.class);
+
+                progressDrawable.stop();
                 startActivityForResult(itr,1);
                 break;
         }
@@ -106,5 +119,33 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }else{
             Log.e("res: ", String.valueOf(requestCode));
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
+        progressDrawable.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
+        progressDrawable.stop();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
+        progressDrawable.start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
+        progressDrawable.start();
     }
 }

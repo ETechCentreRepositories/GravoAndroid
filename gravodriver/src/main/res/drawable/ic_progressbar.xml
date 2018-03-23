@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:duration="20" android:drawable="@drawable/pb36"/>
+    <item android:duration="20" android:drawable="@drawable/pb35"/>
+    <item android:duration="20" android:drawable="@drawable/pb34"/>
+    <item android:duration="20" android:drawable="@drawable/pb33"/>
+    <item android:duration="20" android:drawable="@drawable/pb32"/>
+    <item android:duration="20" android:drawable="@drawable/pb31"/>
+    <item android:duration="20" android:drawable="@drawable/pb30"/>
+    <item android:duration="20" android:drawable="@drawable/pb29"/>
+    <item android:duration="20" android:drawable="@drawable/pb28"/>
+    <item android:duration="20" android:drawable="@drawable/pb27"/>
+    <item android:duration="20" android:drawable="@drawable/pb26"/>
+    <item android:duration="20" android:drawable="@drawable/pb25"/>
+    <item android:duration="20" android:drawable="@drawable/pb24"/>
+    <item android:duration="20" android:drawable="@drawable/pb23"/>
+    <item android:duration="20" android:drawable="@drawable/pb22"/>
+    <item android:duration="20" android:drawable="@drawable/pb21"/>
+    <item android:duration="20" android:drawable="@drawable/pb20"/>
+    <item android:duration="20" android:drawable="@drawable/pb19"/>
+    <item android:duration="20" android:drawable="@drawable/pb18"/>
+    <item android:duration="20" android:drawable="@drawable/pb17"/>
+    <item android:duration="20" android:drawable="@drawable/pb16"/>
+    <item android:duration="20" android:drawable="@drawable/pb15"/>
+    <item android:duration="20" android:drawable="@drawable/pb14"/>
+    <item android:duration="20" android:drawable="@drawable/pb13"/>
+    <item android:duration="20" android:drawable="@drawable/pb12"/>
+    <item android:duration="20" android:drawable="@drawable/pb11"/>
+    <item android:duration="20" android:drawable="@drawable/pb10"/>
+    <item android:duration="20" android:drawable="@drawable/pb9"/>
+    <item android:duration="20" android:drawable="@drawable/pb8"/>
+    <item android:duration="20" android:drawable="@drawable/pb7"/>
+    <item android:duration="20" android:drawable="@drawable/pb6"/>
+    <item android:duration="20" android:drawable="@drawable/pb5"/>
+    <item android:duration="20" android:drawable="@drawable/pb4"/>
+    <item android:duration="20" android:drawable="@drawable/pb3"/>
+    <item android:duration="20" android:drawable="@drawable/pb2"/>
+    <item android:duration="20" android:drawable="@drawable/pb1"/>
+
+</animation-list>
