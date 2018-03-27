@@ -12,9 +12,11 @@ public class Orders {
     private int id;
     private int status_id;
     private String transaction_id;
+    private String transaction_type;
 
-    public Orders(int id, String transaction_id, String title, String address, String postal, String timing, int status_id) {
+    public Orders(int id,String transaction_type, String transaction_id, String title, String address, String postal, String timing, int status_id) {
         this.title = title;
+        this.transaction_type = transaction_type;
         this.address = address;
         this.postal = postal;
         this.timing = timing;
@@ -23,7 +25,13 @@ public class Orders {
         this.transaction_id = transaction_id;
     }
 
+    public String getTransaction_type() {
+        return transaction_type;
+    }
 
+    public void setTransaction_type(String transaction_type) {
+        this.transaction_type = transaction_type;
+    }
 
     public String getTransaction_id() {
         return transaction_id;

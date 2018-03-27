@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,14 +26,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Objects;
 
 public class TransactionDetails extends AppCompatActivity {
     Toolbar toolbar;
     TextView taddress, ttiming;
-    LinearLayout items;
-
+    LinearLayout items, llGetRecipient;
+    Button btnAddRec, btnCfmNPay;
+    EditText etGetName, etGetNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,12 @@ public class TransactionDetails extends AppCompatActivity {
         taddress = findViewById(R.id.address);
         ttiming = findViewById(R.id.arrivalTime);
         items = findViewById(R.id.listview);
+        llGetRecipient = findViewById(R.id.llgetRecepient);
+        llGetRecipient.setVisibility(View.GONE);
+        btnAddRec = findViewById(R.id.addRecipient);
+        btnCfmNPay = findViewById(R.id.cfmPayment);
+        etGetName = findViewById(R.id.getRecName);
+        etGetNumber = findViewById(R.id.getRecContact);
 
         setSupportActionBar(toolbar);
 
@@ -51,6 +58,22 @@ public class TransactionDetails extends AppCompatActivity {
                 Intent ib = new Intent();
                 ib.putExtra("type", "0");
                 setResult(1, ib);
+                finish();
+            }
+        });
+
+        btnAddRec.setOnClickListener(v -> {
+            llGetRecipient.setVisibility(View.VISIBLE);
+            btnAddRec.setVisibility(View.GONE);
+        });
+        btnCfmNPay.setOnClickListener(v -> {
+            if(Objects.equals(etGetName.getText().toString(), "") || Objects.equals(etGetName.getText().toString(), "")){
+                finish();
+                 //update collection user.
+            }else{
+                String name = etGetName.getText().toString();
+                String contact = etGetNumber.getText().toString();
+                //update collection
                 finish();
             }
         });
@@ -67,7 +90,7 @@ public class TransactionDetails extends AppCompatActivity {
 
         String detailString;
 
-        int trans_id = intent.getIntExtra("id",-1);
+        int trans_id = intent.getIntExtra("id", -1);
 
         try {
 
@@ -102,25 +125,25 @@ public class TransactionDetails extends AppCompatActivity {
         finish();
     }
 
-    public String getTransacionDetails(int id){
+    public String getTransacionDetails(int id) {
         ArrayList<OrderDetails> details = new ArrayList<>();
         ArrayList<OrderDetails> selectedDetails = new ArrayList<>();
         details.clear();
         selectedDetails.clear();
         //get details of items
-        details.add(new OrderDetails(1, 1,20,2.20,1));
-        details.add(new OrderDetails(2, 4,30,6.30,2));
-        details.add(new OrderDetails(3, 1,30,6.00,5));
-        details.add(new OrderDetails(4, 2,20,2.20,4));
-        details.add(new OrderDetails(5, 3,30,6.30,2));
-        details.add(new OrderDetails(6, 5,30,6.00,5));
-        details.add(new OrderDetails(7, 2,20,2.20,1));
-        details.add(new OrderDetails(8, 3,30,6.30,2));
-        details.add(new OrderDetails(9, 6,30,6.00,5));
+        details.add(new OrderDetails(1, 1, 20, 2.20, 1));
+        details.add(new OrderDetails(2, 6, 30, 6.30, 2));
+        details.add(new OrderDetails(3, 1, 30, 6.00, 5));
+        details.add(new OrderDetails(4, 2, 20, 2.20, 4));
+        details.add(new OrderDetails(5, 3, 30, 6.30, 2));
+        details.add(new OrderDetails(6, 1, 30, 6.00, 5));
+        details.add(new OrderDetails(7, 2, 20, 2.20, 1));
+        details.add(new OrderDetails(8, 3, 30, 6.30, 2));
+        details.add(new OrderDetails(9, 6, 30, 6.00, 5));
         StringBuilder JSONString = new StringBuilder("[");
 
-        for(int i =0; i < details.size(); i++){
-            if(details.get(i).getTransaction_id() == id){
+        for (int i = 0; i < details.size(); i++) {
+            if (details.get(i).getTransaction_id() == id) {
                 selectedDetails.add(details.get(i));
                 JSONString.append(details.get(i).toString());
                 JSONString.append(",");
@@ -132,7 +155,7 @@ public class TransactionDetails extends AppCompatActivity {
         return JSONString.toString();
     }
 
-    public View initView(int getItem, int getWeighs){
+    public View initView(int getItem, int getWeighs) {
         final int item = getItem;
         final int weight = getWeighs;
         final Rates getRates = new Rates();
@@ -157,57 +180,23 @@ public class TransactionDetails extends AppCompatActivity {
         getRate.setText(String.format("$%s/KG", df2.format(rate)));
         getWeight.setText(String.valueOf(weight));
 
-
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        plus.setOnClickListener(v -> {
                 int getweight = Integer.parseInt(getWeight.getText().toString());
                 getweight = getweight + 1;
                 getWeight.setText(String.valueOf(getweight));
-                Rates getRates = new Rates();
-                double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                getPrice.setText(String.format("$%s", df2.format(price)));
-
-            }
-        });
-        plus.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                int getweight = Integer.parseInt(getWeight.getText().toString());
-                getweight = getweight + 5;
-                getWeight.setText(String.valueOf(getweight));
-                Rates getRates = new Rates();
-                double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                getPrice.setText(String.format("$%s", df2.format(price)));
-                return false;
-            }
+                double prices = Double.parseDouble((getRates.getRates(item, getweight)));
+                getPrice.setText(String.format("$%s", df2.format(prices)));
 
         });
-        minus.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                int getweight = Integer.parseInt(getWeight.getText().toString());
-                getweight = getweight - 5;
-                getWeight.setText(String.valueOf(getweight));
-                Rates getRates = new Rates();
-                double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                getPrice.setText(String.format("$%s", df2.format(price)));
-                return false;
-            }
 
-        });
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int getweight = Integer.parseInt(getWeight.getText().toString());
-                getweight = getweight - 1;
-                getWeight.setText(String.valueOf(getweight));
-                Rates getRates = new Rates();
-                double price = Double.parseDouble((getRates.getRates(item, getweight)));
-                getPrice.setText(String.format("$%s", df2.format(price)));
-            }
+        minus.setOnClickListener(v -> {
+            int getweight = Integer.parseInt(getWeight.getText().toString());
+            getweight = getweight - 1;
+            getWeight.setText(String.valueOf(getweight));
+            double prices = Double.parseDouble((getRates.getRates(item, getweight)));
+            getPrice.setText(String.format("$%s", df2.format(prices)));
         });
 
-    return view;
+        return view;
     }
 }

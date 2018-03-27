@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.greenravolution.gravodriver.BulkTransactionDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
 import com.greenravolution.gravodriver.R;
 import com.greenravolution.gravodriver.TransactionDetails;
@@ -75,12 +76,27 @@ public class OrdersAdapter extends BaseAdapter {
                 holder = (ViewHolder) view.getTag();
             }
 
-            holder.llotw.setVisibility(View.GONE);
-            String title = "Pickup " + String.valueOf(position + 1);
-            holder.tt.setText(title);
-            holder.ta.setText(order.getAddress());
-            holder.tpc.setText(order.getPostal());
-            holder.tst.setText(order.getTiming());
+            if(order.getTransaction_type().equals("1")){
+                //normal pickup
+                holder.llotw.setVisibility(View.GONE);
+                String title = "Pickup " + String.valueOf(position + 1);
+                holder.tt.setText(title);
+                holder.ta.setText(order.getAddress());
+                holder.tpc.setText(order.getPostal());
+                holder.tst.setText(order.getTiming());
+            }else{
+                //bulk pickup
+                holder.llotw.setVisibility(View.GONE);
+                String title = "Pickup " + String.valueOf(position + 1)+" (Bulk)";
+                holder.tt.setText(title);
+                holder.ta.setText(order.getAddress());
+                holder.ta.setTextColor(context.getResources().getColor(R.color.brand_green));
+                holder.tpc.setText(order.getPostal());
+                holder.tpc.setTextColor(context.getResources().getColor(R.color.brand_green));
+                holder.tst.setText(order.getTiming());
+                holder.tst.setTextColor(context.getResources().getColor(R.color.brand_green));
+            }
+
 
 //            holder.botw.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -94,12 +110,22 @@ public class OrdersAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     /// TODO: 14/3/2018 intent to transaction page add in details
-                    Intent intent = new Intent(context, TransactionDetails.class);
-                    Orders orders = getItem(position);
-                    intent.putExtra("address", orders.getAddress());
-                    intent.putExtra("transaction_id", orders.getTransaction_id());
-                    intent.putExtra("id", orders.getId());
-                    context.startActivity(intent);
+                    if(order.getTransaction_type().equals("1")){
+                        Intent intent = new Intent(context, TransactionDetails.class);
+                        Orders orders = getItem(position);
+                        intent.putExtra("address", orders.getAddress());
+                        intent.putExtra("transaction_id", orders.getTransaction_id());
+                        intent.putExtra("id", orders.getId());
+                        context.startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(context, BulkTransactionDetails.class);
+                        Orders orders = getItem(position);
+                        intent.putExtra("address", orders.getAddress());
+                        intent.putExtra("transaction_id", orders.getTransaction_id());
+                        intent.putExtra("id", orders.getId());
+                        context.startActivity(intent);
+                    }
+
                 }
             });
 

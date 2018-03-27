@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     bl.setEnabled(false);
                     if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
+                        bl.setEnabled(true);
                         re.setText(R.string.invalid_login);
                     } else {
                         llProgress.setVisibility(View.VISIBLE);
@@ -181,8 +182,8 @@ public class LoginActivity extends AppCompatActivity {
                             re.setText("This is the Collector's App\nPlease use the Recycler's App\nAlternatively, you can join\nus as a collector!");
                         }
                     } else {
-                        bl.setEnabled(true);
                         re.setText(R.string.invalid_login);
+                        bl.setEnabled(true);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

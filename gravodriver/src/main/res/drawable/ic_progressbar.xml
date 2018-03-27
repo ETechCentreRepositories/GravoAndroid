@@ -30,8 +30,8 @@
     <item android:duration="20" android:drawable="@drawable/pb10"/>
     <item android:duration="20" android:drawable="@drawable/pb9"/>
     <item android:duration="20" android:drawable="@drawable/pb8"/>
-    <item android:duration="20" android:drawable="@drawable/pb7"/>
     <item android:duration="20" android:drawable="@drawable/pb6"/>
+    <item android:duration="20" android:drawable="@drawable/pb7"/>
     <item android:duration="20" android:drawable="@drawable/pb5"/>
     <item android:duration="20" android:drawable="@drawable/pb4"/>
     <item android:duration="20" android:drawable="@drawable/pb3"/>

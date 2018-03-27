@@ -10,19 +10,31 @@
         android:roundIcon="@mipmap/ic_gravo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Splash" android:screenOrientation="portrait">
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".loginsignup.Login"  android:screenOrientation="portrait"/>
-        <activity android:name=".loginsignup.LoginActivity" android:screenOrientation="portrait" />
-        <activity android:name=".loginsignup.RegisterActivity" android:screenOrientation="portrait" />
-        <activity android:name=".TransactionDetails" android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".loginsignup.Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".loginsignup.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".loginsignup.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransactionDetails"
+            android:screenOrientation="portrait" />
+        <activity android:name=".BulkTransactionDetails"></activity>
     </application>
 
 </manifest>

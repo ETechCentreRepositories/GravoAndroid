@@ -100,25 +100,17 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
                 dialog.setCancelable(false);
                 dialog.setTitle("Logout");
-                dialog.setMessage("Are you sure you want to exit?");
-                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sessionManager.edit();
-                        editor.clear();
-                        editor.apply();
-                        Intent intent = new Intent(MainActivity.this, Login.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                dialog.setMessage("Are you sure you want to log out?");
+                dialog.setPositiveButton("Yes", (dialogInterface, i) -> {
+                    SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.clear();
+                    editor.apply();
+                    Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                    finish();
                 });
-                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
+                dialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
                 AlertDialog dialogue = dialog.create();
 
                 dialogue.show();
@@ -184,12 +176,12 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Orders> getTransactions(){
         ArrayList<Orders> orders = new ArrayList<>();
         //get list of items
-        orders.add(new Orders(1, "#0020", "Pickup 1", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
-        orders.add(new Orders(2, "#0021", "Pickup 2", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm", 0));
-        orders.add(new Orders(3, "#0022", "Pickup 3", "Blk 279 Tampines Street 22 #08-220", "520279", "12pm - 2pm",1));
-        orders.add(new Orders(4, "#0023", "Pickup 4", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm",0));
-        orders.add(new Orders(5, "#0024", "Pickup 5", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
-        orders.add(new Orders(6, "#0025", "Pickup 6", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", 0));
+         orders.add(new Orders(1, "1","#0020", "Pickup 1", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
+        orders.add(new Orders(2, "1","#0021", "Pickup 2", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm", 0));
+        orders.add(new Orders(3, "1","#0022", "Pickup 3", "Blk 279 Tampines Street 22 #08-220", "520279", "12pm - 2pm",1));
+        orders.add(new Orders(4, "2","#0023", "Pickup 4", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm",0));
+        orders.add(new Orders(5, "2","#0024", "Pickup 5", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
+        orders.add(new Orders(6, "1","#0025", "Pickup 6", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", 0));
 
         return orders;
     }
