@@ -1,6 +1,5 @@
 package com.greenravolution.gravodriver.loginsignup;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -43,70 +42,54 @@ public class RegisterActivity extends AppCompatActivity {
         rl = findViewById(R.id.rl);
         btnc = findViewById(R.id.btnc);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ib = new Intent();
-                ib.putExtra("type", "0");
-                setResult(1, ib);
-                finish();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent ib = new Intent();
+            ib.putExtra("type", "0");
+            setResult(1, ib);
+            finish();
         });
-        bca.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ete.getText().toString().isEmpty()
-                        || etfn.getText().toString().isEmpty()
-                        || etln.getText().toString().isEmpty()
-                        || etnum.getText().toString().isEmpty()
-                        || etic.getText().toString().isEmpty()
-                        || etpw.getText().toString().isEmpty()
-                        || etli.getText().toString().isEmpty()) {
+        bca.setOnClickListener(v -> {
+            if (ete.getText().toString().isEmpty()
+                    || etfn.getText().toString().isEmpty()
+                    || etln.getText().toString().isEmpty()
+                    || etnum.getText().toString().isEmpty()
+                    || etic.getText().toString().isEmpty()
+                    || etpw.getText().toString().isEmpty()
+                    || etli.getText().toString().isEmpty()) {
 
-                    Snackbar.make(rl, "Please fill in all fields!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(rl, "Please fill in all fields!", Snackbar.LENGTH_LONG).show();
+
+            } else {
+
+                if (ctnc.isChecked()) {
+                    Intent itmn = new Intent(RegisterActivity.this, MainActivity.class);
+                    itmn.putExtra("message", "Welcome!");
+                    Intent ib = new Intent();
+                    ib.putExtra("type", "1");
+                    setResult(1, ib);
+                    finish();
+                    startActivity(itmn);
 
                 } else {
-
-                    if (ctnc.isChecked()) {
-                        Intent itmn = new Intent(RegisterActivity.this, MainActivity.class);
-                        itmn.putExtra("message", "Welcome!");
-                        Intent ib = new Intent();
-                        ib.putExtra("type", "1");
-                        setResult(1, ib);
-                        finish();
-                        startActivity(itmn);
-
-                    } else {
-                        Snackbar.make(rl, "Please accept our Terms and Conditions", Snackbar.LENGTH_LONG).show();
-                    }
-
+                    Snackbar.make(rl, "Please accept our Terms and Conditions", Snackbar.LENGTH_LONG).show();
                 }
+
             }
         });
-        btnc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
-                LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
-                final View gtnc = li.inflate(R.layout.tnc_dialog, null);
-                dialog.setCancelable(true);
-                dialog.setView(gtnc);
-                dialog.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ctnc.setChecked(true);
-                    }
-                });
-                dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                    }
-                });
-                AlertDialog dialogue = dialog.create();
-                dialogue.show();
-            }
+        btnc.setOnClickListener(v -> {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+            LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+            final View gtnc = li.inflate(R.layout.tnc_dialog, null);
+            dialog.setCancelable(true);
+            dialog.setView(gtnc);
+            dialog.setPositiveButton("Accept", (dialogInterface, i) -> ctnc.setChecked(true));
+            dialog.setNegativeButton("Later", (dialogInterface, i) -> {
+            });
+            AlertDialog dialogue = dialog.create();
+            dialogue.show();
         });
     }
 

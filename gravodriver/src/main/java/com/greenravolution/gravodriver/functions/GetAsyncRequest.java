@@ -18,9 +18,11 @@ public class GetAsyncRequest extends AsyncTask<String, Void , String>{
 
     @Override
     protected String doInBackground(String... strings) {
-
         HttpReq req = new HttpReq();
-
+        String result = req.GetRequest(strings[0]);
+        if(!result.isEmpty()){
+            return result;
+        }
         return null;
     }
 
@@ -31,6 +33,6 @@ public class GetAsyncRequest extends AsyncTask<String, Void , String>{
     }
 
     public interface OnAsyncResult {
-        public abstract void result (int resultCode, String message);
+        void result (int resultCode, String message);
     }
 }

@@ -1,7 +1,6 @@
 package com.greenravolution.gravodriver.functions;
 
-import android.graphics.drawable.Drawable;
-
+import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
 import com.greenravolution.gravodriver.R;
 
@@ -20,231 +19,142 @@ public class Rates {
 
     }
 
-    public String getRates(int category_id, int weight) {
-        double rate = 0.00;
-        double price = 0.00;
-        switch (category_id) {
-            case 1:
-                //newspaper
-                rate = 0.11;
-                price = rate * weight;
-                return String.valueOf(price);
 
-            case 2:
-                //aluminium
-                rate = 0.21;
-                price = rate * weight;
-                return String.valueOf(price);
+    public String getRates(int category_id, int weight, String rates) {
+        try {
+            JSONArray getRates = new JSONArray(rates);
+            for (int i = 0; i < getRates.length(); i++) {
+                JSONObject rate = getRates.getJSONObject(i);
+                if (category_id == rate.getInt("id")) {
+                    String price = rate.getString("rate");
+                    String[] getPrice = price.split("/");
+                    Double pricing = Double.parseDouble(getPrice[0]) * weight;
+                    return String.valueOf(pricing);
+                }
+            }
 
-            case 3:
-                //aluminium
-                rate = 0.12;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 4:
-                //aluminium
-                rate = 0.23;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 5:
-                rate = 0.20;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 6:
-                rate = 0.25;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 7:
-                rate = 0.20;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 8:
-                rate = 0.20;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 9:
-                rate = 0.20;
-                price = rate * weight;
-                return String.valueOf(price);
-            case 10:
-                rate = 0.20;
-                price = rate * weight;
-                return String.valueOf(price);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
         return "No Price";
 
     }
-    public double getRate(int category_id) {
 
-        switch (category_id) {
-            case 1:
-                //newspaper
-                return 0.11;
+    public String getRate(int category_id, String rates) {
 
-            case 2:
-                //aluminium
-                return 0.21;
-            case 3:
-                //aluminium
-                return 0.12;
-
-            case 4:
-                //aluminium
-                return 0.20;
-
-            case 5:
-                //aluminium
-                return 0.23;
-
-            case 6:
-                //aluminium
-                return 0.10;
-
-            case 7:
-                //aluminium
-                return 0.20;
-
-            case 8:
-                //aluminium
-                return 0.25;
-
-            case 9:
-                //aluminium
-                return 0.20;
-
-            case 10:
-                //aluminium
-                return 0.20;
-
+        try {
+            JSONArray getRates = new JSONArray(rates);
+            for (int i = 0; i < getRates.length(); i++) {
+                JSONObject rate = getRates.getJSONObject(i);
+                if (category_id == rate.getInt("id")) {
+                    String price = rate.getString("rate");
+                    return price;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return 0.00;
+
+        return "No Such Item";
 
     }
 
-    public String getItem(int cat_id) {
-        switch (cat_id) {
-            case 1:
-                return "Paper | Old Newspapers";
-            case 2:
-                return "Paper | Old Textbooks";
-            case 3:
-                return "Paper | Old Cardboards";
-            case 4:
-                return "Paper | Recycled Paper";
-            case 5:
-                return "E-Waste | LCD Screens";
-            case 6:
-                return "E-Waste | Laptops";
-            case 7:
-                return "Metals | Aluminium";
-            case 8:
-                return "E-Waste | Copper Wire";
-            case 9:
-                return "E-Waste | Brass";
-            case 10:
-                return "E-Waste | Aluminium Cans";
+    public String getItem(int cat_id, String rates) {
+        try {
+            JSONArray getRates = new JSONArray(rates);
+            for (int i = 0; i < getRates.length(); i++) {
+                JSONObject rate = getRates.getJSONObject(i);
+                if (cat_id == rate.getInt("id")) {
+                    String cat = rate.getString("type");
+                    return cat;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return "No Such Item";
 
     }
-    public int getImage(int cat_id) {
-        switch (cat_id) {
-            case 1:
-                return R.drawable.newspaper;
-            case 2:
-                return R.drawable.books;
-            case 3:
-                return R.drawable.cardboard;
-            case 4:
-                return R.drawable.recycle_paper;
-            case 5:
-                return R.drawable.laptop;
-            case 6:
-                return R.drawable.laptop;
-            case 7:
-                return R.drawable.aluminium;
-            case 8:
-                return R.drawable.copper;
-            case 9:
-                return R.drawable.brass;
-            case 10:
-                return R.drawable.aluminium_cans;
-        }
-        return 0;
 
-    }
-
-    public int getImageColour(int cat_id) {
-        switch (cat_id) {
-            case 1:
-                return R.color.brand_yellow;
-            case 2:
-                return R.color.brand_yellow;
-            case 3:
-                return R.color.brand_yellow;
-            case 4:
-                return R.color.brand_yellow;
-            case 5:
-                return R.color.brand_purple;
-            case 6:
-                return R.color.brand_purple;
-            case 7:
-                return R.color.brand_orange;
-            case 8:
-                return R.color.brand_orange;
-            case 9:
-                return R.color.brand_orange;
-            case 10:
-                return R.color.brand_orange;
-        }
-        return 0;
-
-    }
-
-    public int GetTotalWeight(ArrayList<Orders> orders) {
-        int weight = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            String itemDetails = "[{'id':1,'cat_id':1,'weight':20},{'id':1,'cat_id':2,'weight':30},{'id':1,'cat_id':5,'weight':30}]";
-            try {
-                JSONArray details = new JSONArray(itemDetails);
-                for (int position = 0; position < details.length(); position++) {
-                    JSONObject detail = details.getJSONObject(position);
-                    int itemWeight = detail.getInt("weight");
-                    weight = weight + itemWeight;
+    public int getImage(int cat_id, String rates) {
+        try {
+            JSONArray getRates = new JSONArray(rates);
+            for (int i = 0; i < getRates.length(); i++) {
+                JSONObject rate = getRates.getJSONObject(i);
+                if (cat_id == rate.getInt("id")) {
+                    String price = rate.getString("type");
+                    String[] wasteType = price.split(" ");
+                    switch (wasteType[0]) {
+                        case "Paper":
+                            return R.drawable.recycle_paper;
+                        case "Metal":
+                            return R.drawable.aluminium_cans;
+                        case "E-Waste":
+                            return R.drawable.laptop;
+                    }
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
+
+    public int getImageColour(int cat_id, String rates) {
+        try {
+            JSONArray getRates = new JSONArray(rates);
+            for (int i = 0; i < getRates.length(); i++) {
+                JSONObject rate = getRates.getJSONObject(i);
+                if (cat_id == rate.getInt("id")) {
+                    String price = rate.getString("type");
+                    String[] wasteType = price.split(" ");
+                    switch (wasteType[0]) {
+                        case "Paper":
+                            return R.color.brand_yellow;
+                        case "Metal":
+                            return R.color.brand_orange;
+                        case "E-Waste":
+                            return R.color.brand_purple;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
+
+    public int GetTotalWeight(ArrayList<OrderDetails> orderDetails) {
+        int weight = 0;
+
+        for (int j = 0; j < orderDetails.size(); j++) {
+            weight = weight + Integer.parseInt(orderDetails.get(j).getWeight());
         }
         return weight;
     }
 
-    public int GetCollectedWeight(ArrayList<Orders> orders) {
-        ArrayList<Orders> collectedOrders = new ArrayList<Orders>();
+    public int GetCollectedWeight(ArrayList<OrderDetails> orderDetails, ArrayList<Orders> orders) {
+        ArrayList<OrderDetails> collectedOrders = new ArrayList<>();
         int weight = 0;
         for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getStatus_id() == 1) {
-                collectedOrders.add(orders.get(i));
+            if (orders.get(i).getStatus_id() == 4) {
+                for (int j = 0; j < orderDetails.size(); j++) {
+                    if (collectedOrders.get(j).getTransaction_id() == orders.get(i).getId()) {
+                        collectedOrders.add(orderDetails.get(j));
+                    }
+                }
             }
         }
         for (int i = 0; i < collectedOrders.size(); i++) {
-            String itemDetails = "[{'id':1,'cat_id':1,'weight':20},{'id':1,'cat_id':2,'weight':30},{'id':1,'cat_id':5,'weight':30}]";
-            try {
-                JSONArray details = new JSONArray(itemDetails);
-                for (int position = 0; position < details.length(); position++) {
-                    JSONObject detail = details.getJSONObject(position);
-                    int itemWeight = detail.getInt("weight");
-                    weight = weight + itemWeight;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+            weight = weight + Integer.parseInt(collectedOrders.get(i).getWeight());
         }
         return weight;
     }
 
-    public double EstimateAmountPayment(ArrayList<Orders> orders) {
+    public double EstimateAmountPayment(ArrayList<Orders> orders, String rates) {
 
         double price = 0;
         for (int i = 0; i < orders.size(); i++) {
@@ -256,7 +166,7 @@ public class Rates {
                     int item = detail.getInt("cat_id");
                     int weight = detail.getInt("weight");
                     Rates getRates = new Rates();
-                    String itemPrice = getRates.getRates(item, weight);
+                    String itemPrice = getRates.getRates(item, weight, rates);
                     price = price + Double.parseDouble(itemPrice);
                 }
             } catch (JSONException e) {
@@ -267,11 +177,11 @@ public class Rates {
         return price;
     }
 
-    public double EstimateAmountPaid(ArrayList<Orders> orders) {
+    public double EstimateAmountPaid(ArrayList<Orders> orders, String rates) {
         ArrayList<Orders> collectedOrders = new ArrayList<Orders>();
         double price = 0;
         for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getStatus_id() == 1) {
+            if (orders.get(i).getStatus_id() == 4) {
                 collectedOrders.add(orders.get(i));
             }
         }
@@ -284,7 +194,7 @@ public class Rates {
                     int item = detail.getInt("cat_id");
                     int getWeight = detail.getInt("weight");
                     Rates getRates = new Rates();
-                    String itemPrice = getRates.getRates(item,getWeight);
+                    String itemPrice = getRates.getRates(item, getWeight, rates);
                     price = price + Double.parseDouble(itemPrice);
                 }
             } catch (JSONException e) {

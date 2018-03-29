@@ -59,40 +59,35 @@ public class LoginActivity extends AppCompatActivity {
         llProgress.setVisibility(View.GONE);
         progressBar = findViewById(R.id.progressBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         boolean networkState = checkNetwork();
         if (!networkState) {
             Toast.makeText(this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
         }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ib = new Intent();
-                ib.putExtra("type", "0");
-                setResult(1, ib);
-                finish();
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent ib = new Intent();
+            ib.putExtra("type", "0");
+            setResult(1, ib);
+            finish();
 
-            }
         });
-        bl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean networkState = checkNetwork();
-                if (!networkState) {
-                    Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
+        bl.setOnClickListener(v -> {
+            boolean networkState1 = checkNetwork();
+            if (!networkState1) {
+                Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
+            } else {
+                bl.setEnabled(false);
+                if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
+                    bl.setEnabled(true);
+                    re.setText(R.string.invalid_login);
                 } else {
-                    bl.setEnabled(false);
-                    if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
-                        bl.setEnabled(true);
-                        re.setText(R.string.invalid_login);
-                    } else {
-                        llProgress.setVisibility(View.VISIBLE);
-                        AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
-                        progressDrawable.start();
-                        Login login = new Login();
-                        login.execute("http://bryanlowsk.com/UHoo/API/login.php");
-                    }
+                    llProgress.setVisibility(View.VISIBLE);
+                    AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
+                    progressDrawable.start();
+                    Login login = new Login();
+                    login.execute("http://bryanlowsk.com/UHoo/API/login.php");
                 }
             }
         });
@@ -131,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             HttpReq request = new HttpReq();
-            return request.PostRequest("http://bryanlowsk.com/UHoo/API/login.php", "email=" + ete.getText().toString() + "&password=" + etp.getText().toString());
+            return request.PostRequest("http://greenravolution.com/API/login.php", "getEmail=" + ete.getText().toString() + "&getPassword=" + etp.getText().toString());
         }
 
         @Override
@@ -146,20 +141,26 @@ public class LoginActivity extends AppCompatActivity {
                     String userName = "";
                     String userEmail = "";
                     String userNumber = "";
+                    String userAddress = "";
                     JSONObject loginDetails = new JSONObject(s);
                     int status = loginDetails.getInt("status");
                     if (status == 200) {
                         JSONArray getUser = loginDetails.getJSONArray("user");
                         for (int i = 0; i < getUser.length(); i++) {
                             JSONObject user = getUser.getJSONObject(i);
-                            userName = user.getString("name");
+                            userName = user.getString("first_name");
                             userEmail = user.getString("email");
-                            userNumber = user.getString("phone_number");
+                            if (user.getString("address") != null) {
+                                userAddress = user.getString("address");
+                            } else {
+                                userAddress = null;
+                            }
+                            userNumber = user.getString("number");
                             role = user.getString("role_id");
 
                         }
                         if (role.equals("2")) {
-                            Log.e("User Details", "Name: " + userName +"\nRole: "+role+"\nEmail: " + userEmail + "\nNumber: " + userNumber);
+                            Log.e("User Details", "Name: " + userName + "\nRole: " + role + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
                             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sessionManager.edit();
                             editor.putString(SESSION_ID, String.valueOf(status));
@@ -167,6 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("role", role);
                             editor.putString("email", userEmail);
                             editor.putString("number", userNumber);
+                            editor.putString("address", userAddress);
 
                             editor.apply();
                             Intent itmchk = new Intent(LoginActivity.this, MainActivity.class);
@@ -196,20 +198,26 @@ public class LoginActivity extends AppCompatActivity {
                     String userEmail = "";
                     String userNumber = "";
                     String role = "";
+                    String userAddress = "";
                     JSONObject loginDetails = new JSONObject(s);
                     int status = loginDetails.getInt("status");
                     if (status == 200) {
                         JSONArray getUser = loginDetails.getJSONArray("user");
                         for (int i = 0; i < getUser.length(); i++) {
                             JSONObject user = getUser.getJSONObject(i);
-                            userName = user.getString("name");
+                            userName = user.getString("first_name");
                             userEmail = user.getString("email");
-                            userNumber = user.getString("phone_number");
+                            userNumber = user.getString("number");
+                            if (user.getString("address") != null) {
+                                userAddress = user.getString("address");
+                            } else {
+                                userAddress = null;
+                            }
                             role = user.getString("role_id");
 
                         }
                         if (role.equals("2")) {
-                            Log.e("User Details", "Name: " + userName +"\nRole: "+role+"\nEmail: " + userEmail + "\nNumber: " + userNumber);
+                            Log.e("User Details", "Name: " + userName + "\nRole: " + role + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
                             Intent itmnochk = new Intent(LoginActivity.this, MainActivity.class);
                             itmnochk.putExtra("message", "Welcome Back!");
                             Intent ib = new Intent();

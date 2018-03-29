@@ -8,14 +8,14 @@ import java.io.Serializable;
  * Created by user on 14/3/2018.
  */
 
-public class OrderDetails implements Serializable{
+public class OrderDetails implements Serializable {
     private int id;
     private int transaction_id;
-    private int weight;
-    private double price;
+    private String weight;
+    private String price;
     private int category_id;
 
-    public OrderDetails(int id, int transaction_id, int weight, double price, int category_id) {
+    public OrderDetails(int id, int transaction_id, String weight, String price, int category_id) {
         this.id = id;
         this.transaction_id = transaction_id;
         this.weight = weight;
@@ -39,19 +39,19 @@ public class OrderDetails implements Serializable{
         this.transaction_id = transaction_id;
     }
 
-    public int getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -63,13 +63,13 @@ public class OrderDetails implements Serializable{
         this.category_id = category_id;
     }
 
-    public String toString(){
+    public String toString() {
         String string = "{";
-        string += "'id':"+getId()+",";
-        string += "'transaction_id':"+getTransaction_id()+",";
-        string += "'cat_id':"+getCategory_id()+",";
-        string += "'weight':"+getWeight()+",";
-        string += "'price':"+getPrice()+"}";
+        string += "'id':" + getId() + ",";
+        string += "'transaction_id':" + getTransaction_id() + ",";
+        string += "'cat_id':" + getCategory_id() + ",";
+        string += "'weight':" + getWeight() + ",";
+        string += "'price':" + getPrice() + "}";
         Log.i("Detail JSON String: ", string);
         return string;
     }

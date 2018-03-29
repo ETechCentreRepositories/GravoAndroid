@@ -2,24 +2,31 @@ package com.greenravolution.gravodriver;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
 import com.greenravolution.gravodriver.adapters.OrdersAdapter;
+import com.greenravolution.gravodriver.functions.GetAsyncRequest;
 import com.greenravolution.gravodriver.functions.Rates;
 import com.greenravolution.gravodriver.loginsignup.Login;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,36 +36,91 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
-    public static final String SESSION_ID = "session";
+
+    LinearLayout llProgress;
+    ImageView progressbar;
     ListView orders;
     OrdersAdapter oad;
     ArrayList<Orders> oal;
+    ArrayList<OrderDetails> odal;
     TextView collectDate, totalWeight, totalPrice;
+    SharedPreferences sessionManager;
     Rates rates = new Rates();
     android.support.v7.widget.Toolbar toolbar;
+    GetAsyncRequest.OnAsyncResult asyncResultUpdateTrans = (resultCode, message) -> {
+
+    };
+    GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
+        llProgress.setVisibility(View.GONE);
+        AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
+        progressDrawable.stop();
+        try {
+            oal.clear();
+            odal.clear();
+            JSONObject object = new JSONObject(message);
+            JSONArray results = object.getJSONArray("result");
+            JSONArray details = object.getJSONArray("details");
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject detail = results.getJSONObject(i);
+                int id = detail.getInt("id");
+                String tc = detail.getString("transaction_code");
+                String tt = detail.getString("transaction_type");
+                String ad = detail.getString("address");
+                String po = detail.getString("postal");
+                int uid = detail.getInt("user_id");
+                int sid = detail.getInt("session_id");
+                int pid = detail.getInt("payment_id");
+                int stid = detail.getInt("status_id");
+
+                oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
+            }
+            for (int i = 0; i < details.length(); i++) {
+                JSONObject detail = details.getJSONObject(i);
+                int id = detail.getInt("id");
+                int transaction_id = detail.getInt("transaction_id");
+                Log.e("transaction id: ", transaction_id + "");
+                String weight = detail.getString("weight");
+                Log.e("Weight", weight + "");
+                String price = detail.getString("price");
+                Log.e("Price", price + "");
+                int cat_id = detail.getInt("transaction_id");
+                odal.add(new OrderDetails(id, transaction_id, weight, price, cat_id));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        oad.notifyDataSetChanged();
+
+    };
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        llProgress = findViewById(R.id.llProgress);
+        progressbar = findViewById(R.id.progressBar);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        oal = new ArrayList<Orders>();
+        if(getSupportActionBar() != null){
+            if (getSupportActionBar().getTitle() != null){
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            }
+        }
+        oal = new ArrayList<>();
+        odal = new ArrayList<>();
         orders = findViewById(R.id.orders);
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
         String date = df.format(Calendar.getInstance().getTime());
         collectDate = findViewById(R.id.collectDate);
         totalPrice = findViewById(R.id.totalPrice);
         totalWeight = findViewById(R.id.totalWeight);
-
         collectDate.setText(String.format("Pickups for Today: %s", date));
-
         oad = new OrdersAdapter(MainActivity.this, oal);
         orders.setAdapter(oad);
         oad.notifyDataSetChanged();
-
 
     }
 
@@ -69,18 +131,8 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setTitle("Exit");
         dialog.setMessage("Are you sure you want to exit?");
-        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+        dialog.setPositiveButton("Yes", (dialogInterface, i) -> finish());
+        dialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
         AlertDialog dialogue = dialog.create();
 
         dialogue.show();
@@ -102,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setTitle("Logout");
                 dialog.setMessage("Are you sure you want to log out?");
                 dialog.setPositiveButton("Yes", (dialogInterface, i) -> {
-                    SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.clear();
                     editor.apply();
@@ -112,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
                 });
                 dialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
                 AlertDialog dialogue = dialog.create();
-
                 dialogue.show();
 
                 break;
@@ -130,10 +181,16 @@ public class MainActivity extends AppCompatActivity {
                     if (Objects.equals(data.getStringExtra("type"), "0")) {
                         Log.e("type", "back button");
                     } else if (Objects.equals(data.getStringExtra("type"), "1")) {
-                        finish();
+                        String id = data.getStringExtra("transaction_id");
+                        Log.e("my transaction_id", id);
+                        for (int i = 0; i < oal.size(); i++) {
+                            if (oal.get(i).getId() == Integer.parseInt(id)) {
+                               updateTransaction(Integer.parseInt(id));
+                            }
+                        }
                     }
                 } else {
-                    Log.e("type", "null");
+                    Log.e("type", "phone backpress");
                 }
                 Log.e("data", "null");
             }
@@ -156,35 +213,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        oal.clear();
-        oal.addAll(getTransactions());
-        int getTotalWeight = rates.GetTotalWeight(oal);
-        int getCollectedWeight = rates.GetCollectedWeight(oal);
-        double totalPrices = rates.EstimateAmountPayment(oal);
-        double amountPaid = rates.EstimateAmountPaid(oal);
-
-        totalWeight.setText(String.format("Total Weight Collected: %sKG / %sKG", String.valueOf(getCollectedWeight), String.valueOf(getTotalWeight)));
-        totalPrice.setText(String.format("Estimated Amount Paid: $%s0 / $%s0", String.valueOf(amountPaid), String.valueOf(totalPrices)));
-
+        getTransactions();
+        oad.notifyDataSetChanged();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-    public ArrayList<Orders> getTransactions(){
-        ArrayList<Orders> orders = new ArrayList<>();
-        //get list of items
-         orders.add(new Orders(1, "1","#0020", "Pickup 1", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
-        orders.add(new Orders(2, "1","#0021", "Pickup 2", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm", 0));
-        orders.add(new Orders(3, "1","#0022", "Pickup 3", "Blk 279 Tampines Street 22 #08-220", "520279", "12pm - 2pm",1));
-        orders.add(new Orders(4, "2","#0023", "Pickup 4", "Blk 159 Woodlands Street 32 #06-502", "730159", "12pm - 2pm",0));
-        orders.add(new Orders(5, "2","#0024", "Pickup 5", "Blk 279 Tampines Street 22 #08-220", "520279", "10am - 12pm", 0));
-        orders.add(new Orders(6, "1","#0025", "Pickup 6", "Blk 159 Woodlands Street 32 #06-502", "S730159", "12pm - 2pm", 0));
+        getTransactions();
+        oad.notifyDataSetChanged();
+   }
 
-        return orders;
+    public void getTransactions() {     //get list of items
+        llProgress.setVisibility(View.VISIBLE);
+        AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
+        progressDrawable.start();
+        GetAsyncRequest asyncRequest = new GetAsyncRequest();
+        asyncRequest.setOnResultListener(asyncResult);
+        asyncRequest.execute("http://greenravolution.com/API/transactions.php?get_type=all");
     }
-
+    public void updateTransaction(int id){
+        GetAsyncRequest asyncRequest = new GetAsyncRequest();
+        asyncRequest.setOnResultListener(asyncResultUpdateTrans);
+        asyncRequest.execute("http://greenravolution.com/admin/rawQuery.php?query=update transaction set status_id = 4 where id = "+id+";");
+    }
 
 }
