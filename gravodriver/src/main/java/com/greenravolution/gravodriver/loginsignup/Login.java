@@ -81,13 +81,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         // Auto start of viewpager
         final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == TEXTS.length) {
-                    currentPage = 0;
-                }
-                mPager.setCurrentItem(currentPage++, true);
+        final Runnable Update = () -> {
+            if (currentPage == TEXTS.length) {
+                currentPage = 0;
             }
+            mPager.setCurrentItem(currentPage++, true);
         };
         Timer swipeTimer = new Timer();
         swipeTimer.schedule(new TimerTask() {

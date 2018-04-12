@@ -37,7 +37,7 @@ public class Rates {
             e.printStackTrace();
         }
 
-        return "No Price";
+        return "0.00";
 
     }
 
@@ -154,25 +154,17 @@ public class Rates {
         return weight;
     }
 
-    public double EstimateAmountPayment(ArrayList<Orders> orders, String rates) {
+    public double EstimateAmountPayment(ArrayList<OrderDetails> orders, String rates) {
 
         double price = 0;
         for (int i = 0; i < orders.size(); i++) {
-            String itemDetails = "[{'id':1,'cat_id':1,'weight':20},{'id':1,'cat_id':2,'weight':30},{'id':1,'cat_id':5,'weight':30}]";
-            try {
-                JSONArray details = new JSONArray(itemDetails);
-                for (int position = 0; position < details.length(); position++) {
-                    JSONObject detail = details.getJSONObject(position);
-                    int item = detail.getInt("cat_id");
-                    int weight = detail.getInt("weight");
-                    Rates getRates = new Rates();
-                    String itemPrice = getRates.getRates(item, weight, rates);
-                    price = price + Double.parseDouble(itemPrice);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            for (int position = 0; position < orders.size(); position++) {
+                int item = orders.get(i).getCategory_id();
+                int weight = Integer.parseInt(orders.get(i).getWeight());
+                Rates getRates = new Rates();
+                String itemPrice = getRates.getRates(item, weight, rates);
+                price = price + Double.parseDouble(itemPrice);
             }
-
         }
         return price;
     }

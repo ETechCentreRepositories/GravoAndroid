@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white_pressed"/>
+            <corners android:radius="210dp"/>
+            <padding android:bottom="4dp" android:right="2dp" android:left="2dp"/>
+        </shape>
+    </item><item>
+    <shape android:shape="rectangle">
+        <solid android:color="@color/white_pressed"/>
+        <corners android:radius="210dp"/>
+        <padding android:bottom="4dp" android:right="2dp" android:left="2dp"/>
+    </shape>
+</item><item>
+    <shape android:shape="rectangle">
+        <solid android:color="@color/white_pressed"/>
+        <corners android:radius="210dp"/>
+        <padding android:bottom="4dp" android:right="2dp" android:left="2dp"/>
+    </shape>
+</item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white_pressed"/>
+            <corners android:radius="210dp"/>
+            <padding android:bottom="4dp" android:right="2dp" android:left="2dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white"/>
+            <corners android:radius="200dp"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/gravo_logo_black" android:top="50dp" android:bottom="50dp" android:start="50dp" android:right="50dp">
+
+    </item>
+</layer-list>

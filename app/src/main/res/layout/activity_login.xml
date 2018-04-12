@@ -1,121 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     android:orientation="vertical"
-    android:weightSum="2"
-    tools:context="com.greenravolution.gravo.Login.LoginActivity">
-
+    android:id="@+id/mainLayout"
+    android:background="@drawable/recycle_frame_anim"
+    tools:context="com.greenravolution.gravo.login.Login">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#30000000"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_weight="2.25"
-        android:elevation="3dp"
-        android:fitsSystemWindows="true">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true" />
-
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="0.01"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/login_hint_email"
-            android:inputType="textEmailAddress" />
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/login_hint_password"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/btnLogin"
-            style="@style/buttons_login_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/login_button"
-            android:text="@string/sign_in"
-            android:textColor="@color/white" />
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
 
         <LinearLayout
+            android:id="@+id/logo"
+            android:layout_marginTop="50dp"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="6">
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginEnd="70dp"
+                android:layout_marginStart="70dp"
+                android:paddingBottom="0dp"
+                android:paddingTop="0dp"
+                android:src="@drawable/gravo_logo_white"/>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_below="@id/logo"
+            android:layout_above="@id/buttons"
+            android:gravity="center"
+            android:id="@+id/rlpager"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_above="@id/pager"
+                android:id="@+id/welcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="WELCOME"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp"/>
+
+            <android.support.v4.view.ViewPager
+                android:layout_above="@id/indicator"
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="120dp" />
+
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="2"
-                android:background="@drawable/facebook_login_button"
-                android:drawableStart="@drawable/facebook_logo_circular"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:paddingTop="10dp"
-                android:text="Facebook"
+                android:onClick="onClick"
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:background="@drawable/btn_brand_green_round"
+                android:text="@string/login"
                 android:textColor="@color/white" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="OR"
-                android:textAlignment="center" />
+                android:layout_marginTop="10dp"
+                android:text="Not a Recycler yet?"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="2"
-                android:background="@drawable/google_login_button"
-                android:drawableStart="@drawable/google_logo_circular"
-                android:paddingBottom="10dp"
-                android:paddingStart="10dp"
-                android:paddingTop="10dp"
-                android:text="Google"
-                android:textColor="@color/white" />
+                android:onClick="onClick"
+                android:id="@+id/register"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_white_round"
+                android:text="@string/create_account"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
+    </RelativeLayout>
 
-        <Button
-            android:id="@+id/btnRegister"
-            style="@style/buttons_login_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/register_button"
-            android:text="Register"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>

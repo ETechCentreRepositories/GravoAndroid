@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
             odal.clear();
             JSONObject object = new JSONObject(message);
             JSONArray results = object.getJSONArray("result");
-            JSONArray details = object.getJSONArray("details");
+            SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+            final String rate = sessionManager.getString("rates", "");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject detail = results.getJSONObject(i);
                 int id = detail.getInt("id");
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 int stid = detail.getInt("status_id");
 
                 oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
-            }
+            }JSONArray details = object.getJSONArray("details");
             for (int i = 0; i < details.length(); i++) {
                 JSONObject detail = details.getJSONObject(i);
                 int id = detail.getInt("id");
@@ -85,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Price", price + "");
                 int cat_id = detail.getInt("transaction_id");
                 odal.add(new OrderDetails(id, transaction_id, weight, price, cat_id));
+                Double totalAmount = rates.EstimateAmountPayment(odal,rate);
+                int getTotalWeight = rates.GetTotalWeight(odal);
+                totalPrice.setText("Total Estimated Price: $"+totalAmount);
+                totalWeight.setText("Total Weight: "+getTotalWeight+"KG");
             }
 
         } catch (JSONException e) {
@@ -104,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
-            if (getSupportActionBar().getTitle() != null){
+        if (getSupportActionBar() != null) {
+            if (getSupportActionBar().getTitle() != null) {
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
         }
@@ -185,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("my transaction_id", id);
                         for (int i = 0; i < oal.size(); i++) {
                             if (oal.get(i).getId() == Integer.parseInt(id)) {
-                               updateTransaction(Integer.parseInt(id));
+                                updateTransaction(Integer.parseInt(id));
                             }
                         }
                     }
@@ -222,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         getTransactions();
         oad.notifyDataSetChanged();
-   }
+    }
 
     public void getTransactions() {     //get list of items
         llProgress.setVisibility(View.VISIBLE);
@@ -232,10 +237,11 @@ public class MainActivity extends AppCompatActivity {
         asyncRequest.setOnResultListener(asyncResult);
         asyncRequest.execute("http://greenravolution.com/API/transactions.php?get_type=all");
     }
-    public void updateTransaction(int id){
+
+    public void updateTransaction(int id) {
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResultUpdateTrans);
-        asyncRequest.execute("http://greenravolution.com/admin/rawQuery.php?query=update transaction set status_id = 4 where id = "+id+";");
+        asyncRequest.execute("http://greenravolution.com/admin/rawQuery.php?query=update transaction set status_id = 4 where id = " + id + ";");
     }
 
 }
