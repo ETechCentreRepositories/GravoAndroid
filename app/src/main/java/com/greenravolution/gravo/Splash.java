@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.greenravolution.gravo.functions.GetAsyncRequest;
@@ -64,4 +66,5 @@ public class Splash extends AppCompatActivity {
             }
         }, SPLASH_TIME_OUT);
     }
+
 }

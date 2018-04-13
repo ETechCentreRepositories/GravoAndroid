@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".contents.ActivityCategories">
+
+
+
+        <RelativeLayout
+            android:id="@+id/tool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentTop="true"
+                app:navigationIcon="@drawable/ic_arrow_back" />
+            <TextView
+                android:layout_alignParentTop="true"
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center"
+                android:text="Categories"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+
+                <android.support.design.widget.TabLayout
+                    android:layout_below="@id/toolbar"
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom"
+                    app:tabTextColor="@color/brand_green"
+                    app:tabSelectedTextColor="@color/brand_purple"
+                    app:tabGravity="fill" />
+
+
+        </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/tool"
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</RelativeLayout>

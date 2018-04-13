@@ -29,7 +29,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_marginBottom="50dp"
-        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
@@ -151,13 +152,16 @@
             </LinearLayout>
 
             <Button
+                android:layout_marginTop="30dp"
                 android:id="@+id/login"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/btn_brand_green_round"
                 android:text="@string/create_account"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:background="@drawable/btn_brand_green_round"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -180,9 +184,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:background="@drawable/fb_login_button"
-            android:drawableStart="@drawable/ic_fb"
             android:gravity="center"
-            android:text="Create Account\nwith Facebook"
+            android:text="Create Account with Facebook"
             android:textColor="@color/white" />
 
     </LinearLayout>

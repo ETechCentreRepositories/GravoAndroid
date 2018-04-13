@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/items">
+        <item
+            android:id="@+id/main"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/transactions"
+            android:icon="@drawable/ic_transactions"
+            android:title="Transactions" />
+        <item
+            android:id="@+id/calendar"
+            android:icon="@drawable/ic_calendar"
+            android:title="Calendar" />
+        <item
+            android:id="@+id/about_gravo"
+            android:icon="@drawable/ic_about_gravo"
+            android:title="About Gravo" />
+        <item
+            android:icon="@drawable/ic_settings"
+            android:id="@+id/settings"
+            android:title="Settings" />
+    </group>
+</menu>
