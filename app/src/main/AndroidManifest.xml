@@ -33,12 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".login.Login" />
-        <activity android:name=".login.LoginActivity" />
-        <activity android:name=".login.RegisterActivity" />
-        <activity android:name=".contents.ActivityHelp" />
-        <activity android:name=".contents.ActivityCategories"></activity>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".login.Login" android:screenOrientation="portrait"/>
+        <activity android:name=".login.LoginActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".login.RegisterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".contents.ActivityHelp" android:screenOrientation="portrait"/>
+        <activity android:name=".contents.ActivityCategories" android:windowSoftInputMode="adjustResize" android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
