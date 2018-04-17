@@ -102,6 +102,7 @@ public class Bulk extends Fragment {
             Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
             bulk_image.setVisibility(View.VISIBLE);
             bulk_image.setImageBitmap(cameraImage);
+
         }
     }
 }
