@@ -14,6 +14,8 @@ import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.adapters.CategoryPagerAdapter;
 
 public class ActivityCategories extends AppCompatActivity {
+    ViewPager viewPager;
+    CategoryPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,8 @@ public class ActivityCategories extends AppCompatActivity {
         tab.addTab(tab.newTab().setText("METALS").setCustomView(ll3));
         tab.addTab(tab.newTab().setText("BULK").setCustomView(ll4));
         tab.setTabMode(TabLayout.MODE_SCROLLABLE);
-        final ViewPager viewPager = findViewById(R.id.viewPager);
-        final CategoryPagerAdapter adapter = new CategoryPagerAdapter
+        viewPager = findViewById(R.id.viewPager);
+        adapter = new CategoryPagerAdapter
                 (getSupportFragmentManager(), tab.getTabCount());
         viewPager.setAdapter(adapter);
         Intent intent = getIntent();
@@ -56,5 +58,8 @@ public class ActivityCategories extends AppCompatActivity {
                 viewPager.setCurrentItem(tab.getPosition());
             }
         });
+    }
+    public int getCurrentTab(){
+        return viewPager.getCurrentItem();
     }
 }
