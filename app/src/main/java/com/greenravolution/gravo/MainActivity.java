@@ -23,6 +23,7 @@ import com.greenravolution.gravo.MainFragments.Home;
 import com.greenravolution.gravo.MainFragments.Notifications;
 import com.greenravolution.gravo.MainFragments.Settings;
 import com.greenravolution.gravo.MainFragments.Transactions;
+import com.greenravolution.gravo.contents.ActivityCart;
 import com.greenravolution.gravo.contents.ActivityHelp;
 import com.greenravolution.gravo.contents.ActivityUser;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
+        assert actionbar != null;
         actionbar.setHomeAsUpIndicator(R.drawable.ic_hamburger);
         actionbar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 // manage other entries if you have it ...
             case R.id.cart:
                 Log.i("MainActivity", "clicked on cart");
+                startActivity(new Intent(this, ActivityCart.class));
                 return true;
             case R.id.help:
                 Log.i("MainActivity", "clicked on help");

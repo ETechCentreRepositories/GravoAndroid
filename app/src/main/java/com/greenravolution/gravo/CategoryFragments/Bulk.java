@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,19 +67,24 @@ public class Bulk extends Fragment {
         return view;
 
     }
-    public void startCamera(){
+
+    public void startCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,REQUEST_CAMERA);
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CAMERA){
-            Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
-            bulk_image.setVisibility(View.VISIBLE);
-            bulk_image.setImageBitmap(cameraImage);
-
+        if (requestCode == REQUEST_CAMERA) {
+            if (data == null) {
+                Log.i("BULK ", "Image not taken");
+            } else {
+                Log.i("BULK IMAGE ", data.getDataString());
+                Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
+                bulk_image.setVisibility(View.VISIBLE);
+                bulk_image.setImageBitmap(cameraImage);
+            }
         }
     }
 }
