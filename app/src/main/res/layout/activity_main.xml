@@ -24,7 +24,7 @@
             android:src="@drawable/gravo_logo_black_full" />
         <TextView
             android:id="@+id/title"
-            android:fontFamily="@font/quicksand_bold"
+            android:fontFamily="@font/quicksand_regular"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -48,6 +48,7 @@
             android:layout_gravity="start"
             app:headerLayout="@layout/drawer_layout"
             app:menu="@menu/navbar_menu" />
+
     </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

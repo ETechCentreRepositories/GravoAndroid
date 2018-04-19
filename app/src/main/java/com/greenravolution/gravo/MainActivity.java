@@ -9,28 +9,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.greenravolution.gravo.MainFragments.Calendar;
 import com.greenravolution.gravo.MainFragments.Home;
 import com.greenravolution.gravo.MainFragments.Notifications;
+import com.greenravolution.gravo.MainFragments.Settings;
+import com.greenravolution.gravo.MainFragments.Transactions;
 import com.greenravolution.gravo.contents.ActivityHelp;
+import com.greenravolution.gravo.contents.ActivityUser;
 
 public class MainActivity extends AppCompatActivity {
-
 
     DrawerLayout drawerLayout;
     FragmentTransaction ft;
     ImageView home_page_logo;
     TextView title;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.title);
         title.setVisibility(View.GONE);
 
-
+        NavigationView navigationView = findViewById(R.id.left_drawer);
+        View headerview = navigationView.getHeaderView(0);
+        LinearLayout userProfile = headerview.findViewById(R.id.userProfile);
+        userProfile.setOnClickListener(v -> startActivity(new Intent(this, ActivityUser.class)));
 
         configureNavigationDrawer();
         configureToolbar();
@@ -64,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navView = findViewById(R.id.left_drawer);
         navView.setNavigationItemSelectedListener(menuItem -> {
 
-
             int itemId = menuItem.getItemId();
 
             switch (itemId) {
@@ -73,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
                     replacefragment(new Home());
                     home_page_logo.setVisibility(View.VISIBLE);
                     title.setVisibility(View.GONE);
-
                     CloseDrawer();
                     return true;
+
                 case R.id.notifications:
                     Log.i("MainActivity", "clicked on notifications item");
                     replacefragment(new Notifications());
@@ -84,29 +87,27 @@ public class MainActivity extends AppCompatActivity {
                     title.setText("Notifications");
                     CloseDrawer();
                     return true;
+
                 case R.id.transactions:
                     Log.i("MainActivity", "clicked on transaction item");
-
+                    replacefragment(new Transactions());
                     title.setText("Transactions");
                     home_page_logo.setVisibility(View.GONE);
                     title.setVisibility(View.VISIBLE);
                     CloseDrawer();
                     return true;
+
                 case R.id.calendar:
                     Log.i("MainActivity", "clicked on calendar item");
+                    replacefragment(new Calendar());
                     title.setText("Calendar");
                     home_page_logo.setVisibility(View.GONE);
                     title.setVisibility(View.VISIBLE);
                     CloseDrawer();
                     return true;
-                case R.id.about_gravo:
-                    Log.i("MainActivity", "clicked on about_gravo item");
-                    title.setText("About Gravo");
-                    home_page_logo.setVisibility(View.GONE);
-                    title.setVisibility(View.VISIBLE);
-                    CloseDrawer();
-                    return true;
+
                 case R.id.settings:
+                    replacefragment(new Settings());
                     Log.i("MainActivity", "clicked on settings item");
                     title.setText("Settings");
                     home_page_logo.setVisibility(View.GONE);
@@ -114,10 +115,8 @@ public class MainActivity extends AppCompatActivity {
                     CloseDrawer();
                     return true;
             }
-
             return false;
         });
-
 
     }
 
@@ -170,6 +169,5 @@ public class MainActivity extends AppCompatActivity {
     public void OpenDrawer() {
         drawerLayout.openDrawer(GravityCompat.START);
     }
-
 
 }

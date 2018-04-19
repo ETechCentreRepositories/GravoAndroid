@@ -1,5 +1,7 @@
 package com.greenravolution.gravo.functions;
 
+import android.provider.Telephony;
+
 import com.greenravolution.gravo.objects.OrderDetails;
 import com.greenravolution.gravo.objects.Orders;
 import com.greenravolution.gravo.R;
@@ -102,6 +104,26 @@ public class Rates {
 
     }
 
+    public int getImage(String type) {
+
+        switch (type) {
+            case "Paper | Old Newspaper":
+                return R.drawable.newspaper;
+            case "Paper | Old Paper":
+                return R.drawable.recycle_paper;
+            case "Paper | Old Cardboard Cartons":
+                return R.drawable.cardboard;
+            case "Paper | Old Textbooks":
+                return R.drawable.books;
+            case "Metal":
+                return R.drawable.aluminium_cans;
+            case "E-Waste | Laptop (non-operational)":
+                return R.drawable.laptop;
+        }
+        return 0;
+
+    }
+
     public int getImageColour(int cat_id, String rates) {
         try {
             JSONArray getRates = new JSONArray(rates);
@@ -122,6 +144,19 @@ public class Rates {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        return 0;
+
+    }
+
+    public int getImageColour(String color) {
+        switch (color) {
+            case "Paper":
+                return R.color.brand_yellow;
+            case "Metal":
+                return R.color.brand_orange;
+            case "E-Waste":
+                return R.color.brand_purple;
         }
         return 0;
 

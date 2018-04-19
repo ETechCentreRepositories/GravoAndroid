@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,19 +17,26 @@ import com.greenravolution.gravo.adapters.CategoryPagerAdapter;
 public class ActivityCategories extends AppCompatActivity {
     ViewPager viewPager;
     CategoryPagerAdapter adapter;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
         TabLayout tab = findViewById(R.id.tabs);
         View headerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.custom_tabs, null, false);
 
-        LinearLayout ll1 = (LinearLayout) headerView.findViewById(R.id.ll1);
-        LinearLayout ll2 = (LinearLayout) headerView.findViewById(R.id.ll2);
-        LinearLayout ll3 = (LinearLayout) headerView.findViewById(R.id.ll3);
-        LinearLayout ll4 = (LinearLayout) headerView.findViewById(R.id.ll4);
+        LinearLayout ll1 =  headerView.findViewById(R.id.ll1);
+        LinearLayout ll2 =  headerView.findViewById(R.id.ll2);
+        LinearLayout ll3 =  headerView.findViewById(R.id.ll3);
+        LinearLayout ll4 = headerView.findViewById(R.id.ll4);
         tab.addTab(tab.newTab().setText("PAPER").setCustomView(ll1));
         tab.addTab(tab.newTab().setText("E-WASTE").setCustomView(ll2));
         tab.addTab(tab.newTab().setText("METALS").setCustomView(ll3));

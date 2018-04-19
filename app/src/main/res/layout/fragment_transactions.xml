@@ -3,16 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CategoryFragments.Metals">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainFragments.Transactions">
     <ScrollView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/paperContents"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/transaction_page_items"/>
+            <include layout="@layout/transaction_page_items"/>
+        </LinearLayout>
     </ScrollView>
+
 
 </FrameLayout>
