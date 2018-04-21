@@ -115,9 +115,9 @@ public class Rates {
                 return R.drawable.cardboard;
             case "Paper | Old Textbooks":
                 return R.drawable.books;
-            case "Metal":
-                return R.drawable.aluminium_cans;
-            case "E-Waste | Laptop (non-operational)":
+            case "Metals":
+                return R.drawable.brass;
+            case "E-Waste":
                 return R.drawable.laptop;
         }
         return 0;

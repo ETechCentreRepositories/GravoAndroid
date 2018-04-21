@@ -11,23 +11,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <Button
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:textAlignment="textStart"
-        android:padding="10dp"
-        android:textSize="20sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="Account Details"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#30000000"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"/>
-    <Button
+        android:id="@+id/tnc"
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:textAlignment="textStart"
         android:padding="10dp"
@@ -44,6 +30,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"/>
     <Button
+        android:id="@+id/pp"
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:textAlignment="textStart"
         android:padding="10dp"
@@ -60,6 +47,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"/>
     <Button
+        android:id="@+id/ag"
         style="@style/Base.Widget.AppCompat.Button.Borderless"
         android:textAlignment="textStart"
         android:padding="10dp"

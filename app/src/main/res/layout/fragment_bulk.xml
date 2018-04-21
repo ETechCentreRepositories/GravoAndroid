@@ -110,6 +110,7 @@
                 android:textColor="@color/white"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/bulktransactions"

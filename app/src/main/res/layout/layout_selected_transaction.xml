@@ -34,7 +34,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#30000000"
+            android:background="#05000000"
             android:orientation="vertical">
 
             <LinearLayout
@@ -442,14 +442,14 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:id="@+id/price"
                     android:layout_below="@+id/weight"
-                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$12.00"/>
 
-
             </RelativeLayout>
             <TextView
+                android:id="@+id/needHelp"
                 android:background="@color/white"
                 android:textAlignment="center"
                 android:padding="20dp"

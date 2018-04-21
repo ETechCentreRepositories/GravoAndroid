@@ -80,11 +80,14 @@ public class Bulk extends Fragment {
             if (data == null) {
                 Log.i("BULK ", "Image not taken");
             } else {
-                Log.i("BULK IMAGE ", data.getDataString());
+                Log.i("BULK IMAGE ", data.getExtras().get("data")+"");
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
                 bulk_image.setVisibility(View.VISIBLE);
                 bulk_image.setImageBitmap(cameraImage);
             }
         }
+    }
+    public void addData(){
+
     }
 }

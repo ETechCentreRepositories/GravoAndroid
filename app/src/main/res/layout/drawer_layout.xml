@@ -9,13 +9,13 @@
     android:gravity="center_vertical"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <ImageView
-        android:backgroundTint="@color/grey"
-        android:id="@+id/user_image"
-        android:layout_margin="10dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/ic_account_circle"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/profile_image_1"/>
     <TextView
         android:id="@+id/user_name"
         android:textSize="20sp"

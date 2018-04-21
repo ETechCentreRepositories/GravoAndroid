@@ -10,7 +10,7 @@ import com.greenravolution.gravo.R;
 
 public class ActivitySelectedTransaction extends AppCompatActivity {
     Toolbar toolbar;
-    TextView title;
+    TextView title, needHelp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +20,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
         title = findViewById(R.id.transaction_title);
+        needHelp = findViewById(R.id.needHelp);
+        needHelp.setOnClickListener(v -> startActivity(new Intent(this, ActivityHelp.class)));
     }
 }

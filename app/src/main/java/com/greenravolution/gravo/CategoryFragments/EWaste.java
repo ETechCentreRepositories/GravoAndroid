@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class EWaste extends Fragment {
     LinearLayout paperContents;
     public static final String SESSION = "login_status";
-
+    int weightInt = 0;
     public EWaste() {
         // Required empty public constructor
     }
@@ -71,11 +72,26 @@ public class EWaste extends Fragment {
         View contents = inflater2.inflate(R.layout.category_page_items,null);
         LinearLayout itemView = contents.findViewById(R.id.item);
         TextView itemName = contents.findViewById(R.id.itemName);
-        TextView itemsWeight = contents.findViewById(R.id.itemWeight);
         TextView itemRate = contents.findViewById(R.id.itemRate);
         ImageView itemImage = contents.findViewById(R.id.itemImage);
+        ImageView itemMinus = contents.findViewById(R.id.itemMinus);
+        EditText itemsWeight = contents.findViewById(R.id.itemWeight);
+        itemsWeight.setText(String.valueOf(weightInt));
+        itemMinus.setOnClickListener((View v) ->{
+            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+            getWeight = getWeight-1;
+            itemsWeight.setText(String.valueOf(getWeight));
+        });
+        ImageView itemPlus = contents.findViewById(R.id.itemPlus);
+        itemPlus.setOnClickListener((View v)->{
+            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+            getWeight = getWeight+1;
+            itemsWeight.setText(String.valueOf(getWeight));
+        });
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("E-Waste")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
+        //temp
+        itemImage.setImageResource(rateClass.getImage("E-Waste"));
         String[] type = rate.getType().split(" ");
         String typeName = "";
         for(int j = 2; j < type.length; j++){

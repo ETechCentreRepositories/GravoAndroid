@@ -235,13 +235,13 @@ public class MainActivity extends AppCompatActivity {
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("http://greenravolution.com/API/transactions.php?get_type=all");
+        asyncRequest.execute("https://greenravolution.com/API/transactions.php?get_type=all");
     }
 
     public void updateTransaction(int id) {
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResultUpdateTrans);
-        asyncRequest.execute("http://greenravolution.com/admin/rawQuery.php?query=update transaction set status_id = 4 where id = " + id + ";");
+        asyncRequest.execute("https://greenravolution.com/admin/rawQuery.php?query=update transaction set status_id = 4 where id = " + id + ";");
     }
 
 }

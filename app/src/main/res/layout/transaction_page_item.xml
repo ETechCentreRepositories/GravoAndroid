@@ -2,7 +2,9 @@
 <LinearLayout
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:layout_marginTop="5dp"
     android:padding="5dp"
+    android:background="@color/brand_green"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
@@ -12,6 +14,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/item_left_design_transaction"/>
     <TextView
+        android:textColor="@color/white"
         android:gravity="center_vertical"
         android:text="11"
         android:textSize="45sp"
@@ -23,14 +26,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="COLLECTION"/>
         <TextView
+            android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Friday,5.25pm, Transaction: #10991"/>
+            android:text="Friday 5.25pm, Transaction: #10991"/>
     </LinearLayout>
 </LinearLayout>

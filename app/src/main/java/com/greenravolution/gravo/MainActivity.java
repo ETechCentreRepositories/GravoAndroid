@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.title);
         title.setVisibility(View.GONE);
 
+
         NavigationView navigationView = findViewById(R.id.left_drawer);
         View headerview = navigationView.getHeaderView(0);
         LinearLayout userProfile = headerview.findViewById(R.id.userProfile);

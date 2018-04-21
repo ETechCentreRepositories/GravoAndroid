@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.greenravolution.gravo">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -53,10 +55,22 @@
             android:name=".contents.ActivityCategories"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".contents.ActivityCart" />
-        <activity android:name=".contents.ActivityUser" />
-        <activity android:name=".contents.ActivityEditUser" />
-        <activity android:name=".contents.ActivitySelectedTransaction"></activity>
+        <activity
+            android:name=".contents.ActivityCart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contents.ActivityUser"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contents.ActivityEditUser"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contents.ActivitySelectedTransaction"
+            android:screenOrientation="portrait" />
+        <activity android:name=".contents.ActivityLeaderboard" />
+        <activity android:name=".contents.ActivitySuccessfullTransaction" />
+        <activity android:name=".contents.ActivitySettingsItems" />
+        <activity android:name=".contents.ActivityWebView"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import com.greenravolution.gravo.R;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 public class ActivityUser extends AppCompatActivity {
     Toolbar toolbar;
+    RelativeLayout gravosPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +26,9 @@ public class ActivityUser extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
+        gravosPage = findViewById(R.id.gravosPage);
+        gravosPage.setOnClickListener(v->startActivity(new Intent(this,ActivityLeaderboard.class)));
     }
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
