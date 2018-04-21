@@ -2,13 +2,11 @@ package com.greenravolution.gravodriver;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,14 +31,14 @@ public class BulkTransactionDetails extends AppCompatActivity {
             finish();
         });
         btnAccept = findViewById(R.id.btnAccept);
-        btnAccept.setOnClickListener(v->{
+        btnAccept.setOnClickListener(v -> {
             Intent ib = new Intent();
             ib.putExtra("type", "0");
             setResult(1, ib);
             finish();
         });
         btnDecline = findViewById(R.id.btnDecline);
-        btnDecline.setOnClickListener(v->{
+        btnDecline.setOnClickListener(v -> {
             Intent ib = new Intent();
             ib.putExtra("type", "0");
             setResult(1, ib);

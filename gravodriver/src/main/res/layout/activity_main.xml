@@ -25,11 +25,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_gravity="center"
+            android:gravity="center"
             android:text="Pick-Ups"
-            android:textSize="20sp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -73,19 +73,19 @@
 
         <TextView
             android:id="@+id/totalWeight"
-            android:text="Total Weight: 100KG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2.5dp"
+            android:text="Total Weight: 100KG"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/totalPrice"
-            android:text="Total Estimated Price: $126"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2.5dp"
+            android:text="Total Estimated Price: $126"
             android:textColor="@color/white"
             android:textSize="15sp" />
 

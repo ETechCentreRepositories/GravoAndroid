@@ -131,8 +131,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:gravity="center_vertical"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"/>
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp" />
                 </RelativeLayout>
 
             </RelativeLayout>

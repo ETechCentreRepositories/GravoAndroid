@@ -1,7 +1,5 @@
 package com.greenravolution.gravodriver.functions;
 
-import android.os.AsyncTask;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -16,10 +14,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class HttpReq {
 
-    public HttpReq(){
+    public HttpReq() {
 
     }
-    public String GetRequest(String url){
+
+    public String GetRequest(String url) {
         try {
             return sendGet(url);
         } catch (Exception e) {
@@ -27,7 +26,8 @@ public class HttpReq {
         }
         return null;
     }
-    public String PostRequest(String url, String parameters){
+
+    public String PostRequest(String url, String parameters) {
         try {
             return sendPost(url, parameters);
         } catch (Exception e) {

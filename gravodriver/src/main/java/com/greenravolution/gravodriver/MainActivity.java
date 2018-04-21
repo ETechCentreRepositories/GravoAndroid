@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 int stid = detail.getInt("status_id");
 
                 oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
-            }JSONArray details = object.getJSONArray("details");
+            }
+            JSONArray details = object.getJSONArray("details");
             for (int i = 0; i < details.length(); i++) {
                 JSONObject detail = details.getJSONObject(i);
                 int id = detail.getInt("id");
@@ -86,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Price", price + "");
                 int cat_id = detail.getInt("transaction_id");
                 odal.add(new OrderDetails(id, transaction_id, weight, price, cat_id));
-                Double totalAmount = rates.EstimateAmountPayment(odal,rate);
+                Double totalAmount = rates.EstimateAmountPayment(odal, rate);
                 int getTotalWeight = rates.GetTotalWeight(odal);
-                totalPrice.setText("Total Estimated Price: $"+totalAmount);
-                totalWeight.setText("Total Weight: "+getTotalWeight+"KG");
+                totalPrice.setText("Total Estimated Price: $" + totalAmount);
+                totalWeight.setText("Total Weight: " + getTotalWeight + "KG");
             }
 
         } catch (JSONException e) {

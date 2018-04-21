@@ -25,13 +25,13 @@
             android:padding="5dp">
 
             <TextView
-                android:textSize="17sp"
-                android:textStyle="bold"
                 android:id="@+id/pickupTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="1dp"
-                android:textColor="@color/brand_pink" />
+                android:textColor="@color/brand_pink"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/pickupAddress"
@@ -72,15 +72,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:gravity="end"
-                    android:layout_marginEnd="1dp">
+                    android:layout_marginEnd="1dp"
+                    android:gravity="end">
+
                     <Button
-                        android:layout_margin="2.5dp"
                         android:id="@+id/botw"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_alignParentEnd="true"
+                        android:layout_margin="2.5dp"
                         android:layout_marginEnd="1dp"
                         android:background="@drawable/btn_brand_green_round"
                         android:padding="5dp"
@@ -94,30 +95,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:orientation="horizontal"
+                    android:layout_marginEnd="1dp"
                     android:gravity="end"
-                    android:layout_marginEnd="1dp">
+                    android:orientation="horizontal">
 
                     <Button
-                        android:layout_margin="2.5dp"
                         android:id="@+id/bmap"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_alignParentEnd="true"
+                        android:layout_margin="2.5dp"
                         android:layout_marginEnd="1dp"
                         android:background="@drawable/btn_black_round"
                         android:padding="5dp"
                         android:text="Map"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
+
                     <Button
-                        android:layout_margin="2.5dp"
                         android:id="@+id/barr"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_alignParentEnd="true"
+                        android:layout_margin="2.5dp"
                         android:layout_marginEnd="1dp"
                         android:background="@drawable/btn_brand_green_round"
                         android:padding="5dp"

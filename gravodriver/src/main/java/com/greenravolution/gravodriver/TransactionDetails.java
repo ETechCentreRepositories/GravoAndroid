@@ -117,7 +117,7 @@ public class TransactionDetails extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("transaction_id");
         String address = intent.getStringExtra("address");
-        toolbar.setTitle("TRANSACTION: " + title);
+        toolbar.setTitle(title);
         taddress.setText(address);
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("h:mm a");
         String date = df.format(Calendar.getInstance().getTime());
@@ -157,8 +157,8 @@ public class TransactionDetails extends AppCompatActivity {
 
         oal.add(new OrderDetails(id4, tid4, w4, p4, cid4));
 
-        for (int i =0; i < oal.size();i++){
-            if(oal.get(i).getTransaction_id() == trans_id){
+        for (int i = 0; i < oal.size(); i++) {
+            if (oal.get(i).getTransaction_id() == trans_id) {
                 items.addView(initView(oal.get(i)));
             }
         }

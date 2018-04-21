@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/recycle_frame_anim"
     android:fitsSystemWindows="false"
     android:orientation="vertical"
-    android:id="@+id/mainLayout"
-    android:background="@drawable/recycle_frame_anim"
     tools:context="com.greenravolution.gravodriver.loginsignup.Login">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000"/>
+        android:background="#80000000" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,10 +23,10 @@
 
         <LinearLayout
             android:id="@+id/logo"
-            android:layout_marginTop="50dp"
-            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
 
             <ImageView
@@ -33,38 +34,40 @@
                 android:layout_height="100dp"
                 android:layout_marginEnd="70dp"
                 android:layout_marginStart="70dp"
+                android:contentDescription="@string/gravo_logo_full_desc"
                 android:paddingBottom="0dp"
                 android:paddingTop="0dp"
-                android:src="@drawable/gravo_logo_white"
-                android:contentDescription="@string/gravo_logo_full_desc" />
+                android:src="@drawable/gravo_logo_white" />
 
 
         </LinearLayout>
+
         <RelativeLayout
-            android:layout_below="@id/logo"
-            android:layout_above="@id/buttons"
-            android:gravity="center"
             android:id="@+id/rlpager"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_above="@id/buttons"
+            android:layout_below="@id/logo"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center">
+
             <TextView
-                android:layout_above="@id/pager"
                 android:id="@+id/welcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@id/pager"
                 android:text="WELCOME"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="25sp"/>
+                android:textSize="25sp" />
 
             <android.support.v4.view.ViewPager
-                android:layout_above="@id/indicator"
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="120dp" />
+                android:layout_height="120dp"
+                android:layout_above="@id/indicator" />
 
             <me.relex.circleindicator.CircleIndicator
                 android:id="@+id/indicator"
@@ -76,20 +79,20 @@
 
         <LinearLayout
             android:id="@+id/buttons"
-            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <Button
-                android:onClick="onClick"
                 android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginStart="40dp"
                 android:background="@drawable/btn_brand_green_round"
+                android:onClick="onClick"
                 android:text="@string/login"
                 android:textColor="@color/white" />
 
@@ -102,7 +105,6 @@
                 android:textColor="@color/white" />
 
             <Button
-                android:onClick="onClick"
                 android:id="@+id/register"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -110,6 +112,7 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/btn_white_round"
+                android:onClick="onClick"
                 android:text="@string/create_account"
                 android:textColor="@color/black" />
 

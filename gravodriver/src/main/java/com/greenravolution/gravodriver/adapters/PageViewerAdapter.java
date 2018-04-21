@@ -20,7 +20,7 @@ public class PageViewerAdapter extends PagerAdapter {
 
     public PageViewerAdapter(Context context, ArrayList<String> text) {
         this.context = context;
-        this.text=text;
+        this.text = text;
         inflater = LayoutInflater.from(context);
     }
 

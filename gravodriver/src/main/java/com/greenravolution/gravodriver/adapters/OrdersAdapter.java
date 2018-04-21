@@ -2,7 +2,6 @@ package com.greenravolution.gravodriver.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.greenravolution.gravodriver.BulkTransactionDetails;
 import com.greenravolution.gravodriver.MainActivity;
@@ -22,8 +20,6 @@ import com.greenravolution.gravodriver.R;
 import com.greenravolution.gravodriver.TransactionDetails;
 
 import java.util.ArrayList;
-
-import static com.greenravolution.gravodriver.R.color.black;
 
 /**
  * Created by user on 13/3/2018.
@@ -82,8 +78,8 @@ public class OrdersAdapter extends BaseAdapter {
             } else {
                 holder = (ViewHolder) view.getTag();
             }
-            if(order.getStatus_id() == 1){
-                if(order.getTransaction_type().equals("1")){
+            if (order.getStatus_id() == 1) {
+                if (order.getTransaction_type().equals("1")) {
                     //normal pickup
                     holder.llotw.setVisibility(View.GONE);
                     String title = "Pickup " + String.valueOf(position + 1);
@@ -91,10 +87,10 @@ public class OrdersAdapter extends BaseAdapter {
                     holder.ta.setText(order.getAddress());
                     holder.tpc.setText(order.getPostal());
                     holder.tst.setText(String.valueOf(order.getSession_id()));
-                }else if(order.getTransaction_type().equals("2")){
+                } else if (order.getTransaction_type().equals("2")) {
                     //bulk pickup
                     holder.llotw.setVisibility(View.GONE);
-                    String title = "Pickup " + String.valueOf(position + 1)+" (Bulk)";
+                    String title = "Pickup " + String.valueOf(position + 1) + " (Bulk)";
                     holder.tt.setText(title);
                     holder.ta.setText(order.getAddress());
                     holder.ta.setTextColor(context.getResources().getColor(R.color.brand_green));
@@ -103,7 +99,7 @@ public class OrdersAdapter extends BaseAdapter {
                     holder.tst.setText(String.valueOf(order.getSession_id()));
                     holder.tst.setTextColor(context.getResources().getColor(R.color.brand_green));
                 }
-            }else if(order.getStatus_id() == 4){
+            } else if (order.getStatus_id() == 4) {
                 holder.llotw.setVisibility(View.GONE);
                 holder.llarr.setVisibility(View.GONE);
                 String title = "Pickup " + String.valueOf(position + 1) + " (Collected)";
@@ -129,23 +125,23 @@ public class OrdersAdapter extends BaseAdapter {
 
             holder.barr.setOnClickListener(v -> {
                 /// TODO: 14/3/2018 intent to transaction page add in details
-                if(order.getTransaction_type().equals("1")){
+                if (order.getTransaction_type().equals("1")) {
                     Intent intent = new Intent(context, TransactionDetails.class);
                     Orders orders = getItem(position);
                     intent.putExtra("address", orders.getAddress());
                     intent.putExtra("transaction_id", orders.getTransaction_code());
                     intent.putExtra("id", orders.getId());
 
-                    ((MainActivity)context).startActivityForResult(intent, 1);
-                }else if(order.getTransaction_type().equals("2")){
+                    ((MainActivity) context).startActivityForResult(intent, 1);
+                } else if (order.getTransaction_type().equals("2")) {
                     Intent intent = new Intent(context, BulkTransactionDetails.class);
                     Orders orders = getItem(position);
                     intent.putExtra("address", orders.getAddress());
                     intent.putExtra("transaction_id", orders.getTransaction_code());
                     intent.putExtra("id", orders.getId());
 
-                    ((MainActivity)context).startActivityForResult(intent, 1);
-                }else{
+                    ((MainActivity) context).startActivityForResult(intent, 1);
+                } else {
                     //TODO completed page summary;
                 }
 
@@ -153,7 +149,7 @@ public class OrdersAdapter extends BaseAdapter {
 
             holder.bmap.setOnClickListener(v -> {
                 // Create a Uri from an intent string. Use the result to create an Intent.
-                String url = "https://www.google.com/maps/dir/?api=1&destination=" + orders.get(position).getAddress()+ "&travelmode=driving";
+                String url = "https://www.google.com/maps/dir/?api=1&destination=" + orders.get(position).getAddress() + "&travelmode=driving";
                 // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 // Make the Intent explicit by setting the Google Maps package

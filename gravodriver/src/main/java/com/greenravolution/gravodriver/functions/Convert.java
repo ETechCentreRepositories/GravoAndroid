@@ -16,9 +16,10 @@ import java.util.List;
 
 public class Convert {
 
-    public Convert(){
+    public Convert() {
 
     }
+
     public String GetAddressFromLocation(Context context, LatLng latLng) {
         Geocoder coder = new Geocoder(context);
         List<Address> address;

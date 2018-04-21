@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.greenravolution.gravodriver.R;
@@ -30,10 +29,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private static final String[] TEXTS = {"GRAVO is a platform through which environmental information and educational material can be accessed with ease for all subscribers.", "GRAVO is also a platform through which environmental information and educational material can be accessed with ease for all subscribers.", "GRAVO is also a platform through which environmental information and educational material can be accessed with ease for all subscribers."};
     private static int currentPage = 0;
     Button login, register;
+    RelativeLayout img;
     private ViewPager mPager;
     private ArrayList<String> textArray = new ArrayList<String>();
-    RelativeLayout img;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         dialog.setCancelable(false);
         dialog.setTitle("DISCLAIMER");
         dialog.setMessage("The Gravo Collector Application is still in the midst of development. Do take note that this is just the front end. \n\nIf you encounter any errors, please do not hesitate to contact any of the staff to tell us about it as we are trying to improve it as we go along as well.\n\nThank you for your patience!");
-        dialog.setPositiveButton("OK", (dialogInterface, i) -> { });
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> {
+        });
         AlertDialog dialogue = dialog.create();
         dialogue.show();
     }
@@ -67,13 +66,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Intent itl = new Intent(Login.this, LoginActivity.class);
 
                 progressDrawable.stop();
-                startActivityForResult(itl,1);
+                startActivityForResult(itl, 1);
                 break;
             case R.id.register:
                 Intent itr = new Intent(Login.this, RegisterActivity.class);
 
                 progressDrawable.stop();
-                startActivityForResult(itr,1);
+                startActivityForResult(itr, 1);
                 break;
         }
     }
@@ -107,22 +106,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
+        if (requestCode == 1) {
             Log.e("res: ", String.valueOf(requestCode));
-            if(data != null){
-                if(data.getStringExtra("type")!=null){
-                    if(Objects.equals(data.getStringExtra("type"), "0")){
+            if (data != null) {
+                if (data.getStringExtra("type") != null) {
+                    if (Objects.equals(data.getStringExtra("type"), "0")) {
                         Log.e("type", "back button");
-                    }else if (Objects.equals(data.getStringExtra("type"), "1")){
+                    } else if (Objects.equals(data.getStringExtra("type"), "1")) {
                         finish();
                     }
-                }else {
+                } else {
                     Log.e("type", "null");
                 }
                 Log.e("data", "null");
             }
 
-        }else{
+        } else {
             Log.e("res: ", String.valueOf(requestCode));
         }
     }

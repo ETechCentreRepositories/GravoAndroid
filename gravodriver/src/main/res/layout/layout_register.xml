@@ -16,14 +16,15 @@
         android:layout_height="?android:attr/actionBarSize"
         android:layout_alignParentTop="true"
         app:navigationIcon="@drawable/ic_arrow_back">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/create_account"
-            android:textSize="20sp"
-            android:textColor="@color/white"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:layout_gravity="center" />
+            android:text="@string/create_account"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
@@ -79,8 +80,8 @@
                     android:drawableStart="@drawable/ic_account_padding"
                     android:hint="First Name"
                     android:inputType="textPersonName"
-                    android:padding="10dp"
                     android:maxWidth="100dp"
+                    android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/grey"
                     android:textSize="15sp"
@@ -93,9 +94,9 @@
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/grey_text_box"
-                    android:maxWidth="10300dp"
                     android:hint="Last Name"
                     android:inputType="textPersonName"
+                    android:maxWidth="10300dp"
                     android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/grey"
@@ -205,14 +206,14 @@
             </LinearLayout>
 
             <Button
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="30dp"
                 android:id="@+id/signup"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/btn_brand_green_round"
                 android:text="@string/create_account"
                 android:textColor="@color/white" />
