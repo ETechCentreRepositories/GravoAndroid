@@ -1,9 +1,12 @@
 package com.greenravolution.gravo.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +49,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         img = findViewById(R.id.mainLayout);
         AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
         progressDrawable.start();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setCancelable(false);
+        dialog.setTitle("DISCLAIMER");
+        dialog.setMessage("The Gravo Recycler Application is still in the midst of development. Do take note that this is just the front end. \n\nIf you encounter any errors, please do not hesitate to contact any of the staff to tell us about it as we are trying to improve it as we go along as well.\n\nThank you for your patience!");
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> { });
+        AlertDialog dialogue = dialog.create();
+        dialogue.show();
     }
 
     @Override
@@ -58,13 +68,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Intent itl = new Intent(Login.this, LoginActivity.class);
 
                 progressDrawable.stop();
-                startActivityForResult(itl,1);
+                startActivityForResult(itl, 1);
                 break;
             case R.id.register:
                 Intent itr = new Intent(Login.this, RegisterActivity.class);
 
                 progressDrawable.stop();
-                startActivityForResult(itr,1);
+                startActivityForResult(itr, 1);
                 break;
         }
     }
@@ -98,22 +108,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
+        if (requestCode == 1) {
             Log.e("res: ", String.valueOf(requestCode));
-            if(data != null){
-                if(data.getStringExtra("type")!=null){
-                    if(Objects.equals(data.getStringExtra("type"), "0")){
+            if (data != null) {
+                if (data.getStringExtra("type") != null) {
+                    if (Objects.equals(data.getStringExtra("type"), "0")) {
                         Log.e("type", "back button");
-                    }else if (Objects.equals(data.getStringExtra("type"), "1")){
+                    } else if (Objects.equals(data.getStringExtra("type"), "1")) {
                         finish();
                     }
-                }else {
+                } else {
                     Log.e("type", "null");
                 }
                 Log.e("data", "null");
             }
 
-        }else{
+        } else {
             Log.e("res: ", String.valueOf(requestCode));
         }
     }

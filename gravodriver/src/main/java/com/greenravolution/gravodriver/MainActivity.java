@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         oad = new OrdersAdapter(MainActivity.this, oal);
         orders.setAdapter(oad);
         oad.notifyDataSetChanged();
+        // temp
+        llProgress.setVisibility(View.GONE);
 
     }
 
@@ -190,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("my transaction_id", id);
                         for (int i = 0; i < oal.size(); i++) {
                             if (oal.get(i).getId() == Integer.parseInt(id)) {
-                                updateTransaction(Integer.parseInt(id));
+                                oal.get(i).setStatus_id(4);
+//                                updateTransaction(Integer.parseInt(id));
                             }
                         }
                     }
@@ -218,14 +221,83 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getTransactions();
+        oal.clear();
+        int id = 1;
+        String tc = "Transaction #00001";
+        String tt = "1";
+        String ad = "BLK 279 Tampines Street 22 #08-220";
+        String po = "520279";
+        int uid = 3;
+        int sid = 1;
+        int pid = 2;
+        int stid = 1;
+
+        int id2 = 2;
+        String tc2 = "Transaction #00002";
+        String tt2 = "1";
+        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
+        String po2 = "730159";
+        int uid2 = 3;
+        int sid2 = 2;
+        int pid2 = 2;
+        int stid2 = 4;
+
+        int id3 = 3;
+        String tc3 = "Transaction #00003";
+        String tt3 = "2";
+        String ad3 = "BLK 629 senja road #20-196";
+        String po3 = "670629";
+        int uid3 = 3;
+        int sid3 = 2;
+        int pid3 = 1;
+        int stid3 = 1;
+
+        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
+        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
+        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
+
+//        getTransactions();
         oad.notifyDataSetChanged();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getTransactions();
+        oal.clear();
+        int id = 3;
+        String tc = "Transaction #00001";
+        String tt = "1";
+        String ad = "BLK 279 Tampines Street 22 #08-220";
+        String po = "520279";
+        int uid = 3;
+        int sid = 1;
+        int pid = 2;
+        int stid = 1;
+
+        int id2 = 4;
+        String tc2 = "Transaction #00002";
+        String tt2 = "1";
+        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
+        String po2 = "730159";
+        int uid2 = 3;
+        int sid2 = 2;
+        int pid2 = 2;
+        int stid2 = 4;
+
+        int id3 = 5;
+        String tc3 = "Transaction #00003";
+        String tt3 = "2";
+        String ad3 = "BLK 629 senja road #20-196";
+        String po3 = "670629";
+        int uid3 = 3;
+        int sid3 = 2;
+        int pid3 = 1;
+        int stid3 = 1;
+
+        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
+        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
+        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
+//        getTransactions();
         oad.notifyDataSetChanged();
     }
 

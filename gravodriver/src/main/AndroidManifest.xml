@@ -3,11 +3,12 @@
     package="com.greenravolution.gravodriver">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:icon="@mipmap/ic_gravo_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_gravo_logo_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -34,8 +35,10 @@
         <activity
             android:name=".TransactionDetails"
             android:screenOrientation="portrait" />
-        <activity android:name=".BulkTransactionDetails"
-            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".BulkTransactionDetails"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

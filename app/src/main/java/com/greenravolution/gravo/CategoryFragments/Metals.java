@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.Rates;
@@ -77,18 +79,43 @@ public class Metals extends Fragment {
         TextView itemRate = contents.findViewById(R.id.itemRate);
         ImageView itemImage = contents.findViewById(R.id.itemImage);
         ImageView itemMinus = contents.findViewById(R.id.itemMinus);
+        TextView itemLabel = contents.findViewById(R.id.weightLabel);
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
+        Button addToBag = contents.findViewById(R.id.add_to_bag);
+        addToBag.setOnClickListener(v -> {
+            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+            if (getWeight == 0) {
+                Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         itemsWeight.setText(String.valueOf(weightInt));
         itemMinus.setOnClickListener((View v) ->{
-            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-            getWeight = getWeight-1;
-            itemsWeight.setText(String.valueOf(getWeight));
+            if(itemsWeight.getText().toString().equals("")){
+                itemsWeight.setText(String.valueOf(weightInt));
+            }else {
+                int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+                if (getWeight <= 0) {
+
+                } else {
+                    getWeight = getWeight - 1;
+                    itemsWeight.setText(String.valueOf(getWeight));
+                }
+            }
+
         });
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
         itemPlus.setOnClickListener((View v)->{
-            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-            getWeight = getWeight+1;
-            itemsWeight.setText(String.valueOf(getWeight));
+            if(itemsWeight.getText().toString().equals("")){
+                itemsWeight.setText(String.valueOf(weightInt));
+            }else{
+                int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+                getWeight = getWeight+1;
+                itemsWeight.setText(String.valueOf(getWeight));
+            }
+
         });
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("Metal")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));

@@ -31,4 +31,10 @@ Place your fingertip on the Home button to verify your identity
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bulk_img_label">Send an Image</string>
+    <string name="cat_item_label_price">PRICE</string>
+    <string name="cat_item_label_weight">WEIGHT</string>
+    <string name="add_to_gravo_bag">Add to Gravo Bag</string>
+    <string name="string_Piece">Piece</string>
+    <string name="string_pieces">Pieces</string>
+    <string name="about_gravo">About Gravo</string>
 </resources>

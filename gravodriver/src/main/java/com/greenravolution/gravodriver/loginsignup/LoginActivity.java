@@ -74,22 +74,30 @@ public class LoginActivity extends AppCompatActivity {
 
         });
         bl.setOnClickListener(v -> {
-            boolean networkState1 = checkNetwork();
-            if (!networkState1) {
-                Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
-            } else {
-                bl.setEnabled(false);
-                if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
-                    bl.setEnabled(true);
-                    re.setText(R.string.invalid_login);
-                } else {
-                    llProgress.setVisibility(View.VISIBLE);
-                    AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
-                    progressDrawable.start();
-                    Login login = new Login();
-                    login.execute("http://bryanlowsk.com/UHoo/API/login.php");
-                }
-            }
+            Intent itmnochk = new Intent(LoginActivity.this, MainActivity.class);
+            itmnochk.putExtra("message", "Welcome Back!");
+            Intent ib = new Intent();
+            ib.putExtra("type", "1");
+            setResult(1, ib);
+            finish();
+            startActivity(itmnochk);
+            // login complete. can be used after front end presentation
+//            boolean networkState1 = checkNetwork();
+//            if (!networkState1) {
+//                Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
+//            } else {
+//                bl.setEnabled(false);
+//                if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
+//                    bl.setEnabled(true);
+//                    re.setText(R.string.invalid_login);
+//                } else {
+//                    llProgress.setVisibility(View.VISIBLE);
+//                    AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
+//                    progressDrawable.start();
+//                    Login login = new Login();
+//                    login.execute("http://bryanlowsk.com/UHoo/API/login.php");
+//                }
+//            }
         });
     }
 

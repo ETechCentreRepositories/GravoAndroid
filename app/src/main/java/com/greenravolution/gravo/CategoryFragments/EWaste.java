@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.Rates;
@@ -29,6 +31,7 @@ public class EWaste extends Fragment {
     LinearLayout paperContents;
     public static final String SESSION = "login_status";
     int weightInt = 0;
+
     public EWaste() {
         // Required empty public constructor
     }
@@ -44,18 +47,18 @@ public class EWaste extends Fragment {
         String rates = sessionManager.getString("rates", "");
         try {
             JSONArray array = new JSONArray(rates);
-            for(int i =0; i< array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
                 int id = object.getInt("id");
                 String types = object.getString("type");
                 String[] type = types.split(" ");
-                if(type[0].contains("E-Waste")){
+                if (type[0].contains("E-Waste")) {
                     String rat = object.getString("rate");
                     String typeName = "";
-                    for(int j = 2; j < type.length; j++){
-                        typeName += type[j]+" ";
+                    for (int j = 2; j < type.length; j++) {
+                        typeName += type[j] + " ";
                     }
-                    com.greenravolution.gravo.objects.Rates rate = new com.greenravolution.gravo.objects.Rates(id,types,rat);
+                    com.greenravolution.gravo.objects.Rates rate = new com.greenravolution.gravo.objects.Rates(id, types, rat);
                     paperContents.addView(initView(rate));
                 }
             }
@@ -66,27 +69,64 @@ public class EWaste extends Fragment {
 
         return view;
     }
-    public View initView(com.greenravolution.gravo.objects.Rates rate){
+
+    public View initView(com.greenravolution.gravo.objects.Rates rate) {
         Rates rateClass = new Rates();
         LayoutInflater inflater2 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View contents = inflater2.inflate(R.layout.category_page_items,null);
+        View contents = inflater2.inflate(R.layout.category_page_items, null);
         LinearLayout itemView = contents.findViewById(R.id.item);
         TextView itemName = contents.findViewById(R.id.itemName);
         TextView itemRate = contents.findViewById(R.id.itemRate);
+        TextView itemLabel = contents.findViewById(R.id.weightLabel);
         ImageView itemImage = contents.findViewById(R.id.itemImage);
         ImageView itemMinus = contents.findViewById(R.id.itemMinus);
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
+
+        itemLabel.setText(R.string.string_Piece);
+
+        Button addToBag = contents.findViewById(R.id.add_to_bag);
+        addToBag.setOnClickListener(v -> {
+            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+            if (getWeight == 0) {
+                Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         itemsWeight.setText(String.valueOf(weightInt));
         itemMinus.setOnClickListener((View v) ->{
-            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-            getWeight = getWeight-1;
-            itemsWeight.setText(String.valueOf(getWeight));
+            if(itemsWeight.getText().toString().equals("")){
+                itemsWeight.setText(String.valueOf(weightInt));
+                itemLabel.setText(R.string.string_Piece);
+            }else {
+                int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+                if (getWeight <= 0) {
+                    itemLabel.setText(R.string.string_Piece);
+                } else {
+                    getWeight = getWeight - 1;
+                    itemsWeight.setText(String.valueOf(getWeight));
+                    itemLabel.setText(R.string.string_pieces);
+                }
+            }
+
         });
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
         itemPlus.setOnClickListener((View v)->{
-            int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-            getWeight = getWeight+1;
-            itemsWeight.setText(String.valueOf(getWeight));
+            if(itemsWeight.getText().toString().equals("")){
+                itemsWeight.setText(String.valueOf(weightInt));
+            }else{
+                int getWeight = Integer.parseInt(itemsWeight.getText().toString());
+                if (getWeight == 0 || getWeight == 1) {
+                    itemLabel.setText(R.string.string_Piece);
+                }else{
+                    itemLabel.setText(R.string.string_pieces);
+                }
+                getWeight = getWeight + 1;
+                itemsWeight.setText(String.valueOf(getWeight));
+
+            }
+
         });
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("E-Waste")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
@@ -94,8 +134,8 @@ public class EWaste extends Fragment {
         itemImage.setImageResource(rateClass.getImage("E-Waste"));
         String[] type = rate.getType().split(" ");
         String typeName = "";
-        for(int j = 2; j < type.length; j++){
-            typeName += type[j]+" ";
+        for (int j = 2; j < type.length; j++) {
+            typeName += type[j] + " ";
         }
         itemName.setText(typeName);
         itemRate.setText(rate.getRate());

@@ -25,14 +25,14 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
                     android:layout_alignParentTop="true"
                     app:navigationIcon="@drawable/ic_arrow_back" />
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="?android:attr/actionBarSize"
                     android:layout_alignParentTop="true"
                     android:fontFamily="@font/quicksand_regular"
                     android:gravity="center"
@@ -88,7 +88,7 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:paddingEnd="0dp"
-                android:paddingStart="20dp">
+                android:paddingStart="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -183,8 +183,15 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
                     android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     android:text="Others"
                     android:textSize="20sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="#30000000"/>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -204,8 +211,6 @@
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
                             android:text="Gravos "
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
                             android:textColor="@color/brand_orange"
                             android:textSize="15sp" />
 
@@ -215,8 +220,6 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true"
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
                             android:layout_marginEnd="25dp"
                             android:fontFamily="@font/quicksand_bold"
                             android:text="400"
@@ -229,12 +232,9 @@
                             android:layout_alignParentTop="true"
                             android:layout_toStartOf="@id/coins_earned"
                             android:text="Coins Earned - "
-                            android:paddingTop="5dp"
-                            android:paddingBottom="5dp"
                             android:textColor="@color/brand_orange"
                             android:textSize="15sp" />
                         <ImageView
-                            android:paddingTop="5dp"
                             android:src="@drawable/ic_keyboard_arrow_right"
                             android:layout_alignParentEnd="true"
                             android:layout_width="wrap_content"
@@ -253,7 +253,7 @@
                         android:layout_marginEnd="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="logout"/>
+                        android:text="Logout"/>
 
                 </LinearLayout>
             </LinearLayout>

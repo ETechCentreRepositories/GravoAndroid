@@ -38,6 +38,7 @@
                 android:hint="Paper | Old Newspaper" />
 
             <Button
+                android:id="@+id/delete"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -130,7 +131,11 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         img = findViewById(R.id.mainLayout);
         AnimationDrawable progressDrawable = (AnimationDrawable) img.getBackground();
         progressDrawable.start();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setCancelable(false);
+        dialog.setTitle("DISCLAIMER");
+        dialog.setMessage("The Gravo Collector Application is still in the midst of development. Do take note that this is just the front end. \n\nIf you encounter any errors, please do not hesitate to contact any of the staff to tell us about it as we are trying to improve it as we go along as well.\n\nThank you for your patience!");
+        dialog.setPositiveButton("OK", (dialogInterface, i) -> { });
+        AlertDialog dialogue = dialog.create();
+        dialogue.show();
     }
 
     @Override

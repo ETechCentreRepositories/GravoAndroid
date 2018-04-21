@@ -85,7 +85,7 @@ public class Settings extends Fragment {
                 "Governing Law & Jurisdiction\n" +
                 "These Terms will be governed by and interpreted in accordance with the laws of the State of singapore, and you submit to the non-exclusive jurisdiction of the state and federal courts located in singapore for the resolution of any disputes.\n" +
                 "\n" +
-                "These terms and conditions have been generated at Terms And Conditions Sample.com.")));
+                "These terms and conditions have been generated at Terms And Conditions Sample.com.").putExtra("type", "Terms and Conditions")));
         pp.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySettingsItems.class).putExtra("tnc","greenravolution.com Privacy Policy\n" +
                 "This privacy policy has been compiled to better serve those who are concerned with how their 'Personally Identifiable Information' (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.\n" +
                 "\n" +
@@ -216,7 +216,7 @@ public class Settings extends Fragment {
                 "Singapore\n" +
                 "signups@greenravolution.com\n" +
                 "\n" +
-                "Last Edited on 2018-04-20")));
+                "Last Edited on 2018-04-20").putExtra("type","Privacy Policy")));
         return view;
     }
 

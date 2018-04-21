@@ -13,4 +13,6 @@ Place your fingertip on the Home button to verify your identity
     <string name="login_hint_email">Email</string>
     <string name="invalid_login">Invalid Username or Password</string>
     <string name="tnc">Gravo clearly mentions that all content belongs to Gravo: 4.1 Rights in Gravo’s Content All copyright, trade marks, design rights, patents and other intellectual property rights (registered and unregistered) in and on Gravo Online Services and Gravo Content belong to the Gravo and/or third parties (which may include you or other users.) The Gravo reserves all of its rights in Gravo Content and Gravo Online Services. Nothing in the Terms grants you a right or license to use any trade mark, design right or copyright owned or controlled by the Gravo or any other third party except as expressly provided in the Terms. Gravo If you operate a SaaS app, the “Termination clauses” will be very important. The relationship with your customers can end for any number of reasons, from a customer changing careers to a new and better SaaS option becoming available or just general dissatisfaction with a service.</string>
+    <string name="bulk_items">BULK ITEMS</string>
+    <string name="bulk_item">Bulk Item</string>
 </resources>

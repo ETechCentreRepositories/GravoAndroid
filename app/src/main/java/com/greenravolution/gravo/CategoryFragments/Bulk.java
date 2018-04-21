@@ -22,18 +22,26 @@ package com.greenravolution.gravo.CategoryFragments;
  * THE SOFTWARE.
  */
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
 
@@ -45,6 +53,7 @@ public class Bulk extends Fragment {
     ImageView bulk_image;
     Button bulk_submit, bulk_take_photo;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    TextView bulk_description;
     Uri imageUri;
 
 
@@ -62,15 +71,45 @@ public class Bulk extends Fragment {
         bulk_image = view.findViewById(R.id.display_bulk_img);
         bulk_submit = view.findViewById(R.id.bulk_submit);
         bulk_take_photo = view.findViewById(R.id.takephoto);
+        bulk_description = view.findViewById(R.id.bulk_description);
         bulk_image.setVisibility(View.GONE);
         bulk_take_photo.setOnClickListener(v -> startCamera());
+        bulk_submit.setOnClickListener(v -> addData());
         return view;
 
     }
 
     public void startCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CAMERA)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+            startActivityForResult(intent, REQUEST_CAMERA);
+
+        }
+
     }
 
     @Override
@@ -80,14 +119,32 @@ public class Bulk extends Fragment {
             if (data == null) {
                 Log.i("BULK ", "Image not taken");
             } else {
-                Log.i("BULK IMAGE ", data.getExtras().get("data")+"");
+                Log.i("BULK IMAGE ", data.getExtras().get("data") + "");
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
                 bulk_image.setVisibility(View.VISIBLE);
                 bulk_image.setImageBitmap(cameraImage);
             }
         }
     }
-    public void addData(){
 
+    public void addData() {
+        if (null != bulk_image.getDrawable()) {
+            if(bulk_description.getText().toString().equals("")){
+                Toast.makeText(getContext(), "Please describe your item", Toast.LENGTH_SHORT).show();
+            }else{
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setCancelable(false);
+                dialog.setTitle("Submitted");
+                dialog.setMessage("Thank you for submitting!\n\nWe will get back to you shortly with a quote.");
+                dialog.setPositiveButton("Done", (dialogInterface, i) -> { });
+                AlertDialog dialogue = dialog.create();
+                dialogue.show();
+            }
+
+            //imageview have image
+        } else {
+            Toast.makeText(getContext(), "Please take a photo of the item you want to recycle", Toast.LENGTH_SHORT).show();
+            //imageview have no image
+        }
     }
 }

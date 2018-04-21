@@ -21,9 +21,12 @@ public class ActivitySettingsItems extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
 
+        TextView activityTitle = findViewById(R.id.title);
         text = findViewById(R.id.text);
         Intent intent = getIntent();
         String item = intent.getStringExtra("tnc");
+        String title = intent.getStringExtra("type");
         text.setText(item);
+        activityTitle.setText(title);
     }
 }

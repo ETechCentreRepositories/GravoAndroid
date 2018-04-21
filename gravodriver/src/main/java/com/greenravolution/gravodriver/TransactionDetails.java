@@ -124,7 +124,46 @@ public class TransactionDetails extends AppCompatActivity {
         ttiming.setText(String.format("Arrival Time: %s", date));
 
         int trans_id = intent.getIntExtra("id", -1);
-        getTransacionDetails(trans_id);
+
+        int id = 0;
+        String w = "30";
+        String p = "3.00";
+        int cid = 3;
+        int tid = 3;
+
+        oal.add(new OrderDetails(id, tid, w, p, cid));
+
+        int id2 = 0;
+        String w2 = "20";
+        String p2 = "80.00";
+        int cid2 = 14;
+        int tid2 = 3;
+
+        oal.add(new OrderDetails(id2, tid2, w2, p2, cid2));
+
+        int id3 = 0;
+        String w3 = "20";
+        String p3 = "40.00";
+        int cid3 = 16;
+        int tid3 = 4;
+
+        oal.add(new OrderDetails(id3, tid3, w3, p3, cid3));
+
+        int id4 = 0;
+        String w4 = "30";
+        String p4 = "3.00";
+        int cid4 = 3;
+        int tid4 = 4;
+
+        oal.add(new OrderDetails(id4, tid4, w4, p4, cid4));
+
+        for (int i =0; i < oal.size();i++){
+            if(oal.get(i).getTransaction_id() == trans_id){
+                items.addView(initView(oal.get(i)));
+            }
+        }
+
+//        getTransacionDetails(trans_id);
 
         btnCfmNPay.setOnClickListener(v -> {
             if (Objects.equals(etGetName.getText().toString(), "") || Objects.equals(etGetName.getText().toString(), "")) {
@@ -145,6 +184,8 @@ public class TransactionDetails extends AppCompatActivity {
                 finish();
             }
         });
+        //temp
+        llProgress.setVisibility(View.GONE);
     }
 
     @Override
