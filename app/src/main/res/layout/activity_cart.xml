@@ -83,7 +83,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="CHECK OUT"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <RelativeLayout
@@ -181,6 +181,16 @@
                 android:paddingStart="10dp"
                 android:text="$6.00"
                 android:textColor="@color/black" />
+            <EditText
+                android:padding="5dp"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:hint="Remarks or comments"
+                android:layout_margin="5dp"
+                android:background="@drawable/text_field_background"
+                android:layout_below="@id/totalPriceTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -196,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/brand_pink"
-                android:text="REDEEM GRAVOS"
+                android:text="GRAVO POINTS"
                 android:textColor="@color/white" />
 
             <Button
@@ -207,7 +217,9 @@
                 android:background="@color/brand_green"
                 android:text="CASH"
                 android:textColor="@color/white" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

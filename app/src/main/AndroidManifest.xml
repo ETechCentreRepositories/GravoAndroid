@@ -92,6 +92,7 @@
             android:name=".contents.ActivityWebView"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ActivitySelectedTransactionDone"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.greenravolution.gravo.ActivitySelectedTransactionDone;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.contents.ActivitySelectedTransaction;
 
@@ -28,7 +29,7 @@ public class Transactions extends Fragment {
         item1 = view.findViewById(R.id.item1);
         item2 = view.findViewById(R.id.item2);
         item1.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySelectedTransaction.class).putExtra("transaction_id","TRANSACTION #10091983294823")));
-        item2.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySelectedTransaction.class).putExtra("transaction_id","TRANSACTION #10091983294823")));
+        item2.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySelectedTransactionDone.class).putExtra("transaction_id","TRANSACTION #10091983294823")));
 
         return view;
     }
