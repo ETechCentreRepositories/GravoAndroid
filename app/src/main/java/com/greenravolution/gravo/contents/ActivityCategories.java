@@ -3,11 +3,15 @@ package com.greenravolution.gravo.contents;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -69,5 +73,27 @@ public class ActivityCategories extends AppCompatActivity {
     }
     public int getCurrentTab(){
         return viewPager.getCurrentItem();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            // Android home
+            case R.id.cart:
+                Log.i("MainActivity", "clicked on cart");
+                startActivity(new Intent(this, ActivityCart.class));
+                return true;
+            case R.id.help:
+                Log.i("MainActivity", "clicked on help");
+                startActivity(new Intent(this, ActivityHelp.class));
+                return true;
+        }
+        return false;
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.nav_menu, menu);//Menu Resource, Menu
+        return true;
     }
 }

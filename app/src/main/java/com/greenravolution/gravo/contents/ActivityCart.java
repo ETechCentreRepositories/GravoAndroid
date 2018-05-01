@@ -1,37 +1,46 @@
 package com.greenravolution.gravo.contents;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.SuccessContinuation;
 import com.greenravolution.gravo.R;
+import com.greenravolution.gravo.functions.Rates;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ActivityCart extends AppCompatActivity {
+public class ActivityCart extends AppCompatActivity implements View.OnTouchListener {
     Toolbar toolbar;
     Button points, cash;
     TextView scheduleDate;
+    Boolean isPressed;
 
     private int mYear, mMonth, mDay;
+    public static final String SESSION = "login_status";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,11 +48,7 @@ public class ActivityCart extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
         LinearLayout cartItems = findViewById(R.id.cartItems);
 
-        points = findViewById(R.id.points);
-        points.setOnClickListener(v -> {
-            startActivity(new Intent(this, ActivitySuccessfullTransaction.class));
-            finish();
-        });
+
         cash = findViewById(R.id.cash);
         cash.setOnClickListener(v -> {
             startActivity(new Intent(this, ActivitySuccessfullTransaction.class));
@@ -74,17 +79,24 @@ public class ActivityCart extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         if (inflater != null) {
             View view;
+            ArrayList<com.greenravolution.gravo.objects.Rates> ratesList = new ArrayList<>();
             view = inflater.inflate(R.layout.cart_items, null);
             Button delete, plus, minus;
             TextView itemWeight;
+            SharedPreferences sessionManager = getApplication().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+            String rates = sessionManager.getString("rates", "");
+            TextView getPrice = view.findViewById(R.id.getRate);
+
+
             delete = view.findViewById(R.id.delete);
-            delete.setOnClickListener(v ->{
+            delete.setOnClickListener(v -> {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setCancelable(false);
                 dialog.setTitle("Delete Item");
                 dialog.setMessage("Delete this item?");
                 dialog.setPositiveButton("yes", (dialogInterface, i) -> view.setVisibility(View.GONE));
-                dialog.setNegativeButton("No", (dialogInterface,i) ->{});
+                dialog.setNegativeButton("No", (dialogInterface, i) -> {
+                });
                 AlertDialog dialogue = dialog.create();
                 dialogue.show();
 
@@ -99,19 +111,26 @@ public class ActivityCart extends AppCompatActivity {
                 } else {
                     getWeight = getWeight - 1;
                     itemWeight.setText(String.valueOf(getWeight));
+
                 }
             });
             plus.setOnClickListener((View v) -> {
                 int getWeight = Integer.parseInt(itemWeight.getText().toString());
                 getWeight = getWeight + 1;
                 itemWeight.setText(String.valueOf(getWeight));
+
             });
             return view;
         }
         return null;
 
-
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (v.getId() == R.id.btnPlus) {
 
+        }
+        return false;
+    }
 }

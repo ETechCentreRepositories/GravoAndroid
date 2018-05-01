@@ -12,7 +12,7 @@ import com.greenravolution.gravo.R;
 import java.util.Objects;
 
 public class ActivitySuccessfullTransaction extends AppCompatActivity {
-    Button toCalendar;
+
     Toolbar toolbar;
 
     @Override
@@ -23,10 +23,6 @@ public class ActivitySuccessfullTransaction extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
-        toCalendar = findViewById(R.id.toCalendar);
-        toCalendar.setOnClickListener(v->{
-            startActivity(new Intent(this, MainActivity.class).putExtra("fromSuccess", "1"));
-            finish();
-        });
+
     }
 }

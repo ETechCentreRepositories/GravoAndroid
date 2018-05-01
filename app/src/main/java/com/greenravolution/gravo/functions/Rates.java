@@ -1,10 +1,8 @@
 package com.greenravolution.gravo.functions;
 
-import android.provider.Telephony;
-
+import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.objects.OrderDetails;
 import com.greenravolution.gravo.objects.Orders;
-import com.greenravolution.gravo.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,10 +113,38 @@ public class Rates {
                 return R.drawable.cardboard;
             case "Paper | Old Textbooks":
                 return R.drawable.books;
-            case "Metals":
-                return R.drawable.brass;
-            case "E-Waste":
+            case "Metals | Copper Wires -( <= 4mm diameter )":
+                return R.drawable.copperwire_less4mm;
+            case "Metals | Copper Wires -( > 4mm diameter)":
+                return R.drawable.copperwire_more4mm;
+            case "Metals | Untainted -Stripped Copper Wires":
+                return R.drawable.strippedcopper_untainted;
+            case "Metals | Dirty  -Stripped Copper Wires":
+                return R.drawable.strippedcopper_dirty;
+            case "Metals | Brass Items - ":
+                return R.drawable.brass_tap;
+            case "Metals | Copper Pipes or -Copper Plates":
+                return R.drawable.copper_plates;
+            case "Metals | Telephone Wires - ":
+                return R.drawable.tele_wire;
+            case "Metals | Aluminium Items - ":
+                return R.drawable.aluminium_pans;
+            case "Metals | Mixed Wires -(bundled / coiled)":
+                return R.drawable.mix_wires_bunde_coil;
+            case "E-Waste | Smartphone (operational)":
+                return R.drawable.smartphone;
+            case "E-Waste | Smartphone (non-operational)":
+                return R.drawable.smartphone;
+
+            case "E-Waste | Laptop (non-operational)":
                 return R.drawable.laptop;
+            case "E-Waste | CPU":
+                return R.drawable.cpu;
+            case "E-Waste | LCD Screen":
+                return R.drawable.lcd;
+            case "E-Waste | LCD Screen (Cracked)":
+                return R.drawable.lcd;
+
         }
         return 0;
 

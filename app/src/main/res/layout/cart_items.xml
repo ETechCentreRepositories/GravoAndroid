@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:gravity="center_vertical"
-                    android:text="Rate (amount/kg)" />
+                    android:text="Price" />
 
                 <TextView
                     android:id="@+id/getRate"
@@ -126,7 +126,7 @@
                     android:gravity="center_vertical"
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
-                    android:text="0.11/KG" />
+                    android:text="$3.30" />
             </RelativeLayout>
 
         </RelativeLayout>

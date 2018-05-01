@@ -50,6 +50,7 @@ import com.greenravolution.gravo.R;
  * A simple {@link Fragment} subclass.
  */
 public class Bulk extends Fragment {
+
     ImageView bulk_image;
     Button bulk_submit, bulk_take_photo;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
@@ -74,6 +75,7 @@ public class Bulk extends Fragment {
         bulk_description = view.findViewById(R.id.bulk_description);
         bulk_image.setVisibility(View.GONE);
         bulk_take_photo.setOnClickListener(v -> startCamera());
+        bulk_image.setOnClickListener(v->bulk_take_photo.performClick());
         bulk_submit.setOnClickListener(v -> addData());
         return view;
 
@@ -122,6 +124,7 @@ public class Bulk extends Fragment {
                 Log.i("BULK IMAGE ", data.getExtras().get("data") + "");
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
                 bulk_image.setVisibility(View.VISIBLE);
+                bulk_take_photo.setVisibility(View.GONE);
                 bulk_image.setImageBitmap(cameraImage);
             }
         }

@@ -50,14 +50,6 @@
             android:textAlignment="center"
             android:textColor="@color/brand_green" />
 
-        <Button
-            android:id="@+id/toCalendar"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="View Your Calendar"
-            android:textColor="@color/brand_pink" />
 
     </LinearLayout>
 

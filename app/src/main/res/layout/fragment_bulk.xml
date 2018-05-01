@@ -65,49 +65,66 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/takephoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:background="@drawable/btn_brand_pink"
-                android:paddingEnd="30dp"
-                android:paddingStart="30dp"
-                android:text="@string/bulk_img_label"
-                android:textColor="@color/white" />
-            <ImageView
-                android:id="@+id/display_bulk_img"
-                android:padding="5dp"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="250dp" />
 
-            <EditText
-                android:id="@+id/bulk_description"
-                android:gravity="top"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/text_field_background"
-                android:hint="* Add a description"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/grey" />
-            <Button
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:id="@+id/bulk_submit"
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:textAlignment="center"
                 android:layout_height="wrap_content"
-                android:text="Submit"
-                android:paddingStart="30dp"
-                android:paddingEnd="30dp"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/white"/>
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_marginEnd="5dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp">
+                    <Button
+                        android:id="@+id/takephoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/btn_brand_pink"
+                        android:paddingEnd="30dp"
+                        android:paddingStart="30dp"
+                        android:text="@string/bulk_img_label"
+                        android:textColor="@color/white" />
+                    <ImageView
+                        android:layout_weight="1"
+                        android:id="@+id/display_bulk_img"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/bulk_description"
+                        android:gravity="top"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/text_field_background"
+                        android:hint="* Add a description"
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:padding="5dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey" />
+                    <Button
+                        android:background="@drawable/btn_brand_pink"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/bulk_submit"
+                        android:layout_width="match_parent"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:text="Submit"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/white"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
 
         </LinearLayout>
 

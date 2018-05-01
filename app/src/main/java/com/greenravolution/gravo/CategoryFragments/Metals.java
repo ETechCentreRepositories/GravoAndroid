@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,7 @@ public class Metals extends Fragment {
             }
 
         });
+
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
         itemPlus.setOnClickListener((View v)->{
             if(itemsWeight.getText().toString().equals("")){
@@ -117,16 +119,27 @@ public class Metals extends Fragment {
             }
 
         });
+
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("Metal")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
+
         //temp
-        itemImage.setImageResource(rateClass.getImage("Metals"));
+        itemImage.setImageResource(rateClass.getImage(rate.getType()));
         String[] type = rate.getType().split(" ");
-        String typeName = "";
+        StringBuilder typeName = new StringBuilder();
+
         for(int j = 2; j < type.length; j++){
-            typeName += type[j]+" ";
+            Log.e("String: ", type[j]);
+            typeName.append(type[j]).append(" ");
         }
-        itemName.setText(typeName);
+
+        String item = typeName.toString();
+        Log.e("String put together", item);
+        String[] splitItem = item.split("-");
+        Log.e("splitItem: ", splitItem.length+"");
+
+        itemName.setText(splitItem[0]+"\n"+splitItem[1]);
+
         itemRate.setText(rate.getRate());
 
         return contents;

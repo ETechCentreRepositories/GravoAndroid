@@ -23,6 +23,7 @@
             android:text="LeaderBoard"
             android:textColor="@color/white"
             android:textSize="20sp" />
+
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
@@ -57,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="50 POINTS: $1.00"
                     android:textAlignment="center"
-                    android:textColor="@color/brand_pink" />
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <RelativeLayout
@@ -140,7 +141,7 @@
                             android:layout_below="@id/points"
                             android:layout_marginEnd="30dp"
                             android:text="$8.00"
-                            android:textColor="@color/brand_pink"
+                            android:textColor="@color/black"
                             android:textSize="20sp" />
                     </RelativeLayout>
                 </LinearLayout>

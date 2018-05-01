@@ -95,11 +95,11 @@ public class EWaste extends Fragment {
         });
 
         itemsWeight.setText(String.valueOf(weightInt));
-        itemMinus.setOnClickListener((View v) ->{
-            if(itemsWeight.getText().toString().equals("")){
+        itemMinus.setOnClickListener((View v) -> {
+            if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
                 itemLabel.setText(R.string.string_Piece);
-            }else {
+            } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
                 if (getWeight <= 0) {
                     itemLabel.setText(R.string.string_Piece);
@@ -111,15 +111,16 @@ public class EWaste extends Fragment {
             }
 
         });
+
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
-        itemPlus.setOnClickListener((View v)->{
-            if(itemsWeight.getText().toString().equals("")){
+        itemPlus.setOnClickListener((View v) -> {
+            if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
-            }else{
+            } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
                 if (getWeight == 0 || getWeight == 1) {
                     itemLabel.setText(R.string.string_Piece);
-                }else{
+                } else {
                     itemLabel.setText(R.string.string_pieces);
                 }
                 getWeight = getWeight + 1;
@@ -128,10 +129,11 @@ public class EWaste extends Fragment {
             }
 
         });
+
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("E-Waste")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
         //temp
-        itemImage.setImageResource(rateClass.getImage("E-Waste"));
+        itemImage.setImageResource(rateClass.getImage(rate.getType()));
         String[] type = rate.getType().split(" ");
         String typeName = "";
         for (int j = 2; j < type.length; j++) {

@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.settings:
                     replacefragment(new Settings());
                     Log.i("MainActivity", "clicked on settings item");
-                    title.setText("Settings");
+                    title.setText("About Us");
                     home_page_logo.setVisibility(View.GONE);
                     title.setVisibility(View.VISIBLE);
                     CloseDrawer();
@@ -161,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
     public void replacefragment(Fragment fragment) {
         ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content, fragment);
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
+        // or ft.add(R.id.your_placeholder, new FooFragment());
+        // Complete the changes added above
         ft.commit();
     }
 
-    public void CloseDrawer() {
+    public void CloseDrawer(){
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
