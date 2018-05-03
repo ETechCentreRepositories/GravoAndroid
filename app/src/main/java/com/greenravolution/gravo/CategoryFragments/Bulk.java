@@ -24,6 +24,7 @@ package com.greenravolution.gravo.CategoryFragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -44,6 +45,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
+
+import java.io.IOException;
+
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 
 /**
@@ -121,8 +126,19 @@ public class Bulk extends Fragment {
             if (data == null) {
                 Log.i("BULK ", "Image not taken");
             } else {
-                Log.i("BULK IMAGE ", data.getExtras().get("data") + "");
-                Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
+                Bitmap cameraImage = null;
+                if(data.getData()==null){
+                    cameraImage = (Bitmap)data.getExtras().get("data");
+                }else{
+                    try {
+                        cameraImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d("testing", "onActivityResult: " + data);
+
                 bulk_image.setVisibility(View.VISIBLE);
                 bulk_take_photo.setVisibility(View.GONE);
                 bulk_image.setImageBitmap(cameraImage);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/white_pressed" />
@@ -48,7 +49,7 @@
     </item>
     <item
         android:bottom="50dp"
-        android:drawable="@drawable/gravo_logo_black"
+        app:srcCompat="@drawable/gravo_logo_black"
         android:right="50dp"
         android:start="50dp"
         android:top="50dp">

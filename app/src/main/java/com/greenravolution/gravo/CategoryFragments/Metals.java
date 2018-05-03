@@ -138,7 +138,7 @@ public class Metals extends Fragment {
         String[] splitItem = item.split("-");
         Log.e("splitItem: ", splitItem.length+"");
 
-        itemName.setText(splitItem[0]+"\n"+splitItem[1]);
+        itemName.setText(String.format("%s\n%s", splitItem[0], splitItem[1]));
 
         itemRate.setText(rate.getRate());
 

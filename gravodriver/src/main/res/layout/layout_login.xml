@@ -132,7 +132,7 @@
                 android:id="@+id/progressBar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@drawable/gravo_logo_black"
+                app:srcCompat="@drawable/gravo_logo_black"
                 android:src="@drawable/ic_progressbar"
                 tools:ignore="ContentDescription" />
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
@@ -35,10 +36,7 @@
                 android:layout_marginEnd="70dp"
                 android:layout_marginStart="70dp"
                 android:contentDescription="@string/gravo_logo_full_desc"
-                android:paddingBottom="0dp"
-                android:paddingTop="0dp"
-                android:src="@drawable/gravo_logo_white" />
-
+                app:srcCompat="@drawable/gravo_logo_white" />
 
         </LinearLayout>
 
@@ -46,8 +44,7 @@
             android:id="@+id/rlpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/buttons"
-            android:layout_below="@id/logo"
+            android:layout_above="@id/button"
             android:layout_marginBottom="30dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
@@ -78,11 +75,11 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/buttons"
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
 
             <Button
@@ -117,6 +114,5 @@
                 android:textColor="@color/black" />
 
         </LinearLayout>
-
     </RelativeLayout>
 </RelativeLayout>
