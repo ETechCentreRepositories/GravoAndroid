@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:src="@drawable/gravo_logo_black_full"
+            app:srcCompat="@drawable/gravo_logo_black_full"
             android:padding="5dp"
             android:id="@+id/logo"/>
         <ImageView

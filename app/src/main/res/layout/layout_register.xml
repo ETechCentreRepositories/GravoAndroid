@@ -38,7 +38,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Log In With Facebook"
+            android:text="Create Account With Facebook"
             android:textColor="@color/white"
             android:background="@drawable/fb_login_button"/>
         <TextView
@@ -129,9 +129,9 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/text_field_background"
                 android:drawablePadding="5dp"
-                android:drawableStart="@drawable/ic_account_circle"
+                android:drawableStart="@drawable/ic_phone"
                 android:gravity="center_vertical"
-                android:hint="Username"
+                android:hint="Contact Number"
                 android:inputType="text"
                 android:padding="5dp" />
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.contents.ActivitySettingsItems;
@@ -29,9 +30,9 @@ public class Settings extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        Button tnc = view.findViewById(R.id.tnc);
-        Button pp = view.findViewById(R.id.pp);
-        Button ag = view.findViewById(R.id.ag);
+        RelativeLayout tnc = view.findViewById(R.id.tnc);
+        RelativeLayout pp = view.findViewById(R.id.pp);
+        RelativeLayout ag = view.findViewById(R.id.ag);
         ag.setOnClickListener(v->startActivity(new Intent(getContext(), ActivityWebView.class)));
         tnc.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySettingsItems.class).putExtra("tnc","Introduction\n" +
                 "These Website Standard Terms and Conditions written on this webpage shall manage your use of this website. These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed to accept all terms and conditions written in here. You must not use this Website if you disagree with any of these Website Standard Terms and Conditions.\n" +

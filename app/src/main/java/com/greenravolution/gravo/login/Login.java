@@ -28,7 +28,7 @@ import java.util.TimerTask;
 import me.relex.circleindicator.CircleIndicator;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    private static final String[] TEXTS = {"GRAVO is a platform through which environmental information and educational material can be accessed with ease for all subscribers.", "GRAVO is also a platform through which environmental information and educational material can be accessed with ease for all subscribers.", "GRAVO is also a platform through which environmental information and educational material can be accessed with ease for all subscribers."};
+    private static final String[] TEXTS = {"Tip 1\nDifferent recycle bins have different uses! Do look before you throw!","Tip 2\nAlways Reuse items whenever you can!","Tip 3\nTry to bring a tupperware when you are buying food back!!"};
     private static int currentPage = 0;
     Button login, register;
     private ViewPager mPager;

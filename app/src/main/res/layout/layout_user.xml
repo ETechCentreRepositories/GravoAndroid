@@ -51,10 +51,9 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="#30000000"
                     android:src="@drawable/profile_image_1" />
 
                 <LinearLayout
@@ -71,10 +70,7 @@
                         android:text="Ryme Hobbs"
                         android:textSize="25sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Blk 234 Tampines Street 22 " />
+
                 </LinearLayout>
             </LinearLayout>
 

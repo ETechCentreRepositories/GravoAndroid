@@ -4,139 +4,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CategoryFragments.Bulk">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/bulkLayout"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="@color/brand_blue"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:text="PAY US TO COLLECT BULKY ITEMS AT YOUR DOORSTEP! JUST SEND US AN IMAGE NOW."
-                android:textAlignment="center"
-                android:textColor="@color/white" />
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/bulkLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal"
-                android:weightSum="4">
+                android:layout_alignParentTop="true"
+                android:background="@color/brand_blue"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/aluminium" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="PAY US TO COLLECT BULKY ITEMS AT YOUR DOORSTEP! JUST SEND US AN IMAGE NOW."
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/cardboard" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/aluminium_cans" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/books" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_margin="10dp"
-                android:weightSum="2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <RelativeLayout
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp">
-                    <Button
-                        android:id="@+id/takephoto"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/btn_brand_pink"
-                        android:paddingEnd="30dp"
-                        android:paddingStart="30dp"
-                        android:text="@string/bulk_img_label"
-                        android:textColor="@color/white" />
-                    <ImageView
-                        android:layout_weight="1"
-                        android:id="@+id/display_bulk_img"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp" />
-                </RelativeLayout>
                 <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="150dp"
-                    android:orientation="vertical">
-                    <EditText
-                        android:id="@+id/bulk_description"
-                        android:gravity="top"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/text_field_background"
-                        android:hint="* Add a description"
-                        android:inputType="textMultiLine"
-                        android:lines="2"
-                        android:padding="5dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/grey" />
-                    <Button
-                        android:background="@drawable/btn_brand_pink"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:id="@+id/bulk_submit"
-                        android:layout_width="match_parent"
-                        android:textAlignment="center"
-                        android:layout_height="wrap_content"
-                        android:text="Submit"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/white"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/fan" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/washing_machine" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/sofa" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/bed" />
+
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RelativeLayout
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="5dp">
+
+                        <Button
+                            android:id="@+id/takephoto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/btn_brand_pink"
+                            android:paddingEnd="30dp"
+                            android:paddingStart="30dp"
+                            android:text="@string/bulk_img_label"
+                            android:textColor="@color/white" />
+
+                        <ImageView
+                            android:id="@+id/display_bulk_img"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="1" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/bulk_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/text_field_background"
+                            android:gravity="top"
+                            android:hint="* Add a description"
+                            android:inputType="textMultiLine"
+                            android:lines="2"
+                            android:padding="5dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey" />
+
+                        <Button
+                            android:id="@+id/bulk_submit"
+                            style="@style/Base.Widget.AppCompat.Button.Borderless"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/btn_brand_pink"
+                            android:text="Submit"
+                            android:textAlignment="center"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/bulktransactions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bulkLayout">
-
-        </LinearLayout>
-
-    </RelativeLayout>
-</ScrollView>
+            <LinearLayout
+                android:id="@+id/bulktransactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bulkLayout"
+                android:orientation="vertical">
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 </FrameLayout>

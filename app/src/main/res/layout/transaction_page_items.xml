@@ -20,30 +20,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TRANSACTION #10091983294823"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#30000000"
+                android:layout_margin="10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/newspaper"
-                    android:padding="10dp"
-                    android:background="@color/brand_yellow"/>
+
                 <LinearLayout
                     android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PAPER | OLD NEWSPAPER"/>
-                    <TextView
-                        android:fontFamily="@font/quicksand_bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$6.00"/>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -85,66 +78,30 @@
                 android:layout_height="1dp"
                 android:background="#30000000"
                 android:layout_margin="10dp"/>
-            <LinearLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/newspaper"
-                    android:padding="10dp"
-                    android:background="@color/brand_yellow"/>
+                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PAPER | OLD NEWSPAPER"/>
-                    <TextView
-                        android:fontFamily="@font/quicksand_bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$6.00"/>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="WEIGHT"/>
-                        <android.support.v4.widget.Space
-                            android:layout_width="30dp"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="30KG"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="AMOUNT"/>
-                        <android.support.v4.widget.Space
-                            android:layout_width="30dp"
-                            android:layout_height="wrap_content" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$0.11/KG"/>
-                    </LinearLayout>
-
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_margin="5dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:srcCompat="@drawable/newspaper"
+                        android:padding="10dp"
+                        android:background="@color/brand_yellow"/>
+                    <ImageView
+                        android:layout_margin="5dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:srcCompat="@drawable/newspaper"
+                        android:padding="10dp"
+                        android:background="@color/brand_yellow"/>
 
                 </LinearLayout>
-            </LinearLayout>
+            </HorizontalScrollView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -173,7 +130,7 @@
                     android:layout_below="@id/statusLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="WAITING FOR COLLECTION"
+                    android:text="AWAITING COLLECTION"
                     android:padding="5dp"
                     android:background="@color/grey"/>
                 <TextView

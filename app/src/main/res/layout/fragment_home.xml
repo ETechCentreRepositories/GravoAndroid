@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:tag="fragment_w_menu"
     android:layout_height="match_parent"
 
@@ -40,7 +41,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:padding="25dp"
-                            android:src="@drawable/home_page_paper"
+                            app:srcCompat="@drawable/home_page_paper"
                             android:layout_above="@id/paperLabel"
                             android:id="@+id/paperImg"
                             android:layout_width="match_parent"
@@ -85,7 +86,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:padding="25dp"
-                            android:src="@drawable/home_page_metal"
+                            app:srcCompat="@drawable/home_page_metal"
                             android:layout_above="@id/metalLabel"
                             android:id="@+id/metalImg"
                             android:layout_width="match_parent"
@@ -138,7 +139,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:padding="25dp"
-                            android:src="@drawable/home_page_ewaste"
+                            app:srcCompat="@drawable/home_page_ewaste"
                             android:layout_above="@id/ewasteLabel"
                             android:id="@+id/ewasteImg"
                             android:layout_width="match_parent"
@@ -183,7 +184,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <ImageView
-                            android:src="@drawable/home_page_bulk"
+                            app:srcCompat="@drawable/home_page_bulk"
                             android:layout_above="@id/bulkLabel"
                             android:id="@+id/bulkImg"
                             android:layout_width="match_parent"

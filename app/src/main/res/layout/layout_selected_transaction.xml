@@ -61,7 +61,7 @@
                         android:layout_height="100dp"
                         android:background="@color/brand_yellow"
                         android:padding="10dp"
-                        android:src="@drawable/newspaper" />
+                        app:srcCompat="@drawable/newspaper" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                         android:layout_height="100dp"
                         android:background="@color/brand_yellow"
                         android:padding="10dp"
-                        android:src="@drawable/newspaper" />
+                        app:srcCompat="@drawable/newspaper" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -448,15 +448,6 @@
                     android:text="$12.00"/>
 
             </RelativeLayout>
-            <TextView
-                android:id="@+id/needHelp"
-                android:background="@color/white"
-                android:textAlignment="center"
-                android:padding="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/brand_pink"
-                android:text="need help?"/>
 
         </LinearLayout>
     </ScrollView>

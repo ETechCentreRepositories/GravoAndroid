@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
-            android:src="@drawable/gravo_logo_black_full" />
+            app:srcCompat="@drawable/gravo_logo_black_full" />
         <TextView
             android:id="@+id/title"
             android:fontFamily="@font/quicksand_regular"

@@ -1,16 +1,21 @@
 package com.greenravolution.gravo.contents;
 
 import android.content.Intent;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.greenravolution.gravo.R;
 
 public class ActivitySelectedTransaction extends AppCompatActivity {
     Toolbar toolbar;
-    TextView title, needHelp;
+    TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +25,24 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
         title = findViewById(R.id.transaction_title);
-        needHelp = findViewById(R.id.needHelp);
-        needHelp.setOnClickListener(v -> startActivity(new Intent(this, ActivityHelp.class)));
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.help:
+                Log.i("MainActivity", "clicked on help");
+                startActivity(new Intent(this, ActivityHelp.class));
+                return true;
+        }
+        return false;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.needhelp_menu, menu);//Menu Resource, Menu
+        return true;
     }
 }

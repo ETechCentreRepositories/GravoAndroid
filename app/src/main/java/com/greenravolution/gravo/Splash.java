@@ -74,7 +74,6 @@ public class Splash extends AppCompatActivity {
             Toast.makeText(this,"The Gravo App requires Internet. Please on your data and restart the app",Toast.LENGTH_SHORT).show();
         }
 
-
     }
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="LeaderBoard"
+            android:text="Leaderboard"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -40,8 +40,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:background="@color/black"
                 android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/profile_image_1" />
 
                 <TextView
                     android:id="@+id/name"
@@ -52,25 +58,21 @@
                     android:textColor="@color/white"
                     android:textSize="25sp" />
 
-                <TextView
-                    android:id="@+id/pointsRate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="50 POINTS: $1.00"
-                    android:textAlignment="center"
-                    android:textColor="@color/black" />
             </LinearLayout>
 
             <RelativeLayout
+                android:paddingBottom="10dp"
+                android:background="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/point_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
                     android:orientation="vertical"
-                    android:paddingBottom="20dp">
+                    android:paddingBottom="0dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -93,7 +95,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="30dp"
                             android:padding="5dp"
-                            android:text="Gravo Points"
+                            android:text="Points"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
                     </RelativeLayout>
@@ -109,7 +111,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -134,70 +136,16 @@
                             android:textColor="@color/white"
                             android:textSize="15sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_below="@id/points"
-                            android:layout_marginEnd="30dp"
-                            android:text="$8.00"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
                     </RelativeLayout>
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:layout_below="@id/point_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="40dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
-                            android:background="@color/white"
-                            android:orientation="horizontal"
-                            android:rotation="45">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp"
-                                android:background="@color/black"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_margin="5dp"
-                                    android:background="@color/white"
-                                    android:gravity="center">
-
-                                    <ImageView
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:layout_gravity="center"
-                                        android:rotation="-45"
-                                        android:src="@drawable/profile_image_1" />
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </RelativeLayout>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@color/transparent">
+                    android:padding="10dp"
+                    android:background="@color/black">
 
                     <TextView
                         android:id="@+id/share"
@@ -210,10 +158,12 @@
                         android:paddingEnd="20dp"
                         android:paddingStart="20dp"
                         android:paddingTop="5dp"
+                        android:layout_marginLeft="10dp"
                         android:text="SHARE"
                         android:textColor="@color/white" />
 
                     <TextView
+                        android:layout_marginRight="10dp"
                         android:id="@+id/invite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
