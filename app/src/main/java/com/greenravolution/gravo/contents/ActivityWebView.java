@@ -44,9 +44,9 @@ public class ActivityWebView extends AppCompatActivity {
         mContext = getApplicationContext();
         // Get the activity
         mActivity = this;
-        mRelativeLayout = (RelativeLayout) findViewById(R.id.rl);
-        mWebView = (WebView) findViewById(R.id.web_view);
-        mProgressBar = (ProgressBar) findViewById(R.id.pb);
+        mRelativeLayout = findViewById(R.id.rl);
+        mWebView = findViewById(R.id.web_view);
+        mProgressBar = findViewById(R.id.pb);
         renderWebPage("https://greenravolution.com");
     }
     // Custom method to render a web page
@@ -78,6 +78,7 @@ public class ActivityWebView extends AppCompatActivity {
                  WebChromeClient is called when something that might impact a browser UI happens,
                  for instance, progress updates and JavaScript alerts are sent here.
         */
+
         mWebView.setWebChromeClient(new WebChromeClient(){
             /*
                 public void onProgressChanged (WebView view, int newProgress)

@@ -149,7 +149,7 @@ public class HttpReq {
             conHttp.setRequestMethod("POST");
             conHttp.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-            String urlParameters = "email=haziq@gmail.com&password=password";
+            String urlParameters = parameters;
 
             // Send post request
             conHttp.setDoOutput(true);

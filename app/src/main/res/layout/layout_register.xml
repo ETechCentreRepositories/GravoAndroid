@@ -121,9 +121,21 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="5dp" />
+            <EditText
+                android:id="@+id/cfmpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/text_field_background"
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/ic_lock"
+                android:gravity="center_vertical"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:padding="5dp" />
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -179,7 +191,7 @@
 
             <Button
                 android:layout_marginTop="10dp"
-                android:id="@+id/login"
+                android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
@@ -190,6 +202,19 @@
                 android:background="@drawable/btn_brand_green_round"/>
 
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#90000000"
+        android:gravity="center">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:indicatorName="BallClipRotateMultipleIndicator"
+            app:indicatorColor="@color/brand_green"/>
     </LinearLayout>
 
 

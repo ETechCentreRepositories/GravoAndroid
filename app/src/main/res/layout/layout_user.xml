@@ -245,6 +245,7 @@
                     <TextView
                         android:drawableEnd="@drawable/ic_keyboard_arrow_right"
                         android:padding="5dp"
+                        android:id="@+id/logout"
                         android:textSize="15sp"
                         android:layout_marginEnd="0dp"
                         android:layout_width="match_parent"

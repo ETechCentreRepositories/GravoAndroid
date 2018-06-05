@@ -1,6 +1,8 @@
 package com.greenravolution.gravo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.greenravolution.gravo.MainFragments.Calendar;
 import com.greenravolution.gravo.MainFragments.Home;
 import com.greenravolution.gravo.MainFragments.Notifications;
@@ -27,12 +30,17 @@ import com.greenravolution.gravo.contents.ActivityCart;
 import com.greenravolution.gravo.contents.ActivityHelp;
 import com.greenravolution.gravo.contents.ActivityUser;
 
-public class MainActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
 
+public class MainActivity extends AppCompatActivity {
+    SharedPreferences sessionManager;
+    public static final String SESSION = "login_status";
     DrawerLayout drawerLayout;
     FragmentTransaction ft;
     ImageView home_page_logo;
-    TextView title;
+    TextView title, user_name, user_points;
+    CircleImageView profileimage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +49,21 @@ public class MainActivity extends AppCompatActivity {
         home_page_logo = findViewById(R.id.home_page_logo);
         title = findViewById(R.id.title);
         title.setVisibility(View.GONE);
-
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
 
         NavigationView navigationView = findViewById(R.id.left_drawer);
         View headerview = navigationView.getHeaderView(0);
         LinearLayout userProfile = headerview.findViewById(R.id.userProfile);
+        profileimage = headerview.findViewById(R.id.profile_image);
+
+        Glide.with(MainActivity.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profileimage);
+
+        user_name = headerview.findViewById(R.id.user_name);
+        user_name.setText(sessionManager.getString("user_name",""));
+
+        user_points = headerview.findViewById(R.id.user_points);
+        user_points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0)) + " (No rank yet)");
+
         userProfile.setOnClickListener(v -> startActivity(new Intent(this, ActivityUser.class)));
 
         configureNavigationDrawer();
@@ -166,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void CloseDrawer(){
+    public void CloseDrawer() {
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
