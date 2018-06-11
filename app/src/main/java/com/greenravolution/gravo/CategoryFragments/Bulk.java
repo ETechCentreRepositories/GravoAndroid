@@ -28,12 +28,6 @@ import android.app.Activity;
 =======
 import android.app.Dialog;
 import android.content.ContentResolver;
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
-=======
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
-=======
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -64,14 +58,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
-
-import java.io.IOException;
-
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
-
-import java.io.IOException;
-
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 import java.io.IOException;
 
