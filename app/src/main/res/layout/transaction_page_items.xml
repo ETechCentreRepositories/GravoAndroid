@@ -32,7 +32,10 @@
                 android:orientation="horizontal">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
@@ -44,7 +47,10 @@
                     android:orientation="vertical">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
@@ -108,7 +114,11 @@
                         android:layout_height="50dp"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         app:srcCompat="@drawable/newspaper"
+=======
+                        android:src="@drawable/newspaper"
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
                         android:src="@drawable/newspaper"
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
@@ -123,7 +133,11 @@
                         android:layout_height="50dp"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         app:srcCompat="@drawable/newspaper"
+=======
+                        android:src="@drawable/newspaper"
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
                         android:src="@drawable/newspaper"
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
@@ -137,6 +151,10 @@
             </HorizontalScrollView>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
 
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
@@ -174,7 +192,11 @@
                     android:layout_height="wrap_content"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     android:text="AWAITING COLLECTION"
+=======
+                    android:text="WAITING COLLECTION"
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
                     android:text="WAITING COLLECTION"
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348

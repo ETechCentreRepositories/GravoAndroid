@@ -95,10 +95,16 @@
             android:windowSoftInputMode="stateHidden" />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         <activity android:name=".ActivitySelectedTransactionDone"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+=======
+        <activity android:name=".ActivitySelectedTransactionDone"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
         <activity android:name=".ActivitySelectedTransactionDone"
             android:screenOrientation="portrait"
