@@ -26,6 +26,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".Splash"
@@ -92,10 +93,16 @@
             android:name=".contents.ActivityWebView"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+<<<<<<< HEAD
 
         <activity android:name=".ActivitySelectedTransactionDone"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+=======
+        <activity android:name=".ActivitySelectedTransactionDone"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
     </application>
 
 </manifest>

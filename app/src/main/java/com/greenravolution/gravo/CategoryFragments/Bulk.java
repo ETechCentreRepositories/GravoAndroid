@@ -23,7 +23,12 @@ package com.greenravolution.gravo.CategoryFragments;
  */
 
 import android.Manifest;
+<<<<<<< HEAD
 import android.app.Activity;
+=======
+import android.app.Dialog;
+import android.content.ContentResolver;
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -53,6 +58,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+
+import java.io.IOException;
+
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 
 /**
@@ -123,6 +132,7 @@ public class Bulk extends Fragment {
 
     }
 
+<<<<<<< HEAD
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -149,6 +159,34 @@ public class Bulk extends Fragment {
 //            }
 //        }
 //    }
+=======
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA) {
+            if (data == null) {
+                Log.i("BULK ", "Image not taken");
+            } else {
+                Bitmap cameraImage = null;
+                if(data.getData()==null){
+                    cameraImage = (Bitmap)data.getExtras().get("data");
+                }else{
+                    try {
+                        cameraImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d("testing", "onActivityResult: " + data);
+
+                bulk_image.setVisibility(View.VISIBLE);
+                bulk_take_photo.setVisibility(View.GONE);
+                bulk_image.setImageBitmap(cameraImage);
+            }
+        }
+    }
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 
     public void addData() {
         if (null != bulk_image.getDrawable()) {
