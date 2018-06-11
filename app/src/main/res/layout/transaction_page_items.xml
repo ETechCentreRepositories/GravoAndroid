@@ -31,7 +31,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
                 <LinearLayout
@@ -40,7 +43,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
                     <LinearLayout
@@ -101,7 +107,11 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         app:srcCompat="@drawable/newspaper"
+=======
+                        android:src="@drawable/newspaper"
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
                         android:src="@drawable/newspaper"
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
@@ -112,7 +122,11 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         app:srcCompat="@drawable/newspaper"
+=======
+                        android:src="@drawable/newspaper"
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
                         android:src="@drawable/newspaper"
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
@@ -122,6 +136,10 @@
                 </LinearLayout>
             </HorizontalScrollView>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
 
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
@@ -155,7 +173,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 <<<<<<< HEAD
+<<<<<<< HEAD
                     android:text="AWAITING COLLECTION"
+=======
+                    android:text="WAITING COLLECTION"
+>>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 =======
                     android:text="WAITING COLLECTION"
 >>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
