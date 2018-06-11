@@ -13,15 +13,21 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.login.Login;
 
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ActivityUser extends AppCompatActivity {
     Toolbar toolbar;
     RelativeLayout gravosPage;
     TextView logout;
+    CircleImageView profile_img;
+    TextView name, myEmail, myName, myAddress;
+    String getName, getImage, getAddress, getEmail;
 
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
@@ -29,8 +35,34 @@ public class ActivityUser extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_user);
+
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        profile_img = findViewById(R.id.profile_img);
+        name = findViewById(R.id.name);
+        myName = findViewById(R.id.myName);
+        myEmail = findViewById(R.id.myEmail);
+        myAddress = findViewById(R.id.myAddress);
+        profile_img = findViewById(R.id.profile_img);
+
+        getName = sessionManager.getString("user_name","");
+        getEmail = sessionManager.getString("user_email", "");
+        getAddress = sessionManager.getString("user_address", "");
+        getImage = sessionManager.getString("user_image", "");
+
+        name.setText(getName);
+        myName.setText(getName);
+        myEmail.setText(getEmail);
+        myAddress.setText(getAddress);
+
+        if(getImage.equals("")){
+            profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
+        }else{
+            Glide.with(ActivityUser.this).load(getImage).into(profile_img);
+        }
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

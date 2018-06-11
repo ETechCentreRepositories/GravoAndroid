@@ -43,10 +43,10 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="#20000000"
+            android:id="@+id/newImage"
             app:srcCompat="@drawable/ic_account_circle" />
 
         <LinearLayout
@@ -68,6 +68,7 @@
                 android:background="@color/white"
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
+                android:id="@+id/uploadImage"
                 android:text="Upload an Image"
                 android:textColor="@color/brand_pink" />
         </LinearLayout>
@@ -92,6 +93,7 @@
             android:text="ACCOUNT INFORMATION" />
 
         <EditText
+            android:inputType="textPersonName"
             android:id="@+id/newName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,8 +103,8 @@
             android:padding="5dp" />
 
         <EditText
+            android:inputType="textEmailAddress"
             android:id="@+id/newEmail"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -111,13 +113,14 @@
             android:padding="5dp" />
 
         <EditText
+            android:inputType="textPostalAddress"
             android:id="@+id/newAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"
             android:background="#05000000"
-            android:hint="Address"
+            android:hint="@string/address"
             android:padding="5dp" />
     </LinearLayout>
 

@@ -37,4 +37,8 @@ Place your fingertip on the Home button to verify your identity
     <string name="string_Piece">Piece</string>
     <string name="string_pieces">Pieces</string>
     <string name="about_gravo">About Gravo</string>
+    <string name="password">Password</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="email">Email</string>
+    <string name="address">Address</string>
 </resources>

@@ -287,4 +287,6 @@ public class Bulk extends Fragment {
 //                bulk_image.setImageBitmap(cameraImage);
         Glide.with(Objects.requireNonNull(getContext())).load(bitmapToByte(Objects.requireNonNull(thumbnail))).into(bulk_image);
     }
+
+
 }
