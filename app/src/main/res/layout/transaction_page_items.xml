@@ -30,19 +30,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-<<<<<<< HEAD
 
-=======
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
                 <LinearLayout
                     android:layout_marginStart="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-<<<<<<< HEAD
 
-=======
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,9 +75,6 @@
             </LinearLayout>
 
 
-
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -100,31 +91,20 @@
                         android:layout_margin="5dp"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-<<<<<<< HEAD
-                        app:srcCompat="@drawable/newspaper"
-=======
-                        android:src="@drawable/newspaper"
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
+                        android:src="@drawable/recycle_paper"
                         android:padding="10dp"
                         android:background="@color/brand_yellow"/>
                     <ImageView
+                        android:src="@drawable/recycle_paper"
                         android:layout_margin="5dp"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-<<<<<<< HEAD
-                        app:srcCompat="@drawable/newspaper"
-=======
-                        android:src="@drawable/newspaper"
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
                         android:padding="10dp"
                         android:background="@color/brand_yellow"/>
 
                 </LinearLayout>
             </HorizontalScrollView>
-<<<<<<< HEAD
-=======
 
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -151,14 +131,10 @@
                 <TextView
                     android:layout_alignParentStart="true"
                     android:textColor="@color/white"
+                    android:text="AWAITING COLLECTION"
                     android:layout_below="@id/statusLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:text="AWAITING COLLECTION"
-=======
-                    android:text="WAITING COLLECTION"
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
                     android:padding="5dp"
                     android:background="@color/grey"/>
                 <TextView

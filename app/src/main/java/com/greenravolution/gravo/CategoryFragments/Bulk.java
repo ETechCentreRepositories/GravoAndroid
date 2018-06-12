@@ -23,12 +23,8 @@ package com.greenravolution.gravo.CategoryFragments;
  */
 
 import android.Manifest;
-<<<<<<< HEAD
+
 import android.app.Activity;
-=======
-import android.app.Dialog;
-import android.content.ContentResolver;
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -125,14 +121,14 @@ public class Bulk extends Fragment {
             }
         } else {
             // Permission has already been granted
-           Log.e("BULK: PERMISSION", "permission granted");
+            Log.e("BULK: PERMISSION", "permission granted");
             selectImage();
 
         }
-
     }
 
-<<<<<<< HEAD
+
+
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -159,34 +155,7 @@ public class Bulk extends Fragment {
 //            }
 //        }
 //    }
-=======
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CAMERA) {
-            if (data == null) {
-                Log.i("BULK ", "Image not taken");
-            } else {
-                Bitmap cameraImage = null;
-                if(data.getData()==null){
-                    cameraImage = (Bitmap)data.getExtras().get("data");
-                }else{
-                    try {
-                        cameraImage = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                Log.d("testing", "onActivityResult: " + data);
-
-                bulk_image.setVisibility(View.VISIBLE);
-                bulk_take_photo.setVisibility(View.GONE);
-                bulk_image.setImageBitmap(cameraImage);
-            }
-        }
-    }
->>>>>>> e3c7c8c2c14c73807a5206dfe181656259ef4348
 
     public void addData() {
         if (null != bulk_image.getDrawable()) {
@@ -253,21 +222,7 @@ public class Bulk extends Fragment {
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
-                        cameraIntent();
-                    else if (userChoosenTask.equals("Choose from Library"))
-                        galleryIntent();
-                } else {
-                    //code for deny
-                }
-                break;
-        }
-    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
