@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     EditText ete, etp;
-    Button bl;
+    Button bl, forgetpassword;
     //    CheckBox ctnc;
     TextView re;
     SharedPreferences sessionManager;
@@ -62,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         ete = findViewById(R.id.getEmail);
         etp = findViewById(R.id.getPassword);
+        forgetpassword = findViewById(R.id.forgetpassword);
+        forgetpassword.setOnClickListener(v->startActivity(new Intent(LoginActivity.this,ForgotPassword.class)));
+
 //        ctnc = findViewById(R.id.rbmMe);
         bl = findViewById(R.id.login);
         re = findViewById(R.id.resultError);
