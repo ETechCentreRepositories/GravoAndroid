@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.greenravolution.gravodriver.MainActivity;
 import com.greenravolution.gravodriver.R;
 import com.greenravolution.gravodriver.functions.HttpReq;
+import com.greenravolution.gravodriver.functions.PostAsyncRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,11 +37,13 @@ public class LoginActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText ete, etp;
     Button bl;
-    CheckBox ctnc;
+    //    CheckBox ctnc;
     TextView re;
     SharedPreferences sessionManager;
     LinearLayout llProgress;
     ImageView progressBar;
+
+    int userstatus;
 
 
     @Override
@@ -59,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         ete = findViewById(R.id.getEmail);
         etp = findViewById(R.id.getPassword);
-        ctnc = findViewById(R.id.rbmMe);
+//        ctnc = findViewById(R.id.rbmMe);
         bl = findViewById(R.id.login);
         re = findViewById(R.id.resultError);
         re.setTextColor(getResources().getColor(R.color.brand_pink));
@@ -83,30 +86,30 @@ public class LoginActivity extends AppCompatActivity {
 
         });
         bl.setOnClickListener(v -> {
-            Intent itmnochk = new Intent(LoginActivity.this, MainActivity.class);
-            itmnochk.putExtra("message", "Welcome Back!");
-            Intent ib = new Intent();
-            ib.putExtra("type", "1");
-            setResult(1, ib);
-            finish();
-            startActivity(itmnochk);
-            // login complete. can be used after front end presentation
-//            boolean networkState1 = checkNetwork();
-//            if (!networkState1) {
-//                Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
-//            } else {
-//                bl.setEnabled(false);
-//                if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
-//                    bl.setEnabled(true);
-//                    re.setText(R.string.invalid_login);
-//                } else {
-//                    llProgress.setVisibility(View.VISIBLE);
-//                    AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
-//                    progressDrawable.start();
-//                    Login login = new Login();
-//                    login.execute("http://bryanlowsk.com/UHoo/API/login.php");
-//                }
-//            }
+
+//            Intent itmnochk = new Intent(LoginActivity.this, MainActivity.class);
+//            Intent ib = new Intent();
+//            ib.putExtra("type", "1");
+//            setResult(1, ib);
+//            finish();
+//            startActivity(itmnochk);
+//             login complete. can be used after front end presentation
+            boolean networkState1 = checkNetwork();
+            if (!networkState1) {
+                Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
+            } else {
+                bl.setEnabled(false);
+                if (ete.getText().toString().isEmpty() || etp.getText().toString().isEmpty()) {
+                    bl.setEnabled(true);
+                    re.setText(R.string.invalid_login);
+                } else {
+                    llProgress.setVisibility(View.VISIBLE);
+                    AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
+                    progressDrawable.start();
+                    Login login = new Login();
+                    login.execute("https://www.greenravolution.com/API/collectorlogin.php");
+                }
+            }
         });
     }
 
@@ -143,117 +146,94 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             HttpReq request = new HttpReq();
-            return request.PostRequest("http://greenravolution.com/API/login.php", "getEmail=" + ete.getText().toString() + "&getPassword=" + etp.getText().toString());
+            return request.PostRequest("https://greenravolution.com/API/collectorlogin.php", "email=" + ete.getText().toString() + "&password=" + etp.getText().toString());
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            re.setText("");
+            Log.e("RESULT LOGIN", s + "");
             llProgress.setVisibility(View.GONE);
             AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
             progressDrawable.stop();
-            if (ctnc.isChecked()) {
-                try {
-                    String role = "";
-                    String userName = "";
-                    String userEmail = "";
-                    String userNumber = "";
-                    String userAddress = "";
-                    JSONObject loginDetails = new JSONObject(s);
-                    int status = loginDetails.getInt("status");
-                    if (status == 200) {
-                        JSONArray getUser = loginDetails.getJSONArray("user");
-                        for (int i = 0; i < getUser.length(); i++) {
-                            JSONObject user = getUser.getJSONObject(i);
-                            userName = user.getString("first_name");
-                            userEmail = user.getString("email");
-                            if (user.getString("address") != null) {
-                                userAddress = user.getString("address");
-                            } else {
-                                userAddress = null;
-                            }
-                            userNumber = user.getString("number");
-                            role = user.getString("role_id");
 
-                        }
-                        if (role.equals("2")) {
-                            Log.e("User Details", "Name: " + userName + "\nRole: " + role + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
-                            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sessionManager.edit();
-                            editor.putString(SESSION_ID, String.valueOf(status));
-                            editor.putString("name", userName);
-                            editor.putString("role", role);
-                            editor.putString("email", userEmail);
-                            editor.putString("number", userNumber);
-                            editor.putString("address", userAddress);
+            try {
+                String userName = "";
+                String userEmail = "";
+                String userNumber = "";
+                String userAddress = "";
 
-                            editor.apply();
-                            Intent itmchk = new Intent(LoginActivity.this, MainActivity.class);
-                            itmchk.putExtra("message", "Welcome Back " + userName + "!");
-                            Intent ib = new Intent();
-                            ib.putExtra("type", "1");
-                            setResult(1, ib);
-                            finish();
-                            startActivity(itmchk);
-                            bl.setEnabled(true);
+                JSONObject loginDetails = new JSONObject(s);
+                int status = loginDetails.getInt("status");
+                if (status == 200) {
+
+                    JSONArray getUser = loginDetails.getJSONArray("users");
+                    for (int i = 0; i < getUser.length(); i++) {
+                        JSONObject user = getUser.getJSONObject(i);
+                        userName = user.getString("first_name");
+                        userEmail = user.getString("email");
+
+
+                        if (user.getString("address") != null) {
+                            userAddress = user.getString("address");
                         } else {
-                            bl.setEnabled(true);
-                            re.setText("This is the Collector's App\nPlease use the Recycler's App\nAlternatively, you can join\nus as a collector!");
+                            userAddress = null;
                         }
+                        userNumber = user.getString("phone");
+                        userstatus = user.getInt("status");
+                    }
+                    if (userstatus == 1) {
+                        re.setText("");
+                        Log.e("User Details", "Name: " + userName + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
+                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sessionManager.edit();
+                        editor.putString(SESSION_ID, String.valueOf(status));
+                        editor.putString("name", userName);
+
+                        editor.putString("email", userEmail);
+                        editor.putString("number", userNumber);
+                        editor.putString("address", userAddress);
+
+                        editor.apply();
+                        Intent itmchk = new Intent(LoginActivity.this, MainActivity.class);
+                        itmchk.putExtra("message", "Welcome Back " + userName + "!");
+                        Intent ib = new Intent();
+                        ib.putExtra("type", "1");
+                        setResult(1, ib);
+                        finish();
+                        startActivity(itmchk);
+                        bl.setEnabled(true);
+                    } else if (userstatus == 0) {
+                        Toast.makeText(LoginActivity.this, "You have not been approved to drive with gravo yet! We will get back to you shortly.\n\nThank you for your patience!", Toast.LENGTH_SHORT).show();
+                        bl.setEnabled(true);
+                        re.setText("");
+                    } else if (userstatus == 2) {
+                        re.setText("");
+                        Toast.makeText(LoginActivity.this, "Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                        bl.setEnabled(true);
                     } else {
-                        re.setText(R.string.invalid_login);
+                        re.setText("");
+                        Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                         bl.setEnabled(true);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else if (status == 403) {
+                    re.setText("");
+                    Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                    bl.setEnabled(true);
+                } else if (status == 404) {
+                    re.setText(R.string.not_registered);
+                    bl.setEnabled(true);
+                } else {
+                    re.setText("");
+                    Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                    bl.setEnabled(true);
                 }
-
-            } else {
-
-                try {
-                    String userName = "";
-                    String userEmail = "";
-                    String userNumber = "";
-                    String role = "";
-                    String userAddress = "";
-                    JSONObject loginDetails = new JSONObject(s);
-                    int status = loginDetails.getInt("status");
-                    if (status == 200) {
-                        JSONArray getUser = loginDetails.getJSONArray("user");
-                        for (int i = 0; i < getUser.length(); i++) {
-                            JSONObject user = getUser.getJSONObject(i);
-                            userName = user.getString("first_name");
-                            userEmail = user.getString("email");
-                            userNumber = user.getString("number");
-                            if (user.getString("address") != null) {
-                                userAddress = user.getString("address");
-                            } else {
-                                userAddress = null;
-                            }
-                            role = user.getString("role_id");
-
-                        }
-                        if (role.equals("2")) {
-                            Log.e("User Details", "Name: " + userName + "\nRole: " + role + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
-                            Intent itmnochk = new Intent(LoginActivity.this, MainActivity.class);
-                            itmnochk.putExtra("message", "Welcome Back!");
-                            Intent ib = new Intent();
-                            ib.putExtra("type", "1");
-                            setResult(1, ib);
-                            finish();
-                            startActivity(itmnochk);
-                        } else {
-                            bl.setEnabled(true);
-                            re.setText("This is the Collector's App\nPlease use the Recycler's App\nAlternatively, you can join\nus as a collector!");
-                        }
-                    } else {
-                        bl.setEnabled(true);
-                        re.setText(R.string.invalid_login);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
+
         }
     }
 }

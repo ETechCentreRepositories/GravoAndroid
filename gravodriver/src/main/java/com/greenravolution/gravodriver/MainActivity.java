@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
 import com.greenravolution.gravodriver.adapters.OrdersAdapter;
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
+import com.greenravolution.gravodriver.functions.HttpReq;
 import com.greenravolution.gravodriver.functions.Rates;
 import com.greenravolution.gravodriver.loginsignup.Login;
 
@@ -29,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,49 +53,50 @@ public class MainActivity extends AppCompatActivity {
     GetAsyncRequest.OnAsyncResult asyncResultUpdateTrans = (resultCode, message) -> {
 
     };
+    GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
+        try {
+            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+            JSONObject results = new JSONObject(message);
+            JSONArray rates = results.getJSONArray("result");
+            Log.e("rates", rates.toString() + "\n");
+            SharedPreferences.Editor editor = sessionManager.edit();
+            editor.putString("rates", rates.toString());
+            editor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    };
     GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
         llProgress.setVisibility(View.GONE);
+        Log.e("GET TRANSACTION ALL: ", message);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
+
         progressDrawable.stop();
         try {
             oal.clear();
             odal.clear();
+            Double price = 0.00;
             JSONObject object = new JSONObject(message);
-            JSONArray results = object.getJSONArray("result");
-            SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            final String rate = sessionManager.getString("rates", "");
-            for (int i = 0; i < results.length(); i++) {
-                JSONObject detail = results.getJSONObject(i);
-                int id = detail.getInt("id");
-                String tc = detail.getString("transaction_code");
-                String tt = detail.getString("transaction_type");
-                String ad = detail.getString("address");
-                String po = detail.getString("postal");
-                int uid = detail.getInt("user_id");
-                int sid = detail.getInt("session_id");
-                int pid = detail.getInt("payment_id");
-                int stid = detail.getInt("status_id");
+            int status = object.getInt("status");
+            if (status == 200) {
+                JSONArray results = object.getJSONArray("result");
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject detail = results.getJSONObject(i);
+                    int id = detail.getInt("id");
+                    String tc = detail.getString("transaction_id_key");
+                    String ad = detail.getString("collection_address");
+                    int uid = detail.getInt("recycler_id");
+                    int stid = detail.getInt("status_id");
+                    String statustype = detail.getString("status_type");
+                    Double totalprice = detail.getDouble("total_price");
 
-                oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
+                    price = price + totalprice;
+                    oal.add(new Orders(id, tc, ad, uid, stid));
+                }
+                DecimalFormat df = new DecimalFormat("####0.00");
+                totalPrice.setText(String.format("Total Price: $%s", String.valueOf(df.format(price))));
+                totalWeight.setText("");
             }
-            JSONArray details = object.getJSONArray("details");
-            for (int i = 0; i < details.length(); i++) {
-                JSONObject detail = details.getJSONObject(i);
-                int id = detail.getInt("id");
-                int transaction_id = detail.getInt("transaction_id");
-                Log.e("transaction id: ", transaction_id + "");
-                String weight = detail.getString("weight");
-                Log.e("Weight", weight + "");
-                String price = detail.getString("price");
-                Log.e("Price", price + "");
-                int cat_id = detail.getInt("transaction_id");
-                odal.add(new OrderDetails(id, transaction_id, weight, price, cat_id));
-                Double totalAmount = rates.EstimateAmountPayment(odal, rate);
-                int getTotalWeight = rates.GetTotalWeight(odal);
-                totalPrice.setText("Total Estimated Price: $" + totalAmount);
-                totalWeight.setText("Total Weight: " + getTotalWeight + "KG");
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -106,13 +110,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        this.getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         llProgress = findViewById(R.id.llProgress);
         progressbar = findViewById(R.id.progressBar);
@@ -138,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
         oad.notifyDataSetChanged();
         // temp
         llProgress.setVisibility(View.GONE);
+
+        GetAsyncRequest asyncRequest = new GetAsyncRequest();
+        asyncRequest.setOnResultListener(getRates);
+        asyncRequest.execute("https://greenravolution.com/API/getCategories.php?type=all");
 
     }
 
@@ -198,14 +206,7 @@ public class MainActivity extends AppCompatActivity {
                     if (Objects.equals(data.getStringExtra("type"), "0")) {
                         Log.e("type", "back button");
                     } else if (Objects.equals(data.getStringExtra("type"), "1")) {
-                        String id = data.getStringExtra("transaction_id");
-                        Log.e("my transaction_id", id);
-                        for (int i = 0; i < oal.size(); i++) {
-                            if (oal.get(i).getId() == Integer.parseInt(id)) {
-                                oal.get(i).setStatus_id(4);
-//                                updateTransaction(Integer.parseInt(id));
-                            }
-                        }
+                        Log.e("type", "transaction done button");
                     }
                 } else {
                     Log.e("type", "phone backpress");
@@ -226,45 +227,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        oal.clear();
+        getTransactions();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         oal.clear();
-        int id = 1;
-        String tc = "Transaction #00001";
-        String tt = "1";
-        String ad = "BLK 279 Tampines Street 22 #08-220";
-        String po = "520279";
-        int uid = 3;
-        int sid = 1;
-        int pid = 2;
-        int stid = 1;
+        getTransactions();
 
-        int id2 = 2;
-        String tc2 = "Transaction #00002";
-        String tt2 = "1";
-        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
-        String po2 = "730159";
-        int uid2 = 3;
-        int sid2 = 2;
-        int pid2 = 2;
-        int stid2 = 4;
-
-        int id3 = 3;
-        String tc3 = "Transaction #00003";
-        String tt3 = "2";
-        String ad3 = "BLK 629 senja road #20-196";
-        String po3 = "670629";
-        int uid3 = 3;
-        int sid3 = 2;
-        int pid3 = 1;
-        int stid3 = 1;
-
-        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
-        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
-        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
+//        int id = 1;
+//        String tc = "Transaction #00001";
+//        String tt = "1";
+//        String ad = "BLK 279 Tampines Street 22 #08-220";
+//        String po = "520279";
+//        int uid = 3;
+//        int sid = 1;
+//        int pid = 2;
+//        int stid = 1;
+//
+//        int id2 = 2;
+//        String tc2 = "Transaction #00002";
+//        String tt2 = "1";
+//        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
+//        String po2 = "730159";
+//        int uid2 = 3;
+//        int sid2 = 2;
+//        int pid2 = 2;
+//        int stid2 = 4;
+//
+//        int id3 = 3;
+//        String tc3 = "Transaction #00003";
+//        String tt3 = "2";
+//        String ad3 = "BLK 629 senja road #20-196";
+//        String po3 = "670629";
+//        int uid3 = 3;
+//        int sid3 = 2;
+//        int pid3 = 1;
+//        int stid3 = 1;
+//
+//        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
+//        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
+//        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
 
 //        getTransactions();
         oad.notifyDataSetChanged();
@@ -274,39 +279,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         oal.clear();
-        int id = 3;
-        String tc = "Transaction #00001";
-        String tt = "1";
-        String ad = "BLK 279 Tampines Street 22 #08-220";
-        String po = "520279";
-        int uid = 3;
-        int sid = 1;
-        int pid = 2;
-        int stid = 1;
-
-        int id2 = 4;
-        String tc2 = "Transaction #00002";
-        String tt2 = "1";
-        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
-        String po2 = "730159";
-        int uid2 = 3;
-        int sid2 = 2;
-        int pid2 = 2;
-        int stid2 = 4;
-
-        int id3 = 5;
-        String tc3 = "Transaction #00003";
-        String tt3 = "2";
-        String ad3 = "BLK 629 senja road #20-196";
-        String po3 = "670629";
-        int uid3 = 3;
-        int sid3 = 2;
-        int pid3 = 1;
-        int stid3 = 1;
-
-        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
-        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
-        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
+        getTransactions();
+//        int id = 3;
+//        String tc = "Transaction #00001";
+//        String tt = "1";
+//        String ad = "BLK 279 Tampines Street 22 #08-220";
+//        String po = "520279";
+//        int uid = 3;
+//        int sid = 1;
+//        int pid = 2;
+//        int stid = 1;
+//
+//        int id2 = 4;
+//        String tc2 = "Transaction #00002";
+//        String tt2 = "1";
+//        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
+//        String po2 = "730159";
+//        int uid2 = 3;
+//        int sid2 = 2;
+//        int pid2 = 2;
+//        int stid2 = 4;
+//
+//        int id3 = 5;
+//        String tc3 = "Transaction #00003";
+//        String tt3 = "2";
+//        String ad3 = "BLK 629 senja road #20-196";
+//        String po3 = "670629";
+//        int uid3 = 3;
+//        int sid3 = 2;
+//        int pid3 = 1;
+//        int stid3 = 1;
+//
+//        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
+//        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
+//        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
 //        getTransactions();
         oad.notifyDataSetChanged();
     }
@@ -317,13 +323,23 @@ public class MainActivity extends AppCompatActivity {
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("https://greenravolution.com/API/transactions.php?get_type=all");
+        asyncRequest.execute("https://www.greenravolution.com/API/gettransaction.php?type=all");
     }
 
-    public void updateTransaction(int id) {
-        GetAsyncRequest asyncRequest = new GetAsyncRequest();
-        asyncRequest.setOnResultListener(asyncResultUpdateTrans);
-        asyncRequest.execute("https://greenravolution.com/admin/rawQuery.php?query=update transaction set status_id = 4 where id = " + id + ";");
+    public static class updatetransaction extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Log.e("id", strings[0]);
+            return req.PostRequest("https://www.greenravolution.com/API/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=3");
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("UPDATE TRANSACTIONS:", s + "");
+        }
     }
 
 }

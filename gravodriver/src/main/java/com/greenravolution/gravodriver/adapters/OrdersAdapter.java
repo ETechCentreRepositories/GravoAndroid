@@ -37,7 +37,6 @@ public class OrdersAdapter extends BaseAdapter {
         this.orders = orders;
     }
 
-
     @Override
     public int getCount() {
         return orders.size();
@@ -78,41 +77,45 @@ public class OrdersAdapter extends BaseAdapter {
             } else {
                 holder = (ViewHolder) view.getTag();
             }
-            if (order.getStatus_id() == 1) {
-                if (order.getTransaction_type().equals("1")) {
-                    //normal pickup
-                    holder.llotw.setVisibility(View.GONE);
-                    String title = "Pickup " + String.valueOf(position + 1);
-                    holder.tt.setText(title);
-                    holder.ta.setText(order.getAddress());
-                    holder.tpc.setText(order.getPostal());
-                    holder.tst.setText(String.valueOf(order.getSession_id()));
-                } else if (order.getTransaction_type().equals("2")) {
-                    //bulk pickup
-                    holder.llotw.setVisibility(View.GONE);
-                    String title = "Pickup " + String.valueOf(position + 1) + " (Bulk)";
-                    holder.tt.setText(title);
-                    holder.ta.setText(order.getAddress());
-                    holder.ta.setTextColor(context.getResources().getColor(R.color.brand_green));
-                    holder.tpc.setText(order.getPostal());
-                    holder.tpc.setTextColor(context.getResources().getColor(R.color.brand_green));
-                    holder.tst.setText(String.valueOf(order.getSession_id()));
-                    holder.tst.setTextColor(context.getResources().getColor(R.color.brand_green));
-                }
-            } else if (order.getStatus_id() == 4) {
+
+            if (order.getStatus_id() == 4) {
+
                 holder.llotw.setVisibility(View.GONE);
                 holder.llarr.setVisibility(View.GONE);
                 String title = "Pickup " + String.valueOf(position + 1) + " (Collected)";
                 holder.tt.setTextColor(context.getResources().getColor(R.color.white));
                 holder.tt.setText(title);
-                holder.ta.setText(order.getAddress());
+                holder.ta.setText("Address: " + order.getAddress());
                 holder.ta.setTextColor(context.getResources().getColor(R.color.white));
-                holder.tpc.setText(order.getPostal());
+                holder.tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
                 holder.tpc.setTextColor(context.getResources().getColor(R.color.white));
-                holder.tst.setText(String.valueOf(order.getSession_id()));
-                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+//                holder.tst.setText(String.valueOf(order.getSession_id()));
+//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
                 holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.grey));
                 holder.llContent.setBackgroundColor(context.getResources().getColor(R.color.grey));
+
+            } else if (order.getStatus_id() == 3) {
+
+                holder.llarr.setVisibility(View.GONE);
+                String title = "Pickup " + String.valueOf(position + 1) + " (Arrived)";
+                holder.tt.setTextColor(context.getResources().getColor(R.color.white));
+                holder.tt.setText(title);
+                holder.ta.setText("Address: " + order.getAddress());
+                holder.ta.setTextColor(context.getResources().getColor(R.color.white));
+                holder.tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+                holder.tpc.setTextColor(context.getResources().getColor(R.color.white));
+//                holder.tst.setText(String.valueOf(order.getSession_id()));
+//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+                holder.cardView.setBackgroundColor(context.getResources().getColor(R.color.brand_pink));
+                holder.llContent.setBackgroundColor(context.getResources().getColor(R.color.brand_pink));
+
+            } else {
+                //normal pickup
+                holder.llotw.setVisibility(View.GONE);
+                String title = "Pickup " + String.valueOf(position + 1);
+                holder.tt.setText(title);
+                holder.ta.setText(String.format("Address: %s", order.getAddress()));
+                holder.tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
             }
 
 //            holder.botw.setOnClickListener(new View.OnClickListener() {
@@ -125,25 +128,27 @@ public class OrdersAdapter extends BaseAdapter {
 
             holder.barr.setOnClickListener(v -> {
                 /// TODO: 14/3/2018 intent to transaction page add in details
-                if (order.getTransaction_type().equals("1")) {
-                    Intent intent = new Intent(context, TransactionDetails.class);
-                    Orders orders = getItem(position);
-                    intent.putExtra("address", orders.getAddress());
-                    intent.putExtra("transaction_id", orders.getTransaction_code());
-                    intent.putExtra("id", orders.getId());
+//                if (order.getTransaction_type().equals("1")) {
+                Intent intent = new Intent(context, TransactionDetails.class);
+                Orders orders = getItem(position);
+                intent.putExtra("address", orders.getAddress());
+                intent.putExtra("transaction_id", orders.getTransaction_code());
+                intent.putExtra("id", orders.getId());
 
-                    ((MainActivity) context).startActivityForResult(intent, 1);
-                } else if (order.getTransaction_type().equals("2")) {
-                    Intent intent = new Intent(context, BulkTransactionDetails.class);
-                    Orders orders = getItem(position);
-                    intent.putExtra("address", orders.getAddress());
-                    intent.putExtra("transaction_id", orders.getTransaction_code());
-                    intent.putExtra("id", orders.getId());
-
-                    ((MainActivity) context).startActivityForResult(intent, 1);
-                } else {
-                    //TODO completed page summary;
-                }
+                MainActivity.updatetransaction updatetransaction = new MainActivity.updatetransaction();
+                updatetransaction.execute(String.valueOf(orders.getId()));
+                ((MainActivity) context).startActivityForResult(intent, 1);
+//                } else if (order.getTransaction_type().equals("2")) {
+//                    Intent intent = new Intent(context, BulkTransactionDetails.class);
+//                    Orders orders = getItem(position);
+//                    intent.putExtra("address", orders.getAddress());
+//                    intent.putExtra("transaction_id", orders.getTransaction_code());
+//                    intent.putExtra("id", orders.getId());
+//
+//                    ((MainActivity) context).startActivityForResult(intent, 1);
+//                } else {
+//                    //TODO completed page summary;
+//                }
 
             });
 
@@ -166,13 +171,10 @@ public class OrdersAdapter extends BaseAdapter {
         return view;
     }
 
-
     private class ViewHolder {
         CardView cardView;
         LinearLayout llotw, llarr, llContent;
         Button botw, barr, bmap;
         TextView tt, ta, tpc, tst;
     }
-
-
 }
