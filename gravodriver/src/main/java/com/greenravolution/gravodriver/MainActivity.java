@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,7 +24,6 @@ import android.widget.TextView;
 
 import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
-import com.greenravolution.gravodriver.adapters.OrdersAdapter;
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
 import com.greenravolution.gravodriver.functions.HttpReq;
 import com.greenravolution.gravodriver.functions.Rates;
@@ -43,13 +46,20 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout llProgress;
     ImageView progressbar;
     ListView orders;
-    OrdersAdapter oad;
+
     ArrayList<Orders> oal;
     ArrayList<OrderDetails> odal;
     TextView collectDate, totalWeight, totalPrice;
     SharedPreferences sessionManager;
     Rates rates = new Rates();
+    LinearLayout list;
     android.support.v7.widget.Toolbar toolbar;
+
+    CardView cardView;
+    LinearLayout llotw, llarr, llContent;
+    Button botw, barr, bmap;
+    TextView tt, ta, tpc, tst;
+
     GetAsyncRequest.OnAsyncResult asyncResultUpdateTrans = (resultCode, message) -> {
 
     };
@@ -74,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         progressDrawable.stop();
         try {
             oal.clear();
+            list.removeAllViews();
             odal.clear();
             Double price = 0.00;
             JSONObject object = new JSONObject(message);
@@ -91,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
                     Double totalprice = detail.getDouble("total_price");
 
                     price = price + totalprice;
-                    oal.add(new Orders(id, tc, ad, uid, stid));
+                    Orders neworder = new Orders(id, tc, ad, uid, stid);
+                    list.addView(initview(neworder, i + 1));
+
                 }
                 DecimalFormat df = new DecimalFormat("####0.00");
                 totalPrice.setText(String.format("Total Price: $%s", String.valueOf(df.format(price))));
@@ -100,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        oad.notifyDataSetChanged();
+
 
     };
 
@@ -120,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         llProgress = findViewById(R.id.llProgress);
         progressbar = findViewById(R.id.progressBar);
+        list = findViewById(R.id.list);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -137,9 +151,6 @@ public class MainActivity extends AppCompatActivity {
         totalPrice = findViewById(R.id.totalPrice);
         totalWeight = findViewById(R.id.totalWeight);
         collectDate.setText(String.format("Pickups for Today: %s", date));
-        oad = new OrdersAdapter(MainActivity.this, oal);
-        orders.setAdapter(oad);
-        oad.notifyDataSetChanged();
         // temp
         llProgress.setVisibility(View.GONE);
 
@@ -227,14 +238,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        oal.clear();
         getTransactions();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        oal.clear();
+
         getTransactions();
 
 //        int id = 1;
@@ -272,13 +282,12 @@ public class MainActivity extends AppCompatActivity {
 //        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
 
 //        getTransactions();
-        oad.notifyDataSetChanged();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        oal.clear();
         getTransactions();
 //        int id = 3;
 //        String tc = "Transaction #00001";
@@ -314,7 +323,6 @@ public class MainActivity extends AppCompatActivity {
 //        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
 //        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
 //        getTransactions();
-        oad.notifyDataSetChanged();
     }
 
     public void getTransactions() {     //get list of items
@@ -323,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("https://www.greenravolution.com/API/gettransaction.php?type=all");
+        asyncRequest.execute("https://www.greenravolution.com/API/gettransaction.php?type=today");
     }
 
     public static class updatetransaction extends AsyncTask<String, Void, String> {
@@ -340,6 +348,112 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             Log.e("UPDATE TRANSACTIONS:", s + "");
         }
+    }
+
+    public View initview(Orders order, int position) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        View view = inflater.inflate(R.layout.schedule_item, null);
+
+        cardView = view.findViewById(R.id.cardView);
+        tt = view.findViewById(R.id.pickupTitle);
+        ta = view.findViewById(R.id.pickupAddress);
+        tpc = view.findViewById(R.id.pickupPostal);
+        tst = view.findViewById(R.id.pickupTiming);
+        botw = view.findViewById(R.id.botw);
+        barr = view.findViewById(R.id.barr);
+        bmap = view.findViewById(R.id.bmap);
+        llarr = view.findViewById(R.id.llarr);
+        llotw = view.findViewById(R.id.llotw);
+        llContent = view.findViewById(R.id.llContent);
+
+
+        if (order.getStatus_id() == 4) {
+
+            llotw.setVisibility(View.GONE);
+            llarr.setVisibility(View.GONE);
+            String title = "Pickup " + String.valueOf(position) + " (Collected)";
+            tt.setTextColor(getResources().getColor(R.color.white));
+            tt.setText(title);
+            ta.setText("Address: " + order.getAddress());
+            ta.setTextColor(getResources().getColor(R.color.white));
+            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+            tpc.setTextColor(getResources().getColor(R.color.white));
+//                holder.tst.setText(String.valueOf(order.getSession_id()));
+//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+            cardView.setBackgroundColor(getResources().getColor(R.color.grey));
+            llContent.setBackgroundColor(getResources().getColor(R.color.grey));
+
+        } else if (order.getStatus_id() == 3) {
+
+            llotw.setVisibility(View.GONE);
+            llarr.setVisibility(View.VISIBLE);
+            String title = "Pickup " + String.valueOf(position) + " (Arrived)";
+            tt.setTextColor(getResources().getColor(R.color.white));
+            tt.setText(title);
+            ta.setText("Address: " + order.getAddress());
+            ta.setTextColor(getResources().getColor(R.color.white));
+            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+            tpc.setTextColor(getResources().getColor(R.color.white));
+//                holder.tst.setText(String.valueOf(order.getSession_id()));
+//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+
+        } else {
+            //normal pickup
+            String title = "Pickup " + String.valueOf(position);
+            tt.setText(title);
+            ta.setText(String.format("Address: %s", order.getAddress()));
+            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+        }
+
+//            holder.botw.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    holder.llarr.setVisibility(View.VISIBLE);
+//                    holder.llotw.setVisibility(View.GONE);
+//                }
+//            });
+
+        barr.setOnClickListener(v -> {
+            /// TODO: 14/3/2018 intent to transaction page add in details
+//                if (order.getTransaction_type().equals("1")) {
+            Intent intent = new Intent(MainActivity.this, TransactionDetails.class);
+            Orders orders = order;
+            intent.putExtra("address", orders.getAddress());
+            intent.putExtra("transaction_id", orders.getTransaction_code());
+            intent.putExtra("id", orders.getId());
+
+            MainActivity.updatetransaction updatetransaction = new MainActivity.updatetransaction();
+            updatetransaction.execute(String.valueOf(orders.getId()));
+            startActivityForResult(intent, 1);
+//                } else if (order.getTransaction_type().equals("2")) {
+//                    Intent intent = new Intent(context, BulkTransactionDetails.class);
+//                    Orders orders = getItem(position);
+//                    intent.putExtra("address", orders.getAddress());
+//                    intent.putExtra("transaction_id", orders.getTransaction_code());
+//                    intent.putExtra("id", orders.getId());
+//
+//                    ((MainActivity) context).startActivityForResult(intent, 1);
+//                } else {
+//                    //TODO completed page summary;
+//                }
+
+        });
+
+        bmap.setOnClickListener(v -> {
+            // Create a Uri from an intent string. Use the result to create an Intent.
+            String url = "https://www.google.com/maps/dir/?api=1&destination=" + order.getAddress() + "&travelmode=driving";
+            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            // Make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage("com.google.android.apps.maps");
+            // Attempt to start an activity that can handle the Intent
+            startActivity(mapIntent);
+        });
+
+        return view;
     }
 
 }

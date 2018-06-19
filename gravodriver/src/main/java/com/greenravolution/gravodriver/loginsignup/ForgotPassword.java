@@ -34,7 +34,6 @@ Toolbar toolbar;
                 GetForgotPassword getForgotPassword = new GetForgotPassword();
                 getForgotPassword.execute();
             }
-
         });
 
     }
