@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
+
         Toolbar toolbar;
         EditText ete, etfn, etln, etnum, etadd, etic, etpw, etli, etvl;
         Button bca;
@@ -45,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         SharedPreferences sessionManager;
         int userstatus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,6 @@ public class RegisterActivity extends AppCompatActivity {
         llProgress = findViewById(R.id.avi);
         progressBar = findViewById(R.id.progressBar);
         HideProgress();
-
         bca = findViewById(R.id.signup);
         ctnc = findViewById(R.id.ctnc);
         rl = findViewById(R.id.rl);
@@ -110,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
 //                    finish();
 //                    startActivity(itmn);
                     ShowProgress();
+
                     Register register = new Register();
                     register.execute("https://greenravolution.com/API/collectorsignup.php");
 
@@ -161,6 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
             HideProgress();
             Log.e("ONPOSTEX SIGNUP: ",s);
             try {
@@ -172,7 +176,8 @@ public class RegisterActivity extends AppCompatActivity {
                 JSONObject result = new JSONObject(s);
                 int status = result.getInt("status");
                 if(status == 200){
-                    JSONArray getUser = result.getJSONArray("result");
+
+                    JSONArray getUser = result.getJSONArray("users");
                     for (int i = 0; i < getUser.length(); i++) {
                         JSONObject user = getUser.getJSONObject(i);
                         userstatus = user.getInt("status");
@@ -196,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(itmchk);
 
                     }else if(userstatus == 0){
-                        Toast.makeText(RegisterActivity.this,"Thank you for registering! We will get back to you shortly.\n\nThank you for your patience!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this,"You have not been approved to drive with Gravo yet! We will get back to you shortly.\n\nThank you for your patience!",Toast.LENGTH_SHORT).show();
 
                     }else if (userstatus == 2){
                         Toast.makeText(RegisterActivity.this,"Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
@@ -206,6 +211,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     }
                 }else if(status == 404){
+
                     Toast.makeText(RegisterActivity.this,"You have already registered!",Toast.LENGTH_SHORT).show();
                 }else if(status == 400){
                     Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
@@ -225,5 +231,6 @@ public class RegisterActivity extends AppCompatActivity {
         AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
         progressDrawable.stop();
     }
+
 }
 

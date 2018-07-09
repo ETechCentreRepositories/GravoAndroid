@@ -122,6 +122,7 @@ public class Rates {
                             return R.drawable.ewaste_lcd_screen;
                         case "E-Waste | LCD Screen (Cracked)":
                             return R.drawable.ewaste_lcd_screen;
+
                     }
                 }
             }

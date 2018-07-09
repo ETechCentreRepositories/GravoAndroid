@@ -235,7 +235,7 @@ public class TransactionDetails extends AppCompatActivity {
         String rate = getRates.getRate(details.getCategory_id(), rates);
         String category = getRates.getItem(details.getCategory_id(), rates);
         itemImg.setBackgroundColor(getResources().getColor(getRates.getImageColour(details.getCategory_id(), rates)));
-        itemImg.setImageDrawable(getDrawable(getRates.getImage(details.getCategory_id(), rates)));
+        itemImg.setImageDrawable(getResources().getDrawable(getRates.getImage(details.getCategory_id(), rates)));
         getTitle.setText(category);
         getRate.setText(rate);
         getPrice.setText(String.format("$%s", df2.format(price)));
