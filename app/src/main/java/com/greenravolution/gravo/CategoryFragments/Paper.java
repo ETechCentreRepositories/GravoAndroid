@@ -1,14 +1,10 @@
 package com.greenravolution.gravo.CategoryFragments;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
-import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.functions.Rates;
-import com.greenravolution.gravo.login.LoginActivity;
 import com.greenravolution.gravo.objects.API;
 
 import org.json.JSONArray;
@@ -37,13 +30,12 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
  * A simple {@link Fragment} subclass.
  */
 public class Paper extends Fragment {
-    LinearLayout paperContents;
     public static final String SESSION = "login_status";
+    LinearLayout paperContents;
     int weightInt = 0;
 
 
     SharedPreferences sessionManager;
-
 
 
     public Paper() {
@@ -110,18 +102,18 @@ public class Paper extends Fragment {
                 int itemId = rate.getId();
                 String chosenItemRate = rate.getRate();
                 SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                int id = preferences.getInt("user_id",0);
+                int id = preferences.getInt("user_id", 0);
 
                 int indexOfSlash = chosenItemRate.indexOf('/');
-                double itemPrice = Double.parseDouble(chosenItemRate.substring(0,indexOfSlash));
+                double itemPrice = Double.parseDouble(chosenItemRate.substring(0, indexOfSlash));
 
-                double totalPrice = getWeight*itemPrice;
+                double totalPrice = getWeight * itemPrice;
 
                 AsyncAddCartDetails add = new AsyncAddCartDetails();
-                String[] paramsArray = {links.addCartDetails(),id+"",getWeight+"",totalPrice+"",itemId+""};
+                String[] paramsArray = {links.addCartDetails(), id + "", getWeight + "", totalPrice + "", itemId + ""};
                 add.execute(paramsArray);
 
-                Toast.makeText(getContext(),  " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
 
             }
         });

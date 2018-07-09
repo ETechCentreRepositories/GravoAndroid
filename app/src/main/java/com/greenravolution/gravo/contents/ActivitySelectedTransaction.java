@@ -3,10 +3,8 @@ package com.greenravolution.gravo.contents;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,27 +18,23 @@ import android.widget.TextView;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.Rates;
 import com.greenravolution.gravo.functions.asyncGetSelectedTransaction;
-import com.greenravolution.gravo.objects.API;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ActivitySelectedTransaction extends AppCompatActivity {
+    public static final String SESSION = "login_status";
     Toolbar toolbar;
     TextView title;
     LinearLayout detailList, progressbar;
-
     SharedPreferences sessionManager;
-    public static final String SESSION = "login_status";
-
-
     asyncGetSelectedTransaction.OnAsyncResult getSelectedTransaction = (resultCode, message) -> {
         Log.i("ActivitySelected", message);
         HideProgress();
-        try{
+        try {
             JSONObject messageObject = new JSONObject(message);
-            if(messageObject.getInt("status") == 200){
+            if (messageObject.getInt("status") == 200) {
                 JSONArray detailsArray = messageObject.getJSONArray("detailsArray");
                 JSONArray transactionArray = messageObject.getJSONArray("transactionArray");
                 JSONObject transactionObject = transactionArray.getJSONObject(0);
@@ -60,7 +54,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 TextView tvPrice = findViewById(R.id.tvPrice);
                 TextView tvWeight = findViewById(R.id.tvWeight);
 
-                Log.i("id key",transactionObject.getString("transaction_id_key"));
+                Log.i("id key", transactionObject.getString("transaction_id_key"));
                 tvTransaction.setText(String.format("TRANSACTION #%s", transactionObject.getString("transaction_id_key")));
                 tvStatus.setText(transactionObject.getString("status_type"));
                 tvDate.setText(transactionObject.getString("collection_date"));
@@ -83,27 +77,25 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 tvBillingAddress.setText(transactionObject.getString("collection_address"));
                 tvBillingContact.setText(transactionObject.getString("collection_contact_number"));
                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                tvBillingEmail.setText(sessionManager.getString("user_email","No Email"));
+                tvBillingEmail.setText(sessionManager.getString("user_email", "No Email"));
 
                 Double totalPrice = 0.0;
-                for(int detail=0; detail<detailsArray.length(); detail++){
+                for (int detail = 0; detail < detailsArray.length(); detail++) {
                     totalPrice = totalPrice + Double.parseDouble((detailsArray.getJSONObject(detail)).getString("price"));
                 }
-                tvPrice.setText("$"+totalPrice);
-
-
+                tvPrice.setText("$" + totalPrice);
 
 
                 //Populating details layout
-                if(detailsArray.length() > 0){
+                if (detailsArray.length() > 0) {
                     detailList = findViewById(R.id.transaction_details_list);
-                    for(int detail = 0; detail<detailsArray.length(); detail++){
+                    for (int detail = 0; detail < detailsArray.length(); detail++) {
                         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
                         View view_selected_transaction;
                         if (inflater != null) {
                             view_selected_transaction = inflater.inflate(R.layout.selected_transaction, null);
                             ImageView ivDetailImage;
-                            TextView tvDetailTitle,tvDetailPrice,tvDetailRate,tvDetailWeight;
+                            TextView tvDetailTitle, tvDetailPrice, tvDetailRate, tvDetailWeight;
 
                             ivDetailImage = view_selected_transaction.findViewById(R.id.ivImage);
                             tvDetailTitle = view_selected_transaction.findViewById(R.id.tvTitle);
@@ -114,7 +106,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             JSONObject detailObject = detailsArray.getJSONObject(detail);
 
                             String categoryType = detailObject.getString("category_type");
-                            String formattedType = categoryType.substring(0,categoryType.indexOf(" "));
+                            String formattedType = categoryType.substring(0, categoryType.indexOf(" "));
 
                             Rates rateClass = new Rates();
                             ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
@@ -124,9 +116,9 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
                             tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
 
-                            if(formattedType.equals("Paper") || formattedType.equals("Metals")){
+                            if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
                                 tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
-                            } else if (formattedType.equals("E-Waste")){
+                            } else if (formattedType.equals("E-Waste")) {
                                 tvDetailWeight.setText(String.format("%s Piece(s)", detailObject.getString("weight")));
                             }
                             detailList.addView(view_selected_transaction);
@@ -138,10 +130,11 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
             }
 
-        }catch(JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,13 +151,14 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         getSelected.setOnResultListener(getSelectedTransaction);
 
         Bundle extras = getIntent().getExtras();
-        int chosenID = extras.getInt("intChosenID",0);
-        Log.i("chosenID",chosenID+"");
-        String[] paramsArray = {chosenID+""};
-ShowProgress();
+        int chosenID = extras.getInt("intChosenID", 0);
+        Log.i("chosenID", chosenID + "");
+        String[] paramsArray = {chosenID + ""};
+        ShowProgress();
         getSelected.execute(paramsArray);
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -183,6 +177,7 @@ ShowProgress();
         getMenuInflater().inflate(R.menu.needhelp_menu, menu);//Menu Resource, Menu
         return true;
     }
+
     public void HideProgress() {
         progressbar.setVisibility(View.GONE);
     }

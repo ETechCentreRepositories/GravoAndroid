@@ -43,25 +43,25 @@ public class Metals extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_metals, container, false);
+        View view = inflater.inflate(R.layout.fragment_metals, container, false);
 
         paperContents = view.findViewById(R.id.paperContents);
         SharedPreferences sessionManager = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         String rates = sessionManager.getString("rates", "");
         try {
             JSONArray array = new JSONArray(rates);
-            for(int i =0; i< array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
                 int id = object.getInt("id");
                 String types = object.getString("type");
                 String[] type = types.split(" ");
-                if(type[0].contains("Metals")){
+                if (type[0].contains("Metals")) {
                     String rat = object.getString("rate");
                     String typeName = "";
-                    for(int j = 2; j < type.length; j++){
-                        typeName += type[j]+" ";
+                    for (int j = 2; j < type.length; j++) {
+                        typeName += type[j] + " ";
                     }
-                    com.greenravolution.gravo.objects.Rates rate = new com.greenravolution.gravo.objects.Rates(id,types,rat);
+                    com.greenravolution.gravo.objects.Rates rate = new com.greenravolution.gravo.objects.Rates(id, types, rat);
                     paperContents.addView(initView(rate));
                 }
             }
@@ -72,12 +72,12 @@ public class Metals extends Fragment {
         return view;
     }
 
-    public View initView(com.greenravolution.gravo.objects.Rates rate){
+    public View initView(com.greenravolution.gravo.objects.Rates rate) {
         Rates rateClass = new Rates();
         API links = new API();
 
         LayoutInflater inflater2 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View contents = inflater2.inflate(R.layout.category_page_items,null);
+        View contents = inflater2.inflate(R.layout.category_page_items, null);
         LinearLayout itemView = contents.findViewById(R.id.item);
         TextView itemName = contents.findViewById(R.id.itemName);
         TextView itemRate = contents.findViewById(R.id.itemRate);
@@ -94,27 +94,27 @@ public class Metals extends Fragment {
                 int itemId = rate.getId();
                 String chosenItemRate = rate.getRate();
                 SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                int id = preferences.getInt("user_id",0);
+                int id = preferences.getInt("user_id", 0);
 
                 int indexOfSlash = chosenItemRate.indexOf('/');
-                double itemPrice = Double.parseDouble(chosenItemRate.substring(0,indexOfSlash));
+                double itemPrice = Double.parseDouble(chosenItemRate.substring(0, indexOfSlash));
 
-                double totalPrice = getWeight*itemPrice;
+                double totalPrice = getWeight * itemPrice;
 
                 AsyncAddCartDetails add = new AsyncAddCartDetails();
-                String[] paramsArray = {links.addCartDetails(),id+"",getWeight+"",totalPrice+"",itemId+""};
+                String[] paramsArray = {links.addCartDetails(), id + "", getWeight + "", totalPrice + "", itemId + ""};
                 add.execute(paramsArray);
 
-                Toast.makeText(getContext(),  " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
 
             }
         });
 
         itemsWeight.setText(String.valueOf(weightInt));
-        itemMinus.setOnClickListener((View v) ->{
-            if(itemsWeight.getText().toString().equals("")){
+        itemMinus.setOnClickListener((View v) -> {
+            if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
-            }else {
+            } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
                 if (getWeight <= 0) {
 
@@ -127,12 +127,12 @@ public class Metals extends Fragment {
         });
 
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
-        itemPlus.setOnClickListener((View v)->{
-            if(itemsWeight.getText().toString().equals("")){
+        itemPlus.setOnClickListener((View v) -> {
+            if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
-            }else{
+            } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-                getWeight = getWeight+1;
+                getWeight = getWeight + 1;
                 itemsWeight.setText(String.valueOf(getWeight));
             }
 
@@ -146,7 +146,7 @@ public class Metals extends Fragment {
         String[] type = rate.getType().split(" ");
         StringBuilder typeName = new StringBuilder();
 
-        for(int j = 2; j < type.length; j++){
+        for (int j = 2; j < type.length; j++) {
             Log.e("String: ", type[j]);
             typeName.append(type[j]).append(" ");
         }
@@ -154,7 +154,7 @@ public class Metals extends Fragment {
         String item = typeName.toString();
         Log.e("String put together", item);
         String[] splitItem = item.split("-");
-        Log.e("splitItem: ", splitItem.length+"");
+        Log.e("splitItem: ", splitItem.length + "");
 
         itemName.setText(String.format("%s\n%s", splitItem[0], splitItem[1]));
 

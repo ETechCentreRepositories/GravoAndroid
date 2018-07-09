@@ -96,18 +96,18 @@ public class EWaste extends Fragment {
                 String chosenItemRate = rate.getRate();
 
                 SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                int id = preferences.getInt("user_id",0);
+                int id = preferences.getInt("user_id", 0);
 
                 int indexOfSlash = chosenItemRate.indexOf('/');
-                double itemPrice = Double.parseDouble(chosenItemRate.substring(0,indexOfSlash));
+                double itemPrice = Double.parseDouble(chosenItemRate.substring(0, indexOfSlash));
 
-                double totalPrice = getWeight*itemPrice;
+                double totalPrice = getWeight * itemPrice;
 
                 AsyncAddCartDetails add = new AsyncAddCartDetails();
-                String[] paramsArray = {links.addCartDetails(),id+"",getWeight+"",totalPrice+"",itemId+""};
+                String[] paramsArray = {links.addCartDetails(), id + "", getWeight + "", totalPrice + "", itemId + ""};
                 add.execute(paramsArray);
 
-                Toast.makeText(getContext(),  " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
             }
         });
 

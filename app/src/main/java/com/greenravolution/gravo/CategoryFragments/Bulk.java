@@ -258,12 +258,12 @@ public class Bulk extends Fragment {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         assert thumbnail != null;
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-            File destination = new File(Environment.getExternalStorageDirectory(),
-                    System.currentTimeMillis() + ".jpg");
-            FileOutputStream fo;
-            try {
-                destination.createNewFile();
-                fo = new FileOutputStream(destination);
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
             fo.write(bytes.toByteArray());
             fo.close();
         } catch (IOException e) {
@@ -276,6 +276,7 @@ public class Bulk extends Fragment {
 //                bulk_image.setImageBitmap(cameraImage);
         Glide.with(Objects.requireNonNull(getContext())).load(bitmapToByte(Objects.requireNonNull(thumbnail))).into(bulk_image);
     }
+
     private String bitmapToBase64(Bitmap bitmap) {
         String encodedImage = "";
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

@@ -2,11 +2,10 @@ package com.greenravolution.gravo.contents;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,9 +36,9 @@ public class ActivityCategories extends AppCompatActivity {
         View headerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.custom_tabs, null, false);
 
-        LinearLayout ll1 =  headerView.findViewById(R.id.ll1);
-        LinearLayout ll2 =  headerView.findViewById(R.id.ll2);
-        LinearLayout ll3 =  headerView.findViewById(R.id.ll3);
+        LinearLayout ll1 = headerView.findViewById(R.id.ll1);
+        LinearLayout ll2 = headerView.findViewById(R.id.ll2);
+        LinearLayout ll3 = headerView.findViewById(R.id.ll3);
         LinearLayout ll4 = headerView.findViewById(R.id.ll4);
         tab.addTab(tab.newTab().setText("PAPER").setCustomView(ll1));
         tab.addTab(tab.newTab().setText("E-WASTE").setCustomView(ll2));
@@ -51,7 +50,7 @@ public class ActivityCategories extends AppCompatActivity {
                 (getSupportFragmentManager(), tab.getTabCount());
         viewPager.setAdapter(adapter);
         Intent intent = getIntent();
-        viewPager.setCurrentItem(intent.getIntExtra("category",0));
+        viewPager.setCurrentItem(intent.getIntExtra("category", 0));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));
         tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -71,9 +70,11 @@ public class ActivityCategories extends AppCompatActivity {
             }
         });
     }
-    public int getCurrentTab(){
+
+    public int getCurrentTab() {
         return viewPager.getCurrentItem();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -91,6 +92,7 @@ public class ActivityCategories extends AppCompatActivity {
         }
         return false;
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_menu, menu);//Menu Resource, Menu

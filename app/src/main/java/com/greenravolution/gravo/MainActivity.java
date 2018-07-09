@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     CloseDrawer();
                     return true;
                 case R.id.share:
+
                     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
                     String shareBody = "I Just downloaded this cool new recycling app!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";

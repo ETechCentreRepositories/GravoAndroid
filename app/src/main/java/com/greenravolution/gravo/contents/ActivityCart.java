@@ -3,24 +3,15 @@ package com.greenravolution.gravo.contents;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.RingtoneManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Telephony;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,14 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.greenravolution.gravo.CategoryFragments.AsyncAddCartDetails;
-import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.AsyncAddTransaction;
 import com.greenravolution.gravo.functions.AsyncDeleteCartDetails;
 import com.greenravolution.gravo.functions.AsyncEditCartDetails;
 import com.greenravolution.gravo.functions.GetAsyncRequest;
-import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.functions.PickUpDayReminder;
 import com.greenravolution.gravo.functions.Rates;
 import com.greenravolution.gravo.objects.API;
@@ -48,7 +36,6 @@ import com.greenravolution.gravo.objects.API;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,9 +62,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
 
     int no_of_items = 0;
-
-    private int mYear, mMonth, mDay;
-
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
             JSONObject result = new JSONObject(message);
@@ -117,7 +101,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     if (catid == 14 || catid == 15 || catid == 16 || catid == 17 || catid == 18 || catid == 19) {
                         totalPiece = totalPiece + itemTotalPiece;
                         totalPrice = totalPrice + itemTotalPrice;
-                    }else{
+                    } else {
                         Log.e("price", itemTotalPrice + "");
                         itemRate = "";
 
@@ -155,7 +139,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 }
 
                 tvTotalPrice.setText(String.format("$%.2f", totalPrice));
-                tvTotalWeight.setText(String.valueOf(totalWeight)+"KG (Normal), "+String.valueOf(totalPiece)+" Pieces(E-waste)");
+                tvTotalWeight.setText(String.valueOf(totalWeight) + "KG (Normal), " + String.valueOf(totalPiece) + " Pieces(E-waste)");
             }
 
 
@@ -163,6 +147,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             e.printStackTrace();
         }
     };
+    private int mYear, mMonth, mDay;
 
     public View initView(String[] itemArray) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -239,7 +224,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     noOfItems.setText(newNumberOfItems + " item(s)");
 
                     view.setVisibility(View.GONE);
-                    no_of_items = no_of_items-1;
+                    no_of_items = no_of_items - 1;
                     tvNoOfItems = findViewById(R.id.no_of_items);
                     tvNoOfItems.setText(no_of_items + " item(s)");
                     Toast.makeText(ActivityCart.this, "Deleted", Toast.LENGTH_SHORT).show();
@@ -352,8 +337,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         EditText etRemarks = findViewById(R.id.etRemarks);
         TextView tvTotalPrice = findViewById(R.id.totalPrice);
         TextView tvTotalWeight = findViewById(R.id.totalWeight);
-        etPhone.setText(preferences.getString("user_contact",""));
-        etAddress.setText(preferences.getString("user_address",""));
+        etPhone.setText(preferences.getString("user_contact", ""));
+        etAddress.setText(preferences.getString("user_address", ""));
 
         cash = findViewById(R.id.cash);
         cash.setOnClickListener(v -> {
@@ -394,10 +379,10 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 calAlarm.set(Calendar.MONTH, Integer.parseInt(getdatesplit[1]));
                 calAlarm.set(Calendar.YEAR, Integer.parseInt(getdatesplit[2]));
                 calAlarm.set(Calendar.HOUR, 0);
-                calAlarm.set(Calendar.HOUR_OF_DAY,0);
+                calAlarm.set(Calendar.HOUR_OF_DAY, 0);
                 calAlarm.set(Calendar.MINUTE, 0);
                 calAlarm.set(Calendar.SECOND, 5);
-                calAlarm.set(Calendar.AM_PM,0);
+                calAlarm.set(Calendar.AM_PM, 0);
 
 
                 setAlarmForPickUpDay(calAlarm);
@@ -443,7 +428,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         DatePicker datePicker = datePickerDialog.getDatePicker();
 
         Calendar minC = Calendar.getInstance();
-        minC.add(Calendar.DAY_OF_YEAR,1);
+        minC.add(Calendar.DAY_OF_YEAR, 1);
         long minDate = minC.getTimeInMillis();
 
         Calendar current = Calendar.getInstance();
@@ -464,41 +449,17 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         return false;
     }
 
-    public void setAlarmForPickUpDay(Calendar calAlarm){
-        Log.i("calAlarm Status",calAlarm.toString());
+    public void setAlarmForPickUpDay(Calendar calAlarm) {
+        Log.i("calAlarm Status", calAlarm.toString());
         Intent iReminder = new Intent(this, PickUpDayReminder.class);
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(this, 1234, iReminder,
                         PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(),pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //    Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
