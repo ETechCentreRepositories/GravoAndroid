@@ -45,170 +45,30 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/tvTransaction"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
                     android:padding="5dp"
-                    android:text="TRANSACTION #10091983294823" />
+                    android:text="TRANSACTION #" />
 
                 <LinearLayout
+                    android:id="@+id/transaction_details_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@color/brand_yellow"
-                        android:padding="10dp"
-                        app:srcCompat="@drawable/newspaper" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PAPER | OLD NEWSPAPER" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_bold"
-                            android:text="$6.00" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="WEIGHT" />
-
-                            <android.support.v4.widget.Space
-                                android:layout_width="30dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="30KG" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="AMOUNT" />
-
-                            <android.support.v4.widget.Space
-                                android:layout_width="30dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$0.11/KG" />
-                        </LinearLayout>
+                    android:orientation="vertical">
 
 
-                    </LinearLayout>
+
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="10dp"
-                    android:background="#30000000" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@color/brand_yellow"
-                        android:padding="10dp"
-                        app:srcCompat="@drawable/newspaper" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PAPER | OLD NEWSPAPER" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_bold"
-                            android:text="$6.00" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="WEIGHT" />
-
-                            <android.support.v4.widget.Space
-                                android:layout_width="30dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="30KG" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="AMOUNT" />
-
-                            <android.support.v4.widget.Space
-                                android:layout_width="30dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$0.11/KG" />
-                        </LinearLayout>
-
-
-                    </LinearLayout>
-                </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
                     android:paddingTop="10dp"
-                    android:text="WAITING COLLECTION"
                     android:textColor="@color/brand_green"
                     android:textSize="20sp" />
 
@@ -226,7 +86,6 @@
                         android:id="@+id/date_of_collection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="20 sep 2018"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -310,7 +169,6 @@
                         android:id="@+id/transaction_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Awaiting collection date"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -327,13 +185,6 @@
                         android:layout_margin="10dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/quicksand_bold"
-                            android:text="15th Sep, 2018"
-                            android:textAlignment="center" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -342,17 +193,17 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="11:00 AM" />
+                                android:layout_height="wrap_content" />
 
                             <android.support.v4.widget.Space
                                 android:layout_width="20dp"
                                 android:layout_height="wrap_content" />
 
                             <TextView
+                                android:id="@+id/tvStatusDetails"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Items Scheduled to be picked up on 20th September 2018" />
+                                android:text="Items Scheduled to be picked up on " />
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -380,28 +231,28 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvBillingName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand_bold"
-                        android:text="Ryme Hobbs"
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/tvBillingAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Blk Blk 234 Tampines street 22"
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/tvBillingEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ryme_hobbs@gmail.com"
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/tvBillingContact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+65 97923432"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -414,41 +265,58 @@
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="10dp">
+
                 <TextView
                     android:id="@+id/weightLabel"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL WEIGHT"/>
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="TOTAL WEIGHT" />
+
                 <TextView
                     android:id="@+id/priceLabel"
-                    android:layout_below="@+id/weightLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_below="@+id/weightLabel"
+                    android:text="TOTAL ESTIMATED PRICE" />
+
+                <TextView
+                    android:id="@+id/tvWeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL ESTIMATED PRICE"/>
-                <TextView
-                    android:fontFamily="@font/quicksand_bold"
-                    android:id="@+id/weight"
-                    android:textColor="@color/black"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="60KG"/>
-                <TextView
-                    android:textColor="@color/black"
                     android:fontFamily="@font/quicksand_bold"
-                    android:id="@+id/price"
-                    android:layout_below="@+id/weight"
-                    android:layout_alignParentEnd="true"
+                    android:text="N/A"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$12.00"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/tvWeight"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="$0.00"
+                    android:textColor="@color/black" />
 
             </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#90000000"
+        android:gravity="center">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:indicatorName="BallClipRotateMultipleIndicator"
+            app:indicatorColor="@color/brand_green"/>
+    </LinearLayout>
 </RelativeLayout>

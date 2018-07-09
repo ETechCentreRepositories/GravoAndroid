@@ -14,13 +14,15 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/item_left_design_transaction"/>
+
     <TextView
-        android:textColor="@color/white"
+        android:id="@+id/tvDay"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:text="11"
-        android:textSize="45sp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:textColor="@color/white"
+        android:textSize="45sp" />
     <LinearLayout
         android:padding="10dp"
         android:layout_width="match_parent"
@@ -32,11 +34,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="COLLECTION"/>
+
         <TextView
-            android:textColor="@color/white"
-            android:textSize="15sp"
+            android:id="@+id/tvDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Friday 5.25pm, Transaction: #10991"/>
+            android:text="Friday 5.25pm, Transaction: #10991"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

@@ -66,17 +66,17 @@
 
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:background="@color/brand_pink"
-                android:drawableStart="@drawable/ic_add"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="Add New"
-                android:textColor="@color/white" />
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:background="@color/brand_pink"-->
+                <!--android:drawableStart="@drawable/ic_add"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="15dp"-->
+                <!--android:text="Add New"-->
+                <!--android:textColor="@color/white" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,7 +171,6 @@
                 android:textColor="@color/white" />
 
             <Button
-
                 android:id="@+id/cfmPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -25,6 +25,7 @@ package com.greenravolution.gravo.CategoryFragments;
 import android.Manifest;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -36,6 +37,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,12 +49,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.greenravolution.gravo.R;
+import com.greenravolution.gravo.contents.ActivityEditUser;
 import com.greenravolution.gravo.functions.Utility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Objects;
 
 import java.io.IOException;
@@ -70,7 +75,9 @@ public class Bulk extends Fragment {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     TextView bulk_description;
     Uri imageUri;
-    String userChoosenTask;
+    String userChosenTask;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 1962;
 
     public Bulk() {
         // Required empty public constructor
@@ -94,39 +101,6 @@ public class Bulk extends Fragment {
         return view;
 
     }
-
-    public void startCamera() {
-        if (ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.CAMERA)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-            // Permission has already been granted
-            Log.e("BULK: PERMISSION", "permission granted");
-            selectImage();
-
-        }
-    }
-
 
 
 //    @Override
@@ -167,6 +141,8 @@ public class Bulk extends Fragment {
                 dialog.setTitle("Submitted");
                 dialog.setMessage("Thank you for submitting!\n\nWe will get back to you shortly with a quote.");
                 dialog.setPositiveButton("Done", (dialogInterface, i) -> {
+                    bulk_image.setImageDrawable(null);
+                    bulk_take_photo.setVisibility(View.VISIBLE);
                 });
                 AlertDialog dialogue = dialog.create();
                 dialogue.show();
@@ -186,42 +162,62 @@ public class Bulk extends Fragment {
         return stream.toByteArray();
     }
 
-    private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
-                "Cancel"};
+    public void selectImage() {
+        final CharSequence[] items = {"Take a photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Add Photo");
-        builder.setItems(items, (dialog, item) -> {
-            boolean result = Utility.checkPermission(getActivity());
-            if (items[item].equals("Take Photo")) {
-                userChoosenTask = "Take Photo";
-                if (result)
-                    Log.e("BULK: IMAGE TYPE:", "Take Photo");
-                cameraIntent();
-            } else if (items[item].equals("Choose from Library")) {
-                userChoosenTask = "Choose from Library";
-                if (result)
-                    Log.e("BULK: IMAGE TYPE:", "Choose your Library");
-                galleryIntent();
-            } else if (items[item].equals("Cancel")) {
-                dialog.dismiss();
+        builder.setTitle("Pick Profile Image");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = Utility.checkPermission(getContext());
+                if (items[item].equals("Take a photo")) {
+                    userChosenTask = "Take a photo";
+                    if (result) {
+                        cameraIntent();
+                    }
+                } else if (items[item].equals("Choose from Library")) {
+                    userChosenTask = "Choose from Library";
+                    if (result) {
+                        galleryIntent();
+                    }
+                } else {
+                    dialog.dismiss();
+                }
             }
         });
         builder.show();
     }
 
-    private void cameraIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+    public void cameraIntent() {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            int hasCameraPermission = getContext().checkSelfPermission(Manifest.permission.CAMERA);
+            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                Log.i("Test 19/6", "Requesting permissions");
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+                return;
+            }
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, REQUEST_CAMERA);
+        }
     }
 
-    private void galleryIntent() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
-    }
+    public void galleryIntent() {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            int hasCameraPermission = getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                Log.i("Test", "Requesting permissions");
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+                return;
+            }
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
+        }
 
+    }
 
 
     @Override
@@ -252,7 +248,7 @@ public class Bulk extends Fragment {
             }
         }
         bulk_image.setVisibility(View.VISIBLE);
-                bulk_take_photo.setVisibility(View.GONE);
+        bulk_take_photo.setVisibility(View.GONE);
 //                bulk_image.setImageBitmap(cameraImage);
         Glide.with(Objects.requireNonNull(getContext())).load(bitmapToByte(Objects.requireNonNull(bm))).into(bulk_image);
     }
@@ -262,12 +258,12 @@ public class Bulk extends Fragment {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         assert thumbnail != null;
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
+            File destination = new File(Environment.getExternalStorageDirectory(),
+                    System.currentTimeMillis() + ".jpg");
+            FileOutputStream fo;
+            try {
+                destination.createNewFile();
+                fo = new FileOutputStream(destination);
             fo.write(bytes.toByteArray());
             fo.close();
         } catch (IOException e) {
@@ -279,6 +275,18 @@ public class Bulk extends Fragment {
         bulk_take_photo.setVisibility(View.GONE);
 //                bulk_image.setImageBitmap(cameraImage);
         Glide.with(Objects.requireNonNull(getContext())).load(bitmapToByte(Objects.requireNonNull(thumbnail))).into(bulk_image);
+    }
+    private String bitmapToBase64(Bitmap bitmap) {
+        String encodedImage = "";
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        try {
+            encodedImage += URLEncoder.encode(Base64.encodeToString(byteArray, Base64.DEFAULT), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodedImage;
     }
 
 

@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.login.Login;
 
@@ -33,6 +34,24 @@ public class ActivityUser extends AppCompatActivity {
     public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
 
+    public void updateprofile(){
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        getName = sessionManager.getString("user_full_name","");
+        getEmail = sessionManager.getString("user_email", "");
+        getAddress = sessionManager.getString("user_address", "");
+        getImage = sessionManager.getString("user_image", "");
+        if(getImage.equals("")){
+            profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
+        }else{
+            Glide.with(ActivityUser.this).load(getImage).into(profile_img);
+        }
+        name.setText(getName);
+        myName.setText(getName);
+        myEmail.setText(getEmail);
+        myAddress.setText(getAddress);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -47,7 +66,7 @@ public class ActivityUser extends AppCompatActivity {
         myAddress = findViewById(R.id.myAddress);
         profile_img = findViewById(R.id.profile_img);
 
-        getName = sessionManager.getString("user_name","");
+        getName = sessionManager.getString("user_full_name","");
         getEmail = sessionManager.getString("user_email", "");
         getAddress = sessionManager.getString("user_address", "");
         getImage = sessionManager.getString("user_image", "");
@@ -99,8 +118,19 @@ public class ActivityUser extends AppCompatActivity {
                 return true;
 
         }
-
         return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateprofile();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateprofile();
     }
 
     @Override

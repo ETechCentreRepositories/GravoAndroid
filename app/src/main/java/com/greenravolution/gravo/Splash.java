@@ -51,7 +51,7 @@ public class Splash extends AppCompatActivity {
         if(isNetworkAvailable()){
             GetAsyncRequest asyncRequest = new GetAsyncRequest();
             asyncRequest.setOnResultListener(getRates);
-            asyncRequest.execute("http://greenravolution.com/API/getCategories.php");
+            asyncRequest.execute("http://greenravolution.com/API/getCategories.php?type=all");
 
             int SPLASH_TIME_OUT = 2000;
             new Handler().postDelayed(() -> {

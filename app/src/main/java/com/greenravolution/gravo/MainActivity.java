@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
     TextView title, user_name, user_points;
     CircleImageView profileimage;
 
+    public void updateprofile() {
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        Glide.with(MainActivity.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profileimage);
+        user_points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0)) + " (No rank yet)");
+        user_name.setText(sessionManager.getString("user_full_name", ""));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(MainActivity.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profileimage);
 
         user_name = headerview.findViewById(R.id.user_name);
-        user_name.setText(sessionManager.getString("user_name",""));
+        user_name.setText(sessionManager.getString("user_full_name", ""));
 
         user_points = headerview.findViewById(R.id.user_points);
-        user_points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0)) + " (No rank yet)");
+        user_points.setText(String.format("%s (No rank yet)", String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0))));
 
         userProfile.setOnClickListener(v -> startActivity(new Intent(this, ActivityUser.class)));
 
@@ -135,6 +142,22 @@ public class MainActivity extends AppCompatActivity {
                     title.setVisibility(View.VISIBLE);
                     CloseDrawer();
                     return true;
+                case R.id.share:
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = "I Just downloaded this cool new recycling app!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                    CloseDrawer();
+                    return true;
+                case R.id.invite:
+                    Intent sharingIntent2 = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent2.setType("text/plain");
+                    String shareBody2 = "I Just downloaded this cool new recycling app!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
+                    sharingIntent2.putExtra(android.content.Intent.EXTRA_TEXT, shareBody2);
+                    startActivity(Intent.createChooser(sharingIntent2, "Share via"));
+                    CloseDrawer();
+                    return true;
             }
             return false;
         });
@@ -192,4 +215,15 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateprofile();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateprofile();
+    }
 }

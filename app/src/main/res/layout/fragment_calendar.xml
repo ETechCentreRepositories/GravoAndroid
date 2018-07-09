@@ -8,24 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <CalendarView
 
+        <sun.bob.mcalendarview.views.ExpCalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <LinearLayout
-            android:id="@+id/collect2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/transaction_page_item"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            tools:context=".MainActivity" />
 
-        <LinearLayout
-            android:id="@+id/collect1"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/transaction_page_item"/>
-        </LinearLayout>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/transactionDetails"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
 
     </LinearLayout>
 </FrameLayout>

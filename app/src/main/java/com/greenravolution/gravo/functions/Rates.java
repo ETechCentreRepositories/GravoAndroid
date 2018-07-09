@@ -76,75 +76,46 @@ public class Rates {
         return "No Such Item";
 
     }
-
-    public int getImage(int cat_id, String rates) {
-        try {
-            JSONArray getRates = new JSONArray(rates);
-            for (int i = 0; i < getRates.length(); i++) {
-                JSONObject rate = getRates.getJSONObject(i);
-                if (cat_id == rate.getInt("id")) {
-                    String price = rate.getString("type");
-                    String[] wasteType = price.split(" ");
-                    switch (wasteType[0]) {
-                        case "Paper":
-                            return R.drawable.recycle_paper;
-                        case "Metal":
-                            return R.drawable.aluminium_cans;
-                        case "E-Waste":
-                            return R.drawable.laptop;
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return 0;
-
-    }
-
     public int getImage(String type) {
-
         switch (type) {
             case "Paper | Old Newspaper":
-                return R.drawable.newspaper;
+                return R.drawable.paper_main;
             case "Paper | Old Paper":
-                return R.drawable.recycle_paper;
+                return R.drawable.paper_bp;
             case "Paper | Old Cardboard Cartons":
-                return R.drawable.cardboard;
+                return R.drawable.paper_oc;
             case "Paper | Old Textbooks":
-                return R.drawable.books;
+                return R.drawable.paper_otb;
             case "Metals | Copper Wires -( <= 4mm diameter )":
-                return R.drawable.copperwire_less4mm;
+                return R.drawable.metal_copper_wire_one;
             case "Metals | Copper Wires -( > 4mm diameter)":
-                return R.drawable.copperwire_more4mm;
+                return R.drawable.metal_copper_wire_one;
             case "Metals | Untainted -Stripped Copper Wires":
-                return R.drawable.strippedcopper_untainted;
+                return R.drawable.metal_untainted_copper_wire;
             case "Metals | Dirty  -Stripped Copper Wires":
-                return R.drawable.strippedcopper_dirty;
+                return R.drawable.metal_copper_wire_two;
             case "Metals | Brass Items - ":
-                return R.drawable.brass_tap;
+                return R.drawable.metal_brass_item;
             case "Metals | Copper Pipes or -Copper Plates":
-                return R.drawable.copper_plates;
+                return R.drawable.metal_main;
             case "Metals | Telephone Wires - ":
-                return R.drawable.tele_wire;
+                return R.drawable.metal_telephone_cable;
             case "Metals | Aluminium Items - ":
-                return R.drawable.aluminium_pans;
+                return R.drawable.metal_aluminium;
             case "Metals | Mixed Wires -(bundled / coiled)":
-                return R.drawable.mix_wires_bunde_coil;
+                return R.drawable.metal_mixed_wires;
             case "E-Waste | Smartphone (operational)":
-                return R.drawable.smartphone;
+                return R.drawable.ewaste_mobile_phone;
             case "E-Waste | Smartphone (non-operational)":
-                return R.drawable.smartphone;
-
+                return R.drawable.ewaste_mobile_phone;
             case "E-Waste | Laptop (non-operational)":
-                return R.drawable.laptop;
+                return R.drawable.ewaste_laptop;
             case "E-Waste | CPU":
-                return R.drawable.cpu;
+                return R.drawable.ewaste_cpu;
             case "E-Waste | LCD Screen":
-                return R.drawable.lcd;
+                return R.drawable.ewaste_lcd_screen;
             case "E-Waste | LCD Screen (Cracked)":
-                return R.drawable.lcd;
-
+                return R.drawable.ewaste_lcd_screen;
         }
         return 0;
 
@@ -161,7 +132,7 @@ public class Rates {
                     switch (wasteType[0]) {
                         case "Paper":
                             return R.color.brand_yellow;
-                        case "Metal":
+                        case "Metals":
                             return R.color.brand_orange;
                         case "E-Waste":
                             return R.color.brand_purple;
@@ -179,7 +150,7 @@ public class Rates {
         switch (color) {
             case "Paper":
                 return R.color.brand_yellow;
-            case "Metal":
+            case "Metals":
                 return R.color.brand_orange;
             case "E-Waste":
                 return R.color.brand_purple;

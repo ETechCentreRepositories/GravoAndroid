@@ -14,12 +14,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
-                android:fontFamily="@font/quicksand_bold"
-                android:padding="5dp"
+                android:id="@+id/tvTransactionID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TRANSACTION #10091983294823"/>
+                android:fontFamily="@font/quicksand_bold"
+                android:padding="5dp"
+                android:text="TRANSACTION #10091983294823" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,10 +50,12 @@
                         <android.support.v4.widget.Space
                             android:layout_width="50dp"
                             android:layout_height="wrap_content" />
+
                         <TextView
+                            android:id="@+id/tvWeight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="30KG"/>
+                            android:text="30KG" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -64,10 +68,12 @@
                         <android.support.v4.widget.Space
                             android:layout_width="45dp"
                             android:layout_height="wrap_content" />
+
                         <TextView
+                            android:id="@+id/tvPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$12.00"/>
+                            android:text="$12.00" />
                     </LinearLayout>
 
 
@@ -83,24 +89,12 @@
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
+                    android:id="@+id/transaction_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <ImageView
-                        android:layout_margin="5dp"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/recycle_paper"
-                        android:padding="10dp"
-                        android:background="@color/brand_yellow"/>
-                    <ImageView
-                        android:src="@drawable/recycle_paper"
-                        android:layout_margin="5dp"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:padding="10dp"
-                        android:background="@color/brand_yellow"/>
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -128,24 +122,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Scheduled Date" />
+
                 <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:textColor="@color/white"
-                    android:text="AWAITING COLLECTION"
                     android:layout_below="@id/statusLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:background="@color/grey"
                     android:padding="5dp"
-                    android:background="@color/grey"/>
-                <TextView
-                    android:layout_alignParentEnd="true"
-                    android:textColor="@color/black"
-                    android:layout_below="@id/statusLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20 sep, 2018"
-                    android:padding="5dp"/>
+                    android:text="AWAITING COLLECTION"
+                    android:textColor="@color/white" />
+
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/statusLabel"
+                android:padding="5dp"
+                android:text="20 sep, 2018"
+                android:textColor="@color/black" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

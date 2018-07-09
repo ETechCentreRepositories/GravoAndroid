@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "506902596434",
+    "firebase_url": "https://gravoandroid-d6f05.firebaseio.com",
+    "project_id": "gravoandroid-d6f05",
+    "storage_bucket": "gravoandroid-d6f05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506902596434:android:4e4823142d503849",
+        "android_client_info": {
+          "package_name": "com.greenravolution.gravo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506902596434-hjhl1fbj8s0a74no5f0mtg39deg0erjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNck6-lGKCMcJAVbeL7kXAEpARFNcZFK8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

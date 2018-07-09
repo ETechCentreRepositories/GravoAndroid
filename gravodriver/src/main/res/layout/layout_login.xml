@@ -80,17 +80,17 @@
             android:textSize="15sp" />
 
         <!--is the remember me rly necessary?-->
-        <CheckBox
-            android:id="@+id/rbmMe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:buttonTint="@color/grey"
-            android:shadowColor="@color/white"
-            android:text="Remember me"
-            android:textColor="@color/grey" />
+        <!--<CheckBox-->
+            <!--android:id="@+id/rbmMe"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:buttonTint="@color/grey"-->
+            <!--android:shadowColor="@color/white"-->
+            <!--android:text="Remember me"-->
+            <!--android:textColor="@color/grey" />-->
 
         <Button
             android:id="@+id/login"
@@ -105,6 +105,7 @@
             android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/forgetpassword"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,9 +133,9 @@
                 android:id="@+id/progressBar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                app:srcCompat="@drawable/gravo_logo_black"
-                android:src="@drawable/ic_progressbar"
-                tools:ignore="ContentDescription" />
+            app:srcCompat="@drawable/gravo_logo_black"
+            android:src="@drawable/ic_progressbar"
+            tools:ignore="ContentDescription" />
 
         </LinearLayout>
 

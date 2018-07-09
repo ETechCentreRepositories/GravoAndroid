@@ -9,26 +9,30 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
+            android:id="@+id/transactionDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/item1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <include layout="@layout/transaction_page_items"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/item2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <include layout="@layout/transaction_page_items_complete"/>
-            </LinearLayout>
+
 
 
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#90000000"
+        android:gravity="center">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:indicatorName="BallClipRotateMultipleIndicator"
+            app:indicatorColor="@color/brand_green"/>
+    </LinearLayout>
 
 
 </FrameLayout>

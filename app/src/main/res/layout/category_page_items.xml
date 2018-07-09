@@ -69,6 +69,7 @@
                         android:gravity="center"/>
 
                     <EditText
+                        android:maxLength="4"
                         android:inputType="number"
                         android:gravity="center"
                         android:layout_weight="3"

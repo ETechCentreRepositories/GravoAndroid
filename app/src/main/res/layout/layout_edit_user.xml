@@ -92,23 +92,44 @@
             android:fontFamily="@font/quicksand_bold"
             android:text="ACCOUNT INFORMATION" />
 
-        <EditText
-            android:inputType="textPersonName"
-            android:id="@+id/newName"
+        <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="#05000000"
-            android:hint="Name"
-            android:padding="5dp" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <EditText
+            <EditText
+                android:id="@+id/first_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2.5dp"
+                android:layout_weight="0.5"
+                android:background="#05000000"
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                android:padding="5dp" />
+
+            <EditText
+                android:background="#05000000"
+                android:id="@+id/last_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2.5dp"
+                android:layout_weight="0.5"
+                android:hint="Last Name"
+                android:inputType="textPersonName"
+                android:padding="5dp" />
+        </LinearLayout>
+
+        <TextView
+            android:textSize="20sp"
             android:inputType="textEmailAddress"
             android:id="@+id/newEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:background="#05000000"
+            android:textColor="@color/black"
             android:hint="Email"
             android:padding="5dp" />
 
@@ -121,6 +142,16 @@
             android:layout_marginTop="5dp"
             android:background="#05000000"
             android:hint="@string/address"
+            android:padding="5dp" />
+        <EditText
+            android:inputType="phone"
+            android:id="@+id/newPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:background="#05000000"
+            android:hint="@string/contact_number"
             android:padding="5dp" />
     </LinearLayout>
 
@@ -148,6 +179,19 @@
             android:background="@color/brand_green"
             android:text="Save"
             android:textColor="@color/white" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#90000000"
+        android:gravity="center">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:indicatorName="BallClipRotateMultipleIndicator"
+            app:indicatorColor="@color/brand_green"/>
     </LinearLayout>
 
 </RelativeLayout>

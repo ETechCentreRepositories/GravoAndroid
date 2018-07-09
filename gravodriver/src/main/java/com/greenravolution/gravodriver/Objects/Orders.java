@@ -18,31 +18,12 @@ public class Orders {
     private String collecter_name;
     private String collector_number;
 
-    public Orders(int id, String transaction_code, String transaction_type, String address, String postal, int user_id, int session_id, int payment_id, int status_id, String collection_date, String collecter_name, String collector_number) {
+    public Orders(int id, String tc, String ad, int uid, int stid) {
         this.id = id;
-        this.transaction_code = transaction_code;
-        this.transaction_type = transaction_type;
-        this.address = address;
-        this.postal = postal;
-        this.user_id = user_id;
-        this.session_id = session_id;
-        this.payment_id = payment_id;
-        this.status_id = status_id;
-        this.collection_date = collection_date;
-        this.collecter_name = collecter_name;
-        this.collector_number = collector_number;
-    }
-
-    public Orders(int id, String transaction_code, String transaction_type, String address, String postal, int user_id, int session_id, int payment_id, int status_id) {
-        this.id = id;
-        this.transaction_code = transaction_code;
-        this.transaction_type = transaction_type;
-        this.address = address;
-        this.postal = postal;
-        this.user_id = user_id;
-        this.session_id = session_id;
-        this.payment_id = payment_id;
-        this.status_id = status_id;
+        this.transaction_code = tc;
+        this.address = ad;
+        this.user_id = uid;
+        this.status_id = stid;
     }
 
     public int getId() {

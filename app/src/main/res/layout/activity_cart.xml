@@ -54,7 +54,7 @@
                     android:id="@+id/no_of_items"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2 items"
+                    android:text="0 item(s)"
                     android:textColor="@color/brand_orange" />
 
                 <TextView
@@ -128,10 +128,11 @@
         </RelativeLayout>
 
         <EditText
-            android:layout_marginTop="10dp"
+            android:id="@+id/etAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/text_field_background"
             android:gravity="top"
             android:hint="Address"
@@ -139,12 +140,14 @@
             android:padding="5dp" />
 
         <EditText
+            android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/text_field_background"
             android:gravity="top"
             android:hint="Contact Number"
+            android:maxLength="15"
             android:inputType="phone"
             android:padding="5dp" />
 
@@ -173,7 +176,7 @@
                 android:layout_marginTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
-                android:text="60KG"
+                android:text="0KG"
                 android:textColor="@color/black" />
         </RelativeLayout>
 
@@ -201,10 +204,11 @@
                 android:layout_marginTop="5dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
-                android:text="$6.00"
+                android:text="$0.00"
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/etRemarks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/totalPriceTitle"
@@ -233,5 +237,18 @@
         </LinearLayout>
 
     </LinearLayout>
+       <!--<LinearLayout-->
+    <!--android:id="@+id/progressbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:background="#90000000"-->
+    <!--android:gravity="center">-->
+    <!--<com.wang.avi.AVLoadingIndicatorView-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="100dp"-->
+    <!--app:indicatorName="BallClipRotateMultipleIndicator"-->
+    <!--app:indicatorColor="@color/brand_green"/>-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

@@ -41,7 +41,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:padding="25dp"
-                            app:srcCompat="@drawable/home_page_paper"
+                            app:srcCompat="@drawable/paper_main"
                             android:layout_above="@id/paperLabel"
                             android:id="@+id/paperImg"
                             android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:padding="25dp"
-                            app:srcCompat="@drawable/home_page_metal"
+                            app:srcCompat="@drawable/metal_main"
                             android:layout_above="@id/metalLabel"
                             android:id="@+id/metalImg"
                             android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:padding="25dp"
-                            app:srcCompat="@drawable/home_page_ewaste"
+                            app:srcCompat="@drawable/ewaste_main"
                             android:layout_above="@id/ewasteLabel"
                             android:id="@+id/ewasteImg"
                             android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <ImageView
-                            app:srcCompat="@drawable/home_page_bulk"
+                            app:srcCompat="@drawable/bulk_fridge"
                             android:layout_above="@id/bulkLabel"
                             android:id="@+id/bulkImg"
                             android:layout_width="match_parent"

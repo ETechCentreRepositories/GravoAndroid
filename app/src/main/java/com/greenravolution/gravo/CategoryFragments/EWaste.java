@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.Rates;
+import com.greenravolution.gravo.objects.API;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,6 +73,7 @@ public class EWaste extends Fragment {
 
     public View initView(com.greenravolution.gravo.objects.Rates rate) {
         Rates rateClass = new Rates();
+        API links = new API();
         LayoutInflater inflater2 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         View contents = inflater2.inflate(R.layout.category_page_items, null);
         LinearLayout itemView = contents.findViewById(R.id.item);
@@ -90,7 +92,22 @@ public class EWaste extends Fragment {
             if (getWeight == 0) {
                 Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
+                int itemId = rate.getId();
+                String chosenItemRate = rate.getRate();
+
+                SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                int id = preferences.getInt("user_id",0);
+
+                int indexOfSlash = chosenItemRate.indexOf('/');
+                double itemPrice = Double.parseDouble(chosenItemRate.substring(0,indexOfSlash));
+
+                double totalPrice = getWeight*itemPrice;
+
+                AsyncAddCartDetails add = new AsyncAddCartDetails();
+                String[] paramsArray = {links.addCartDetails(),id+"",getWeight+"",totalPrice+"",itemId+""};
+                add.execute(paramsArray);
+
+                Toast.makeText(getContext(),  " Item added to Gravo Bag", Toast.LENGTH_SHORT).show();
             }
         });
 

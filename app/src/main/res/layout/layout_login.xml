@@ -28,14 +28,24 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
-        <Button
-            android:gravity="center"
+        <RelativeLayout
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Log In With Facebook"
-            android:textColor="@color/white"
-            android:background="@drawable/fb_login_button"/>
+            android:layout_height="wrap_content">
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/facebook_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/custom_facebook_login"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log In With Facebook"
+                android:textColor="@color/white"
+                android:background="@drawable/fb_login_button"/>
+        </RelativeLayout>
+
         <TextView
             android:layout_marginTop="20dp"
             android:textAlignment="center"
@@ -102,8 +112,6 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:text="@string/forgot_password"
                 android:textSize="10sp"/>
-
-
 
         </LinearLayout>
     </LinearLayout>

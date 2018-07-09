@@ -1,5 +1,7 @@
 package com.greenravolution.gravo.functions;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -70,7 +72,6 @@ public class HttpReq {
             //print result
             return response.toString();
         } else if (getLink[0].equals("https:")) {
-
             URL obj = new URL(url);
             HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
@@ -97,13 +98,12 @@ public class HttpReq {
         } else {
             System.out.print("Please enter a http:// link");
         }
-
         return null;
     }
 
     // HTTP POST request
     private String sendPost(String url, String parameters) throws Exception {
-
+        Log.i("status","started sendPost");
         String[] getLink = url.split("/");
         if (getLink[0].equals("http:")) {
 
@@ -141,6 +141,7 @@ public class HttpReq {
             return response.toString();
 
         } else if (getLink[0].equals("https:")) {
+            Log.i("status","sendPost(if=https)");
 
             URL obj = new URL(url);
             HttpURLConnection conHttp = (HttpURLConnection) obj.openConnection();
@@ -172,7 +173,7 @@ public class HttpReq {
                 response.append(inputLine);
             }
             in.close();
-
+            Log.i("httpReqResponse",response.toString());
             //print result
             return response.toString();
 

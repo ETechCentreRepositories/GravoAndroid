@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.greenravolution.gravo.Firebase.FirebaseInstanceIDService;
 import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.HttpReq;
@@ -62,10 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_register);
-
-
         progressbar = findViewById(R.id.progressbar);
-        HideProgress();
 
         fname = findViewById(R.id.first_name);
         lname = findViewById(R.id.last_name);
@@ -96,12 +94,19 @@ public class RegisterActivity extends AppCompatActivity {
         btnc = findViewById(R.id.btnc);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        HideProgress();
 
         register.setOnClickListener(v -> {
             if (checkNetworks()) {
-                ShowProgress();
-                Register doregister = new Register();
-                doregister.execute(getlinkrequest.getRegister());
+
+                if(ctnc.isChecked()){
+                    ShowProgress();
+                    Register doregister = new Register();
+                    doregister.execute(getlinkrequest.getRegister());
+                }else{
+                    Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_SHORT).show();
+                }
+
             } else {
                 Toast.makeText(RegisterActivity.this, "You are not connected to the internet", Toast.LENGTH_SHORT).show();
             }
@@ -139,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
     public class Register extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
-            return registerRequest.PostRequest(strings[0]
+            String results = registerRequest.PostRequest(strings[0]
                     , "firstname=" + fname.getText().toString()
                             + "&lastname=" + lname.getText().toString()
                             + "&email=" + email.getText().toString()
@@ -147,6 +152,23 @@ public class RegisterActivity extends AppCompatActivity {
                             + "&contactnumber=" + number.getText().toString()
                             + "&address=" + address.getText().toString()
                             + "&encoded_string=" + UploadPhoto());
+
+            try{
+                JSONObject resultObject = new JSONObject(results);
+                int status = resultObject.getInt("status");
+                if (status == 200) {
+                    JSONArray users = resultObject.getJSONArray("result");
+                    JSONObject user = users.getJSONObject(0);
+                    String userID = ""+user.getInt("id");
+                    FirebaseInstanceIDService registerToken = new FirebaseInstanceIDService();
+                    Log.i("registerToken",registerToken.toString());
+                    registerToken.callTokenRefresh(userID,"register");
+                }
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return results;
         }
         @Override
         protected void onPostExecute(String s) {
@@ -169,12 +191,15 @@ public class RegisterActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString(SESSION_ID, String.valueOf(status));
 
-                    JSONArray users = result.getJSONArray("users");
+                    JSONArray users = result.getJSONArray("result");
                     JSONObject user = users.getJSONObject(0);
                     editor.putInt("user_id", user.getInt("id"));
                     editor.putString("user_image", user.getString("photo"));
+                    editor.putString("user_first_name", user.getString("first_name"));
+                    editor.putString("user_last_name", user.getString("last_name"));
                     editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
                     editor.putString("user_email", user.getString("email"));
+                    editor.putString("user_full_name", user.getString("full_name"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.putInt("user_total_points", user.getInt("total_points"));
@@ -198,9 +223,33 @@ public class RegisterActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     public void HideProgress() {
+        fname.setEnabled(true);
+        lname.setEnabled(true);
+        email.setEnabled(true);
+        password.setEnabled(true);
+        pwvisibility.setEnabled(true);
+        number.setEnabled(true);
+        address.setEnabled(true);
+        register.setEnabled(true);
+        ctnc.setEnabled(true);
+        fname.setEnabled(true);
+        lname.setEnabled(true);
+        btnc.setEnabled(true);
         progressbar.setVisibility(View.GONE);
     }
     public void ShowProgress() {
+        fname.setEnabled(false);
+        lname.setEnabled(false);
+        email.setEnabled(false);
+        password.setEnabled(false);
+        pwvisibility.setEnabled(false);
+        number.setEnabled(false);
+        address.setEnabled(false);
+        register.setEnabled(false);
+        ctnc.setEnabled(false);
+        fname.setEnabled(false);
+        lname.setEnabled(false);
+        btnc.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
     }
     public String UploadPhoto() {

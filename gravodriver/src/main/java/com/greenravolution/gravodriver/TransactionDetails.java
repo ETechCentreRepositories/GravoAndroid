@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
+import com.greenravolution.gravodriver.functions.HttpReq;
+import com.greenravolution.gravodriver.functions.PostAsyncRequest;
 import com.greenravolution.gravodriver.functions.Rates;
 
 import org.json.JSONArray;
@@ -45,25 +48,34 @@ public class TransactionDetails extends AppCompatActivity {
     LinearLayout llProgress;
     ArrayList<OrderDetails> oal;
     ImageView progressbar;
+    TextView totalPrice, totalWeight;
+
     Rates getRates = new Rates();
     GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
         llProgress.setVisibility(View.GONE);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
         progressDrawable.stop();
+        Double price = 0.00;
         try {
+
+            SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+            final String rates = sessionManager.getString("rates", "");
+            oal.clear();
             JSONObject object = new JSONObject(message);
+            Log.e("MESSAGE", message);
             int status = object.getInt("status");
             if (status == 200) {
                 JSONArray results = object.getJSONArray("result");
                 for (int i = 0; i < results.length(); i++) {
+                    Log.e("OAL SIZE: ", results.length() + "");
                     JSONObject detail = results.getJSONObject(i);
                     int id = detail.getInt("id");
-                    String w = detail.getString("weight");
-                    String p = detail.getString("price");
+                    Double w = detail.getDouble("weight");
+                    Double p = detail.getDouble("price");
                     int cid = detail.getInt("category_id");
+                    price = price + getRates.getRates(cid, w, rates);
                     int tid = detail.getInt("transaction_id");
-
-                    oal.add(new OrderDetails(id, tid, w, p, cid));
+                    oal.add(new OrderDetails(id, tid, String.valueOf(w), String.valueOf(p), cid));
                 }
             } else {
                 Toast.makeText(this, "No Details", Toast.LENGTH_SHORT).show();
@@ -72,10 +84,16 @@ public class TransactionDetails extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        Double totalweight = 0.00;
         for (int i = 0; i < oal.size(); i++) {
             items.addView(initView(oal.get(i)));
+
+            totalweight = totalweight + Double.parseDouble(oal.get(i).getWeight());
         }
+        DecimalFormat df2 = new DecimalFormat("#.##");
+        totalPrice.setText(String.format("$%s", String.valueOf(df2.format(price))));
+        totalWeight.setText(String.format("%sKG", String.valueOf(totalweight)));
+
     };
 
     @Override
@@ -106,6 +124,8 @@ public class TransactionDetails extends AppCompatActivity {
         btnCfmNPay = findViewById(R.id.cfmPayment);
         etGetName = findViewById(R.id.getRecName);
         etGetNumber = findViewById(R.id.getRecContact);
+        totalPrice = findViewById(R.id.totalPrice);
+        totalWeight = findViewById(R.id.totalWeight);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -122,7 +142,6 @@ public class TransactionDetails extends AppCompatActivity {
             btnAddRec.setVisibility(View.GONE);
         });
 
-
         Intent intent = getIntent();
         String title = intent.getStringExtra("transaction_id");
         String address = intent.getStringExtra("address");
@@ -134,43 +153,7 @@ public class TransactionDetails extends AppCompatActivity {
 
         int trans_id = intent.getIntExtra("id", -1);
 
-        int id = 0;
-        String w = "30";
-        String p = "3.00";
-        int cid = 3;
-        int tid = 3;
-
-        oal.add(new OrderDetails(id, tid, w, p, cid));
-
-        int id2 = 0;
-        String w2 = "20";
-        String p2 = "80.00";
-        int cid2 = 14;
-        int tid2 = 3;
-
-        oal.add(new OrderDetails(id2, tid2, w2, p2, cid2));
-
-        int id3 = 0;
-        String w3 = "20";
-        String p3 = "40.00";
-        int cid3 = 16;
-        int tid3 = 4;
-
-        oal.add(new OrderDetails(id3, tid3, w3, p3, cid3));
-
-        int id4 = 0;
-        String w4 = "30";
-        String p4 = "3.00";
-        int cid4 = 3;
-        int tid4 = 4;
-
-        oal.add(new OrderDetails(id4, tid4, w4, p4, cid4));
-
-        for (int i = 0; i < oal.size(); i++) {
-            if (oal.get(i).getTransaction_id() == trans_id) {
-                items.addView(initView(oal.get(i)));
-            }
-        }
+        getTransacionDetails(trans_id);
 
 //        getTransacionDetails(trans_id);
 
@@ -180,11 +163,21 @@ public class TransactionDetails extends AppCompatActivity {
                 ib.putExtra("type", "1");
                 ib.putExtra("transaction_id", String.valueOf(trans_id));
                 setResult(1, ib);
+                UpdateTransactionStatus updateTransactionStatus = new UpdateTransactionStatus();
+                Intent intent1 = getIntent();
+                int transactionid = intent1.getIntExtra("id", -1);
+
+                updateTransactionStatus.execute(String.valueOf(transactionid));
                 finish();
+
                 //update collection user.
             } else {
                 String name = etGetName.getText().toString();
                 String contact = etGetNumber.getText().toString();
+                UpdateTransactionDetails updateTransactionDetails = new UpdateTransactionDetails();
+                Intent intent1 = getIntent();
+                int transactionid = intent1.getIntExtra("id", -1);
+                updateTransactionDetails.execute(String.valueOf(transactionid), name, contact);
                 //update collection
                 Intent ib = new Intent();
                 ib.putExtra("type", "1");
@@ -214,12 +207,13 @@ public class TransactionDetails extends AppCompatActivity {
     }
 
     public void getTransacionDetails(int id) {
+        oal.clear();
         llProgress.setVisibility(View.VISIBLE);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("http://greenravolution.com/API/detail.php?api_type=withID&get_id=" + id);
+        asyncRequest.execute("https://greenravolution.com/API/gettransactiondetails.php?transactionid=" + id);
     }
 
     public View initView(OrderDetails details) {
@@ -227,7 +221,6 @@ public class TransactionDetails extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
         View view = inflater.inflate(R.layout.item_details, null);
-
         TextView getWeight = view.findViewById(R.id.getWeight);
         TextView getPrice = view.findViewById(R.id.getPrice);
         TextView getRate = view.findViewById(R.id.getRate);
@@ -238,45 +231,102 @@ public class TransactionDetails extends AppCompatActivity {
         SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         final String rates = sessionManager.getString("rates", "");
 
-        double price = Double.parseDouble(getRates.getRates(details.getCategory_id(), Integer.parseInt(details.getWeight()), rates));
+        Double price = Double.parseDouble(getRates.getRates(details.getCategory_id(), Double.parseDouble(details.getWeight()), rates) + "0");
         String rate = getRates.getRate(details.getCategory_id(), rates);
         String category = getRates.getItem(details.getCategory_id(), rates);
         itemImg.setBackgroundColor(getResources().getColor(getRates.getImageColour(details.getCategory_id(), rates)));
-        itemImg.setImageResource(getRates.getImage(details.getCategory_id(), rates));
+        itemImg.setImageDrawable(getDrawable(getRates.getImage(details.getCategory_id(), rates)));
         getTitle.setText(category);
         getRate.setText(rate);
         getPrice.setText(String.format("$%s", df2.format(price)));
         getWeight.setText(String.valueOf(details.getWeight()));
         Log.e("Order Detail: ", details + "");
+
         plus.setOnClickListener(v -> {
             String getweigh = details.getWeight();
-            int getweight = addWeight(Integer.parseInt(getweigh));
+            Double getweight = addWeight(Double.parseDouble(getweigh));
             details.setWeight(String.valueOf(getweight));
-            double prices = Double.parseDouble((getRates.getRates(details.getCategory_id(), Integer.parseInt(details.getWeight()), rates)));
+            double prices = Double.parseDouble(String.valueOf((getRates.getRates(details.getCategory_id(), Double.parseDouble(details.getWeight()), rates))));
             details.setPrice(String.valueOf(prices));
             getPrice.setText(String.format("$%s", df2.format(prices)));
             getWeight.setText(String.valueOf(details.getWeight()));
             Log.e("Order Detail: ", details + "");
+            UpdateDetails updateDetails = new UpdateDetails();
+            Log.e("id", details.getId() + "");
+            updateDetails.execute(String.valueOf(details.getId()), String.valueOf(getweight), "0.00");
+
 
         });
         minus.setOnClickListener(v -> {
             String getweigh = details.getWeight();
-            int getweight = minusWeight(Integer.parseInt(getweigh));
+            Double getweight = minusWeight(Double.parseDouble(getweigh));
             details.setWeight(String.valueOf(getweight));
-            double prices = Double.parseDouble((getRates.getRates(details.getCategory_id(), Integer.parseInt(details.getWeight()), rates)));
+            Double prices = Double.parseDouble(String.valueOf((getRates.getRates(details.getCategory_id(), Double.parseDouble(details.getWeight()), rates))));
             details.setPrice(String.valueOf(prices));
             getPrice.setText(String.format("$%s", df2.format(prices)));
             getWeight.setText(String.valueOf(details.getWeight()));
             Log.e("Order Detail: ", details + "");
+            UpdateDetails updateDetails = new UpdateDetails();
+            Log.e("id", details.getId() + "");
+            updateDetails.execute(String.valueOf(details.getId()), String.valueOf(getweight), "0.00");
+
         });
         return view;
     }
 
-    int addWeight(int i) {
-        return i + 1;
+    Double addWeight(Double i) {
+        return i + 1.00;
     }
 
-    int minusWeight(int i) {
-        return i - 1;
+    Double minusWeight(Double i) {
+        return i - 1.00;
+    }
+
+    public class UpdateDetails extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            return req.PostRequest("https://greenravolution.com/API/updatetransactiondetails.php", "transactiondetailid=" + Integer.parseInt(strings[0]) + "&weight=" + strings[1] + "&price=" + strings[2]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("UPDATE DETAILS RESULT:", s);
+        }
+    }
+
+    public class UpdateTransactionDetails extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Log.e("id", strings[0]);
+            return req.PostRequest("https://www.greenravolution.com/API/updatetransactionuserandcontact.php", "transactionid=" + strings[0] + "&user=" + strings[1] + "&number=" + strings[2] + "&status=4");
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("UPDATE TRANSACTIONS:", s + "");
+        }
+    }
+
+    public class UpdateTransactionStatus extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Log.e("id", strings[0]);
+            return req.PostRequest("https://www.greenravolution.com/API/updatetransactionstatus.php"
+                    , "transactionid=" + strings[0] + "&status=4");
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("UPDATE TRANSACTIONS:", s + "");
+        }
     }
 }

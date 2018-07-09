@@ -6,13 +6,14 @@
     tools:context=".CategoryFragments.Bulk">
 
     <ScrollView
+        android:background="@color/white"
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/bulkLayout"
@@ -41,28 +42,32 @@
                     android:weightSum="4">
 
                     <ImageView
+                        android:contentDescription="@string/image"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_weight="1"
-                        android:src="@drawable/fan" />
+                        android:src="@drawable/bulk_fridge" />
+
+                    <ImageView
+                        android:contentDescription="@string/image"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/bulk_washing_machine" />
+
+                    <ImageView
+                        android:contentDescription="@string/image"
+                        android:layout_width="0dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/bulk_sofa" />
 
                     <ImageView
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_weight="1"
-                        android:src="@drawable/washing_machine" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/sofa" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/bed" />
+                        android:src="@drawable/bulk_bed"
+                        android:contentDescription="@string/image" />
 
                 </LinearLayout>
 
