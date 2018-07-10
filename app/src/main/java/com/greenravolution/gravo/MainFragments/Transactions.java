@@ -74,9 +74,9 @@ public class Transactions extends Fragment {
                         e.printStackTrace();
                     }
 
-                    String newDate = date+"";
-                    String dayWord = newDate.substring(0,newDate.indexOf(" "));
-                    String monthWord = newDate.substring(newDate.indexOf(" ")+1,newDate.indexOf(" ")+4);
+//                    String newDate = date+"";
+//                    String dayWord = newDate.substring(0,newDate.indexOf(" "));
+//                    String monthWord = newDate.substring(newDate.indexOf(" ")+1,newDate.indexOf(" ")+4);
 
                     View fragmentTransaction;
                     String transactionStatus = transactionObject.getString("status_type");
@@ -96,29 +96,29 @@ public class Transactions extends Fragment {
                     TextView tvDate = fragmentTransaction.findViewById(R.id.tvDate);
 
                     //photos
-                    LinearLayout transaction_detail = fragmentTransaction.findViewById(R.id.transaction_details);
+//                    LinearLayout transaction_detail = fragmentTransaction.findViewById(R.id.transaction_details);
 
-                    if(transactionObject.has("details")){
-                        JSONArray detailsArray = transactionObject.getJSONArray("details");
-
-                        for(int detail=0; detail<detailsArray.length(); detail++){
-                            JSONObject detailObject = detailsArray.getJSONObject(detail);
-                            String type = detailObject.getString("category_type");
-
-                            String formattedType = type.substring(0,type.indexOf(" "));
-                            Rates rateClass = new Rates();
-
-                            ImageView ivDetailImage = new ImageView(getContext());
-
-                            ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
-                            ivDetailImage.setImageResource(rateClass.getImage(type));
-                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(200,200);
-                            lp.setMargins(10,0,10,0);
-                            ivDetailImage.setLayoutParams(lp);
-
-                            transaction_detail.addView(ivDetailImage);
-                        }
-                    }
+//                    if(transactionObject.has("details")){
+//                        JSONArray detailsArray = transactionObject.getJSONArray("details");
+//
+//                        for(int detail=0; detail<detailsArray.length(); detail++){
+//                            JSONObject detailObject = detailsArray.getJSONObject(detail);
+//                            String type = detailObject.getString("category_type");
+//
+//                            String formattedType = type.substring(0,type.indexOf(" "));
+//                            Rates rateClass = new Rates();
+//
+//                            ImageView ivDetailImage = new ImageView(getContext());
+//
+//                            ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
+//                            ivDetailImage.setImageResource(rateClass.getImage(type));
+//                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(200,200);
+//                            lp.setMargins(10,0,10,0);
+//                            ivDetailImage.setLayoutParams(lp);
+//
+//                            transaction_detail.addView(ivDetailImage);
+//                        }
+//                    }
 
                     Log.e("long date","getTime : " + date.getTime());
 

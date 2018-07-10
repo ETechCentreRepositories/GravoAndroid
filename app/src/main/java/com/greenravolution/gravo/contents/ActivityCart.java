@@ -176,11 +176,18 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     asyncRequest2.setOnResultListener(getCategoryById);
                     asyncRequest2.execute("https://greenravolution.com/API/getCategories.php?type=withid&category=" + catid);
 
-
                 }
 
                 tvTotalPrice.setText(String.format("$%.2f", totalPrice));
-                tvTotalWeight.setText(String.valueOf(totalWeight) + "KG (Normal), " + String.valueOf(totalPiece) + " Pieces(E-waste)");
+                Log.e("TOTAL PRICE", String.valueOf(totalPrice));
+                Log.e("TOTAL WEIGHT", String.valueOf(totalWeight));
+                Log.e("TOTAL PIECE", String.valueOf(totalPiece));
+                if(String.valueOf(totalPiece).equals("0.0")){
+                    tvTotalWeight.setText(String.format("%sKG", String.valueOf(totalWeight)));
+                }else{
+                    tvTotalWeight.setText(String.format("%sKG, %s Piece(s)", String.valueOf(totalWeight), String.valueOf(totalPiece)));
+                }
+
             }
 
 
@@ -295,7 +302,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     Double allPrice = Double.parseDouble((tvAllPrice.getText().toString()).substring(1));
                     allPrice = allPrice - (getPrice - newPrice);
 
-                    tvAllPrice.setText("$" + String.format("%.2f", allPrice));
+                    tvAllPrice.setText(String.format("$%.2f", allPrice));
 
 
                     String user_id = String.valueOf(preferences.getInt("user_id", 0));
@@ -377,7 +384,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         AutoCompleteTextView etAddress = findViewById(R.id.etAddress);
         EditText etRemarks = findViewById(R.id.etRemarks);
         TextView tvTotalPrice = findViewById(R.id.totalPrice);
-        TextView tvTotalWeight = findViewById(R.id.totalWeight);
+        tvTotalWeight = findViewById(R.id.totalWeight);
         etPhone.setText(preferences.getString("user_contact", ""));
         etAddress.setText(preferences.getString("user_address", ""));
 
@@ -389,7 +396,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
             //collectiondate collectionaddress collectionuser collectionnumber total_price total_weight remarks transaction_id userid status
             //yyyy-mm-dd
-
 
             String userPhoneNo = etPhone.getText().toString();
             String userAddress = etAddress.getText().toString();
@@ -504,7 +510,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     }
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
 
     public static ArrayList autocomplete(String input) {
@@ -612,7 +617,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     }
 
 }
-
 
 //    Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
 //    int chosenID = Integer.parseInt(fragmentTransaction.getTag().toString());
