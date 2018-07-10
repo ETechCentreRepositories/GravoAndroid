@@ -340,7 +340,6 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
-<<<<<<< HEAD
             String reqResult = req.PostRequest("https://www.greenravolution.com/API/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=3");
             Log.e("reqResult", reqResult);
             try{
@@ -355,9 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return reqResult;
-=======
-            return req.PostRequest("https://www.greenravolution.com/API/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=3");
->>>>>>> 964adb0bb7014de0c01b7621eb3f4c709f27c4e6
+
         }
 
         @Override
