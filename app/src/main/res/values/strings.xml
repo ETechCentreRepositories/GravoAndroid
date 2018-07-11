@@ -198,4 +198,11 @@ These Terms and any policies or operating rules posted by us on the Applicatio
 
     <string name="facebook_app_id">1657172784330946</string>
     <string name="fb_login_protocol_scheme">fb1657172784330946</string>
+    <string name="circle1_description">circle1</string>
+    <string name="line1_description">line1</string>
+    <string name="circle2_description">circle2</string>
+    <string name="line2_description">line2</string>
+    <string name="circle3_description">circle3</string>
+    <string name="line3_description">line3</string>
+    <string name="circle4_description">circle4</string>
 </resources>

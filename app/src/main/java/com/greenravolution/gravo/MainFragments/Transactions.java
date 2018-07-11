@@ -59,6 +59,7 @@ public class Transactions extends Fragment {
                     String transactionDate = transactionObject.getString("collection_date");
                     String transactionIDKey = transactionObject.getString("transaction_id_key");
                     String transactionTotalPrice = transactionObject.getString("total_price");
+                    String transactionTotalWeight = transactionObject.getString("total_weight");
 
                     String day = transactionDate.substring(transactionDate.lastIndexOf('-')+1);
                     String month = transactionDate.substring(transactionDate.indexOf('-')+1,transactionDate.lastIndexOf('-'));
@@ -125,7 +126,7 @@ public class Transactions extends Fragment {
                     fragmentTransaction.setTag(transactionID);
 
                     tvTransactionID.setText(String.format("#%s", transactionIDKey));
-                    tvWeight.setText("N/A KG");
+                    tvWeight.setText(transactionTotalWeight);
                     tvPrice.setText(String.format("$%s", transactionTotalPrice));
                     tvStatus.setText(transactionStatus.toUpperCase());
                     tvDate.setText(fixedDate);

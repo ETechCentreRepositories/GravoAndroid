@@ -29,6 +29,10 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
     TextView title;
     LinearLayout detailList, progressbar;
     SharedPreferences sessionManager;
+
+    ImageView ivDetailImage;
+    TextView tvDetailTitle, tvDetailPrice, tvDetailRate, tvDetailWeight;
+
     asyncGetSelectedTransaction.OnAsyncResult getSelectedTransaction = (resultCode, message) -> {
         Log.i("ActivitySelected", message);
         HideProgress();
@@ -61,17 +65,26 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 transactionStatus.setText(transactionObject.getString("status_type"));
                 tvStatusDetails.setText(String.format("Item Scheduled to be picked up on %s", transactionObject.getString("collection_date")));
 
-//                if(transactionObject.getString("status_id") == "1"){
-//
-//                } else if (transactionObject.getString("status_id") == "2"){
-//
-//                } else if (transactionObject.getString("status_id") == "3"){
-//
-//                } else if (transactionObject.getString("status_id") == "4"){
-//
-//                } else {
-//                    tvStatusDetails.setText("N/A");
-//                }
+                if (transactionObject.getString("status_id").equals("1")) {
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
+                    setStatusStepper("1");
+
+                } else if (transactionObject.getString("status_id").equals("2")) {
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
+                    setStatusStepper("2");
+
+                } else if (transactionObject.getString("status_id").equals("3")) {
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
+                    setStatusStepper("3");
+
+                } else if (transactionObject.getString("status_id").equals("4")) {
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
+                    setStatusStepper("4");
+
+                } else {
+                    tvStatusDetails.setText("N/A");
+                    setStatusStepper("null");
+                }
 
                 tvBillingName.setText(transactionObject.getString("collection_user"));
                 tvBillingAddress.setText(transactionObject.getString("collection_address"));
@@ -83,7 +96,9 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 for (int detail = 0; detail < detailsArray.length(); detail++) {
                     totalPrice = totalPrice + Double.parseDouble((detailsArray.getJSONObject(detail)).getString("price"));
                 }
-                tvPrice.setText("$" + totalPrice);
+                Log.e("TOTAL PRICE TRANSACTION", totalPrice.toString());
+                tvPrice.setText(String.format("$%s", totalPrice));
+                tvWeight.setText(transactionObject.getString("total_weight"));
 
 
                 //Populating details layout
@@ -94,8 +109,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                         View view_selected_transaction;
                         if (inflater != null) {
                             view_selected_transaction = inflater.inflate(R.layout.selected_transaction, null);
-                            ImageView ivDetailImage;
-                            TextView tvDetailTitle, tvDetailPrice, tvDetailRate, tvDetailWeight;
+
 
                             ivDetailImage = view_selected_transaction.findViewById(R.id.ivImage);
                             tvDetailTitle = view_selected_transaction.findViewById(R.id.tvTitle);
@@ -106,17 +120,17 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             JSONObject detailObject = detailsArray.getJSONObject(detail);
 
                             String categoryType = detailObject.getString("category_type");
-                            String formattedType = categoryType.substring(0, categoryType.indexOf(" "));
+                                String formattedType = categoryType.substring(0, categoryType.indexOf(" "));
 
-                            Rates rateClass = new Rates();
-                            ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
-                            ivDetailImage.setImageResource(rateClass.getImage(categoryType));
+                                Rates rateClass = new Rates();
+                                ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
+                                ivDetailImage.setImageResource(rateClass.getImage(categoryType));
 
-                            tvDetailTitle.setText(detailObject.getString("category_type"));
-                            tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
-                            tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
+                                tvDetailTitle.setText(detailObject.getString("category_type"));
+                                tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
+                                tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
 
-                            if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
+                                if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
                                 tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
                             } else if (formattedType.equals("E-Waste")) {
                                 tvDetailWeight.setText(String.format("%s Piece(s)", detailObject.getString("weight")));
@@ -184,5 +198,79 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
     public void ShowProgress() {
         progressbar.setVisibility(View.VISIBLE);
+    }
+
+    public void setStatusStepper(String status) {
+        ImageView circle1, circle2, circle3, circle4, line1, line2, line3;
+        circle1 = findViewById(R.id.circle1);
+        circle2 = findViewById(R.id.circle2);
+        circle3 = findViewById(R.id.circle3);
+        circle4 = findViewById(R.id.circle4);
+        line1 = findViewById(R.id.line1);
+        line2 = findViewById(R.id.line2);
+        line3 = findViewById(R.id.line3);
+        switch (status) {
+            case "1":
+                Log.e("function status", "1");
+                circle1.setImageResource(R.drawable.stepper_circle_pink);
+                circle2.setImageResource(R.drawable.stepper_circle_grey);
+                circle3.setImageResource(R.drawable.stepper_circle_grey);
+                circle4.setImageResource(R.drawable.stepper_circle_grey);
+                line1.setImageResource(R.drawable.stepper_line_grey);
+                line2.setImageResource(R.drawable.stepper_line_grey);
+                line3.setImageResource(R.drawable.stepper_line_grey);
+                break;
+            case "2":
+                Log.e("function status", "2");
+                circle1.setImageResource(R.drawable.stepper_circle_pink);
+                circle2.setImageResource(R.drawable.stepper_circle_pink);
+                circle3.setImageResource(R.drawable.stepper_circle_grey);
+                circle4.setImageResource(R.drawable.stepper_circle_grey);
+                line1.setImageResource(R.drawable.stepper_line_pink);
+                line2.setImageResource(R.drawable.stepper_line_grey);
+                line3.setImageResource(R.drawable.stepper_line_grey);
+                break;
+            case "3":
+                Log.e("function status", "3");
+                circle1.setImageResource(R.drawable.stepper_circle_pink);
+                circle2.setImageResource(R.drawable.stepper_circle_pink);
+                circle3.setImageResource(R.drawable.stepper_circle_pink);
+                circle4.setImageResource(R.drawable.stepper_circle_grey);
+                line1.setImageResource(R.drawable.stepper_line_pink);
+                line2.setImageResource(R.drawable.stepper_line_pink);
+                line3.setImageResource(R.drawable.stepper_line_grey);
+                break;
+            case "4":
+                Log.e("function status", "4");
+                circle1.setImageResource(R.drawable.stepper_circle_pink);
+                circle2.setImageResource(R.drawable.stepper_circle_pink);
+                circle3.setImageResource(R.drawable.stepper_circle_pink);
+                circle4.setImageResource(R.drawable.stepper_circle_pink);
+                line1.setImageResource(R.drawable.stepper_line_pink);
+                line2.setImageResource(R.drawable.stepper_line_pink);
+                line3.setImageResource(R.drawable.stepper_line_pink);
+                break;
+            case "null":
+                Log.e("function status", "null");
+                circle1.setImageResource(R.drawable.stepper_circle_grey);
+                circle2.setImageResource(R.drawable.stepper_circle_grey);
+                circle3.setImageResource(R.drawable.stepper_circle_grey);
+                circle4.setImageResource(R.drawable.stepper_circle_grey);
+                line1.setImageResource(R.drawable.stepper_line_grey);
+                line2.setImageResource(R.drawable.stepper_line_grey);
+                line3.setImageResource(R.drawable.stepper_line_grey);
+                break;
+            default:
+                Log.e("function status", "default");
+                circle1.setImageResource(R.drawable.stepper_circle_grey);
+                circle2.setImageResource(R.drawable.stepper_circle_grey);
+                circle3.setImageResource(R.drawable.stepper_circle_grey);
+                circle4.setImageResource(R.drawable.stepper_circle_grey);
+                line1.setImageResource(R.drawable.stepper_line_grey);
+                line2.setImageResource(R.drawable.stepper_line_grey);
+                line3.setImageResource(R.drawable.stepper_line_grey);
+                break;
+
+        }
     }
 }

@@ -33,11 +33,11 @@ public class ActivitySelectedTransactionDone extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
-        switch (itemId) {
-            case R.id.help:
-                Log.i("MainActivity", "clicked on help");
-                startActivity(new Intent(this, ActivityHelp.class));
-                return true;
+            switch (itemId) {
+                case R.id.help:
+                    Log.i("MainActivity", "clicked on help");
+                    startActivity(new Intent(this, ActivityHelp.class));
+                    return true;
         }
         return false;
     }

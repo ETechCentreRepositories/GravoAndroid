@@ -403,6 +403,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userPreTotalPrice = tvTotalPrice.getText().toString();
             String userPreTotalWeight = tvTotalWeight.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
+            Log.e("Cart total price",userTotalPrice);
             String userTotalWeight = "0";
             Log.e("price", userTotalPrice);
 
