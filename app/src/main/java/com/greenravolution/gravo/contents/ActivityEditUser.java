@@ -184,8 +184,19 @@ public class ActivityEditUser extends AppCompatActivity {
             Log.e("BULK: result Code", resultCode + "");
             if (resultCode == Activity.RESULT_OK) {
                 if (requestCode == SELECT_FILE) {
-                    Log.e("BULK: request code", requestCode + "");
-                    onSelectFromGalleryResult(data);
+                    Bitmap bm = null;
+                    try {
+                        bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(ActivityEditUser.this).getContentResolver(), data.getData());
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                        Log.e("BULK: bitmap:", bm.toString());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    newProfile.setImageBitmap(bm);
+                    UploadPhoto(bm);
                 } else if (requestCode == REQUEST_CAMERA) {
                     Log.e("BULK: ", requestCode + "");
                     onCaptureImageResult(data);
@@ -201,13 +212,16 @@ public class ActivityEditUser extends AppCompatActivity {
         if (data != null) {
             try {
                 bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(ActivityEditUser.this).getContentResolver(), data.getData());
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
                 Log.e("BULK: bitmap:", bm.toString());
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            getImageString = UploadPhoto(bm);
+
             newProfile.setImageBitmap(bm);
+            UploadPhoto(bm);
         }
 //                bulk_image.setImageBitmap(cameraImage);
     }
@@ -229,9 +243,9 @@ public class ActivityEditUser extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.e("BULK: bitmap:", thumbnail.toString());
-
-        getImageString = UploadPhoto(thumbnail);
         newProfile.setImageBitmap(thumbnail);
+        UploadPhoto(thumbnail);
+
 //        bulk_image.setImageBitmap(thumbnail);
     }
 
@@ -283,9 +297,20 @@ public class ActivityEditUser extends AppCompatActivity {
                 JSONObject result = new JSONObject(s);
                 int status = result.getInt("status");
                 if (status == 200) {
-                    ShowProgress();
-                    EditProfilePic editProfilePic = new EditProfilePic();
-                    editProfilePic.execute();
+                    JSONArray profiles = result.getJSONArray("result");
+                    JSONObject user = profiles.getJSONObject(0);
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString("user_image", user.getString("photo"));
+                    editor.putString("user_first_name", user.getString("first_name"));
+                    editor.putString("user_last_name", user.getString("last_name"));
+                    editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
+                    editor.putString("user_full_name", user.getString("full_name"));
+                    editor.putString("user_email", user.getString("email"));
+                    editor.putString("user_contact", user.getString("contact_number"));
+                    editor.putString("user_address", user.getString("address"));
+                    editor.apply();
+
                 } else {
                     Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_SHORT).show();
                 }
@@ -304,52 +329,44 @@ public class ActivityEditUser extends AppCompatActivity {
             int userid = sessionManager.getInt("user_id", -1);
             API api = new API();
             HttpReq req = new HttpReq();
-            return req.PostRequest(api.getUpdateImage(), "userid=" + userid + "&encoded_string=" + getImageString);
+            return req.PostRequest(api.getUpdateImage(), "userid=" + userid + "&encoded_string=" + strings[0]);
+
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Log.e("EDIT PROFILE", String.valueOf(s));
             HideProgress();
             try {
                 JSONObject result = new JSONObject(s);
                 int status = result.getInt("status");
                 Log.e("EDIT PHOTO STATUS", result.getString("status") + "");
                 if (status == 200) {
-                    JSONArray users = result.getJSONArray("result");
-                    JSONObject user = users.getJSONObject(0);
+                    JSONArray profiles = result.getJSONArray("result");
+                    JSONObject user = profiles.getJSONObject(0);
                     sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString("user_image", user.getString("photo"));
-                    editor.putString("user_first_name", user.getString("first_name"));
-                    editor.putString("user_last_name", user.getString("last_name"));
-                    editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
-                    editor.putString("user_full_name", user.getString("full_name"));
-                    editor.putString("user_email", user.getString("email"));
-                    editor.putString("user_contact", user.getString("contact_number"));
-                    editor.putString("user_address", user.getString("address"));
                     editor.apply();
-                    Toast.makeText(ActivityEditUser.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent();
-//                    intent.putExtra("image bitmap", getImageString);
-//                    setResult(1, intent);
-                    finish();
-
-                } else {
-                    Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_SHORT).show();
+                    Glide.with(ActivityEditUser.this).load(user.getString("photo")).into(newProfile);
+                    Toast.makeText(ActivityEditUser.this, "Profile Photo Updated", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(ActivityEditUser.this, "Unable to update photo", Toast.LENGTH_SHORT).show();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
+            } catch (JSONException e) {
+
+            }
         }
     }
 
-    public String UploadPhoto(Bitmap image) {
+    public void UploadPhoto(Bitmap image) {
         Bitmap icon = image;
         String encodedimage = bitmapToBase64(icon);
         Log.e("BITMAP: ", encodedimage);
-        return encodedimage;
+        EditProfilePic editProfilePic = new EditProfilePic();
+        editProfilePic.execute(encodedimage);
     }
 
     private String bitmapToBase64(Bitmap bitmap) {
