@@ -241,7 +241,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     tvAllPrice.setText("$" + String.format("%.2f", allPrice));
 
                     //totalweight
-                    if(tvWeight.getText().toString() != "0.0"){
+                    if(!tvWeight.getText().toString().equalsIgnoreCase("0.0")){
                         String totalWeight = tvTotalWeight.getText().toString();
                         double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
                         double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
