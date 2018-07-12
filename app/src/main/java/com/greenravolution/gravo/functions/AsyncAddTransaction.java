@@ -76,9 +76,10 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
                     String deleteCartDetailsResult = httpReq.PostRequest(deleteCartDetailsURL,"userid=" + userID + "&cartitemid=" + deleteID);
                     JSONObject deleteCartDetailsObject = new JSONObject(deleteCartDetailsResult);
                     deleteDetailsStatus = deleteCartDetailsObject.getInt("status");
+                    Log.i("resultmessage",deleteCartDetailsObject.getString("message"));
                 }
             } else {
-                return "Fail";
+                return "Fail1";
             }
         }catch (JSONException e){
             e.printStackTrace();
@@ -91,14 +92,20 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
         if(addDetailsStatus == 200 && deleteDetailsStatus == 200){
             return "Success";
         } else {
-            return "Fail";
+            return "Fail2";
         }
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        onAsyncResult.result(0, s);
+        if(s.equalsIgnoreCase("Success")){
+
+            onAsyncResult.result(200, s);
+        } else {
+
+            onAsyncResult.result(404, s);
+        }
     }
 
     public interface OnAsyncResult {

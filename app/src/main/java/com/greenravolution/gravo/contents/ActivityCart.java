@@ -123,11 +123,11 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         Log.e("price", itemTotalPrice + "");
                         itemRate = "";
 
-                        totalPrice = totalPrice + itemTotalPrice;
                         totalWeight = totalWeight + itemTotalWeight;
+                        totalPrice = totalPrice + itemTotalPrice;
                     }
 
-                    totalPrice = totalPrice + itemTotalPrice;
+                    //totalPrice = totalPrice + itemTotalPrice;
 
 
                     GetAsyncRequest.OnAsyncResult getCategoryById = (categoryResultCode, categoryMessage) -> {
@@ -240,6 +240,16 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                     tvAllPrice.setText("$" + String.format("%.2f", allPrice));
 
+                    //totalweight
+                    if(tvWeight.getText().toString() != "0.0"){
+                        String totalWeight = tvTotalWeight.getText().toString();
+                        double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+                        double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
+                        String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
+                        tvTotalWeight.setText(newStringPieces);
+                        Log.d("newStringPieces", newStringPieces);
+                    }
+
                     String[] paramsArray = {deleteCartDetailsUrl, user_id, cartId + ""};
                     deleteCart.execute(paramsArray);
 
@@ -270,6 +280,13 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 } else {
                     double newWeight = getWeight - 1;
                     tvWeight.setText(String.valueOf(newWeight));
+
+                    String totalWeight = tvTotalWeight.getText().toString();
+                    double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",")+2,totalWeight.indexOf("P")-1));
+                    double newNumberOfPieces = numberOfPieces - 1;
+                    String newStringPieces = totalWeight.substring(0,totalWeight.indexOf(",")+1)+ " " + newNumberOfPieces + " Piece(s)";
+                    tvTotalWeight.setText(newStringPieces);
+                    Log.d("newStringPieces",newStringPieces);
 
                     double newPrice = getPrice - ((getWeight - newWeight) * doubleRate);
                     tvTotalPrice.setText(String.format("$%s", String.valueOf(String.format("%.2f", newPrice))));
@@ -303,6 +320,22 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                 double newWeight = getWeight + 1;
                 tvWeight.setText(String.valueOf(newWeight));
+
+                if(tvWeight.getText().toString() == "0.0"){
+                    String totalWeight = tvTotalWeight.getText().toString();
+                    //double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+                    double newNumberOfPieces = 1;
+                    String newStringPieces = totalWeight + ",  " + newNumberOfPieces + " Piece(s)";
+                    tvTotalWeight.setText(newStringPieces);
+                    Log.d("newStringPieces", newStringPieces);
+                } else {
+                    String totalWeight = tvTotalWeight.getText().toString();
+                    double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+                    double newNumberOfPieces = numberOfPieces + 1;
+                    String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
+                    tvTotalWeight.setText(newStringPieces);
+                    Log.d("newStringPieces", newStringPieces);
+                }
 
                 double newPrice = getPrice - ((getWeight - newWeight) * doubleRate);
 
@@ -383,7 +416,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             Log.e("Cart total price", userTotalPrice);
             String userTotalWeight = "0";
             Log.e("price", userTotalPrice);
-
+            final int resultCodetest;
 
             Log.i("validation", scheduleDate.getText().toString() + etPhone.getText().toString() + etAddress.getText().toString());
 
@@ -423,15 +456,22 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                 AsyncAddTransaction.OnAsyncResult getTransactionId = (resultCode, message) -> {
                     Log.i("message", message);
-
+                    Log.i("resultCodeHere",resultCode + "");
+                    if(resultCode == 200){
+                        startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", newdate));
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"An unexpected error has occured, Please notify us through the help centre.",Toast.LENGTH_SHORT);
+                    }
                 };
 
                 addTransaction.setOnResultListener(getTransactionId);
                 addTransaction.execute(paramsArray);
 
 
-                startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", newdate));
-                finish();
+                Log.i("resultCodeHere","successtransactionpage");
+
+
 
 
             }
