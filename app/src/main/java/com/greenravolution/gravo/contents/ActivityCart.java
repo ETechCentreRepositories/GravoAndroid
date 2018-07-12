@@ -160,9 +160,11 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 Log.e("TOTAL WEIGHT", String.valueOf(totalWeight));
                 Log.e("TOTAL PIECE", String.valueOf(totalPiece));
                 if (String.valueOf(totalPiece).equals("0.0")) {
-                    tvTotalWeight.setText(String.format("%sKG", String.valueOf(totalWeight)));
+                    //tvTotalWeight.setText(String.format("%sKG", String.valueOf(totalWeight)));
+                    tvTotalWeight.setText(totalWeight+"KG, 0.0 Piece(s)");
                 } else {
-                    tvTotalWeight.setText(String.format("%sKG, %s Piece(s)", String.valueOf(totalWeight), String.valueOf(totalPiece)));
+                    //tvTotalWeight.setText(String.format("%sKG, %s Piece(s)", String.valueOf(totalWeight), String.valueOf(totalPiece)));
+                    tvTotalWeight.setText(totalWeight+"KG, " + totalPiece + " Piece(s)");
                 }
 
             }
@@ -240,14 +242,39 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                     tvAllPrice.setText("$" + String.format("%.2f", allPrice));
 
-                    //totalweight
-                    if(tvWeight.getText().toString() != "0.0"){
+//                    if(tvWeight.getText().toString() != "0.0"){
+//                        if(itemRate.substring(itemRate.length()).equalsIgnoreCase("E")){
+//                            //weight reduced to 0.0 and item is in pieces
+//                            String totalWeight = tvTotalWeight.getText().toString();
+//                            double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+//                            double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
+//                            String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
+//                            tvTotalWeight.setText(newStringPieces);
+//                            Log.d("newStringPieces", newStringPieces);
+//                        } else {
+//                            //weight reduced to 0.0 and item is in kg
+//                            String totalWeight = tvTotalWeight.getText().toString();
+//                            double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+//                            double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
+//                            tvTotalWeight.setText(newNumberOfPieces+ "KG");
+//                        }
+
+
+
+                    String itemRates = tvRate.getText().toString();
+                    Log.i("itemRates",itemRates.substring(itemRates.length()-1));
+                    if(itemRates.substring(itemRates.length()-1).equalsIgnoreCase("E")){
                         String totalWeight = tvTotalWeight.getText().toString();
                         double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
                         double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
-                        String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
+                        String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 2) + " " + newNumberOfPieces + " Piece(s)";
                         tvTotalWeight.setText(newStringPieces);
-                        Log.d("newStringPieces", newStringPieces);
+                    } else {
+                        String totalWeight = tvTotalWeight.getText().toString();
+                        double numberOfPieces = Double.parseDouble(totalWeight.substring(0,totalWeight.indexOf("K")));
+                        double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
+                        String newStringPieces = newNumberOfPieces+"KG, " + totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1)+ " Piece(s)";
+                        tvTotalWeight.setText(newStringPieces);
                     }
 
                     String[] paramsArray = {deleteCartDetailsUrl, user_id, cartId + ""};
