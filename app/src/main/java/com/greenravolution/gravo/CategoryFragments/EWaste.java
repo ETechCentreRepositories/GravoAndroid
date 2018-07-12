@@ -55,9 +55,9 @@ public class EWaste extends Fragment {
                 String[] type = types.split(" ");
                 if (type[0].contains("E-Waste")) {
                     String rat = object.getString("rate");
-                    String typeName = "";
+                    StringBuilder typeName = new StringBuilder();
                     for (int j = 2; j < type.length; j++) {
-                        typeName += type[j] + " ";
+                        typeName.append(type[j]).append(" ");
                     }
                     com.greenravolution.gravo.objects.Rates rate = new com.greenravolution.gravo.objects.Rates(id, types, rat);
                     paperContents.addView(initView(rate));
@@ -126,7 +126,6 @@ public class EWaste extends Fragment {
                     itemLabel.setText(R.string.string_pieces);
                 }
             }
-
         });
 
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
@@ -142,9 +141,7 @@ public class EWaste extends Fragment {
                 }
                 getWeight = getWeight + 1;
                 itemsWeight.setText(String.valueOf(getWeight));
-
             }
-
         });
 
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("E-Waste")));

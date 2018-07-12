@@ -143,7 +143,6 @@ public class Rates {
             e.printStackTrace();
         }
         return 0;
-
     }
 
     public int getImageColour(String color) {
@@ -156,7 +155,6 @@ public class Rates {
                 return R.color.brand_purple;
         }
         return 0;
-
     }
 
     public int GetTotalWeight(ArrayList<OrderDetails> orderDetails) {
