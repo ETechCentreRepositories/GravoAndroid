@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("https://www.greenravolution.com/API/gettransaction.php?type=today");
+        asyncRequest.execute("https://www.greenravolution.com/API/gettransaction.php?type=all");
     }
 
     public static class updatetransaction extends AsyncTask<String, Void, String> {

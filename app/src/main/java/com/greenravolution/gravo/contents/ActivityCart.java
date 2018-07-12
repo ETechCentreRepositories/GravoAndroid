@@ -17,11 +17,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,31 +52,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.Toast;
-
 public class ActivityCart extends AppCompatActivity implements View.OnTouchListener, OnItemClickListener {
     public static final String SESSION = "login_status";
     SharedPreferences preferences;
@@ -99,7 +77,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String API_KEY = "AIzaSyAcySxtEoAxt3PcTc-LAAa506DeOGAV7nY";
-
 
 
     int no_of_items = 0;
@@ -182,9 +159,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 Log.e("TOTAL PRICE", String.valueOf(totalPrice));
                 Log.e("TOTAL WEIGHT", String.valueOf(totalWeight));
                 Log.e("TOTAL PIECE", String.valueOf(totalPiece));
-                if(String.valueOf(totalPiece).equals("0.0")){
+                if (String.valueOf(totalPiece).equals("0.0")) {
                     tvTotalWeight.setText(String.format("%sKG", String.valueOf(totalWeight)));
-                }else{
+                } else {
                     tvTotalWeight.setText(String.format("%sKG, %s Piece(s)", String.valueOf(totalWeight), String.valueOf(totalPiece)));
                 }
 
@@ -403,7 +380,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userPreTotalPrice = tvTotalPrice.getText().toString();
             String userPreTotalWeight = tvTotalWeight.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
-            Log.e("Cart total price",userTotalPrice);
+            Log.e("Cart total price", userTotalPrice);
             String userTotalWeight = "0";
             Log.e("price", userTotalPrice);
 
@@ -509,6 +486,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
     }
+
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
     }

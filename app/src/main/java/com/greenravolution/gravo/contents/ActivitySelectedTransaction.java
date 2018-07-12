@@ -3,6 +3,7 @@ package com.greenravolution.gravo.contents;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -229,6 +230,8 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_grey);
                 line3.setImageResource(R.drawable.stepper_line_grey);
+//                AnimationDrawable progressDrawable = (AnimationDrawable) line1.getDrawable();
+//                progressDrawable.start();
                 break;
             case "3":
                 Log.e("function status", "3");
@@ -239,6 +242,8 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_pink);
                 line3.setImageResource(R.drawable.stepper_line_grey);
+//                AnimationDrawable progressDrawable2 = (AnimationDrawable) line2.getDrawable();
+//                progressDrawable2.start();
                 break;
             case "4":
                 Log.e("function status", "4");
@@ -249,6 +254,8 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_pink);
                 line3.setImageResource(R.drawable.stepper_line_pink);
+//                AnimationDrawable progressDrawable3 = (AnimationDrawable) line3.getDrawable();
+//                progressDrawable3.start();
                 break;
             case "null":
                 Log.e("function status", "null");
