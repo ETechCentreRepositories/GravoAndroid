@@ -45,9 +45,9 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         Log.d(TAG, "registerToken: "+ token);
         String url;
         if(purpose.equalsIgnoreCase("register")){
-            url = "https://www.greenravolution.com/API/registerToken.php";
+            url = "http://ehostingcentre.com/gravo/registerToken.php";
         } else {
-            url = "https://www.greenravolution.com/API/updateToken.php";
+            url = "http://ehostingcentre.com/gravo/updateToken.php";
         }
 
         OkHttpClient client = new OkHttpClient();

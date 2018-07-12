@@ -53,7 +53,7 @@ public class Metals extends Fragment {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
                 int id = object.getInt("id");
-                String types = object.getString("type");
+                String types = object.getString("item");
                 String[] type = types.split(" ");
                 if (type[0].contains("Metals")) {
                     String rat = object.getString("rate");

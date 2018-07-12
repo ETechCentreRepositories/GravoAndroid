@@ -5,72 +5,72 @@ public class API {
     }
 
     public String getLogin() {
-        String login = "https://www.greenravolution.com/API/login.php";
+        String login = "http://ehostingcentre.com/gravo/login.php";
         return login;
     }
     public String getRegister() {
-        String register = "https://www.greenravolution.com/API/signup.php";
+        String register = "http://ehostingcentre.com/gravo/signup.php";
         return register;
     }
     public String getCart() {
-        String register = "https://www.greenravolution.com/API/getcart.php?";
+        String register = "http://ehostingcentre.com/gravo/getcart.php?";
         return register;
     }
 
     public String addCartDetails(){
-        String add = "https://www.greenravolution.com/API/addcartdetails.php";
+        String add = "http://ehostingcentre.com/gravo/addcartdetails.php";
         return add;
     }
 
     public String deleteCartDetails(){
-        String delete = "https://www.greenravolution.com/API/deletecartdetails.php";
+        String delete = "http://ehostingcentre.com/gravo/deletecartdetails.php";
         return delete;
     }
 
     public String editCartDetails(){
-        String edit = "https://www.greenravolution.com/API/updatecartdetails.php";
+        String edit = "http://ehostingcentre.com/gravo/updatecartdetails.php";
         return edit;
     }
 
     public String addTransaction(){
-        String add = "https://www.greenravolution.com/API/addtransaction.php";
+        String add = "http://ehostingcentre.com/gravo/addtransaction.php";
         return add;
     }
 
     public String addTransactionDetails(){
-        String add = "https://www.greenravolution.com/API/addtransactiondetails.php";
+        String add = "http://ehostingcentre.com/gravo/addtransactiondetails.php";
         return add;
     }
 
     public String getTransaction(){
-        String add = "https://www.greenravolution.com/API/gettransaction.php";
+        String add = "http://ehostingcentre.com/gravo/gettransaction.php";
         return add;
     }
 
     public String getTransactionDetails(){
-        String add = "https://www.greenravolution.com/API/gettransactiondetails.php";
+        String add = "http://ehostingcentre.com/gravo/gettransactiondetails.php";
         return add;
     }
 
     public String getCategories(){
-        String get = "https://www.greenravolution.com/API/getCategories.php";
+        String get = "http://ehostingcentre.com/gravo/getCategories.php";
         return get;
     }
     public String getEditUser(){
-        return "https://www.greenravolution.com/API/updateuserdetails.php";
+        return "http://ehostingcentre.com/gravo/updateuserdetails.php";
     }
     public String getUpdateImage(){
-        return "https://www.greenravolution.com/API/updateimage.php";
+        return "http://ehostingcentre.com/gravo/updateimage.php";
     }
     public String getFacebookLogin(){
-        return "https://www.greenravolution.com/API/facebookloginsignup.php";
+        return "http://ehostingcentre.com/gravo/facebookloginsignup.php";
     }
     public String getFAQ(){
-        return "https://www.greenravolution.com/API/sendhelp.php";
+        return "http://ehostingcentre.com/gravo/sendhelp.php";
     }
 
     public String getForgotPassword(){
-        return "https://www.greenravolution.com/API/forgetpassword.php";
+        return "http://ehostingcentre.com/gravo/forgetpassword.php";
     }
 
 

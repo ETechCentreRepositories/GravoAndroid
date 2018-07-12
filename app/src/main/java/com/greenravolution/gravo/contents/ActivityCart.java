@@ -137,7 +137,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                             Log.e("rates", rates.toString() + "\n");
                             item = rates.getJSONObject(0);
 
-                            itemType = item.getString("type");
+                            itemType = item.getString("item");
                             itemRate = item.getString("rate");
 
                             String[] itemArray = {cartid + "", itemType + "", itemTotalPrice + "", itemTotalWeight + "", itemRate + ""};
@@ -151,7 +151,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     };
                     GetAsyncRequest asyncRequest2 = new GetAsyncRequest();
                     asyncRequest2.setOnResultListener(getCategoryById);
-                    asyncRequest2.execute("https://greenravolution.com/API/getCategories.php?type=withid&category=" + catid);
+                    asyncRequest2.execute("http://ehostingcentre.com/gravo/getCategories.php?type=withid&category=" + catid);
 
                 }
 
