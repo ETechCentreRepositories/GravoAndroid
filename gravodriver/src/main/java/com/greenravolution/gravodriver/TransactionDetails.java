@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,10 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
 import com.greenravolution.gravodriver.functions.HttpReq;
-import com.greenravolution.gravodriver.functions.PostAsyncRequest;
 import com.greenravolution.gravodriver.functions.Rates;
 
 import org.json.JSONArray;
@@ -32,7 +31,6 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -46,37 +44,41 @@ public class TransactionDetails extends AppCompatActivity {
     Button btnAddRec, btnCfmNPay;
     EditText etGetName, etGetNumber;
     LinearLayout llProgress;
-    ArrayList<OrderDetails> oal;
+
     ImageView progressbar;
     TextView totalPrice, totalWeight;
 
     Rates getRates = new Rates();
     GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
-        llProgress.setVisibility(View.GONE);
-        AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
-        progressDrawable.stop();
-        Double price = 0.00;
-        try {
 
+        try {
             SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
             final String rates = sessionManager.getString("rates", "");
-            oal.clear();
             JSONObject object = new JSONObject(message);
             Log.e("MESSAGE", message);
             int status = object.getInt("status");
             if (status == 200) {
                 JSONArray results = object.getJSONArray("result");
-                for (int i = 0; i < results.length(); i++) {
-                    Log.e("OAL SIZE: ", results.length() + "");
-                    JSONObject detail = results.getJSONObject(i);
-                    int id = detail.getInt("id");
-                    Double w = detail.getDouble("weight");
-                    Double p = detail.getDouble("price");
-                    int cid = detail.getInt("category_id");
-                    price = price + getRates.getRates(cid, w, rates);
-                    int tid = detail.getInt("transaction_id");
-                    oal.add(new OrderDetails(id, tid, String.valueOf(w), String.valueOf(p), cid));
+                JSONObject transaction = results.getJSONObject(0);
+                String getTotalWeight = transaction.getString("total_weight");
+                String getTotalPrice = String.valueOf(transaction.getDouble("total_price"));
+                totalPrice.setText(String.format("$%s", getTotalPrice));
+                totalWeight.setText(getTotalWeight);
+                JSONArray details = object.getJSONArray("details");
+                for (int i = 0; i < details.length(); i++) {
+                    JSONObject detail = details.getJSONObject(i);
+                    String detail_id = String.valueOf(detail.getInt("id"));
+                    String detail_item = detail.getString("item");
+                    String detail_price = String.valueOf(detail.getDouble("price"));
+                    String detail_weight = String.valueOf(detail.getDouble("weight"));
+                    String detail_rate = detail.getString("rate");
+                    String[] itemArray = {detail_item, detail_price, detail_weight, detail_rate, detail_id};
+                    items.addView(initView(itemArray));
                 }
+                llProgress.setVisibility(View.GONE);
+                AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
+                progressDrawable.stop();
+
             } else {
                 Toast.makeText(this, "No Details", Toast.LENGTH_SHORT).show();
             }
@@ -84,15 +86,13 @@ public class TransactionDetails extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Double totalweight = 0.00;
-        for (int i = 0; i < oal.size(); i++) {
-            items.addView(initView(oal.get(i)));
+//        Double totalweight = 0.00;
+//        for (int i = 0; i < oal.size(); i++) {
+//            items.addView(initView(oal.get(i)));
+//
+//            totalweight = totalweight + Double.parseDouble(oal.get(i).getWeight());
+//        }
 
-            totalweight = totalweight + Double.parseDouble(oal.get(i).getWeight());
-        }
-        DecimalFormat df2 = new DecimalFormat("#.##");
-        totalPrice.setText(String.format("$%s", String.valueOf(df2.format(price))));
-        totalWeight.setText(String.format("%sKG", String.valueOf(totalweight)));
 
     };
 
@@ -100,20 +100,9 @@ public class TransactionDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_details);
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
 
         llProgress = findViewById(R.id.llProgress);
         progressbar = findViewById(R.id.progressBar);
-        oal = new ArrayList<>();
-
-
         toolbar = findViewById(R.id.toolbar);
         taddress = findViewById(R.id.address);
         ttiming = findViewById(R.id.arrivalTime);
@@ -126,22 +115,18 @@ public class TransactionDetails extends AppCompatActivity {
         etGetNumber = findViewById(R.id.getRecContact);
         totalPrice = findViewById(R.id.totalPrice);
         totalWeight = findViewById(R.id.totalWeight);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         toolbar.setNavigationOnClickListener(v -> {
             Intent ib = new Intent();
             ib.putExtra("type", "0");
             setResult(1, ib);
             finish();
         });
-
         btnAddRec.setOnClickListener(v -> {
             llGetRecipient.setVisibility(View.VISIBLE);
             btnAddRec.setVisibility(View.GONE);
         });
-
         Intent intent = getIntent();
         String title = intent.getStringExtra("transaction_id");
         String address = intent.getStringExtra("address");
@@ -189,13 +174,10 @@ public class TransactionDetails extends AppCompatActivity {
         //temp
         llProgress.setVisibility(View.GONE);
     }
-
     @Override
     protected void onStart() {
         super.onStart();
-
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -207,16 +189,16 @@ public class TransactionDetails extends AppCompatActivity {
     }
 
     public void getTransacionDetails(int id) {
-        oal.clear();
         llProgress.setVisibility(View.VISIBLE);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("https://greenravolution.com/API/gettransactiondetails.php?transactionid=" + id);
+        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withid&transactionid=" + id);
+
     }
 
-    public View initView(OrderDetails details) {
+    public View initView(String[] itemArray) {
         DecimalFormat df2 = new DecimalFormat("#.##");
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -228,82 +210,203 @@ public class TransactionDetails extends AppCompatActivity {
         ImageView itemImg = view.findViewById(R.id.getImage);
         Button plus = view.findViewById(R.id.btnPlus);
         Button minus = view.findViewById(R.id.btnMinus);
-        SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-        final String rates = sessionManager.getString("rates", "");
+        Button delete = view.findViewById(R.id.btnDelete);
 
-        Double price = Double.parseDouble(getRates.getRates(details.getCategory_id(), Double.parseDouble(details.getWeight()), rates) + "0");
-        String rate = getRates.getRate(details.getCategory_id(), rates);
-        String category = getRates.getItem(details.getCategory_id(), rates);
-        itemImg.setBackgroundColor(getResources().getColor(getRates.getImageColour(details.getCategory_id(), rates)));
-        itemImg.setImageDrawable(getResources().getDrawable(getRates.getImage(details.getCategory_id(), rates)));
+        Double price = Double.parseDouble(itemArray[1]);
+        Double weight = Double.parseDouble(itemArray[2]);
+        String rate = itemArray[3];
+        String category = itemArray[0];
+        itemImg.setBackgroundColor(getRates.getImageColour(category));
+        itemImg.setImageDrawable(getDrawable(getRates.getImage(category)));
         getTitle.setText(category);
         getRate.setText(rate);
         getPrice.setText(String.format("$%s", df2.format(price)));
-        getWeight.setText(String.valueOf(details.getWeight()));
-        Log.e("Order Detail: ", details + "");
+        getWeight.setText(String.valueOf(weight));
 
-        plus.setOnClickListener(v -> {
-            String getweigh = details.getWeight();
-            Double getweight = addWeight(Double.parseDouble(getweigh));
-            details.setWeight(String.valueOf(getweight));
-            double prices = Double.parseDouble(String.valueOf((getRates.getRates(details.getCategory_id(), Double.parseDouble(details.getWeight()), rates))));
-            details.setPrice(String.valueOf(prices));
-            getPrice.setText(String.format("$%s", df2.format(prices)));
-            getWeight.setText(String.valueOf(details.getWeight()));
-            Log.e("Order Detail: ", details + "");
-            UpdateDetails updateDetails = new UpdateDetails();
-            Log.e("id", details.getId() + "");
-            updateDetails.execute(String.valueOf(details.getId()), String.valueOf(getweight), "0.00");
+        Double doubleRate = Double.parseDouble(rate.split("/")[0]);
+        delete.setOnClickListener((View v) -> {
+            String detail_id = itemArray[4];
+            String getTotalPrice = totalPrice.getText().toString().substring(1);
+            String getTotalWeight = totalWeight.getText().toString();
+            double getOnlyWeight = Double.parseDouble(getTotalWeight.split("KG")[0]);
+            double getOnlyPiece = Double.parseDouble(getTotalWeight.split(" ")[1]);
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setCancelable(false);
+            dialog.setTitle("Delete Item");
+            dialog.setMessage("Delete this " + itemArray[0].split(" ")[0] + " item?");
+            dialog.setPositiveButton("yes", (dialogInterface, i) -> {
+                if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                    double newTotalPiece = getOnlyPiece - Double.parseDouble(getWeight.getText().toString());
+                    double itemTotalPrice = Double.parseDouble(getTotalPrice);
+                    double newTotalPrice = itemTotalPrice - Double.parseDouble(getPrice.getText().toString().substring(1));
+                    String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
+                    totalWeight.setText(newStringPieces);
+                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    Log.e("newStringPieces", newStringPieces);
+
+                } else {
+                    double newTotalWeight = getOnlyWeight - Double.parseDouble(getWeight.getText().toString());
+                    double itemTotalPrice = Double.parseDouble(getTotalPrice);
+                    double newTotalPrice = itemTotalPrice - Double.parseDouble(getPrice.getText().toString().substring(1));
+                    String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
+                    totalWeight.setText(newStringPieces);
+                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    Log.e("newStringPieces", newStringPieces);
+                    DeleteDetails deleteDetails = new DeleteDetails();
+                    deleteDetails.execute(detail_id);
+                }
+
+
+                view.setVisibility(View.GONE);
+                Toast.makeText(TransactionDetails.this, "Deleted", Toast.LENGTH_SHORT).show();
+            });
+            dialog.setNegativeButton("No", (dialogInterface, i) -> {
+                Toast.makeText(getApplicationContext(), "Not deleted", Toast.LENGTH_LONG).show();
+            });
+            AlertDialog dialogue = dialog.create();
+            dialogue.show();
 
 
         });
-        minus.setOnClickListener(v -> {
-            String getweigh = details.getWeight();
-            Double getweight = minusWeight(Double.parseDouble(getweigh));
-            details.setWeight(String.valueOf(getweight));
-            Double prices = Double.parseDouble(String.valueOf((getRates.getRates(details.getCategory_id(), Double.parseDouble(details.getWeight()), rates))));
-            details.setPrice(String.valueOf(prices));
-            getPrice.setText(String.format("$%s", df2.format(prices)));
-            getWeight.setText(String.valueOf(details.getWeight()));
-            Log.e("Order Detail: ", details + "");
+        minus.setOnClickListener((View v) -> {
+            String detail_id = itemArray[4];
+            String getTotalPrice = totalPrice.getText().toString().substring(1);
+            String getTotalWeight = totalWeight.getText().toString();
+            double getOnlyWeight = Double.parseDouble(getTotalWeight.split("KG")[0]);
+            double getOnlyPiece = Double.parseDouble(getTotalWeight.split(" ")[1]);
+            if (getWeight.getText().toString().equalsIgnoreCase("1.0") || getWeight.getText().toString().equalsIgnoreCase("1")) {
+                if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                    Toast.makeText(TransactionDetails.this, "Cannot go below 1 Piece", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(TransactionDetails.this, "Cannot go below 1 KG", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                    double newTotalPiece = getOnlyPiece - 1.0;
+                    double itemTotalPrice = Double.parseDouble(getTotalPrice);
+                    double newTotalPrice = itemTotalPrice - doubleRate;
+                    String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
+                    totalWeight.setText(newStringPieces);
+                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    Log.e("newStringPieces", newStringPieces);
+
+                } else {
+                    double newTotalWeight = getOnlyWeight - 1.0;
+                    double itemTotalPrice = Double.parseDouble(getTotalPrice);
+                    double newTotalPrice = itemTotalPrice - doubleRate;
+                    String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
+                    totalWeight.setText(newStringPieces);
+                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    Log.e("newStringPieces", newStringPieces);
+                }
+
+                getWeight.setText(String.valueOf(Double.parseDouble(getWeight.getText().toString()) - 1.0));
+                getPrice.setText(String.format("$%s", String.valueOf(Double.parseDouble(getPrice.getText().toString().substring(1)) - doubleRate)));
+
+                UpdateDetails updateDetails = new UpdateDetails();
+                updateDetails.execute(detail_id, getWeight.getText().toString(), getPrice.getText().toString().substring(1));
+            }
+
+        });
+        plus.setOnClickListener((View v) -> {
+            String detail_id = itemArray[4];
+            String getTotalPrice = totalPrice.getText().toString().substring(1);
+            String getTotalWeight = totalWeight.getText().toString();
+            double getOnlyWeight = Double.parseDouble(getTotalWeight.split("KG")[0]);
+            double getOnlyPiece = Double.parseDouble(getTotalWeight.split(" ")[1]);
+
+            if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                double newTotalPiece = getOnlyPiece + 1.0;
+                double itemTotalPrice = Double.parseDouble(getTotalPrice);
+                double newTotalPrice = itemTotalPrice + doubleRate;
+                String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
+                totalWeight.setText(newStringPieces);
+                totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                Log.e("newStringPieces", newStringPieces);
+
+            } else {
+                double newTotalWeight = getOnlyWeight + 1.0;
+                double itemTotalPrice = Double.parseDouble(getTotalPrice);
+                double newTotalPrice = itemTotalPrice + doubleRate;
+                String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
+                totalWeight.setText(newStringPieces);
+                totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                Log.e("newStringPieces", newStringPieces);
+            }
+
+            getWeight.setText(String.valueOf(Double.parseDouble(getWeight.getText().toString()) + 1.0));
+            getPrice.setText(String.format("$%s", String.valueOf(Double.parseDouble(getPrice.getText().toString().substring(1)) + doubleRate)));
             UpdateDetails updateDetails = new UpdateDetails();
-            Log.e("id", details.getId() + "");
-            updateDetails.execute(String.valueOf(details.getId()), String.valueOf(getweight), "0.00");
+            updateDetails.execute(detail_id, getWeight.getText().toString(), getPrice.getText().toString().substring(1));
 
         });
         return view;
     }
-
-    Double addWeight(Double i) {
-        return i + 1.00;
-    }
-
-    Double minusWeight(Double i) {
-        return i - 1.00;
-    }
-
-    public class UpdateDetails extends AsyncTask<String, Void, String> {
+    public class DeleteDetails extends AsyncTask<String, Void,String>{
 
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
-            return req.PostRequest("https://greenravolution.com/API/updatetransactiondetails.php", "transactiondetailid=" + Integer.parseInt(strings[0]) + "&weight=" + strings[1] + "&price=" + strings[2]);
+            return req.PostRequest("http://ehostingcentre.com/gravo/deletetransactiondetails.php","id="+strings[0]);
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e("UPDATE DETAILS RESULT:", s);
+            try {
+                JSONObject object = new JSONObject(s);
+                int status = object.getInt("status");
+                if (status == 200) {
+                    Intent intent = getIntent();
+                    int trans_id = intent.getIntExtra("id", -1);
+                    UpdateTransaction updateTransaction = new UpdateTransaction();
+                    updateTransaction.execute(String.valueOf(trans_id),totalWeight.getText().toString(), totalPrice.getText().toString().substring(1));
+                }else {
+                    Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
+    public class UpdateDetails extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactiondetails.php", "transactiondetailid=" + Integer.parseInt(strings[0]) + "&weight=" + strings[1] + "&price=" + strings[2]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("UPDATE DETAILS RESULT:", s);
+            try {
+                JSONObject object = new JSONObject(s);
+                int status = object.getInt("status");
+                if (status == 200) {
+                    Intent intent = getIntent();
+                    int trans_id = intent.getIntExtra("id", -1);
+                    UpdateTransaction updateTransaction = new UpdateTransaction();
+                    updateTransaction.execute(String.valueOf(trans_id),totalWeight.getText().toString(), totalPrice.getText().toString().substring(1));
+                }else {
+                    Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
     public class UpdateTransactionDetails extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
-            return req.PostRequest("https://www.greenravolution.com/API/updatetransactionuserandcontact.php", "transactionid=" + strings[0] + "&user=" + strings[1] + "&number=" + strings[2] + "&status=4");
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionuserandcontact.php", "transactionid=" + strings[0] + "&user=" + strings[1] + "&number=" + strings[2] + "&status=4");
         }
 
         @Override
@@ -312,14 +415,13 @@ public class TransactionDetails extends AppCompatActivity {
             Log.e("UPDATE TRANSACTIONS:", s + "");
         }
     }
-
     public class UpdateTransactionStatus extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
-            return req.PostRequest("https://www.greenravolution.com/API/updatetransactionstatus.php"
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php"
                     , "transactionid=" + strings[0] + "&status=4");
         }
 
@@ -327,6 +429,30 @@ public class TransactionDetails extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e("UPDATE TRANSACTIONS:", s + "");
+        }
+    }
+    public class UpdateTransaction extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionpriceweight.php", "transactionid=" + Integer.parseInt(strings[0]) + "&weight=" + strings[1] + "&price=" + strings[2]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("UPDATE TRANS RESULT:", s);
+            try {
+                JSONObject object = new JSONObject(s);
+                int status = object.getInt("status");
+                if (status != 200) {
+                    Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

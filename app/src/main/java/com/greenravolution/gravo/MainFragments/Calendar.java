@@ -54,13 +54,13 @@ public class Calendar extends Fragment {
 
                 JSONArray getTransactionArray = result.getJSONArray("result");
 
-
                 for(int i = 0; i<getTransactionArray.length(); i++){
 
                     JSONObject transactionObject = getTransactionArray.getJSONObject(i);
                     String transactionID = transactionObject.getString("id");
                     String transactionDate = transactionObject.getString("collection_date");
                     String transactionIDKey = transactionObject.getString("transaction_id_key");
+                    int status_id = transactionObject.getInt("status_id");
 
                     String day = transactionDate.substring(transactionDate.lastIndexOf('-')+1);
                     String month = transactionDate.substring(transactionDate.indexOf('-')+1,transactionDate.lastIndexOf('-'));
@@ -81,11 +81,15 @@ public class Calendar extends Fragment {
                     String monthWord = newDate.substring(newDate.indexOf(" ")+1,newDate.indexOf(" ")+4);
 
                     View fragmentCalendar = inflater.inflate(R.layout.transaction_page_item, null);
+                    LinearLayout layout = fragmentCalendar.findViewById(R.id.layout);
+                    if(status_id == 4){
+                        layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+                    }
                     TextView tvDay = (TextView) fragmentCalendar.findViewById(R.id.tvDay);
                     TextView tvDetails = (TextView) fragmentCalendar.findViewById(R.id.tvDetails);
                     ExpCalendarView cvCalendar = getView().findViewById(R.id.calendar);
 
-                    cvCalendar.markDate(new DateData(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day)));
+                    cvCalendar.markDate(new DateData(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day))).setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
                     Log.e("long date","getTime : " + date.getTime());
 

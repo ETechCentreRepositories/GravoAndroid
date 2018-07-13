@@ -121,17 +121,17 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             JSONObject detailObject = detailsArray.getJSONObject(detail);
 
                             String categoryType = detailObject.getString("category_type");
-                                String formattedType = categoryType.substring(0, categoryType.indexOf(" "));
+                            String formattedType = categoryType.substring(0, categoryType.indexOf(" "));
 
-                                Rates rateClass = new Rates();
-                                ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
-                                ivDetailImage.setImageResource(rateClass.getImage(categoryType));
+                            Rates rateClass = new Rates();
+                            ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
+                            ivDetailImage.setImageResource(rateClass.getImage(categoryType));
 
-                                tvDetailTitle.setText(detailObject.getString("category_type"));
-                                tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
-                                tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
+                            tvDetailTitle.setText(detailObject.getString("category_type"));
+                            tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
+                            tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
 
-                                if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
+                            if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
                                 tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
                             } else if (formattedType.equals("E-Waste")) {
                                 tvDetailWeight.setText(String.format("%s Piece(s)", detailObject.getString("weight")));
@@ -217,9 +217,11 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 circle2.setImageResource(R.drawable.stepper_circle_grey);
                 circle3.setImageResource(R.drawable.stepper_circle_grey);
                 circle4.setImageResource(R.drawable.stepper_circle_grey);
-                line1.setImageResource(R.drawable.stepper_line_grey);
+                line1.setImageResource(R.drawable.stepper_line_pink_animated);
                 line2.setImageResource(R.drawable.stepper_line_grey);
                 line3.setImageResource(R.drawable.stepper_line_grey);
+                AnimationDrawable progressDrawable = (AnimationDrawable) line1.getDrawable();
+                progressDrawable.start();
                 break;
             case "2":
                 Log.e("function status", "2");
@@ -228,10 +230,10 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 circle3.setImageResource(R.drawable.stepper_circle_grey);
                 circle4.setImageResource(R.drawable.stepper_circle_grey);
                 line1.setImageResource(R.drawable.stepper_line_pink);
-                line2.setImageResource(R.drawable.stepper_line_grey);
+                line2.setImageResource(R.drawable.stepper_line_pink_animated);
                 line3.setImageResource(R.drawable.stepper_line_grey);
-//                AnimationDrawable progressDrawable = (AnimationDrawable) line1.getDrawable();
-//                progressDrawable.start();
+                AnimationDrawable progressDrawable2 = (AnimationDrawable) line2.getDrawable();
+                progressDrawable2.start();
                 break;
             case "3":
                 Log.e("function status", "3");
@@ -241,9 +243,9 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 circle4.setImageResource(R.drawable.stepper_circle_grey);
                 line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_pink);
-                line3.setImageResource(R.drawable.stepper_line_grey);
-//                AnimationDrawable progressDrawable2 = (AnimationDrawable) line2.getDrawable();
-//                progressDrawable2.start();
+                line3.setImageResource(R.drawable.stepper_line_pink_animated);
+                AnimationDrawable progressDrawable3 = (AnimationDrawable) line3.getDrawable();
+                progressDrawable3.start();
                 break;
             case "4":
                 Log.e("function status", "4");
@@ -254,8 +256,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_pink);
                 line3.setImageResource(R.drawable.stepper_line_pink);
-//                AnimationDrawable progressDrawable3 = (AnimationDrawable) line3.getDrawable();
-//                progressDrawable3.start();
                 break;
             case "null":
                 Log.e("function status", "null");

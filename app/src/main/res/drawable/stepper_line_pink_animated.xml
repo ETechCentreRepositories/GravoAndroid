@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:duration="1000">
-        <layer-list>
-            <item>
-                <shape android:shape="rectangle">
-                    <solid android:color="@color/brand_pink"/>
-                    <size android:height="5dp" android:width="0dp"/>
-                </shape>
-                <shape android:shape="rectangle">
-                    <solid android:color="@color/grey"/>
-                    <size android:height="5dp" android:width="100dp"/>
-                </shape>
-            </item>
-        </layer-list>
-    </item>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_0"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_10"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_20"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_30"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_40"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_50"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_60"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_70"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_80"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_90"/>
+    <item android:duration="50" android:drawable="@drawable/stepper_frame_100"/>
 </animation-list>

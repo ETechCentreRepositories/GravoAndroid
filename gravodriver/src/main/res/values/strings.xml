@@ -16,4 +16,6 @@ Place your fingertip on the Home button to verify your identity
     <string name="bulk_items">BULK ITEMS</string>
     <string name="bulk_item">Bulk Item</string>
     <string name="not_registered">You have not registered as a driver!</string>
+    <string name="total_estimated_price_label">TOTAL PRICE</string>
+    <string name="total_weight_label">TOTAL WEIGHT</string>
 </resources>

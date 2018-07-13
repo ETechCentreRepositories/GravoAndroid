@@ -8,6 +8,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -42,14 +43,14 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
-
     LinearLayout llProgress;
     ImageView progressbar;
     ListView orders;
+    SwipeRefreshLayout refreshLayout;
 
     ArrayList<Orders> oal;
     ArrayList<OrderDetails> odal;
-    TextView collectDate, totalWeight, totalPrice;
+    TextView collectDate;
     SharedPreferences sessionManager;
     Rates rates = new Rates();
     LinearLayout list;
@@ -60,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
     Button botw, barr, bmap;
     TextView tt, ta, tpc, tst;
 
-    GetAsyncRequest.OnAsyncResult asyncResultUpdateTrans = (resultCode, message) -> {
 
-    };
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -90,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject object = new JSONObject(message);
             int status = object.getInt("status");
             if (status == 200) {
+                refreshLayout.setRefreshing(false);
                 JSONArray results = object.getJSONArray("result");
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject detail = results.getJSONObject(i);
@@ -106,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
                     list.addView(initview(neworder, i + 1));
 
                 }
-                DecimalFormat df = new DecimalFormat("####0.00");
-                totalPrice.setText(String.format("Total Price: $%s", String.valueOf(df.format(price))));
-                totalWeight.setText("");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -123,41 +120,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        this.getWindow().getDecorView().setSystemUiVisibility(
-//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
         llProgress = findViewById(R.id.llProgress);
         progressbar = findViewById(R.id.progressBar);
         list = findViewById(R.id.list);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            if (getSupportActionBar().getTitle() != null) {
-                getSupportActionBar().setDisplayShowTitleEnabled(false);
-            }
+        if (getSupportActionBar() != null) if (getSupportActionBar().getTitle() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         oal = new ArrayList<>();
         odal = new ArrayList<>();
-        orders = findViewById(R.id.orders);
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
         String date = df.format(Calendar.getInstance().getTime());
         collectDate = findViewById(R.id.collectDate);
-        totalPrice = findViewById(R.id.totalPrice);
-        totalWeight = findViewById(R.id.totalWeight);
+        refreshLayout = findViewById(R.id.refreshLayout);
         collectDate.setText(String.format("Pickups for Today: %s", date));
         // temp
         llProgress.setVisibility(View.GONE);
 
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(getRates);
-        asyncRequest.execute("https://greenravolution.com/API/getCategories.php?type=all");
+        asyncRequest.execute("http://ehostingcentre.com/gravo/getCategories.php?type=all");
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getTransactions();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getTransactions();
     }
 
     @Override
@@ -230,108 +228,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        getTransactions();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        getTransactions();
-
-//        int id = 1;
-//        String tc = "Transaction #00001";
-//        String tt = "1";
-//        String ad = "BLK 279 Tampines Street 22 #08-220";
-//        String po = "520279";
-//        int uid = 3;
-//        int sid = 1;
-//        int pid = 2;
-//        int stid = 1;
-//
-//        int id2 = 2;
-//        String tc2 = "Transaction #00002";
-//        String tt2 = "1";
-//        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
-//        String po2 = "730159";
-//        int uid2 = 3;
-//        int sid2 = 2;
-//        int pid2 = 2;
-//        int stid2 = 4;
-//
-//        int id3 = 3;
-//        String tc3 = "Transaction #00003";
-//        String tt3 = "2";
-//        String ad3 = "BLK 629 senja road #20-196";
-//        String po3 = "670629";
-//        int uid3 = 3;
-//        int sid3 = 2;
-//        int pid3 = 1;
-//        int stid3 = 1;
-//
-//        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
-//        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
-//        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
-
-//        getTransactions();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getTransactions();
-//        int id = 3;
-//        String tc = "Transaction #00001";
-//        String tt = "1";
-//        String ad = "BLK 279 Tampines Street 22 #08-220";
-//        String po = "520279";
-//        int uid = 3;
-//        int sid = 1;
-//        int pid = 2;
-//        int stid = 1;
-//
-//        int id2 = 4;
-//        String tc2 = "Transaction #00002";
-//        String tt2 = "1";
-//        String ad2 = "BLK 159 Woodlands Avenue 2 #06-802";
-//        String po2 = "730159";
-//        int uid2 = 3;
-//        int sid2 = 2;
-//        int pid2 = 2;
-//        int stid2 = 4;
-//
-//        int id3 = 5;
-//        String tc3 = "Transaction #00003";
-//        String tt3 = "2";
-//        String ad3 = "BLK 629 senja road #20-196";
-//        String po3 = "670629";
-//        int uid3 = 3;
-//        int sid3 = 2;
-//        int pid3 = 1;
-//        int stid3 = 1;
-//
-//        oal.add(new Orders(id, tc, tt, ad, po, uid, sid, pid, stid));
-//        oal.add(new Orders(id2, tc2, tt2, ad2, po2, uid2, sid2, pid2, stid2));
-//        oal.add(new Orders(id3, tc3, tt3, ad3, po3, uid3, sid3, pid3, stid3));
-//        getTransactions();
-    }
-
     public void getTransactions() {     //get list of items
         llProgress.setVisibility(View.VISIBLE);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("https://www.greenravolution.com/API/gettransaction.php?type=all");
+        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=all");
     }
 
     public static class updatetransaction extends AsyncTask<String, Void, String> {
@@ -340,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
-            String reqResult = req.PostRequest("https://www.greenravolution.com/API/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=3");
+            String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=3");
             Log.e("reqResult", reqResult);
             try{
                 JSONObject resultObject = new JSONObject(reqResult);
@@ -348,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject transactionObject = resultArray.getJSONObject(0);
                 String recyclerID = transactionObject.getString("recycler_id");
 
-                String reqNotification = req.PostRequest("https://www.greenravolution.com/API/sendNotification.php","userID="+recyclerID);
+                String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php","userID="+recyclerID);
                 Log.e("reqNotification",reqNotification);
             } catch (JSONException e){
                 e.printStackTrace();

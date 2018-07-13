@@ -5,34 +5,46 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainFragments.Transactions">
-    <ScrollView
-        android:layout_marginTop="10dp"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/transactionDetails"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+            <android.support.v4.widget.NestedScrollView
+                android:layout_marginTop="10dp"
+                android:scrollbars="none"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/transactionDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
 
 
-        </LinearLayout>
-    </ScrollView>
-    <LinearLayout
-        android:id="@+id/progressbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#90000000"
-        android:gravity="center">
-        <com.wang.avi.AVLoadingIndicatorView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:indicatorName="BallClipRotateMultipleIndicator"
-            app:indicatorColor="@color/brand_green"/>
-    </LinearLayout>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+            <LinearLayout
+                android:id="@+id/progressbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#90000000"
+                android:gravity="center">
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:indicatorName="BallClipRotateMultipleIndicator"
+                    app:indicatorColor="@color/brand_green"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
 </FrameLayout>

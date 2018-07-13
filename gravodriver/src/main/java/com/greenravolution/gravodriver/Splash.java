@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
+import com.greenravolution.gravodriver.functions.HttpReq;
 import com.greenravolution.gravodriver.loginsignup.Login;
 
 import org.json.JSONArray;
@@ -70,8 +72,8 @@ public class Splash extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 } else if (Objects.equals(sessionManager.getString(SESSION_ID, null), "200")) {
-                    Intent i = new Intent(Splash.this, MainActivity.class);
                     Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
+                    Intent i = new Intent(Splash.this, MainActivity.class);
                     startActivity(i);
                     finish();
                 } else {
@@ -89,4 +91,5 @@ public class Splash extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
 }

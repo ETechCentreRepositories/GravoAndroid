@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.greenravolution.gravo.functions.GetAsyncRequest;
+import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.login.Login;
 
 import org.json.JSONArray;
@@ -62,10 +64,10 @@ public class Splash extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 } else if (Objects.equals(sessionManager.getString(SESSION_ID, null), "200")) {
-                    Intent i = new Intent(Splash.this, MainActivity.class);
                     Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
-                    startActivity(i);
-                    finish();
+                    String email = sessionManager.getString("user_email", "");
+                    getUser getUser = new getUser();
+                    getUser.execute(email);
                 } else {
                     Log.e("SESSION_ID ERROR:", "Retrieved_ID ->" + sessionManager.getString(SESSION_ID, null));
                 }
@@ -80,6 +82,55 @@ public class Splash extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    public class getUser extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            return req.GetRequest("http://www.ehostingcentre.com/gravo/getUsers.php?email="+strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s == null){
+                Toast.makeText(Splash.this, "An unexpected Error has occured", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Splash.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }else{
+                try {
+                    JSONObject result = new JSONObject(s);
+                    Log.e("GET DETAILS", s);
+                    int status = result.getInt("status");
+                    if(status == 200){
+                        Log.e("Get User Status", String.valueOf(status));
+                        SharedPreferences.Editor editor = sessionManager.edit();
+                        editor.putString(SESSION_ID, String.valueOf(status));
+                        JSONArray users = result.getJSONArray("users");
+                        JSONObject user = users.getJSONObject(0);
+                        editor.putInt("user_id", user.getInt("id"));
+                        editor.putString("user_image", user.getString("photo"));
+                        editor.putString("user_first_name", user.getString("first_name"));
+                        editor.putString("user_last_name", user.getString("last_name"));
+                        editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
+                        editor.putString("user_full_name", user.getString("full_name"));
+                        editor.putString("user_email", user.getString("email"));
+                        editor.putString("user_contact", user.getString("contact_number"));
+                        editor.putString("user_address", user.getString("address"));
+                        editor.putInt("user_total_points", user.getInt("total_points"));
+                        editor.apply();
+
+                        Intent i = new Intent(Splash.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

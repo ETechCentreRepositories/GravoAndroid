@@ -117,10 +117,10 @@
                         android:contentDescription="@string/circle1_description" />
 
                     <ImageView
-                        android:id="@+id/line1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="5dp"
                         android:layout_weight="1"
+                        android:id="@+id/line1"
+                        android:layout_width="100dp"
+                        android:layout_height="10dp"
                         android:contentDescription="@string/line1_description" />
 
                     <ImageView
@@ -129,16 +129,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@string/circle2_description" />
-
                     <ImageView
-                        android:id="@+id/line2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:id="@+id/line2"
+                        android:layout_width="100dp"
+                        android:layout_height="10dp"
                         android:contentDescription="@string/line2_description" />
 
                     <ImageView
-
                         android:id="@+id/circle3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,11 +144,12 @@
                         android:contentDescription="@string/circle3_description"/>
 
                     <ImageView
-                        android:id="@+id/line3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:id="@+id/line3"
+                        android:layout_width="100dp"
+                        android:layout_height="10dp"
                         android:contentDescription="@string/line3_description" />
+
 
                     <ImageView
                         android:id="@+id/circle4"

@@ -49,7 +49,7 @@ public class asyncGetSelectedTransaction extends AsyncTask<String, Void , String
                 JSONArray categoryTypeResultArray = getCategoryTypeObject.getJSONArray("result");
                 JSONObject category = categoryTypeResultArray.getJSONObject(0);
 
-                String type = category.getString("type");
+                String type = category.getString("item");
                 //String formattedType = type.substring(0,type.indexOf(" "));
 
                 String rate = category.getString("rate");

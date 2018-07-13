@@ -184,19 +184,7 @@ public class ActivityEditUser extends AppCompatActivity {
             Log.e("BULK: result Code", resultCode + "");
             if (resultCode == Activity.RESULT_OK) {
                 if (requestCode == SELECT_FILE) {
-                    Bitmap bm = null;
-                    try {
-                        bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(ActivityEditUser.this).getContentResolver(), data.getData());
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-                        Log.e("BULK: bitmap:", bm.toString());
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    newProfile.setImageBitmap(bm);
-                    UploadPhoto(bm);
+                   onSelectFromGalleryResult(data);
                 } else if (requestCode == REQUEST_CAMERA) {
                     Log.e("BULK: ", requestCode + "");
                     onCaptureImageResult(data);
@@ -211,18 +199,15 @@ public class ActivityEditUser extends AppCompatActivity {
 
         if (data != null) {
             try {
-                bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(ActivityEditUser.this).getContentResolver(), data.getData());
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getContentResolver()), data.getData());
                 Log.e("BULK: bitmap:", bm.toString());
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
             newProfile.setImageBitmap(bm);
             UploadPhoto(bm);
-        }
 //                bulk_image.setImageBitmap(cameraImage);
     }
 
@@ -231,17 +216,6 @@ public class ActivityEditUser extends AppCompatActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         assert thumbnail != null;
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Log.e("BULK: bitmap:", thumbnail.toString());
         newProfile.setImageBitmap(thumbnail);
         UploadPhoto(thumbnail);

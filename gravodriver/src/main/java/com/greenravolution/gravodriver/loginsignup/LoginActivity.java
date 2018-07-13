@@ -193,7 +193,6 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, String.valueOf(status));
                         editor.putString("name", userName);
-
                         editor.putString("email", userEmail);
                         editor.putString("number", userNumber);
                         editor.putString("address", userAddress);

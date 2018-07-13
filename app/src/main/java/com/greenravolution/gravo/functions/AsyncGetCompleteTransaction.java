@@ -26,49 +26,45 @@ public class AsyncGetCompleteTransaction extends AsyncTask<String, Void , String
         API links = new API();
 
         String getTransaction = req.GetRequest(strings[0]);
+        Log.e("GET TRANSACTIONS", getTransaction);
+
         try{
-            JSONObject resultObject = new JSONObject();
 
             JSONObject getTransactionObject = new JSONObject(getTransaction);
-            JSONArray getTransactionResultArray = getTransactionObject.getJSONArray("result");
-
-            resultObject.put("status",200);
-            resultObject.put("message","OK");
-            //resultObject.put("transactionArray",getTransactionResultArray);
-
-            for(int i = 0; i<getTransactionResultArray.length(); i++){
-                JSONObject transaction = getTransactionResultArray.getJSONObject(i);
-                String transaction_id = transaction.getString("id");
-
-                String getTransactionDetailsURL = links.getTransactionDetails()+"?transactionid="+transaction_id;
-                String getTransactionDetailsResult = req.GetRequest(getTransactionDetailsURL);
-                JSONObject getTransactionDetailsObject = new JSONObject(getTransactionDetailsResult);
-                JSONArray getTransactionDetailsArray = getTransactionDetailsObject.getJSONArray("result");
-
-                JSONArray transactionDetailArray = new JSONArray();
-
-
-                for(int detail = 0; detail<getTransactionDetailsArray.length(); detail++){
-                    JSONObject transactionDetail = new JSONObject();
-                    JSONObject getTransactionDetail = getTransactionDetailsArray.getJSONObject(detail);
-                    String cat_id = getTransactionDetail.getString("category_id");
-
-                    String getCategoryTypeURL = links.getCategories()+"?type=withid&category="+cat_id;
-                    String getCategoryTypeResult = req.GetRequest(getCategoryTypeURL);
-
-                    JSONObject getCategoryTypeObject = new JSONObject(getCategoryTypeResult);
-                    JSONArray categoryTypeResultArray = getCategoryTypeObject.getJSONArray("result");
-                    JSONObject category = categoryTypeResultArray.getJSONObject(0);
-
-                    String type = category.getString("type");
-                    transactionDetail.put("category_type",type);
-                    transactionDetailArray.put(transactionDetail);
-                    transaction.put("details",transactionDetailArray);
-                }
-
+            int status = getTransactionObject.getInt("status");
+            if(status ==  200){
+                result = getTransactionObject.toString();
+            }else{
+                result = getTransactionObject.toString();
             }
 
-            result = getTransactionObject.toString();
+            //resultObject.put("transactionArray",getTransactionResultArray);
+//
+//            for(int i = 0; i<getTransactionResultArray.length(); i++){
+//                JSONObject transaction = getTransactionResultArray.getJSONObject(i);
+//                String transaction_id = transaction.getString("id");
+
+//                for(int detail = 0; detail<getTransactionDetailsArray.length(); detail++){
+//                    JSONObject transactionDetail = new JSONObject();
+//                    JSONObject getTransactionDetail = getTransactionDetailsArray.getJSONObject(detail);
+//                    String cat_id = getTransactionDetail.getString("category_id");
+//
+//                    String getCategoryTypeURL = links.getCategories()+"?type=withid&category="+cat_id;
+//                    String getCategoryTypeResult = req.GetRequest(getCategoryTypeURL);
+//
+//                    JSONObject getCategoryTypeObject = new JSONObject(getCategoryTypeResult);
+//                    JSONArray categoryTypeResultArray = getCategoryTypeObject.getJSONArray("result");
+//                    JSONObject category = categoryTypeResultArray.getJSONObject(0);
+//
+//                    String type = category.getString("item");
+//                    transactionDetail.put("category_type",type);
+//                    transactionDetailArray.put(transactionDetail);
+//                    transaction.put("details",transactionDetailArray);
+//                }
+
+//            }
+
+
         }catch(JSONException e){
             e.printStackTrace();
         }

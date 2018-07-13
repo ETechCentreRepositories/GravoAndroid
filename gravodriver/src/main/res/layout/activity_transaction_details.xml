@@ -93,7 +93,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:text="TOTAL WEIGHT"
+                        android:text="@string/total_weight_label"
                         android:textStyle="bold" />
 
                     <TextView
@@ -101,7 +101,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="50KG"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -114,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:text="TOTAL ESTIMATED PRICE"
+                        android:text="@string/total_estimated_price_label"
                         android:textStyle="bold" />
 
                     <TextView
@@ -122,7 +121,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="$4.40"
                         android:textStyle="bold" />
                 </RelativeLayout>
             </LinearLayout>
@@ -183,6 +181,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/llProgress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

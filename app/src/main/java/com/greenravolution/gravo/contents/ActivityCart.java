@@ -140,7 +140,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                             itemType = item.getString("item");
                             itemRate = item.getString("rate");
 
-                            String[] itemArray = {cartid + "", itemType + "", itemTotalPrice + "", itemTotalWeight + "", itemRate + ""};
+                            String[] itemArray = {String.valueOf(cartid), String.valueOf(itemType), String.valueOf(itemTotalPrice), String.valueOf(itemTotalWeight), String.valueOf(itemRate)};
 
                             Log.e("cost", itemTotalPrice + " " + itemTotalWeight + cartid);
 
@@ -161,10 +161,10 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 Log.e("TOTAL PIECE", String.valueOf(totalPiece));
                 if (String.valueOf(totalPiece).equals("0.0")) {
                     //tvTotalWeight.setText(String.format("%sKG", String.valueOf(totalWeight)));
-                    tvTotalWeight.setText(totalWeight+"KG, 0.0 Piece(s)");
+                    tvTotalWeight.setText(totalWeight + "KG, 0.0 Piece(s)");
                 } else {
                     //tvTotalWeight.setText(String.format("%sKG, %s Piece(s)", String.valueOf(totalWeight), String.valueOf(totalPiece)));
-                    tvTotalWeight.setText(totalWeight+"KG, " + totalPiece + " Piece(s)");
+                    tvTotalWeight.setText(totalWeight + "KG, " + totalPiece + " Piece(s)");
                 }
 
             }
@@ -212,15 +212,15 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             ivItem.setImageResource(rateClass.getImage(itemArray[1]));
 
             tvTitle.setText(itemArray[1]);
-            tvTotalPrice.setText("$" + itemArray[2]);
+            tvTotalPrice.setText(String.format("$%s", itemArray[2]));
             tvWeight.setText(itemArray[3]);
-            tvRate.setText("$" + itemArray[4]);
+            tvRate.setText(String.format("$%s", itemArray[4]));
             double doubleRate = Double.parseDouble(itemArray[4].substring(0, itemArray[4].indexOf("/")));
             delete.setOnClickListener(v -> {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                 dialog.setCancelable(false);
                 dialog.setTitle("Delete Item");
-                dialog.setMessage("Delete this item?");
+                dialog.setMessage("Delete this " + itemArray[1].split(" ")[0] + " item?");
                 dialog.setPositiveButton("yes", (dialogInterface, i) -> {
 
                     preferences = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -260,11 +260,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 //                            tvTotalWeight.setText(newNumberOfPieces+ "KG");
 //                        }
 
-
-
                     String itemRates = tvRate.getText().toString();
-                    Log.i("itemRates",itemRates.substring(itemRates.length()-1));
-                    if(itemRates.substring(itemRates.length()-1).equalsIgnoreCase("E")){
+                    Log.i("itemRates", itemRates.substring(itemRates.length() - 1));
+                    if (itemRates.substring(itemRates.length() - 1).equalsIgnoreCase("E")) {
 
                         String totalWeight = tvTotalWeight.getText().toString();
                         double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
@@ -273,9 +271,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         tvTotalWeight.setText(newStringPieces);
                     } else {
                         String totalWeight = tvTotalWeight.getText().toString();
-                        double numberOfPieces = Double.parseDouble(totalWeight.substring(0,totalWeight.indexOf("K")));
+                        double numberOfPieces = Double.parseDouble(totalWeight.substring(0, totalWeight.indexOf("K")));
                         double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
-                        String newStringPieces = newNumberOfPieces+"KG, " + totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1)+ " Piece(s)";
+                        String newStringPieces = newNumberOfPieces + "KG, " + totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1) + " Piece(s)";
                         tvTotalWeight.setText(newStringPieces);
                     }
 
@@ -294,7 +292,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     Toast.makeText(ActivityCart.this, "Deleted", Toast.LENGTH_SHORT).show();
                 });
                 dialog.setNegativeButton("No", (dialogInterface, i) -> {
-
                     Toast.makeText(getApplicationContext(), "Not deleted", Toast.LENGTH_LONG).show();
                 });
                 AlertDialog dialogue = dialog.create();
@@ -304,19 +301,44 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             minus.setOnClickListener((View v) -> {
                 double getWeight = Double.parseDouble(tvWeight.getText().toString());
                 double getPrice = Double.parseDouble(tvTotalPrice.getText().toString().substring(1));
-                if (getWeight <= 0) {
+                if (getWeight <= 1) {
                     Log.i("Cart : ", "item is already 0");
+                    if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                        Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
+                    String getNewTotalWeight = "";
+                    String getNewTotalPiece = "";
+                    String totalWeight = tvTotalWeight.getText().toString();
+                    String getTotalWeight = totalWeight.split("KG")[0];
+                    String getTotalPiece = totalWeight.split(" ")[1];
                     double newWeight = getWeight - 1;
                     tvWeight.setText(String.valueOf(newWeight));
 
-                    String totalWeight = tvTotalWeight.getText().toString();
-                    double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",")+2,totalWeight.indexOf("P")-1));
-                    double newNumberOfPieces = numberOfPieces - 1;
-                    String newStringPieces = totalWeight.substring(0,totalWeight.indexOf(",")+1)+ " " + newNumberOfPieces + " Piece(s)";
-                    tvTotalWeight.setText(newStringPieces);
-                    Log.d("newStringPieces",newStringPieces);
+                    Log.e("TYPE", itemArray[1].split(" ")[0]);
+                    if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                        if (Double.parseDouble(getTotalPiece) == 1.0) {
+                            Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_SHORT).show();
+                        } else {
+                            getNewTotalPiece = String.valueOf(Double.parseDouble(getTotalPiece) - 1.0);
+                            String newStringPieces = getTotalWeight + "KG, " + getNewTotalPiece + " Piece(s)";
+                            tvTotalWeight.setText(newStringPieces);
+                            Log.e("newStringPieces", newStringPieces);
+                        }
 
+                    } else {
+                        if (Double.parseDouble(getTotalWeight) == 1.0) {
+                            Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_SHORT).show();
+                        } else {
+                            getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) - 1.0);
+                            String newStringPieces = getNewTotalWeight + "KG, " + getTotalPiece + " Piece(s)";
+                            tvTotalWeight.setText(newStringPieces);
+                            Log.e("newStringPieces", newStringPieces);
+                        }
+                    }
                     double newPrice = getPrice - ((getWeight - newWeight) * doubleRate);
                     tvTotalPrice.setText(String.format("$%s", String.valueOf(String.format("%.2f", newPrice))));
 
@@ -326,7 +348,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     allPrice = allPrice - (getPrice - newPrice);
 
                     tvAllPrice.setText(String.format("$%.2f", allPrice));
-
 
                     String user_id = String.valueOf(preferences.getInt("user_id", 0));
 
@@ -346,25 +367,41 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             plus.setOnClickListener((View v) -> {
                 double getWeight = Double.parseDouble(tvWeight.getText().toString());
                 double getPrice = Double.parseDouble(tvTotalPrice.getText().toString().substring(1));
+                String getNewTotalWeight = "";
+                String getNewTotalPiece = "";
+                String totalWeight = tvTotalWeight.getText().toString();
+
+                String getTotalWeight = totalWeight.split("KG")[0];
+                Log.e("TOTAL WEIGHT", getTotalWeight);
+                String getTotalPiece = totalWeight.split(" ")[1];
+                Log.e("TOTAL PIECES", getTotalPiece);
 
                 double newWeight = getWeight + 1;
                 tvWeight.setText(String.valueOf(newWeight));
 
-                if(tvWeight.getText().toString() == "0.0"){
-                    String totalWeight = tvTotalWeight.getText().toString();
-                    //double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
-                    double newNumberOfPieces = 1;
-                    String newStringPieces = totalWeight + ",  " + newNumberOfPieces + " Piece(s)";
+//                if (tvWeight.getText().toString().equals("0.0")) {
+                Log.e("TYPE", itemArray[1].split(" ")[0]);
+                if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                    getNewTotalPiece = String.valueOf(Double.parseDouble(getTotalPiece) + 1.0);
+                    String newStringPieces = getTotalWeight + "KG, " + getNewTotalPiece + " Piece(s)";
                     tvTotalWeight.setText(newStringPieces);
-                    Log.d("newStringPieces", newStringPieces);
+                    Log.e("newStringPieces", newStringPieces);
                 } else {
-                    String totalWeight = tvTotalWeight.getText().toString();
-                    double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
-                    double newNumberOfPieces = numberOfPieces + 1;
-                    String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
+                    getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) + 1.0);
+                    String newStringPieces = getNewTotalWeight + "KG, " + getTotalPiece + " Piece(s)";
                     tvTotalWeight.setText(newStringPieces);
-                    Log.d("newStringPieces", newStringPieces);
+                    Log.e("newStringPieces", newStringPieces);
                 }
+                //double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+
+//                } else {
+//
+//                    double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
+//                    double newNumberOfPieces = numberOfPieces + 1;
+//                    String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
+//                    tvTotalWeight.setText(newStringPieces);
+//                    Log.d("newStringPieces", newStringPieces);
+//                }
 
                 double newPrice = getPrice - ((getWeight - newWeight) * doubleRate);
 
@@ -396,7 +433,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         return null;
 
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -431,7 +467,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         etAddress.setOnItemClickListener(ActivityCart.this);
 
         cash = findViewById(R.id.cash);
-        cash.setOnClickListener(v -> {
+        cash.setOnClickListener((View v) -> {
 
             //collectiondate collectionaddress collectionuser collectionnumber total_price total_weight remarks transaction_id userid status
             //yyyy-mm-dd
@@ -446,24 +482,16 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userTotalWeight = "0";
             Log.e("price", userTotalPrice);
             final int resultCodetest;
-
             Log.i("validation", scheduleDate.getText().toString() + etPhone.getText().toString() + etAddress.getText().toString());
-
             if (etPhone.getText().toString().equals("") || etAddress.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
                 Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show();
-
             } else if (no_of_items == 0) {
                 Toast.makeText(this, "No items in cart", Toast.LENGTH_SHORT).show();
-
             } else {
                 int status_id = 1;
-
                 String[] getdatesplit = scheduleDate.getText().toString().split("-");
                 String newdate = getdatesplit[2] + "-" + getdatesplit[1] + "-" + getdatesplit[0];
-                //Toast.makeText(this,""+newdate,Toast.LENGTH_SHORT).show();
-
                 String addTransactionUrl = links.addTransaction();
-
                 Calendar calAlarm = Calendar.getInstance();
                 calAlarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(getdatesplit[0]));
                 calAlarm.set(Calendar.MONTH, Integer.parseInt(getdatesplit[1]));
@@ -473,7 +501,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 calAlarm.set(Calendar.MINUTE, 0);
                 calAlarm.set(Calendar.SECOND, 5);
                 calAlarm.set(Calendar.AM_PM, 0);
-
 
                 setAlarmForPickUpDay(calAlarm);
 
@@ -485,22 +512,19 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                 AsyncAddTransaction.OnAsyncResult getTransactionId = (resultCode, message) -> {
                     Log.i("message", message);
-                    Log.i("resultCodeHere",resultCode + "");
-                    if(resultCode == 200){
+                    Log.i("resultCodeHere", resultCode + "");
+                    if (resultCode == 200) {
                         startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", newdate));
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(),"An unexpected error has occured, Please notify us through the help centre.",Toast.LENGTH_SHORT);
+                        Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_SHORT).show();
                     }
                 };
 
                 addTransaction.setOnResultListener(getTransactionId);
                 addTransaction.execute(paramsArray);
 
-
-                Log.i("resultCodeHere","successtransactionpage");
-
-
+                Log.i("resultCodeHere", "successtransactionpage");
 
 
             }
@@ -605,6 +629,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 System.out.println("============================================================");
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
+
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Cannot process JSON results", e);
         }
@@ -614,7 +639,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 
     class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
