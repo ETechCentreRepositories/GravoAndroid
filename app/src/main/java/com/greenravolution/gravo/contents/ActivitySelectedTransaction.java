@@ -42,7 +42,10 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
             if (messageObject.getInt("status") == 200) {
                 JSONArray detailsArray = messageObject.getJSONArray("detailsArray");
                 JSONArray transactionArray = messageObject.getJSONArray("transactionArray");
+                JSONArray transactionHistory = messageObject.getJSONArray("transactionHistory");
                 JSONObject transactionObject = transactionArray.getJSONObject(0);
+
+
 
                 TextView tvTransaction = findViewById(R.id.tvTransaction);
                 TextView tvDate = findViewById(R.id.date_of_collection);
@@ -59,12 +62,22 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 TextView tvPrice = findViewById(R.id.tvPrice);
                 TextView tvWeight = findViewById(R.id.tvWeight);
 
+                StringBuilder statuses = new StringBuilder();
+                if(transactionHistory!=null){
+                    for(int i = 0; i < transactionHistory.length(); i ++){
+                        JSONObject getstatus = transactionHistory.getJSONObject(i);
+                        statuses.append(getstatus.getString("status")).append("\n\n");
+                    }
+                    tvStatusDetails.setText(statuses.toString());
+                }else{
+                    tvStatusDetails.setText(String.format("Item Scheduled to be picked up on %s", transactionObject.getString("collection_date")));
+                }
+
                 Log.i("id key", transactionObject.getString("transaction_id_key"));
                 tvTransaction.setText(String.format("TRANSACTION #%s", transactionObject.getString("transaction_id_key")));
                 tvStatus.setText(transactionObject.getString("status_type"));
                 tvDate.setText(transactionObject.getString("collection_date"));
                 transactionStatus.setText(transactionObject.getString("status_type"));
-                tvStatusDetails.setText(String.format("Item Scheduled to be picked up on %s", transactionObject.getString("collection_date")));
 
                 if (transactionObject.getString("status_id").equals("1")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
@@ -110,7 +123,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                         View view_selected_transaction;
                         if (inflater != null) {
                             view_selected_transaction = inflater.inflate(R.layout.selected_transaction, null);
-
 
                             ivDetailImage = view_selected_transaction.findViewById(R.id.ivImage);
                             tvDetailTitle = view_selected_transaction.findViewById(R.id.tvTitle);

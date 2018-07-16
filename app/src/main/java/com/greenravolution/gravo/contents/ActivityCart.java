@@ -56,13 +56,10 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     public static final String SESSION = "login_status";
     SharedPreferences preferences;
     Toolbar toolbar;
-    Button points, cash;
+    Button cash;
     TextView scheduleDate;
-    Boolean isPressed;
-    GetAsyncRequest getcart;
     String requestParameters = "userid=";
     LinearLayout cartItems;
-    SharedPreferences sessionManager;
     TextView tvNoOfItems;
 
     ImageView ivItem;
@@ -77,7 +74,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String API_KEY = "AIzaSyAcySxtEoAxt3PcTc-LAAa506DeOGAV7nY";
-
 
     int no_of_items = 0;
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
@@ -522,7 +518,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                 Log.i("resultCodeHere", "successtransactionpage");
 
-
             }
 
         });
@@ -589,7 +584,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
             sb.append("&components=country:sg");
-            sb.append("&input=" + URLEncoder.encode(input, "utf8"));
+            sb.append("&input=");
+            sb.append(URLEncoder.encode(input, "utf8"));
 
             URL url = new URL(sb.toString());
             conn = (HttpURLConnection) url.openConnection();
@@ -636,7 +632,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
-
     class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
         private ArrayList resultList;
 
@@ -683,7 +678,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             return filter;
         }
     }
-
 }
 
 //    Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);

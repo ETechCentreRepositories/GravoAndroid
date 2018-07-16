@@ -176,7 +176,6 @@
                 android:layout_marginTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
-                android:text="0KG"
                 android:textColor="@color/black" />
         </RelativeLayout>
 
@@ -192,7 +191,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="TOTAL ESTIMATED PRICE" />
+                android:text="TOTAL PRICE" />
 
             <TextView
                 android:id="@+id/totalPrice"
@@ -204,7 +203,6 @@
                 android:layout_marginTop="5dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
-                android:text="$0.00"
                 android:textColor="@color/black" />
 
             <EditText
@@ -231,7 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/brand_green"
-                android:text="CASH"
+                android:text="CHECKOUT"
                 android:textColor="@color/white" />
 
         </LinearLayout>

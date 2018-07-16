@@ -32,6 +32,7 @@ public class asyncGetSelectedTransaction extends AsyncTask<String, Void , String
 
         String getTransactionURL = links.getTransaction()+"?type=withid&transactionid="+chosenID;
         String getTransactionResult = req.GetRequest(getTransactionURL);
+        Log.e("get transaction res", getTransactionResult);
 
 
         try{
@@ -70,7 +71,12 @@ public class asyncGetSelectedTransaction extends AsyncTask<String, Void , String
 
             JSONObject transactionObject = new JSONObject(getTransactionResult);
             JSONArray transactionResultArray = transactionObject.getJSONArray("result");
-
+            JSONArray transactionHistory = transactionObject.getJSONArray("history");
+            if(transactionHistory!=null){
+                resultObject.put("transactionHistory", transactionHistory);
+            }else{
+                resultObject.put("transactionHistory",null);
+            }
             resultObject.put("transactionArray",transactionResultArray);
 
 

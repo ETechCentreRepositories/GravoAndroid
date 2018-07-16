@@ -38,32 +38,6 @@ public class AsyncGetCompleteTransaction extends AsyncTask<String, Void , String
                 result = getTransactionObject.toString();
             }
 
-            //resultObject.put("transactionArray",getTransactionResultArray);
-//
-//            for(int i = 0; i<getTransactionResultArray.length(); i++){
-//                JSONObject transaction = getTransactionResultArray.getJSONObject(i);
-//                String transaction_id = transaction.getString("id");
-
-//                for(int detail = 0; detail<getTransactionDetailsArray.length(); detail++){
-//                    JSONObject transactionDetail = new JSONObject();
-//                    JSONObject getTransactionDetail = getTransactionDetailsArray.getJSONObject(detail);
-//                    String cat_id = getTransactionDetail.getString("category_id");
-//
-//                    String getCategoryTypeURL = links.getCategories()+"?type=withid&category="+cat_id;
-//                    String getCategoryTypeResult = req.GetRequest(getCategoryTypeURL);
-//
-//                    JSONObject getCategoryTypeObject = new JSONObject(getCategoryTypeResult);
-//                    JSONArray categoryTypeResultArray = getCategoryTypeObject.getJSONArray("result");
-//                    JSONObject category = categoryTypeResultArray.getJSONObject(0);
-//
-//                    String type = category.getString("item");
-//                    transactionDetail.put("category_type",type);
-//                    transactionDetailArray.put(transactionDetail);
-//                    transaction.put("details",transactionDetailArray);
-//                }
-
-//            }
-
 
         }catch(JSONException e){
             e.printStackTrace();

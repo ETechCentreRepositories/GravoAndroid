@@ -32,6 +32,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -50,7 +51,7 @@ public class TransactionDetails extends AppCompatActivity {
 
     Rates getRates = new Rates();
     GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
-
+        StopLoading();
         try {
             SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
             final String rates = sessionManager.getString("rates", "");
@@ -58,6 +59,7 @@ public class TransactionDetails extends AppCompatActivity {
             Log.e("MESSAGE", message);
             int status = object.getInt("status");
             if (status == 200) {
+
                 JSONArray results = object.getJSONArray("result");
                 JSONObject transaction = results.getJSONObject(0);
                 String getTotalWeight = transaction.getString("total_weight");
@@ -118,6 +120,7 @@ public class TransactionDetails extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> {
+
             Intent ib = new Intent();
             ib.putExtra("type", "0");
             setResult(1, ib);
@@ -195,6 +198,8 @@ public class TransactionDetails extends AppCompatActivity {
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
         asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withid&transactionid=" + id);
+
+
 
     }
 
@@ -421,7 +426,7 @@ public class TransactionDetails extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
-            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php"
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatuscomplete.php"
                     , "transactionid=" + strings[0] + "&status=4");
         }
 
@@ -429,6 +434,19 @@ public class TransactionDetails extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e("UPDATE TRANSACTIONS:", s + "");
+            try {
+                JSONObject object = new JSONObject(s);
+                int status = object.getInt("status");
+                if(status == 200){
+                    int transactionid = object.getJSONArray("result").getJSONObject(0).getInt("id");
+                    UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
+                    updateStatusMessages.execute(String.valueOf(transactionid));
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
     public class UpdateTransaction extends AsyncTask<String, Void, String> {
@@ -446,12 +464,48 @@ public class TransactionDetails extends AppCompatActivity {
             try {
                 JSONObject object = new JSONObject(s);
                 int status = object.getInt("status");
-                if (status != 200) {
+                if (status == 200) {
+                    UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
+
+                }else{
                     Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        }
+    }
+    public void StartLoading(){
+        llProgress.setVisibility(View.VISIBLE);
+    }
+    public void StopLoading(){
+        llProgress.setVisibility(View.GONE);
+    }
+
+    public static class UpdateStatusMessages extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            int transactionID = Integer.parseInt(strings[0]);
+            Date d = new Date();
+            HttpReq req = new HttpReq();
+            CharSequence date = android.text.format.DateFormat.format("MMMM d, yyyy", d.getTime());
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
+            String strDate = mdformat.format(calendar.getTime());
+
+            String addmessage = req.PostRequest("http://ehostingcentre.com/gravo/addtransactionhistory.php", "transactionid=" + transactionID + "&message=Driver has picked up the items on " + date +" at " + strDate);
+            Log.e("HISTORY", addmessage);
+            try {
+                JSONObject results = new JSONObject(addmessage);
+                int statusid = results.getInt("status");
+                if (statusid != 200) {
+                    Log.e("ERROR", "ERROR OCCURRED");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return "true";
 
         }
     }

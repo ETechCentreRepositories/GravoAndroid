@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.Duration;
 import java.util.Objects;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -47,7 +51,6 @@ public class EWaste extends Fragment {
     public EWaste() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,14 +77,11 @@ public class EWaste extends Fragment {
                     paperContents.addView(initView(rate));
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return view;
     }
-
     public View initView(com.greenravolution.gravo.objects.Rates rate) {
         Rates rateClass = new Rates();
         API links = new API();
@@ -186,7 +186,7 @@ public class EWaste extends Fragment {
                 frameLayout = getActivity().findViewById(R.id.framelayout);
                 int status = result.getInt("status");
                 String message = result.getString("message");
-                if(status == 200){
+                if (status == 200) {
                     Snackbar snackbar = Snackbar.make(frameLayout, "Item added to bag!", Snackbar.LENGTH_LONG)
                             .setAction("VIEW", new View.OnClickListener() {
                                 @Override
@@ -194,7 +194,19 @@ public class EWaste extends Fragment {
                                     getContext().startActivity(new Intent(getContext(), ActivityCart.class));
                                 }
                             });
-                    snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).show();
+                    View snackbarview = snackbar.getView();
+                    snackbarview.setBackgroundColor(getContext().getResources().getColor(R.color.white));
+                    snackbarview.setMinimumHeight(250);
+                    int snackbarTextId = android.support.design.R.id.snackbar_text;
+                    TextView textView = snackbarview.findViewById(snackbarTextId);
+                    textView.setGravity(Gravity.CENTER_VERTICAL);
+                    textView.setMinimumHeight(250);
+                    Rates rates = new Rates();
+                    textView.setTextColor(getResources().getColor(rates.getImageColour("E-Waste")));
+                    textView.setTextSize(20);
+                    snackbarview.animate().translationY(-20);
+                    snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).setDuration(Snackbar.LENGTH_LONG).show();
+
                 }
 
                 Log.i("status", status + "");

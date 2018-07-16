@@ -1,6 +1,7 @@
 package com.greenravolution.gravo.functions;
 
 import android.os.AsyncTask;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.greenravolution.gravo.objects.API;
@@ -10,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
 
@@ -38,6 +40,7 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
             + "&status=" + paramsArray[10]);
 
         String getCartDetailsResult = httpReq.GetRequest(getCartUrl);
+        Log.e("RESULT ADD TRANS", getCartDetailsResult);
         ArrayList<String> arrayOfId = new ArrayList<>();
 
         try {
@@ -84,13 +87,21 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
         }catch (JSONException e){
             e.printStackTrace();
         }
-
-
-
-
-
         if(addDetailsStatus == 200 && deleteDetailsStatus == 200){
-            return "Success";
+            HttpReq req = new HttpReq();
+            Date d = new Date();
+            CharSequence s  = DateFormat.format("MMMM d, yyyy ", d.getTime());
+            String addmessage = req.PostRequest("http://ehostingcentre.com/gravo/addtransactionhistory.php","transactionid="+transactionID+"&message=Collection confirmed on "+s);
+            try {
+                JSONObject results = new JSONObject(addmessage);
+                int status = results.getInt("status");
+                if(status == 200){
+                    return "Success";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return "Fail2";
         } else {
             return "Fail2";
         }
