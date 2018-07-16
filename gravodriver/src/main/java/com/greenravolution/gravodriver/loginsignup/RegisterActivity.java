@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                     ShowProgress();
 
                     Register register = new Register();
-                    register.execute("https://greenravolution.com/API/collectorsignup.php");
+                    register.execute("http://ehostingcentre.com/gravo/collectorsignup.php");
 
                 } else {
                     Snackbar.make(rl, "Please accept our Terms and Conditions", Snackbar.LENGTH_LONG).show();

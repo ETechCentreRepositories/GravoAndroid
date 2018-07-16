@@ -198,9 +198,6 @@ public class TransactionDetails extends AppCompatActivity {
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
         asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withid&transactionid=" + id);
-
-
-
     }
 
     public View initView(String[] itemArray) {
@@ -288,26 +285,28 @@ public class TransactionDetails extends AppCompatActivity {
                 }
             } else {
                 if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                    DecimalFormat precision = new DecimalFormat("0.00");
                     double newTotalPiece = getOnlyPiece - 1.0;
                     double itemTotalPrice = Double.parseDouble(getTotalPrice);
                     double newTotalPrice = itemTotalPrice - doubleRate;
                     String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
                     totalWeight.setText(newStringPieces);
-                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    totalPrice.setText(String.format("$%s", String.valueOf(precision.format(newTotalPrice))));
                     Log.e("newStringPieces", newStringPieces);
 
                 } else {
+                    DecimalFormat precision = new DecimalFormat("0.00");
                     double newTotalWeight = getOnlyWeight - 1.0;
                     double itemTotalPrice = Double.parseDouble(getTotalPrice);
                     double newTotalPrice = itemTotalPrice - doubleRate;
                     String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
                     totalWeight.setText(newStringPieces);
-                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    totalPrice.setText(String.format("$%s", String.valueOf(precision.format(newTotalPrice))));
                     Log.e("newStringPieces", newStringPieces);
                 }
-
+                DecimalFormat precision = new DecimalFormat("0.00");
                 getWeight.setText(String.valueOf(Double.parseDouble(getWeight.getText().toString()) - 1.0));
-                getPrice.setText(String.format("$%s", String.valueOf(Double.parseDouble(getPrice.getText().toString().substring(1)) - doubleRate)));
+                getPrice.setText(String.format("$%s", String.valueOf(precision.format(Double.parseDouble(getPrice.getText().toString().substring(1)) - doubleRate))));
 
                 UpdateDetails updateDetails = new UpdateDetails();
                 updateDetails.execute(detail_id, getWeight.getText().toString(), getPrice.getText().toString().substring(1));
@@ -482,7 +481,6 @@ public class TransactionDetails extends AppCompatActivity {
     public void StopLoading(){
         llProgress.setVisibility(View.GONE);
     }
-
     public static class UpdateStatusMessages extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {

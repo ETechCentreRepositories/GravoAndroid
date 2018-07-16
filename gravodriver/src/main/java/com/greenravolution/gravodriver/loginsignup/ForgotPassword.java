@@ -42,7 +42,7 @@ Toolbar toolbar;
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
-            return req.PostRequest("https://www.greenravolution.com/API/forgetpassword.php","role=collector&email="+getEmail.getText().toString());
+            return req.PostRequest("http://ehostingcentre.com/gravo/forgetpassword.php","role=collector&email="+getEmail.getText().toString());
         }
 
         @Override

@@ -21,8 +21,6 @@ public class Notifications extends Fragment {
     public Notifications() {
         // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,4 +34,5 @@ public class Notifications extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
     }
+
 }

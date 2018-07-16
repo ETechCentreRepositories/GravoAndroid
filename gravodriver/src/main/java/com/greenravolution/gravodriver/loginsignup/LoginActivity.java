@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                     AnimationDrawable progressDrawable = (AnimationDrawable) progressBar.getDrawable();
                     progressDrawable.start();
                     Login login = new Login();
-                    login.execute("https://www.greenravolution.com/API/collectorlogin.php");
+                    login.execute("http://ehostingcentre.com/gravo/collectorlogin.php");
                 }
             }
         });
@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             HttpReq request = new HttpReq();
-            return request.PostRequest("https://greenravolution.com/API/collectorlogin.php", "email=" + ete.getText().toString() + "&password=" + etp.getText().toString());
+            return request.PostRequest("http://ehostingcentre.com/gravo/collectorlogin.php", "email=" + ete.getText().toString() + "&password=" + etp.getText().toString());
         }
 
         @Override
