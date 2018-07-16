@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView home_page_logo;
     TextView title, user_name, user_points;
     CircleImageView profileimage;
+    Toolbar toolbar;
 
     public void updateprofile() {
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         assert actionbar != null;

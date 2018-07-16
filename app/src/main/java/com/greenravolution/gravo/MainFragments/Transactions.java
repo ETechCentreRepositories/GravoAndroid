@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +34,9 @@ public class Transactions extends Fragment {
     //items are used for temporary purposes. Replace with Listview.
     LinearLayout item1, item2, transactionLayout, progressbar;
     SwipeRefreshLayout refreshLayout;
+    NestedScrollView scrollView;
 
-    AsyncGetCompleteTransaction.OnAsyncResult getDates = (resultCode, message) -> {
+    AsyncGetCompleteTransaction.OnAsyncResult getDates = (int resultCode, String message) -> {
         StopLoading();
         refreshLayout.setRefreshing(false);
         try {
@@ -53,25 +55,21 @@ public class Transactions extends Fragment {
                     String transactionDate = transactionObject.getString("collection_date");
                     String transactionIDKey = transactionObject.getString("transaction_id_key");
                     String transactionTotalPrice = transactionObject.getString("total_price");
-                    String transactionTotalWeight = transactionObject.getString("total_weight");
 
+                    String transactionTotalWeight = transactionObject.getString("total_weight");
                     String day = transactionDate.substring(transactionDate.lastIndexOf('-') + 1);
                     String month = transactionDate.substring(transactionDate.indexOf('-') + 1, transactionDate.lastIndexOf('-'));
                     String year = transactionDate.substring(0, transactionDate.indexOf('-'));
 
                     String fixedDate = day + "/" + month + "/" + year;
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = new Date();
 
+                    Date date = new Date();
                     try {
                         date = formatter.parse(fixedDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-//                    String newDate = date+"";
-//                    String dayWord = newDate.substring(0,newDate.indexOf(" "));
-//                    String monthWord = newDate.substring(newDate.indexOf(" ")+1,newDate.indexOf(" ")+4);
 
                     View fragmentTransaction;
                     String transactionStatus = transactionObject.getString("status_type");
@@ -90,31 +88,6 @@ public class Transactions extends Fragment {
                     TextView tvStatus = fragmentTransaction.findViewById(R.id.tvStatus);
                     TextView tvDate = fragmentTransaction.findViewById(R.id.tvDate);
 
-                    //photos
-//                    LinearLayout transaction_detail = fragmentTransaction.findViewById(R.id.transaction_details);
-
-//                    if(transactionObject.has("details")){
-//                        JSONArray detailsArray = transactionObject.getJSONArray("details");
-//
-//                        for(int detail=0; detail<detailsArray.length(); detail++){
-//                            JSONObject detailObject = detailsArray.getJSONObject(detail);
-//                            String type = detailObject.getString("category_type");
-//
-//                            String formattedType = type.substring(0,type.indexOf(" "));
-//                            Rates rateClass = new Rates();
-//
-//                            ImageView ivDetailImage = new ImageView(getContext());
-//
-//                            ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
-//                            ivDetailImage.setImageResource(rateClass.getImage(type));
-//                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(200,200);
-//                            lp.setMargins(10,0,10,0);
-//                            ivDetailImage.setLayoutParams(lp);
-//
-//                            transaction_detail.addView(ivDetailImage);
-//                        }
-//                    }
-
                     Log.e("long date", "getTime : " + date.getTime());
 
                     fragmentTransaction.setTag(transactionID);
@@ -127,7 +100,6 @@ public class Transactions extends Fragment {
 
                     fragmentTransaction.setOnClickListener(v -> {
                         //Toast.makeText(getActivity(),"clicked "+fragmentCalendar.getTag(),Toast.LENGTH_SHORT).show();
-
                         Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
                         int chosenID = Integer.parseInt(fragmentTransaction.getTag().toString());
                         Log.i("getTag", chosenID + "");
@@ -156,7 +128,6 @@ public class Transactions extends Fragment {
         progressbar.setVisibility(View.VISIBLE);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -165,24 +136,19 @@ public class Transactions extends Fragment {
         transactionLayout = view.findViewById(R.id.transactionDetails);
         progressbar = view.findViewById(R.id.progressbar);
         refreshLayout = view.findViewById(R.id.refreshlayout);
+        scrollView = view.findViewById(R.id.scrollview);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-                SharedPreferences preferences;
-                API links = new API();
-                AsyncGetCompleteTransaction getTransactions = new AsyncGetCompleteTransaction();
-                getTransactions.setOnResultListener(getDates);
-                preferences = getActivity().getSharedPreferences("login_status", Context.MODE_PRIVATE);
-                String id = String.valueOf(preferences.getInt("user_id", 0));
-                String url = links.getTransaction() + "?type=userid&userid=" + id;
-                getTransactions.execute(url);
-
+                getTransactions();
             }
         });
         StopLoading();
+        getTransactions();
+        return view;
+    }
 
-
+    public void getTransactions() {
         SharedPreferences preferences;
         API links = new API();
         AsyncGetCompleteTransaction getTransactions = new AsyncGetCompleteTransaction();
@@ -192,13 +158,6 @@ public class Transactions extends Fragment {
         String url = links.getTransaction() + "?type=userid&userid=" + id;
         StartLoading();
         getTransactions.execute(url);
-
-//        item1 = view.findViewById(R.id.item1);
-//        item2 = view.findViewById(R.id.item2);
-//        item1.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySelectedTransaction.class).putExtra("transaction_id","TRANSACTION #10091983294823")));
-//        item2.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySelectedTransactionDone.class).putExtra("transaction_id","TRANSACTION #10091983294823")));
-
-        return view;
     }
 
 }

@@ -28,7 +28,10 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         this.userID = userID;
         this.purpose = purpose;
         Log.i("callTokenRefresh",userID+" "+purpose);
-        onTokenRefresh();
+        if(purpose != null && userID != null){
+            onTokenRefresh();
+        }
+
     }
 
     @Override

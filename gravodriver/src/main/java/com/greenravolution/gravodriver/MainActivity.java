@@ -45,14 +45,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
     LinearLayout llProgress;
     ImageView progressbar;
-    ListView orders;
     SwipeRefreshLayout refreshLayout;
 
     ArrayList<Orders> oal;
     ArrayList<OrderDetails> odal;
     TextView collectDate;
     SharedPreferences sessionManager;
-    Rates rates = new Rates();
     LinearLayout list;
     android.support.v7.widget.Toolbar toolbar;
 
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout llotw, llarr, llContent;
     Button botw, barr, bmap;
     TextView tt, ta, tpc, tst;
-
 
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
@@ -143,12 +140,7 @@ public class MainActivity extends AppCompatActivity {
         asyncRequest.setOnResultListener(getRates);
         asyncRequest.execute("http://ehostingcentre.com/gravo/getCategories.php?type=all");
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getTransactions();
-            }
-        });
+        refreshLayout.setOnRefreshListener(() -> getTransactions());
 
     }
 

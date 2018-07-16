@@ -18,18 +18,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/tick"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/tick_padding"
-            app:civ_border_color="@color/brand_green"
-            app:civ_border_width="10dp" />
+            android:scaleType="centerCrop"
+            app:lottie_rawRes="@raw/tick"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Congratulations"
+            android:text="Great!!!"
             android:textAlignment="center"
             android:textColor="@color/brand_green"
             android:textSize="20sp" />
@@ -38,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Your Transaction is accepted !"
+            android:text="Your're ready to recycle!"
             android:textAlignment="center"
             android:textColor="@color/brand_green"
             android:textSize="20sp" />
@@ -47,7 +48,7 @@
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="your items are scheduled for collection on 20 September 2018"
+            android:text="See you on"
             android:textAlignment="center"
             android:textColor="@color/brand_green" />
 

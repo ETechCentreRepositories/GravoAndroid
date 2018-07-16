@@ -70,6 +70,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.0.0'
     implementation 'com.squareup.okhttp3:okhttp:3.7.0'
 
+
+    implementation 'com.airbnb.android:lottie:2.5.5'
+
     testImplementation 'org.testng:testng:6.9.6'
 }
 apply plugin: 'com.google.gms.google-services'

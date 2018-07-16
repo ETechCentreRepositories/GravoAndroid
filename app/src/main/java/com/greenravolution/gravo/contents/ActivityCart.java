@@ -190,10 +190,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             TextView tvWeight;
             TextView tvRate;
 
-
-            SharedPreferences sessionManager = getApplication().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String rates = sessionManager.getString("rates", "");
-
             ivItem = view.findViewById(R.id.getImage);
             tvTitle = view.findViewById(R.id.getTitle);
             delete = view.findViewById(R.id.delete);
