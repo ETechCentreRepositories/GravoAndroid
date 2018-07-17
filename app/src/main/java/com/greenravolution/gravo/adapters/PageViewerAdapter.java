@@ -37,7 +37,7 @@ public class PageViewerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View v = inflater.inflate(R.layout.welcome_page_about_us, view, false);
-        TextView textView = (TextView) v
+        TextView textView = v
                 .findViewById(R.id.welcome_texts);
         textView.setText(text.get(position));
         view.addView(v, 0);

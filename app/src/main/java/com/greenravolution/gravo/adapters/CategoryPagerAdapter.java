@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.greenravolution.gravo.CategoryFragments.EWaste;
-import com.greenravolution.gravo.CategoryFragments.Paper;
 import com.greenravolution.gravo.CategoryFragments.Bulk;
+import com.greenravolution.gravo.CategoryFragments.EWaste;
 import com.greenravolution.gravo.CategoryFragments.Metals;
+import com.greenravolution.gravo.CategoryFragments.Paper;
 
 public class CategoryPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
@@ -22,17 +22,13 @@ public class CategoryPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                Paper paper = new Paper();
-                return paper;
+                return new Paper();
             case 1:
-                EWaste eWaste = new EWaste();
-                return eWaste;
+                return new EWaste();
             case 2:
-                Metals metals = new Metals();
-                return metals;
+                return new Metals();
             case 3:
-                Bulk bulk = new Bulk();
-                return bulk;
+                return new Bulk();
 
             default:
                 return null;

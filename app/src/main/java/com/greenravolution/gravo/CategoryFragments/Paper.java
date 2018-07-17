@@ -4,7 +4,6 @@ package com.greenravolution.gravo.CategoryFragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -35,25 +34,14 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class Paper extends Fragment {
     public static final String SESSION = "login_status";
     LinearLayout paperContents;
     int weightInt = 0;
     FrameLayout frameLayout;
 
-
-    SharedPreferences sessionManager;
-
-
     public Paper() {
-        // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,12 +68,9 @@ public class Paper extends Fragment {
                     paperContents.addView(initView(rate));
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         return view;
     }
 
@@ -115,51 +100,41 @@ public class Paper extends Fragment {
                 String chosenItemRate = rate.getRate();
                 SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                 int id = preferences.getInt("user_id", 0);
-
                 int indexOfSlash = chosenItemRate.indexOf('/');
                 double itemPrice = Double.parseDouble(chosenItemRate.substring(0, indexOfSlash));
-
                 double totalPrice = getWeight * itemPrice;
-
                 AsyncAddCartDetails add = new AsyncAddCartDetails();
                 String[] paramsArray = {links.addCartDetails(), id + "", getWeight + "", totalPrice + "", itemId + ""};
                 add.execute(paramsArray);
-
-
             }
         });
         itemsWeight.setText(String.valueOf(weightInt));
         itemMinus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
-
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
                 if (getWeight <= 0) {
-
                 } else {
                     getWeight = getWeight - 1;
                     itemsWeight.setText(String.valueOf(getWeight));
-
                 }
-
             }
-
         });
-
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
         itemPlus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-                getWeight = getWeight + 1;
-                itemsWeight.setText(String.valueOf(getWeight));
-
+                if (getWeight >= 99) {
+                    Toast.makeText(getContext(), "Cannot go above 99KG", Toast.LENGTH_SHORT).show();
+                } else {
+                    getWeight = getWeight + 1;
+                    itemsWeight.setText(String.valueOf(getWeight));
+                }
             }
-
         });
-
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
         Log.e("type: ", rate.getType());
         String[] type = rate.getType().split(" ");
@@ -170,7 +145,6 @@ public class Paper extends Fragment {
         Log.e("paper; ", typeName.toString());
         itemName.setText(typeName.toString());
         itemRate.setText(rate.getRate());
-
         return contents;
     }
     public class AsyncAddCartDetails extends AsyncTask<String, Void, String> {
@@ -204,10 +178,7 @@ public class Paper extends Fragment {
                     textView.setTextSize(20);
                     snackbarview.animate().translationY(-20);
                     snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).setDuration(Snackbar.LENGTH_LONG).show();
-
                 }
-
-
                 Log.i("status", status + "");
                 Log.i("message", message + "");
 

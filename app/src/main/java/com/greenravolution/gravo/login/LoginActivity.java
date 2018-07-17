@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.airbnb.lottie.parser.AsyncCompositionLoader;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -203,6 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("user_contact", user.getString("contact_number"));
                         editor.putString("user_address", user.getString("address"));
                         editor.putInt("user_total_points", user.getInt("total_points"));
+                        editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                         finish();
@@ -245,55 +247,50 @@ public class LoginActivity extends AppCompatActivity {
         HideProgress();
         GraphRequest data_request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject json_object,
-                            GraphResponse response) {
+                (json_object, response) -> {
 
-                            ShowProgress();
-                            Log.wtf("jsonString: ", "" + json_object);
-                        try {
-                            JSONObject object = new JSONObject(String.valueOf(json_object));
-                            String useremail = object.getString("email");
-                            if (useremail == null) {
-                                Toast.makeText(LoginActivity.this, "Your Facebook does not allow us to retrieve your email", Toast.LENGTH_LONG).show();
+                        ShowProgress();
+                        Log.wtf("jsonString: ", "" + json_object);
+                    try {
+                        JSONObject object = new JSONObject(String.valueOf(json_object));
+                        String useremail = object.getString("email");
+                        if (useremail == null) {
+                            Toast.makeText(LoginActivity.this, "Your Facebook does not allow us to retrieve your email", Toast.LENGTH_LONG).show();
+                        } else {
+                            fbemail = "";
+                            if (object.getString("email") != null) {
+                                if (object.getString("email").equals("")) {
+                                    fbemail = "";
+                                } else {
+                                    fbemail = object.getString("email");
+                                }
                             } else {
                                 fbemail = "";
-                                if (object.getString("email") != null) {
-                                    if (object.getString("email").equals("")) {
-                                        fbemail = "";
-                                    } else {
-                                        fbemail = object.getString("email");
-                                    }
-                                } else {
-                                    fbemail = "";
-                                }
-                                fbname = "";
-                                if (object.getString("name") != null) {
-                                    if (object.getString("name").equals("")) {
-                                        fbname = "";
-                                    } else {
-                                        fbname = object.getString("name");
-                                    }
-                                } else {
+                            }
+                            fbname = "";
+                            if (object.getString("name") != null) {
+                                if (object.getString("name").equals("")) {
                                     fbname = "";
+                                } else {
+                                    fbname = object.getString("name");
                                 }
-                                ShowProgress();
-                                FacebookLogin fbLogin = new FacebookLogin();
-                                fbLogin.execute(fbname, fbemail);
+                            } else {
+                                fbname = "";
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("ERROR",e.toString());
-                            if(e.toString().equals("org.json.JSONException: No value for email")){
+                            ShowProgress();
+                            FacebookLogin fbLogin = new FacebookLogin();
+                            fbLogin.execute(fbname, fbemail);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("ERROR",e.toString());
+                        if(e.toString().equals("org.json.JSONException: No value for email")){
 
-                                HideProgress();
-                                LoginManager.getInstance().logOut();
-                                Toast.makeText(LoginActivity.this, "Your Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
-                            }else{
-                                Toast.makeText(LoginActivity.this, "An unexpected error has occurred. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
-                            }
+                            HideProgress();
+                            LoginManager.getInstance().logOut();
+                            Toast.makeText(LoginActivity.this, "Your Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(LoginActivity.this, "An unexpected error has occurred. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -326,7 +323,7 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             API api = new API();
-            return req.PostRequest(api.getFacebookLogin(), "fullname=" + strings[0] + "&email=" + strings[1] + "&contactnumber=" + "&address=" + "&encoded_string=" + UploadPhoto());
+            return req.PostRequest(api.getFacebookLogin(), "fullname=" + strings[0] + "&email=" + strings[1] + "&contactnumber=" + "&address=" + "");
 
         }
 
@@ -356,38 +353,39 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.putInt("user_total_points", user.getInt("total_points"));
+                    editor.putString("user_rank", user.getString("rank_name"));
                     editor.apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     Log.e("ACTIVITY:", "TO MAIN");
                     finish();
-                } else {
+
+                } else if(status == 201) {
+                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString(SESSION_ID, String.valueOf(status));
+                    JSONArray users = result.getJSONArray("result");
+                    JSONObject user = users.getJSONObject(0);
+                    editor.putInt("user_id", user.getInt("id"));
+                    editor.putString("user_image", user.getString("photo"));
+                    editor.putString("user_first_name", user.getString("first_name"));
+                    editor.putString("user_last_name", user.getString("last_name"));
+                    editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
+                    editor.putString("user_full_name", user.getString("full_name"));
+                    editor.putString("user_email", user.getString("email"));
+                    editor.putString("user_contact", user.getString("contact_number"));
+                    editor.putString("user_address", user.getString("address"));
+                    editor.putInt("user_total_points", user.getInt("total_points"));
+                    editor.putString("user_rank", user.getString("rank_name"));
+                    editor.apply();
+                    AddAchievements addachievements = new AddAchievements();
+                    addachievements.execute(String.valueOf(user.getInt("id")));
+                }else{
                     Toast.makeText(LoginActivity.this, "An unexpected error has occured", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public String UploadPhoto() {
-        Bitmap icon = BitmapFactory.decodeResource(LoginActivity.this.getResources(),
-                R.drawable.gravo_logo_black);
-        String encodedimage = bitmapToBase64(icon);
-        Log.e("BITMAP: ", encodedimage);
-        return encodedimage;
-    }
-
-    private String bitmapToBase64(Bitmap bitmap) {
-        String encodedImage = "";
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        try {
-            encodedImage += URLEncoder.encode(Base64.encodeToString(byteArray, Base64.DEFAULT), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return encodedImage;
     }
 
     public class ForgetPassword extends AsyncTask<String, Void, String> {
@@ -437,5 +435,38 @@ public class LoginActivity extends AppCompatActivity {
         forgot_password.setEnabled(false);
         toolbar.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
+    }
+
+    public class AddAchievements extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Log.e("ACH LINK","http://ehostingcentre.com/gravo/addachievementdetails.php id="+strings[0]);
+            return req.PostRequest("http://ehostingcentre.com/gravo/addachievementdetails.php","id="+strings[0]);
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.e("ACH RESULT", s);
+            try {
+                JSONObject results = new JSONObject(s);
+                int status = results.getInt("status");
+                if(status == 200){
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    Log.e("ACTIVITY:", "TO MAIN");
+                    finish();
+                }else if(status == 400){
+                    Toast.makeText(LoginActivity.this, "Unable to create your achievements", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    Toast.makeText(LoginActivity.this, "An unexpected error has occurred. please try again in a few minutes!", Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            super.onPostExecute(s);
+        }
     }
 }

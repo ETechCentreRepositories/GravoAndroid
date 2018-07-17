@@ -38,14 +38,12 @@ import java.util.Objects;
 
 public class TransactionDetails extends AppCompatActivity {
     public static final String SESSION = "login_status";
-    public static final String SESSION_ID = "session";
     Toolbar toolbar;
     TextView taddress, ttiming;
     LinearLayout items, llGetRecipient;
     Button btnAddRec, btnCfmNPay;
     EditText etGetName, etGetNumber;
     LinearLayout llProgress;
-
     ImageView progressbar;
     TextView totalPrice, totalWeight;
 
@@ -54,7 +52,6 @@ public class TransactionDetails extends AppCompatActivity {
         StopLoading();
         try {
             SharedPreferences sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            final String rates = sessionManager.getString("rates", "");
             JSONObject object = new JSONObject(message);
             Log.e("MESSAGE", message);
             int status = object.getInt("status");
@@ -88,13 +85,6 @@ public class TransactionDetails extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        Double totalweight = 0.00;
-//        for (int i = 0; i < oal.size(); i++) {
-//            items.addView(initView(oal.get(i)));
-//
-//            totalweight = totalweight + Double.parseDouble(oal.get(i).getWeight());
-//        }
-
 
     };
 
@@ -177,10 +167,12 @@ public class TransactionDetails extends AppCompatActivity {
         //temp
         llProgress.setVisibility(View.GONE);
     }
+
     @Override
     protected void onStart() {
         super.onStart();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -213,7 +205,6 @@ public class TransactionDetails extends AppCompatActivity {
         Button plus = view.findViewById(R.id.btnPlus);
         Button minus = view.findViewById(R.id.btnMinus);
         Button delete = view.findViewById(R.id.btnDelete);
-
         Double price = Double.parseDouble(itemArray[1]);
         Double weight = Double.parseDouble(itemArray[2]);
         String rate = itemArray[3];
@@ -224,7 +215,6 @@ public class TransactionDetails extends AppCompatActivity {
         getRate.setText(rate);
         getPrice.setText(String.format("$%s", df2.format(price)));
         getWeight.setText(String.valueOf(weight));
-
         Double doubleRate = Double.parseDouble(rate.split("/")[0]);
         delete.setOnClickListener((View v) -> {
             String detail_id = itemArray[4];
@@ -347,12 +337,13 @@ public class TransactionDetails extends AppCompatActivity {
         });
         return view;
     }
-    public class DeleteDetails extends AsyncTask<String, Void,String>{
+
+    public class DeleteDetails extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
-            return req.PostRequest("http://ehostingcentre.com/gravo/deletetransactiondetails.php","id="+strings[0]);
+            return req.PostRequest("http://ehostingcentre.com/gravo/deletetransactiondetails.php", "id=" + strings[0]);
         }
 
         @Override
@@ -366,8 +357,8 @@ public class TransactionDetails extends AppCompatActivity {
                     Intent intent = getIntent();
                     int trans_id = intent.getIntExtra("id", -1);
                     UpdateTransaction updateTransaction = new UpdateTransaction();
-                    updateTransaction.execute(String.valueOf(trans_id),totalWeight.getText().toString(), totalPrice.getText().toString().substring(1));
-                }else {
+                    updateTransaction.execute(String.valueOf(trans_id), totalWeight.getText().toString(), totalPrice.getText().toString().substring(1));
+                } else {
                     Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
@@ -375,6 +366,7 @@ public class TransactionDetails extends AppCompatActivity {
             }
         }
     }
+
     public class UpdateDetails extends AsyncTask<String, Void, String> {
 
         @Override
@@ -394,8 +386,8 @@ public class TransactionDetails extends AppCompatActivity {
                     Intent intent = getIntent();
                     int trans_id = intent.getIntExtra("id", -1);
                     UpdateTransaction updateTransaction = new UpdateTransaction();
-                    updateTransaction.execute(String.valueOf(trans_id),totalWeight.getText().toString(), totalPrice.getText().toString().substring(1));
-                }else {
+                    updateTransaction.execute(String.valueOf(trans_id), totalWeight.getText().toString(), totalPrice.getText().toString().substring(1));
+                } else {
                     Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
@@ -404,6 +396,7 @@ public class TransactionDetails extends AppCompatActivity {
 
         }
     }
+
     public class UpdateTransactionDetails extends AsyncTask<String, Void, String> {
 
         @Override
@@ -419,8 +412,8 @@ public class TransactionDetails extends AppCompatActivity {
             Log.e("UPDATE TRANSACTIONS:", s + "");
         }
     }
-    public class UpdateTransactionStatus extends AsyncTask<String, Void, String> {
 
+    public class UpdateTransactionStatus extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
@@ -436,7 +429,7 @@ public class TransactionDetails extends AppCompatActivity {
             try {
                 JSONObject object = new JSONObject(s);
                 int status = object.getInt("status");
-                if(status == 200){
+                if (status == 200) {
                     int transactionid = object.getJSONArray("result").getJSONObject(0).getInt("id");
                     UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
                     updateStatusMessages.execute(String.valueOf(transactionid));
@@ -448,6 +441,7 @@ public class TransactionDetails extends AppCompatActivity {
 
         }
     }
+
     public class UpdateTransaction extends AsyncTask<String, Void, String> {
 
         @Override
@@ -466,7 +460,7 @@ public class TransactionDetails extends AppCompatActivity {
                 if (status == 200) {
                     UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
 
-                }else{
+                } else {
                     Toast.makeText(TransactionDetails.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
@@ -475,12 +469,15 @@ public class TransactionDetails extends AppCompatActivity {
 
         }
     }
-    public void StartLoading(){
+
+    public void StartLoading() {
         llProgress.setVisibility(View.VISIBLE);
     }
-    public void StopLoading(){
+
+    public void StopLoading() {
         llProgress.setVisibility(View.GONE);
     }
+
     public static class UpdateStatusMessages extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -491,8 +488,7 @@ public class TransactionDetails extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
             String strDate = mdformat.format(calendar.getTime());
-
-            String addmessage = req.PostRequest("http://ehostingcentre.com/gravo/addtransactionhistory.php", "transactionid=" + transactionID + "&message=Driver has picked up the items on " + date +" at " + strDate);
+            String addmessage = req.PostRequest("http://ehostingcentre.com/gravo/addtransactionhistory.php", "transactionid=" + transactionID + "&message=Driver has picked up the items on " + date + " at " + strDate);
             Log.e("HISTORY", addmessage);
             try {
                 JSONObject results = new JSONObject(addmessage);

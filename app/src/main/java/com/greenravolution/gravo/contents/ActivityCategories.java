@@ -21,25 +21,24 @@ public class ActivityCategories extends AppCompatActivity {
     ViewPager viewPager;
     CategoryPagerAdapter adapter;
     Toolbar toolbar;
+    LinearLayout ll1, ll2, ll3, ll4;
+    TabLayout tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
-
-        TabLayout tab = findViewById(R.id.tabs);
+        tab = findViewById(R.id.tabs);
         View headerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.custom_tabs, null, false);
-
-        LinearLayout ll1 = headerView.findViewById(R.id.ll1);
-        LinearLayout ll2 = headerView.findViewById(R.id.ll2);
-        LinearLayout ll3 = headerView.findViewById(R.id.ll3);
-        LinearLayout ll4 = headerView.findViewById(R.id.ll4);
+        ll1 = headerView.findViewById(R.id.ll1);
+        ll2 = headerView.findViewById(R.id.ll2);
+        ll3 = headerView.findViewById(R.id.ll3);
+        ll4 = headerView.findViewById(R.id.ll4);
         tab.addTab(tab.newTab().setText("PAPER").setCustomView(ll1));
         tab.addTab(tab.newTab().setText("E-WASTE").setCustomView(ll2));
         tab.addTab(tab.newTab().setText("METALS").setCustomView(ll3));
@@ -56,14 +55,10 @@ public class ActivityCategories extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());

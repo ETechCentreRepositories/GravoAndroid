@@ -25,7 +25,6 @@ public class ActivityHelp extends AppCompatActivity {
     Toolbar toolbar;
     LinearLayout progressbar;
     public static final String SESSION = "login_status";
-    public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
 
     @Override
@@ -47,14 +46,11 @@ public class ActivityHelp extends AppCompatActivity {
         progressbar = findViewById(R.id.progressbar);
         HideProgress();
         Button send = findViewById(R.id.send);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendHelp sendHelp = new SendHelp();
-                ShowProgress();
-                sendHelp.execute();
+        send.setOnClickListener(v -> {
+            SendHelp sendHelp = new SendHelp();
+            ShowProgress();
+            sendHelp.execute();
 
-            }
         });
     }
 

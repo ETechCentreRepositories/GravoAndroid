@@ -120,9 +120,15 @@ public class Splash extends AppCompatActivity {
                         editor.putString("user_contact", user.getString("contact_number"));
                         editor.putString("user_address", user.getString("address"));
                         editor.putInt("user_total_points", user.getInt("total_points"));
+                        editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
 
                         Intent i = new Intent(Splash.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else if(status == 404){
+                        Intent i = new Intent(Splash.this, Login.class);
+                        Log.w("SESSION_ID:", "not logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
                         startActivity(i);
                         finish();
                     }

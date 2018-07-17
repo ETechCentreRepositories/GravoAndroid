@@ -205,4 +205,6 @@ These Terms and any policies or operating rules posted by us on the Applicatio
     <string name="circle3_description">circle3</string>
     <string name="line3_description">line3</string>
     <string name="circle4_description">circle4</string>
+    <string name="defaultprice">$0.00</string>
+    <string name="defaultweight">0.0KG, 0.0 Piece(s)</string>
 </resources>

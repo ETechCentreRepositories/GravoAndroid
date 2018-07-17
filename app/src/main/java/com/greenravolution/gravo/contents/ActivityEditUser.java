@@ -48,21 +48,18 @@ public class ActivityEditUser extends AppCompatActivity {
     Toolbar toolbar;
     LinearLayout progressbar;
     public static final String SESSION = "login_status";
-    public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
     EditText newFirstName, newLastName, newAddress, newPhone;
     TextView newEmail;
     CircleImageView newProfile;
     Button cancel, save, uploadImage;
-    String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, getImageString;
+    String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask;
     int getId;
-    private String userChosenTask;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 1962018;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_edit_user);
         toolbar = findViewById(R.id.toolbar);
@@ -70,29 +67,22 @@ public class ActivityEditUser extends AppCompatActivity {
         progressbar = findViewById(R.id.progressbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
-
-
         newFirstName = findViewById(R.id.first_name);
         newLastName = findViewById(R.id.last_name);
         newEmail = findViewById(R.id.newEmail);
         newAddress = findViewById(R.id.newAddress);
         newProfile = findViewById(R.id.newImage);
         newPhone = findViewById(R.id.newPhone);
-
         cancel = findViewById(R.id.cancel);
         save = findViewById(R.id.save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditUser editUser = new EditUser();
-                ShowProgress();
-                editUser.execute();
-            }
+        save.setOnClickListener(v -> {
+            EditUser editUser = new EditUser();
+            ShowProgress();
+            editUser.execute();
         });
         uploadImage = findViewById(R.id.uploadImage);
         cancel.setOnClickListener(v -> finish());
         uploadImage.setOnClickListener(v -> selectImage());
-
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         getId = sessionManager.getInt("user_id", -1);
         getName = sessionManager.getString("user_name", "");
@@ -102,7 +92,6 @@ public class ActivityEditUser extends AppCompatActivity {
         getAddress = sessionManager.getString("user_address", "");
         getImage = sessionManager.getString("user_image", "");
         getPhone = sessionManager.getString("user_contact", "");
-
         newFirstName.setText(getFirstName);
         newLastName.setText(getLastName);
         newEmail.setText(getEmail);
@@ -118,27 +107,23 @@ public class ActivityEditUser extends AppCompatActivity {
     }
 
     public void selectImage() {
-
         final CharSequence[] items = {"Take a photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityEditUser.this);
         builder.setTitle("Pick Profile Image");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = Utility.checkPermission(ActivityEditUser.this);
-                if (items[item].equals("Take a photo")) {
-                    userChosenTask = "Take a photo";
-                    if (result) {
-                        cameraIntent();
-                    }
-                } else if (items[item].equals("Choose from Library")) {
-                    userChosenTask = "Choose from Library";
-                    if (result) {
-                        galleryIntent();
-                    }
-                } else {
-                    dialog.dismiss();
+        builder.setItems(items, (dialog, item) -> {
+            boolean result = Utility.checkPermission(ActivityEditUser.this);
+            if (items[item].equals("Take a photo")) {
+                userChosenTask = "Take a photo";
+                if (result) {
+                    cameraIntent();
                 }
+            } else if (items[item].equals("Choose from Library")) {
+                userChosenTask = "Choose from Library";
+                if (result) {
+                    galleryIntent();
+                }
+            } else {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -284,7 +269,8 @@ public class ActivityEditUser extends AppCompatActivity {
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.apply();
-
+                    Toast.makeText(ActivityEditUser.this, "Profile updated!", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_SHORT).show();
                 }

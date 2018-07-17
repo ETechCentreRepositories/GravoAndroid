@@ -60,21 +60,17 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     TextView scheduleDate;
     String requestParameters = "userid=";
     LinearLayout cartItems;
-    TextView tvNoOfItems;
-
     ImageView ivItem;
-    String itemType;
-    String itemRate;
-    TextView tvTotalWeight;
-
+    String itemType, itemRate;
+    TextView tvTotalWeight, tvTotalPrice, tvNoOfItems;
+    EditText etPhone, etRemarks;
+    AutoCompleteTextView etAddress;
     JSONObject item;
-
     private static final String LOG_TAG = "Places Autocomplete";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String API_KEY = "AIzaSyAcySxtEoAxt3PcTc-LAAa506DeOGAV7nY";
-
     int no_of_items = 0;
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
@@ -171,7 +167,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         }
     };
     private int mYear, mMonth, mDay;
-
     public View initView(String[] itemArray) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -352,128 +347,113 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         Log.e("params", paramsArray[i]);
                     }
                     editCart.execute(paramsArray);
-
-
                 }
             });
             plus.setOnClickListener((View v) -> {
                 double getWeight = Double.parseDouble(tvWeight.getText().toString());
                 double getPrice = Double.parseDouble(tvTotalPrice.getText().toString().substring(1));
-                String getNewTotalWeight = "";
-                String getNewTotalPiece = "";
-                String totalWeight = tvTotalWeight.getText().toString();
+                if (getWeight >= 99) {
+                    Log.i("Cart : ", "item is already 0");
+                    if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                        Toast.makeText(ActivityCart.this, "Cannot go above 99 pieces", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ActivityCart.this, "Cannot go above 99KG", Toast.LENGTH_SHORT).show();
+                    }
 
-                String getTotalWeight = totalWeight.split("KG")[0];
-                Log.e("TOTAL WEIGHT", getTotalWeight);
-                String getTotalPiece = totalWeight.split(" ")[1];
-                Log.e("TOTAL PIECES", getTotalPiece);
+                } else {
+                    String getNewTotalWeight = "";
+                    String getNewTotalPiece = "";
+                    String totalWeight = tvTotalWeight.getText().toString();
 
-                double newWeight = getWeight + 1;
-                tvWeight.setText(String.valueOf(newWeight));
+                    String getTotalWeight = totalWeight.split("KG")[0];
+                    Log.e("TOTAL WEIGHT", getTotalWeight);
+                    String getTotalPiece = totalWeight.split(" ")[1];
+                    Log.e("TOTAL PIECES", getTotalPiece);
+
+                    double newWeight = getWeight + 1;
+                    tvWeight.setText(String.valueOf(newWeight));
 
 //                if (tvWeight.getText().toString().equals("0.0")) {
-                Log.e("TYPE", itemArray[1].split(" ")[0]);
-                if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                    getNewTotalPiece = String.valueOf(Double.parseDouble(getTotalPiece) + 1.0);
-                    String newStringPieces = getTotalWeight + "KG, " + getNewTotalPiece + " Piece(s)";
-                    tvTotalWeight.setText(newStringPieces);
-                    Log.e("newStringPieces", newStringPieces);
-                } else {
-                    getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) + 1.0);
-                    String newStringPieces = getNewTotalWeight + "KG, " + getTotalPiece + " Piece(s)";
-                    tvTotalWeight.setText(newStringPieces);
-                    Log.e("newStringPieces", newStringPieces);
+                    Log.e("TYPE", itemArray[1].split(" ")[0]);
+                    if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
+                        getNewTotalPiece = String.valueOf(Double.parseDouble(getTotalPiece) + 1.0);
+                        String newStringPieces = getTotalWeight + "KG, " + getNewTotalPiece + " Piece(s)";
+                        tvTotalWeight.setText(newStringPieces);
+                        Log.e("newStringPieces", newStringPieces);
+                    } else {
+                        getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) + 1.0);
+                        String newStringPieces = getNewTotalWeight + "KG, " + getTotalPiece + " Piece(s)";
+                        tvTotalWeight.setText(newStringPieces);
+                        Log.e("newStringPieces", newStringPieces);
+                    }
+
+                    double newPrice = getPrice - ((getWeight - newWeight) * doubleRate);
+
+                    tvTotalPrice.setText("$" + String.valueOf(String.format("%.2f", newPrice)));
+
+                    TextView tvAllPrice = findViewById(R.id.totalPrice);
+
+                    Double allPrice = Double.parseDouble((tvAllPrice.getText().toString()).substring(1));
+                    allPrice = allPrice + (newPrice - getPrice);
+
+                    tvAllPrice.setText("$" + String.format("%.2f", allPrice));
+
+                    String user_id = String.valueOf(preferences.getInt("user_id", 0));
+
+                    API links = new API();
+                    String editCartDetailsUrl = links.editCartDetails();
+
+                    AsyncEditCartDetails editCart = new AsyncEditCartDetails();
+                    String[] paramsArray = {editCartDetailsUrl, user_id, newWeight + "", newPrice + "", cartId + ""};
+                    for (int i = 0; i < paramsArray.length; i++) {
+                        Log.e("params", paramsArray[i]);
+                    }
+                    editCart.execute(paramsArray);
                 }
-                //double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
-
-//                } else {
-//
-//                    double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
-//                    double newNumberOfPieces = numberOfPieces + 1;
-//                    String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
-//                    tvTotalWeight.setText(newStringPieces);
-//                    Log.d("newStringPieces", newStringPieces);
-//                }
-
-                double newPrice = getPrice - ((getWeight - newWeight) * doubleRate);
-
-                tvTotalPrice.setText("$" + String.valueOf(String.format("%.2f", newPrice)));
-
-                TextView tvAllPrice = findViewById(R.id.totalPrice);
-
-                Double allPrice = Double.parseDouble((tvAllPrice.getText().toString()).substring(1));
-                allPrice = allPrice + (newPrice - getPrice);
-
-                tvAllPrice.setText("$" + String.format("%.2f", allPrice));
-
-                String user_id = String.valueOf(preferences.getInt("user_id", 0));
-
-                API links = new API();
-                String editCartDetailsUrl = links.editCartDetails();
-
-                AsyncEditCartDetails editCart = new AsyncEditCartDetails();
-                String[] paramsArray = {editCartDetailsUrl, user_id, newWeight + "", newPrice + "", cartId + ""};
-                for (int i = 0; i < paramsArray.length; i++) {
-                    Log.e("params", paramsArray[i]);
-                }
-                editCart.execute(paramsArray);
-
-
             });
             return view;
         }
         return null;
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
         API links = new API();
         GetAsyncRequest getcart = new GetAsyncRequest();
         getcart.setOnResultListener(getRates);
-
         preferences = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         String id = String.valueOf(preferences.getInt("user_id", 0));
         String name = String.valueOf(preferences.getString("user_name", ""));
         String url = links.getCart() + requestParameters + id;
         Log.e("URL LINK: ", url);
         getcart.execute(url);
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
         cartItems = findViewById(R.id.cartItems);
-        EditText etPhone = findViewById(R.id.etPhone);
-        AutoCompleteTextView etAddress = findViewById(R.id.etAddress);
-        EditText etRemarks = findViewById(R.id.etRemarks);
-        TextView tvTotalPrice = findViewById(R.id.totalPrice);
+        etPhone = findViewById(R.id.etPhone);
+        etAddress = findViewById(R.id.etAddress);
+        etRemarks = findViewById(R.id.etRemarks);
+        tvTotalPrice = findViewById(R.id.totalPrice);
         tvTotalWeight = findViewById(R.id.totalWeight);
+        tvTotalPrice.setText(R.string.defaultprice);
+        tvTotalWeight.setText(R.string.defaultweight);
         etPhone.setText(preferences.getString("user_contact", ""));
         etAddress.setText(preferences.getString("user_address", ""));
-
         etAddress.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         etAddress.setOnItemClickListener(ActivityCart.this);
-
         cash = findViewById(R.id.cash);
         cash.setOnClickListener((View v) -> {
-
-            //collectiondate collectionaddress collectionuser collectionnumber total_price total_weight remarks transaction_id userid status
-            //yyyy-mm-dd
-
             String userPhoneNo = etPhone.getText().toString();
             String userAddress = etAddress.getText().toString();
             String userRemarks = etRemarks.getText().toString();
             String userPreTotalPrice = tvTotalPrice.getText().toString();
-            String userPreTotalWeight = tvTotalWeight.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
             Log.e("Cart total price", userTotalPrice);
-            String userTotalWeight = "0";
             Log.e("price", userTotalPrice);
-            final int resultCodetest;
             Log.i("validation", scheduleDate.getText().toString() + etPhone.getText().toString() + etAddress.getText().toString());
             if (etPhone.getText().toString().equals("") || etAddress.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
                 Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show();
@@ -493,15 +473,12 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 calAlarm.set(Calendar.MINUTE, 0);
                 calAlarm.set(Calendar.SECOND, 5);
                 calAlarm.set(Calendar.AM_PM, 0);
-
                 setAlarmForPickUpDay(calAlarm);
-
                 AsyncAddTransaction addTransaction = new AsyncAddTransaction();
                 String[] paramsArray = {addTransactionUrl, newdate, userAddress, name, userPhoneNo, userTotalPrice, tvTotalWeight.getText().toString(), userRemarks, "00000", id, status_id + ""};
                 for (int i = 0; i < paramsArray.length; i++) {
                     Log.e("params", paramsArray[i]);
                 }
-
                 AsyncAddTransaction.OnAsyncResult getTransactionId = (resultCode, message) -> {
                     Log.i("message", message);
                     Log.i("resultCodeHere", resultCode + "");
@@ -512,21 +489,14 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_SHORT).show();
                     }
                 };
-
                 addTransaction.setOnResultListener(getTransactionId);
                 addTransaction.execute(paramsArray);
-
                 Log.i("resultCodeHere", "successtransactionpage");
-
             }
-
         });
-
         scheduleDate = findViewById(R.id.scheduleDate);
         scheduleDate.setOnClickListener(v -> getScheduleDate());
-
     }
-
     public void getScheduleDate() {
         // Get Current Date
         final Calendar c = Calendar.getInstance();
@@ -552,7 +522,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
         datePickerDialog.show();
     }
-
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (v.getId() == R.id.btnPlus) {
@@ -560,7 +529,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         }
         return false;
     }
-
     public void setAlarmForPickUpDay(Calendar calAlarm) {
         Log.i("calAlarm Status", calAlarm.toString());
         Intent iReminder = new Intent(this, PickUpDayReminder.class);
@@ -570,11 +538,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
     }
-
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
     }
-
     public static ArrayList autocomplete(String input) {
         ArrayList resultList = null;
 
@@ -617,8 +583,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             // Extract the Place descriptions from the results
             resultList = new ArrayList(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
-                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
-                System.out.println("============================================================");
                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
 
@@ -628,7 +592,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
         return resultList;
     }
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
@@ -679,11 +642,3 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         }
     }
 }
-
-//    Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
-//    int chosenID = Integer.parseInt(fragmentTransaction.getTag().toString());
-//    Log.i("getTag",chosenID+"");
-//    intent.putExtra("intChosenID",chosenID);
-//    startActivity(intent);
-
-

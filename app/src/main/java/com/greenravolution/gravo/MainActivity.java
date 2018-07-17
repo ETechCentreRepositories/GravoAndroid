@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateprofile() {
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
         Glide.with(MainActivity.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profileimage);
-        user_points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0)) + " (No rank yet)");
+        user_points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0)) + " ("+sessionManager.getString("user_rank","No rank yet")+")");
         user_name.setText(sessionManager.getString("user_full_name", ""));
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

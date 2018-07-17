@@ -1,16 +1,12 @@
 package com.greenravolution.gravo.CategoryFragments;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,14 +30,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.Duration;
 import java.util.Objects;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EWaste extends Fragment {
     LinearLayout paperContents;
     public static final String SESSION = "login_status";
@@ -49,7 +41,6 @@ public class EWaste extends Fragment {
     FrameLayout frameLayout;
 
     public EWaste() {
-        // Required empty public constructor
     }
 
     @Override
@@ -82,6 +73,7 @@ public class EWaste extends Fragment {
         }
         return view;
     }
+
     public View initView(com.greenravolution.gravo.objects.Rates rate) {
         Rates rateClass = new Rates();
         API links = new API();
@@ -121,7 +113,6 @@ public class EWaste extends Fragment {
 
             }
         });
-
         itemsWeight.setText(String.valueOf(weightInt));
         itemMinus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
@@ -138,7 +129,6 @@ public class EWaste extends Fragment {
                 }
             }
         });
-
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
         itemPlus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
@@ -150,14 +140,18 @@ public class EWaste extends Fragment {
                 } else {
                     itemLabel.setText(R.string.string_pieces);
                 }
-                getWeight = getWeight + 1;
-                itemsWeight.setText(String.valueOf(getWeight));
+                if (getWeight <= 0) {
+                    Toast.makeText(getContext(), "Cannot go above 99 pieces", Toast.LENGTH_SHORT).show();
+                } else {
+                    getWeight = getWeight + 1;
+                    itemsWeight.setText(String.valueOf(getWeight));
+                    itemLabel.setText(R.string.string_pieces);
+                }
+
             }
         });
-
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("E-Waste")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
-        //temp
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
         String[] type = rate.getType().split(" ");
         String typeName = "";
@@ -166,10 +160,8 @@ public class EWaste extends Fragment {
         }
         itemName.setText(typeName);
         itemRate.setText(rate.getRate());
-
         return contents;
     }
-
 
     public class AsyncAddCartDetails extends AsyncTask<String, Void, String> {
         @Override
@@ -188,12 +180,7 @@ public class EWaste extends Fragment {
                 String message = result.getString("message");
                 if (status == 200) {
                     Snackbar snackbar = Snackbar.make(frameLayout, "Item added to bag!", Snackbar.LENGTH_LONG)
-                            .setAction("VIEW", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    getContext().startActivity(new Intent(getContext(), ActivityCart.class));
-                                }
-                            });
+                            .setAction("VIEW", v -> getContext().startActivity(new Intent(getContext(), ActivityCart.class)));
                     View snackbarview = snackbar.getView();
                     snackbarview.setBackgroundColor(getContext().getResources().getColor(R.color.white));
                     snackbarview.setMinimumHeight(250);
@@ -206,9 +193,7 @@ public class EWaste extends Fragment {
                     textView.setTextSize(20);
                     snackbarview.animate().translationY(-20);
                     snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).setDuration(Snackbar.LENGTH_LONG).show();
-
                 }
-
                 Log.i("status", status + "");
                 Log.i("message", message + "");
 
@@ -217,5 +202,4 @@ public class EWaste extends Fragment {
             }
         }
     }
-
 }

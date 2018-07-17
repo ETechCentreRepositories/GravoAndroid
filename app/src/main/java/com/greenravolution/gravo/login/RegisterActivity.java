@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethod;
@@ -100,9 +101,17 @@ public class RegisterActivity extends AppCompatActivity {
             if (checkNetworks()) {
 
                 if(ctnc.isChecked()){
-                    ShowProgress();
-                    Register doregister = new Register();
-                    doregister.execute(getlinkrequest.getRegister());
+                    if(email.getText().toString().equalsIgnoreCase("")||password.getText().toString().equalsIgnoreCase("")){
+                        Toast.makeText(this, "Please enter your details", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+                            ShowProgress();
+                            Register doregister = new Register();
+                            doregister.execute(getlinkrequest.getRegister());
+                        }else{
+                            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }else{
                     Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_SHORT).show();
                 }
@@ -150,8 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
                             + "&email=" + email.getText().toString()
                             + "&password=" + password.getText().toString()
                             + "&contactnumber=" + number.getText().toString()
-                            + "&address=" + address.getText().toString()
-                            + "&encoded_string=" + UploadPhoto());
+                            + "&address=" + address.getText().toString());
 
             try{
                 JSONObject resultObject = new JSONObject(results);
@@ -196,13 +204,16 @@ public class RegisterActivity extends AppCompatActivity {
                     editor.putInt("user_id", user.getInt("id"));
                     editor.putString("user_image", user.getString("photo"));
                     editor.putString("user_first_name", user.getString("first_name"));
+                    Log.e("FIRSTNAME",user.getString("first_name"));
                     editor.putString("user_last_name", user.getString("last_name"));
+                    Log.e("LASTNAME",user.getString("last_name"));
                     editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
                     editor.putString("user_email", user.getString("email"));
                     editor.putString("user_full_name", user.getString("full_name"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.putInt("user_total_points", user.getInt("total_points"));
+                    editor.putString("user_rank", user.getString("rank_name"));
                     editor.apply();
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     finish();
@@ -252,23 +263,5 @@ public class RegisterActivity extends AppCompatActivity {
         btnc.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
     }
-    public String UploadPhoto() {
-        Bitmap icon = BitmapFactory.decodeResource(RegisterActivity.this.getResources(),
-                R.drawable.gravo_logo_black);
-        String encodedimage = bitmapToBase64(icon);
-        Log.e("BITMAP: ", encodedimage);
-        return encodedimage;
-    }
-    private String bitmapToBase64(Bitmap bitmap) {
-        String encodedImage = "";
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        try {
-            encodedImage += URLEncoder.encode(Base64.encodeToString(byteArray, Base64.DEFAULT), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return encodedImage;
-    }
+
 }

@@ -4,7 +4,6 @@ package com.greenravolution.gravo.CategoryFragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -36,9 +35,6 @@ import java.util.Objects;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class Metals extends Fragment {
     LinearLayout paperContents;
     public static final String SESSION = "login_status";
@@ -46,16 +42,12 @@ public class Metals extends Fragment {
     FrameLayout frameLayout;
 
     public Metals() {
-        // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_metals, container, false);
-
         paperContents = view.findViewById(R.id.paperContents);
         SharedPreferences sessionManager = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         String rates = sessionManager.getString("rates", "");
@@ -76,7 +68,6 @@ public class Metals extends Fragment {
                     paperContents.addView(initView(rate));
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -86,7 +77,6 @@ public class Metals extends Fragment {
     public View initView(com.greenravolution.gravo.objects.Rates rate) {
         Rates rateClass = new Rates();
         API links = new API();
-
         LayoutInflater inflater2 = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         View contents = inflater2.inflate(R.layout.category_page_items, null);
         LinearLayout itemView = contents.findViewById(R.id.item);
@@ -107,20 +97,14 @@ public class Metals extends Fragment {
                 String chosenItemRate = rate.getRate();
                 SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                 int id = preferences.getInt("user_id", 0);
-
                 int indexOfSlash = chosenItemRate.indexOf('/');
                 double itemPrice = Double.parseDouble(chosenItemRate.substring(0, indexOfSlash));
-
                 double totalPrice = getWeight * itemPrice;
-
                 AsyncAddCartDetails add = new AsyncAddCartDetails();
                 String[] paramsArray = {links.addCartDetails(), id + "", getWeight + "", totalPrice + "", itemId + ""};
                 add.execute(paramsArray);
-
-
             }
         });
-
         itemsWeight.setText(String.valueOf(weightInt));
         itemMinus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
@@ -128,51 +112,44 @@ public class Metals extends Fragment {
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
                 if (getWeight <= 0) {
-
                 } else {
                     getWeight = getWeight - 1;
                     itemsWeight.setText(String.valueOf(getWeight));
                 }
             }
-
         });
-
         ImageView itemPlus = contents.findViewById(R.id.itemPlus);
         itemPlus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-                getWeight = getWeight + 1;
-                itemsWeight.setText(String.valueOf(getWeight));
+                if (getWeight >= 99) {
+                    Toast.makeText(getContext(), "Cannot go above 99KG", Toast.LENGTH_SHORT).show();
+                } else {
+                    getWeight = getWeight + 1;
+                    itemsWeight.setText(String.valueOf(getWeight));
+                }
             }
-
         });
-
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("Metals")));
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
-
-        //temp
         itemImage.setImageResource(rateClass.getImage(rate.getType()));
         String[] type = rate.getType().split(" ");
         StringBuilder typeName = new StringBuilder();
-
         for (int j = 2; j < type.length; j++) {
             Log.e("String: ", type[j]);
             typeName.append(type[j]).append(" ");
         }
-
         String item = typeName.toString();
         Log.e("String put together", item);
         String[] splitItem = item.split("-");
         Log.e("splitItem: ", splitItem.length + "");
-
         itemName.setText(String.format("%s\n%s", splitItem[0], splitItem[1]));
-
         itemRate.setText(rate.getRate());
-
         return contents;
     }
+
     public class AsyncAddCartDetails extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... paramsArray) {
@@ -188,14 +165,9 @@ public class Metals extends Fragment {
                 frameLayout = getActivity().findViewById(R.id.framelayout);
                 int status = result.getInt("status");
                 String message = result.getString("message");
-                if(status == 200){
+                if (status == 200) {
                     Snackbar snackbar = Snackbar.make(frameLayout, "Item added to bag!", Snackbar.LENGTH_LONG)
-                            .setAction("VIEW", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    getContext().startActivity(new Intent(getContext(), ActivityCart.class));
-                                }
-                            });
+                            .setAction("VIEW", v -> getContext().startActivity(new Intent(getContext(), ActivityCart.class)));
                     snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).show();
                     View snackbarview = snackbar.getView();
                     snackbarview.setBackgroundColor(getContext().getResources().getColor(R.color.white));
