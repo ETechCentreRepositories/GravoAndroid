@@ -26,11 +26,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import sun.bob.mcalendarview.MarkStyle;
+import sun.bob.mcalendarview.listeners.OnMonthChangeListener;
 import sun.bob.mcalendarview.views.ExpCalendarView;
 import sun.bob.mcalendarview.vo.DateData;
 
@@ -42,6 +46,8 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class Calendar extends Fragment {
     LinearLayout transactionLayout;
     LayoutInflater inflater;
+    ExpCalendarView cvCalendar;
+    TextView tvMonthYear;
 
     GetAsyncRequest.OnAsyncResult getDates = (resultCode, message) -> {
         Log.i("getTransaction Message",message);
@@ -87,7 +93,7 @@ public class Calendar extends Fragment {
                     }
                     TextView tvDay = (TextView) fragmentCalendar.findViewById(R.id.tvDay);
                     TextView tvDetails = (TextView) fragmentCalendar.findViewById(R.id.tvDetails);
-                    ExpCalendarView cvCalendar = getView().findViewById(R.id.calendar);
+                    cvCalendar = getView().findViewById(R.id.calendar);
 
                     cvCalendar.markDate(new DateData(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day))).setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
@@ -130,12 +136,14 @@ public class Calendar extends Fragment {
         // Inflate the layout for this fragment
         View calendarView = inflater.inflate(R.layout.fragment_calendar, container, false);
         transactionLayout = calendarView.findViewById(R.id.transactionDetails);
+        tvMonthYear = calendarView.findViewById(R.id.monthYear);
 
         SharedPreferences preferences;
         API links = new API();
         GetAsyncRequest getTransactions = new GetAsyncRequest();
         getTransactions.setOnResultListener(getDates);
 
+        List<String> monthList = Arrays.asList("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 
         preferences = getActivity().getSharedPreferences("login_status",Context.MODE_PRIVATE);
         String id = String.valueOf(preferences.getInt("user_id",0));
@@ -144,6 +152,19 @@ public class Calendar extends Fragment {
         String url = links.getTransaction()+"?type=userid&userid="+id;
         Log.e("URL LINK: ", url);
         getTransactions.execute(url);
+
+        ExpCalendarView expCalendar = calendarView.findViewById(R.id.calendar);
+        java.util.Calendar currCal = java.util.Calendar.getInstance();
+
+        tvMonthYear.setText(monthList.get(currCal.get(java.util.Calendar.MONTH)) + " - " + currCal.get(java.util.Calendar.YEAR));
+        expCalendar.setOnMonthChangeListener(new OnMonthChangeListener() {
+            @Override
+            public void onMonthChange(int year, int month) {
+                tvMonthYear.setText( String.format("%s-%d",monthList.get(month-1), year));
+
+                //Toast.makeText(getContext(), String.format("%d-%d", year, monthList.get(month-1)), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 //        for(int i = 0; i<5; i++){
 //            int idtest = 0;

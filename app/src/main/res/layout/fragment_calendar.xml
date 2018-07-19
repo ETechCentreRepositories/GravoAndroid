@@ -9,6 +9,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/monthYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="25sp"/>
+
         <sun.bob.mcalendarview.views.ExpCalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
