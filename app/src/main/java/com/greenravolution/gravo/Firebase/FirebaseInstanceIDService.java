@@ -45,29 +45,31 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void registerToken(String token, String userID) {
-        Log.d(TAG, "registerToken: "+ token);
-        String url;
-        if(purpose.equalsIgnoreCase("register")){
-            url = "http://ehostingcentre.com/gravo/registerToken.php";
-        } else {
-            url = "http://ehostingcentre.com/gravo/updateToken.php";
-        }
+        if(purpose != null) {
+            Log.d(TAG, "registerToken: " + token);
+            String url;
+            if (purpose.equalsIgnoreCase("register")) {
+                url = "http://ehostingcentre.com/gravo/registerToken.php";
+            } else {
+                url = "http://ehostingcentre.com/gravo/updateToken.php";
+            }
 
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("token",token)
-                .add("userid",userID)
-                .build();
-        Request request = new Request.Builder()
-                //.url("http://192.168.1.71/fcm/register.php")
-                .url(url)
-                .post(body)
-                .build();
-        try {
-            Response response = client.newCall(request).execute();
-            Log.i("registerToken results", response.body().string());
-        } catch (IOException e) {
-            e.printStackTrace();
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormBody.Builder()
+                    .add("token", token)
+                    .add("userid", userID)
+                    .build();
+            Request request = new Request.Builder()
+                    //.url("http://192.168.1.71/fcm/register.php")
+                    .url(url)
+                    .post(body)
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.i("registerToken results", response.body().string());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
