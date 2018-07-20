@@ -140,7 +140,7 @@ public class EWaste extends Fragment {
                 } else {
                     itemLabel.setText(R.string.string_pieces);
                 }
-                if (getWeight <= 0) {
+                if (getWeight >= 99) {
                     Toast.makeText(getContext(), "Cannot go above 99 pieces", Toast.LENGTH_SHORT).show();
                 } else {
                     getWeight = getWeight + 1;
