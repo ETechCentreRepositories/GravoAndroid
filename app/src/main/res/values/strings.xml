@@ -207,4 +207,5 @@ These Terms and any policies or operating rules posted by us on the Applicatio
     <string name="circle4_description">circle4</string>
     <string name="defaultprice">$0.00</string>
     <string name="defaultweight">0.0KG, 0.0 Piece(s)</string>
+    <string name="bulk_image_description">bulk image</string>
 </resources>
