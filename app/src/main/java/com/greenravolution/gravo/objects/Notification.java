@@ -11,11 +11,15 @@ public class Notification {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private int messageId;
-
+    private String userId;
     private String message;
     private Long time;
 
-    public Notification(@NonNull String message, @NonNull Long time) {this.message = message; this.time = time;}
+    public Notification(@NonNull String userId, @NonNull String message, @NonNull Long time) {this.userId = userId; this.message = message; this.time = time;}
+
+    public String getUserId(){return this.userId;}
+
+    public void setUserId(String userId){this.userId = userId;}
 
     public String getMessage(){return this.message;}
 

@@ -2,6 +2,8 @@ package com.greenravolution.gravo.objects;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -11,12 +13,14 @@ public class NotificationRepository {
     private LiveData<List<Notification>> allNotifications;
 
     NotificationRepository(Application application){
+        SharedPreferences preferences = application.getApplicationContext().getSharedPreferences("login_status", Context.MODE_PRIVATE);
+        String user_id = String.valueOf(preferences.getInt("user_id", 0));
         NotificationRoomDatabase db = NotificationRoomDatabase.getDatabase(application);
         notificationDao = db.notificationDao();
-        allNotifications = notificationDao.getAllNotifications();
+        allNotifications = notificationDao.getAllNotifications(user_id);
     }
 
-    LiveData<List<Notification>> getAllNotifications(){
+    public LiveData<List<Notification>> getAllNotifications(){
         return allNotifications;
     }
 

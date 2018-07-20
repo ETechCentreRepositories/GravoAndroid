@@ -7,6 +7,7 @@ import android.arch.persistence.room.Room;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.greenravolution.gravo.MainActivity;
@@ -47,12 +48,17 @@ public class PickUpDayReminder extends BroadcastReceiver{
     }
 
     public void addNotification(Context context){
+        SharedPreferences preferences = context.getSharedPreferences("login_status", Context.MODE_PRIVATE);
+        String user_id = String.valueOf(preferences.getInt("user_id", 0));
+        Log.i("Notificaion",user_id);
+
         java.util.Calendar c = java.util.Calendar.getInstance();
         long time = c.getTimeInMillis();
         NotificationRoomDatabase db = Room.databaseBuilder(context,
                 NotificationRoomDatabase.class, "notification_database").build();
         NotificationDao dao = db.notificationDao();
-        com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification("Pick Up Day",time);
+        com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification(user_id,"Pick Up Day",time);
+        Log.i("Notificaion",noti.getUserId() + " " + noti.getMessage());
         //com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification("Pick Up Day");
         dao.insert(noti);
     }
