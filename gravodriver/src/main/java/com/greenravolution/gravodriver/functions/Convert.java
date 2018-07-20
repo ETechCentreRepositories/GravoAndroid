@@ -47,8 +47,8 @@ public class Convert {
             location.getLatitude();
             location.getLongitude();
 
-            currentLocation = new LatLng((double) (location.getLatitude()),
-                    (double) (location.getLongitude()));
+            currentLocation = new LatLng(location.getLatitude(),
+                    location.getLongitude());
             Log.e("current Locale", String.valueOf(currentLocation));
 
         } catch (IOException e) {

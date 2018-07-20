@@ -282,13 +282,12 @@ public class LoginActivity extends AppCompatActivity {
                             fbLogin.execute(fbname, fbemail);
                         }
                     } catch (JSONException e) {
+                        HideProgress();
                         e.printStackTrace();
-                        Log.e("ERROR",e.toString());
-                        if(e.toString().equals("org.json.JSONException: No value for email")){
-
-                            HideProgress();
+                        Log.e("ERROR",e.toString().split(" ")[e.toString().split(" ").length-1]);
+                        if(e.toString().split(" ")[e.toString().split(" ").length-1].equals("email")){
                             LoginManager.getInstance().logOut();
-                            Toast.makeText(LoginActivity.this, "Your Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "An unexpected error has occurred. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
                         }

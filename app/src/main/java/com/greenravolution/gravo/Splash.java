@@ -6,12 +6,10 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -50,7 +48,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ic_splash = findViewById(R.id.splash_id);
-        if(isNetworkAvailable()){
+        if (isNetworkAvailable()) {
             GetAsyncRequest asyncRequest = new GetAsyncRequest();
             asyncRequest.setOnResultListener(getRates);
             asyncRequest.execute("http://ehostingcentre.com/gravo/getCategories.php?type=all");
@@ -68,43 +66,50 @@ public class Splash extends AppCompatActivity {
                     String email = sessionManager.getString("user_email", "");
                     getUser getUser = new getUser();
                     getUser.execute(email);
+                } else if (Objects.equals(sessionManager.getString(SESSION_ID, null), "201")) {
+                    Log.i("SESSION_ID ERROR:", "Logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
+                    String email = sessionManager.getString("user_email", "");
+                    getUser getUser = new getUser();
+                    getUser.execute(email);
                 } else {
                     Log.e("SESSION_ID ERROR:", "Retrieved_ID ->" + sessionManager.getString(SESSION_ID, null));
                 }
             }, SPLASH_TIME_OUT);
-        }else{
-            Toast.makeText(this,"The Gravo App requires Internet. Please on your data and restart the app",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "The Gravo App requires Internet. Please on your data and restart the app", Toast.LENGTH_SHORT).show();
         }
 
     }
+
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     public class getUser extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
-            return req.GetRequest("http://www.ehostingcentre.com/gravo/getUsers.php?email="+strings[0]);
+            return req.GetRequest("http://www.ehostingcentre.com/gravo/getUsers.php?email=" + strings[0]);
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if(s == null){
+            if (s == null) {
                 Toast.makeText(Splash.this, "An unexpected Error has occured", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(Splash.this, MainActivity.class);
                 startActivity(i);
                 finish();
-            }else{
+            } else {
                 try {
                     JSONObject result = new JSONObject(s);
                     Log.e("GET DETAILS", s);
                     int status = result.getInt("status");
-                    if(status == 200){
+                    if (status == 200) {
                         Log.e("Get User Status", String.valueOf(status));
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, String.valueOf(status));
@@ -126,7 +131,29 @@ public class Splash extends AppCompatActivity {
                         Intent i = new Intent(Splash.this, MainActivity.class);
                         startActivity(i);
                         finish();
-                    }else if(status == 404){
+                    }else if (status == 201){
+                        Log.e("Get User Status", String.valueOf(status));
+                        SharedPreferences.Editor editor = sessionManager.edit();
+                        editor.putString(SESSION_ID, String.valueOf(status));
+                        JSONArray users = result.getJSONArray("users");
+                        JSONObject user = users.getJSONObject(0);
+                        editor.putInt("user_id", user.getInt("id"));
+                        editor.putString("user_image", user.getString("photo"));
+                        editor.putString("user_first_name", user.getString("first_name"));
+                        editor.putString("user_last_name", user.getString("last_name"));
+                        editor.putString("user_name", user.getString("first_name") + " " + user.getString("last_name"));
+                        editor.putString("user_full_name", user.getString("full_name"));
+                        editor.putString("user_email", user.getString("email"));
+                        editor.putString("user_contact", user.getString("contact_number"));
+                        editor.putString("user_address", user.getString("address"));
+                        editor.putInt("user_total_points", user.getInt("total_points"));
+                        editor.putString("user_rank", user.getString("rank_name"));
+                        editor.apply();
+
+                        Intent i = new Intent(Splash.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }else if (status == 404) {
                         Intent i = new Intent(Splash.this, Login.class);
                         Log.w("SESSION_ID:", "not logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
                         startActivity(i);

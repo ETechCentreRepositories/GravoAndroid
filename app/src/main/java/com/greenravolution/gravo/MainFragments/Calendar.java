@@ -91,8 +91,8 @@ public class Calendar extends Fragment {
                     if(status_id == 4){
                         layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
                     }
-                    TextView tvDay = (TextView) fragmentCalendar.findViewById(R.id.tvDay);
-                    TextView tvDetails = (TextView) fragmentCalendar.findViewById(R.id.tvDetails);
+                    TextView tvDay = fragmentCalendar.findViewById(R.id.tvDay);
+                    TextView tvDetails = fragmentCalendar.findViewById(R.id.tvDetails);
                     cvCalendar = getView().findViewById(R.id.calendar);
 
                     cvCalendar.markDate(new DateData(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day))).setBackgroundColor(getResources().getColor(R.color.brand_pink));
