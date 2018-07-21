@@ -35,19 +35,31 @@
             android:layout_marginEnd="30dp">
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/notification_title_backround">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No Notifications"
+                    android:text=" Notifications"
                     android:textColor="@color/white"
                     android:textAlignment="center"
                     android:padding="10dp"
                     android:textSize="20sp"/>
             </LinearLayout>
+
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="45dp"
+                android:background="@android:color/darker_gray"
+                tools:listitem="@layout/recyclerview_item" />
+
+
         </android.support.v7.widget.CardView>
     </RelativeLayout>
 </FrameLayout>

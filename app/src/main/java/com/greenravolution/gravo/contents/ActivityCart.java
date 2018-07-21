@@ -536,7 +536,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 PendingIntent.getBroadcast(this, 1234, iReminder,
                         PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
+        //am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
     }
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);

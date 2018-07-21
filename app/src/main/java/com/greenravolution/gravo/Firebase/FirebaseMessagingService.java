@@ -3,13 +3,18 @@ package com.greenravolution.gravo.Firebase;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
+import com.greenravolution.gravo.objects.NotificationDao;
+import com.greenravolution.gravo.objects.NotificationRoomDatabase;
 
 import org.json.JSONObject;
 
@@ -38,6 +43,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         String message = remoteMessage.getData().get("message");
 
+        class addNotificationThread implements Runnable {
+            public void run() {
+                addNotification();
+            }
+        }
+        Thread t = new Thread(new addNotificationThread());
+        t.start();
 
         showNotification(message);
     }
@@ -62,6 +74,20 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         manager.notify(0,builder.build());
+    }
+
+    public void addNotification(){
+        SharedPreferences preferences = getSharedPreferences("login_status", Context.MODE_PRIVATE);
+        String user_id = String.valueOf(preferences.getInt("user_id", 0));
+
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        long time = c.getTimeInMillis();
+        NotificationRoomDatabase db = Room.databaseBuilder(this,
+                NotificationRoomDatabase.class, "notification_database").build();
+        NotificationDao dao = db.notificationDao();
+        com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification(user_id,"Driver has Arrived!",time);
+        //com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification("Driver has Arrived!");
+        dao.insert(noti);
     }
 
 
