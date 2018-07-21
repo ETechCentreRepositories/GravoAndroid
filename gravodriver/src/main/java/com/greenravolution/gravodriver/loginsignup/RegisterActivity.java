@@ -176,7 +176,6 @@ public class RegisterActivity extends AppCompatActivity {
                 JSONObject result = new JSONObject(s);
                 int status = result.getInt("status");
                 if(status == 200){
-
                     JSONArray getUser = result.getJSONArray("users");
                     for (int i = 0; i < getUser.length(); i++) {
                         JSONObject user = getUser.getJSONObject(i);
