@@ -4,31 +4,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.airbnb.lottie.parser.AsyncCompositionLoader;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -43,25 +39,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.cert.CertPathBuilderSpi;
-import java.util.Arrays;
-
 public class LoginActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
     CallbackManager callbackManager;
-    boolean loggedIn = AccessToken.getCurrentAccessToken() == null;
-
-    private static final String EMAIL = "email";
     SharedPreferences sessionManager;
     LinearLayout progressbar;
     Button login, forgot_password;
     EditText email, password;
     Toolbar toolbar;
-    String fbemail, fbname;
+    String fbemail, fbname, fbpic;
     HttpReq loginRequest = new HttpReq();
     API getlinkrequest = new API();
     LoginButton facebook_login;
@@ -94,12 +81,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (email.getText().toString().equals("")) {
-                    Toast.makeText(LoginActivity.this, "Please enter your email in the text box above and resubmit!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_LONG).show();
                 } else {
                     //send forgot password email
                     ForgetPassword forgetPassword = new ForgetPassword();
                     forgetPassword.execute();
-
                 }
             }
         });
@@ -111,7 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                 facebook_login.performClick();
             }
         });
-
         // Callback registration
         facebook_login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -159,18 +144,18 @@ public class LoginActivity extends AppCompatActivity {
             String results = loginRequest.PostRequest(strings[0], "email=" + strings[1] + "&password=" + strings[2]);
             //FirebaseInstanceIDService registerToken = new FirebaseInstanceIDService();
             //registerToken.callTokenRefresh(getApplicationContext());
-            try{
+            try {
                 JSONObject resultObject = new JSONObject(results);
                 int status = resultObject.getInt("status");
                 if (status == 200) {
                     JSONArray users = resultObject.getJSONArray("users");
                     JSONObject user = users.getJSONObject(0);
-                    String userID = ""+user.getInt("id");
+                    String userID = "" + user.getInt("id");
                     FirebaseInstanceIDService updateToken = new FirebaseInstanceIDService();
-                    Log.i("updateTokenRecycler",updateToken.toString());
-                    updateToken.callTokenRefresh(userID,"update");
+                    Log.i("updateTokenRecycler", updateToken.toString());
+                    updateToken.callTokenRefresh(userID, "update");
                 }
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             return results;
@@ -203,8 +188,13 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("user_email", user.getString("email"));
                         editor.putString("user_contact", user.getString("contact_number"));
                         editor.putString("user_address", user.getString("address"));
+                        editor.putString("user_address_block", user.getString("block"));
+                        editor.putString("user_address_unit", user.getString("unit"));
+                        editor.putString("user_address_street", user.getString("street"));
+                        editor.putString("user_address_postal", user.getString("postal"));
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
+                        editor.putString("login_type", "normal");
                         editor.apply();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                         finish();
@@ -218,8 +208,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
-//                    String message = result.getString("message");
-//                    Toast.makeText(LoginActivity.this,message,Toast.LENGTH_SHORT).show();
+
                 } else if (status == 405) {
                     String logindetail = result.getString("users");
                     if (logindetail.equals("facebooklogin")) {
@@ -248,49 +237,59 @@ public class LoginActivity extends AppCompatActivity {
         GraphRequest data_request = GraphRequest.newMeRequest(
                 loginResult.getAccessToken(),
                 (json_object, response) -> {
-
-                        ShowProgress();
-                        Log.wtf("jsonString: ", "" + json_object);
+                    ShowProgress();
+                    Log.wtf("jsonString: ", "" + json_object);
                     try {
                         JSONObject object = new JSONObject(String.valueOf(json_object));
-                        String useremail = object.getString("email");
-                        if (useremail == null) {
-                            Toast.makeText(LoginActivity.this, "Your Facebook does not allow us to retrieve your email", Toast.LENGTH_LONG).show();
-                        } else {
-                            fbemail = "";
-                            if (object.getString("email") != null) {
-                                if (object.getString("email").equals("")) {
-                                    fbemail = "";
-                                } else {
-                                    fbemail = object.getString("email");
-                                }
-                            } else {
-                                fbemail = "";
-                            }
-                            fbname = "";
-                            if (object.getString("name") != null) {
-                                if (object.getString("name").equals("")) {
-                                    fbname = "";
-                                } else {
-                                    fbname = object.getString("name");
-                                }
-                            } else {
+                        fbname = "";
+                        if (object.has("name")) {
+                            if (object.getString("name").equals("")) {
                                 fbname = "";
+                            } else {
+                                fbname = object.getString("name");
                             }
+                        } else {
+                            fbname = "";
+                        }
+                        fbname = "";
+                        if (object.has("picture")) {
+                            JSONObject imageitems = object.getJSONObject("picture");
+                            if (imageitems.has("data")) {
+                                JSONObject imagedimens = imageitems.getJSONObject("data");
+                                if (imagedimens.has("url")) {
+                                    fbpic = imagedimens.getString("url");
+                                } else {
+                                    fbpic = "";
+                                }
+                            } else {
+                                fbpic = "";
+                            }
+                        } else {
+                            fbpic = "";
+                        }
+                        fbemail = "";
+                        if (object.has("email")) {
+                            if (object.getString("email").equals("")) {
+                                fbemail = "";
+
+                            } else {
+                                fbemail = object.getString("email");
+                            }
+                        } else {
+                            LoginManager.getInstance().logOut();
+                            Toast.makeText(LoginActivity.this, "Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
+                            HideProgress();
+                        }
+                        if(object.has("email")){
                             ShowProgress();
                             FacebookLogin fbLogin = new FacebookLogin();
-                            fbLogin.execute(fbname, fbemail);
+                            fbLogin.execute(fbname, fbemail, fbpic);
+
                         }
+
                     } catch (JSONException e) {
                         HideProgress();
                         e.printStackTrace();
-                        Log.e("ERROR",e.toString().split(" ")[e.toString().split(" ").length-1]);
-                        if(e.toString().split(" ")[e.toString().split(" ").length-1].equals("email")){
-                            LoginManager.getInstance().logOut();
-                            Toast.makeText(LoginActivity.this, "Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(LoginActivity.this, "An unexpected error has occurred. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
-                        }
                     }
                 });
         Bundle permission_param = new Bundle();
@@ -312,6 +311,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         HideProgress();
+        hideSoftKeyBoard();
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
@@ -322,18 +322,15 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             API api = new API();
-            return req.PostRequest(api.getFacebookLogin(), "fullname=" + strings[0] + "&email=" + strings[1] + "&contactnumber=" + "&address=" + "");
-
+            return req.PostRequest(api.getFacebookLogin(), "fullname=" + strings[0] + "&email=" + strings[1] + "&contactnumber=" + "&address=" + "" + "&image=" + strings[2]);
         }
 
         @Override
         protected void onPostExecute(String s) {
             HideProgress();
-            LoginManager.getInstance().logOut();
             super.onPostExecute(s);
             Log.e("RESTULT", s);
             try {
-
                 JSONObject result = new JSONObject(s);
                 int status = result.getInt("status");
                 if (status == 200) {
@@ -351,14 +348,19 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("user_email", user.getString("email"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
+                    editor.putString("user_address_block", user.getString("block"));
+                    editor.putString("user_address_unit", user.getString("unit"));
+                    editor.putString("user_address_street", user.getString("street"));
+                    editor.putString("user_address_postal", user.getString("postal"));
                     editor.putInt("user_total_points", user.getInt("total_points"));
                     editor.putString("user_rank", user.getString("rank_name"));
+                    editor.putString("login_type", "facebook");
                     editor.apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     Log.e("ACTIVITY:", "TO MAIN");
                     finish();
 
-                } else if(status == 201) {
+                } else if (status == 201) {
                     sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sessionManager.edit();
                     editor.putString(SESSION_ID, String.valueOf(status));
@@ -373,13 +375,19 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("user_email", user.getString("email"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
+                    editor.putString("user_address_block", user.getString("block"));
+                    editor.putString("user_address_unit", user.getString("unit"));
+                    editor.putString("user_address_street", user.getString("street"));
+                    editor.putString("user_address_postal", user.getString("postal"));
                     editor.putInt("user_total_points", user.getInt("total_points"));
                     editor.putString("user_rank", user.getString("rank_name"));
+                    editor.putString("login_type", "facebook");
                     editor.apply();
                     AddAchievements addachievements = new AddAchievements();
                     addachievements.execute(String.valueOf(user.getInt("id")));
-                }else{
+                } else {
                     Toast.makeText(LoginActivity.this, "An unexpected error has occured", Toast.LENGTH_LONG).show();
+                    LoginManager.getInstance().logOut();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -436,13 +444,12 @@ public class LoginActivity extends AppCompatActivity {
         progressbar.setVisibility(View.VISIBLE);
     }
 
-    public class AddAchievements extends AsyncTask<String, Void, String>{
+    public class AddAchievements extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
-            Log.e("ACH LINK","http://ehostingcentre.com/gravo/addachievementdetails.php id="+strings[0]);
-            return req.PostRequest("http://ehostingcentre.com/gravo/addachievementdetails.php","id="+strings[0]);
+            return req.PostRequest("http://ehostingcentre.com/gravo/addachievementdetails.php", "id=" + strings[0]);
 
         }
 
@@ -452,20 +459,31 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 JSONObject results = new JSONObject(s);
                 int status = results.getInt("status");
-                if(status == 200){
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-                    Log.e("ACTIVITY:", "TO MAIN");
+                if (status == 200) {
+                    startActivity(new Intent(LoginActivity.this, FacebookAddDetailsActivity.class));
                     finish();
-                }else if(status == 400){
+                } else if (status == 400) {
                     Toast.makeText(LoginActivity.this, "Unable to create your achievements", Toast.LENGTH_SHORT).show();
-
-                }else{
+                } else {
                     Toast.makeText(LoginActivity.this, "An unexpected error has occurred. please try again in a few minutes!", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             super.onPostExecute(s);
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideSoftKeyBoard();
+    }
+
+    private void hideSoftKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        if (imm.isAcceptingText()) { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 }

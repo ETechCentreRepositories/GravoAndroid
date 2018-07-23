@@ -156,11 +156,12 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:layout_gravity="start|left"
                             android:id="@+id/myAddress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="15dp"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="30dp"
                             android:text="Blk 234 Tampines street 22"
                             android:textColor="@color/black"
                             android:textSize="15sp" />

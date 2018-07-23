@@ -74,7 +74,7 @@ public class Transactions extends Fragment {
                     View fragmentTransaction;
                     String transactionStatus = transactionObject.getString("status_type");
 
-                    if (transactionStatus.equals("Transaction Complete")) {
+                    if (transactionStatus.equals("Transaction Complete")||transactionStatus.equals("Collected and Paid")) {
                         assert inflater != null;
                         fragmentTransaction = inflater.inflate(R.layout.transaction_page_items_complete, null);
                     } else {

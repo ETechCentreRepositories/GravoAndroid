@@ -8,11 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.objects.Notification;
@@ -44,6 +46,24 @@ public class Notifications extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                // Remove item from backing list here
+                if(swipeDir == ItemTouchHelper.ACTION_STATE_SWIPE){
+                    Toast.makeText(getContext(), "Swiped", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         return view;
     }
 
@@ -60,6 +80,7 @@ public class Notifications extends Fragment {
                 adapter.setWords(listNotifications);
             }
         });
+
     }
 
 }
