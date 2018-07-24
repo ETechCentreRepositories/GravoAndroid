@@ -107,7 +107,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
                         achievements.addView(initView(count, title, points));
                     }
                 }else if(status == 404){
-                    Toast.makeText(ActivityLeaderboard.this, "Unable to get achievements", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityLeaderboard.this, "Unable to get achievements", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

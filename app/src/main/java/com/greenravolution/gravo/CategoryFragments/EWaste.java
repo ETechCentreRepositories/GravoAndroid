@@ -94,7 +94,7 @@ public class EWaste extends Fragment {
         addToBag.setOnClickListener(v -> {
             int getWeight = Integer.parseInt(itemsWeight.getText().toString());
             if (getWeight == 0) {
-                Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_LONG).show();
             } else {
                 int itemId = rate.getId();
                 String chosenItemRate = rate.getRate();
@@ -141,7 +141,7 @@ public class EWaste extends Fragment {
                     itemLabel.setText(R.string.string_pieces);
                 }
                 if (getWeight >= 99) {
-                    Toast.makeText(getContext(), "Cannot go above 99 pieces", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Cannot go above 99 pieces", Toast.LENGTH_LONG).show();
                 } else {
                     getWeight = getWeight + 1;
                     itemsWeight.setText(String.valueOf(getWeight));

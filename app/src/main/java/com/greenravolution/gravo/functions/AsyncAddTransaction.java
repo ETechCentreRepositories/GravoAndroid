@@ -67,6 +67,7 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
                 String postTransactionDetailsURL = links.addTransactionDetails();
 
                 String postTransactionDetailsResult = httpReq.PostRequest(postTransactionDetailsURL,"userid=" + userID + "&transactionid=" + transactionID + "&weight=" + weight + "&price=" + price + "&category=" + categoryID);
+                Log.e("POST TRANS DEETS",postTransactionDetailsResult);
                 JSONObject postTransactionDetailsObject = new JSONObject(postTransactionDetailsResult);
                 addDetailsStatus = postTransactionDetailsObject.getInt("status");
 

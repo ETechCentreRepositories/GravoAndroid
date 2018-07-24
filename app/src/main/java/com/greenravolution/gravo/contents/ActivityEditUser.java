@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -49,11 +50,13 @@ public class ActivityEditUser extends AppCompatActivity {
     LinearLayout progressbar;
     public static final String SESSION = "login_status";
     SharedPreferences sessionManager;
-    EditText newFirstName, newLastName, newAddress, newPhone;
+    EditText newFirstName, newLastName, newPhone;
+    String address;
     TextView newEmail;
     CircleImageView newProfile;
     Button cancel, save, uploadImage;
     String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask;
+    EditText address_unit,address_block,address_street,address_postal;
     int getId;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 1962018;
@@ -70,11 +73,16 @@ public class ActivityEditUser extends AppCompatActivity {
         newFirstName = findViewById(R.id.first_name);
         newLastName = findViewById(R.id.last_name);
         newEmail = findViewById(R.id.newEmail);
-        newAddress = findViewById(R.id.newAddress);
         newProfile = findViewById(R.id.newImage);
         newPhone = findViewById(R.id.newPhone);
         cancel = findViewById(R.id.cancel);
         save = findViewById(R.id.save);
+
+        address_block = findViewById(R.id.address_blk);
+        address_unit = findViewById(R.id.address_unit);
+        address_street = findViewById(R.id.address_street);
+        address_postal = findViewById(R.id.address_postal);
+
         save.setOnClickListener(v -> {
             EditUser editUser = new EditUser();
             ShowProgress();
@@ -95,7 +103,19 @@ public class ActivityEditUser extends AppCompatActivity {
         newFirstName.setText(getFirstName);
         newLastName.setText(getLastName);
         newEmail.setText(getEmail);
-        newAddress.setText(getAddress);
+        if(getAddress.equals("")){
+            address_block.setText("");
+            address_unit.setText("");
+            address_street.setText("");
+            address_postal.setText("");
+        }else{
+            String[] addressarray = getAddress.split("_");
+            address_block.setText(addressarray[0].split(" ")[1]);
+            address_unit.setText(addressarray[1].substring(1));
+            address_street.setText(addressarray[2]);
+            address_postal.setText(addressarray[3].split(" ")[1]);
+        }
+
         newPhone.setText(getPhone);
         HideProgress();
         if (getImage.equals("")) {
@@ -193,6 +213,7 @@ public class ActivityEditUser extends AppCompatActivity {
 
             newProfile.setImageBitmap(bm);
             UploadPhoto(bm);
+            ShowProgress();
 //                bulk_image.setImageBitmap(cameraImage);
     }
 
@@ -204,6 +225,7 @@ public class ActivityEditUser extends AppCompatActivity {
         Log.e("BULK: bitmap:", thumbnail.toString());
         newProfile.setImageBitmap(thumbnail);
         UploadPhoto(thumbnail);
+        ShowProgress();
 
 //        bulk_image.setImageBitmap(thumbnail);
     }
@@ -222,7 +244,7 @@ public class ActivityEditUser extends AppCompatActivity {
                     }
                 } else {
                     // Permission Denied
-                    Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_SHORT)
+                    Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_LONG)
                             .show();
                 }
                 break;
@@ -235,6 +257,7 @@ public class ActivityEditUser extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
+            address = "Blk "+address_block.getText().toString()+"_#"+address_unit.getText().toString()+"_"+address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
             HttpReq req = new HttpReq();
             API api = new API();
 
@@ -244,7 +267,11 @@ public class ActivityEditUser extends AppCompatActivity {
                             + "&lastname=" + newLastName.getText().toString()
                             + "&email=" + newEmail.getText().toString()
                             + "&contactnumber=" + newPhone.getText().toString()
-                            + "&address=" + newAddress.getText().toString());
+                            + "&address=" + address
+                            + "&block=" + address_block.getText().toString()
+                            + "&unit=" + address_unit.getText().toString()
+                            + "&street=" + address_street.getText().toString()
+                            + "&postal=" + address_postal.getText().toString());
         }
 
         @Override
@@ -269,10 +296,10 @@ public class ActivityEditUser extends AppCompatActivity {
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.apply();
-                    Toast.makeText(ActivityEditUser.this, "Profile updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityEditUser.this, "Profile updated!", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -280,7 +307,6 @@ public class ActivityEditUser extends AppCompatActivity {
 
         }
     }
-
     public class EditProfilePic extends AsyncTask<String, Void, String> {
 
         @Override
@@ -296,6 +322,7 @@ public class ActivityEditUser extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            HideProgress();
             Log.e("EDIT PROFILE", String.valueOf(s));
             HideProgress();
             try {
@@ -347,7 +374,7 @@ public class ActivityEditUser extends AppCompatActivity {
         cancel.setEnabled(true);
         newFirstName.setEnabled(true);
         newLastName.setEnabled(true);
-        newAddress.setEnabled(true);
+
         newPhone.setEnabled(true);
         uploadImage.setEnabled(true);
         progressbar.setVisibility(View.GONE);
@@ -358,9 +385,28 @@ public class ActivityEditUser extends AppCompatActivity {
         cancel.setEnabled(false);
         newFirstName.setEnabled(false);
         newLastName.setEnabled(false);
-        newAddress.setEnabled(false);
+
         newPhone.setEnabled(false);
         uploadImage.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideSoftKeyBoard();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyBoard();
+    }
+
+    private void hideSoftKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        if (imm.isAcceptingText()) { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }

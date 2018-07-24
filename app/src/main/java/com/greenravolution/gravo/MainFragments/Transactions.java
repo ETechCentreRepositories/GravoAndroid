@@ -74,7 +74,7 @@ public class Transactions extends Fragment {
                     View fragmentTransaction;
                     String transactionStatus = transactionObject.getString("status_type");
 
-                    if (transactionStatus.equals("Transaction Complete")) {
+                    if (transactionStatus.equals("Transaction Complete")||transactionStatus.equals("Collected and Paid")) {
                         assert inflater != null;
                         fragmentTransaction = inflater.inflate(R.layout.transaction_page_items_complete, null);
                     } else {
@@ -99,7 +99,6 @@ public class Transactions extends Fragment {
                     tvDate.setText(fixedDate);
 
                     fragmentTransaction.setOnClickListener(v -> {
-                        //Toast.makeText(getActivity(),"clicked "+fragmentCalendar.getTag(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
                         int chosenID = Integer.parseInt(fragmentTransaction.getTag().toString());
                         Log.i("getTag", chosenID + "");

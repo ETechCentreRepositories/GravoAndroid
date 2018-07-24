@@ -88,7 +88,7 @@ public class Bulk extends Fragment {
     public void addData() {
         if (null != bulk_image.getDrawable()) {
             if (bulk_description.getText().toString().equals("")) {
-                Toast.makeText(getContext(), "Please describe your item", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please describe your item", Toast.LENGTH_LONG).show();
             } else {
                 Drawable getImage = bulk_image.getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) getImage).getBitmap();
@@ -98,7 +98,7 @@ public class Bulk extends Fragment {
 // convert bitmap to drawable
             }
         } else {
-            Toast.makeText(getContext(), "Please take a photo of the item you want to recycle", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please take a photo of the item you want to recycle", Toast.LENGTH_LONG).show();
         }
 
     }

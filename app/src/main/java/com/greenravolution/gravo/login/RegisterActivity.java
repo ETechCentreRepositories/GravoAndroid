@@ -19,6 +19,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -44,12 +45,14 @@ import java.net.URLEncoder;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText email, fname, lname, password, cfmpassword, number, address;
+    EditText email, fname, lname, password,number;
+    EditText address_unit,address_block,address_street,address_postal;
     ImageButton pwvisibility;
     CheckBox ctnc;
     RelativeLayout rl;
     TextView btnc;
     Toolbar toolbar;
+    String address;
     Button register;
     LinearLayout progressbar;
 
@@ -85,7 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         number = findViewById(R.id.number);
-        address = findViewById(R.id.address);
         register = findViewById(R.id.register);
 
         toolbar = findViewById(R.id.toolbar);
@@ -93,31 +95,46 @@ public class RegisterActivity extends AppCompatActivity {
         fname.setMaxWidth(fname.getWidth());
         lname.setMaxWidth(lname.getWidth());
         btnc = findViewById(R.id.btnc);
+
+        address_block = findViewById(R.id.address_blk);
+        address_unit = findViewById(R.id.address_unit);
+        address_street = findViewById(R.id.address_street);
+        address_postal = findViewById(R.id.address_postal);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         HideProgress();
 
         register.setOnClickListener(v -> {
+            address = "Blk "+address_block.getText().toString()+"_#"+address_unit.getText().toString()+"_"+address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
             if (checkNetworks()) {
-
                 if(ctnc.isChecked()){
                     if(email.getText().toString().equalsIgnoreCase("")||password.getText().toString().equalsIgnoreCase("")){
-                        Toast.makeText(this, "Please enter your details", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please enter your details", Toast.LENGTH_LONG).show();
                     }else{
-                        if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+                        if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()
+                                && !email.getText().toString().equalsIgnoreCase("")
+                                && !fname.getText().toString().equalsIgnoreCase("")
+                                && !lname.getText().toString().equalsIgnoreCase("")
+                                && !password.getText().toString().equalsIgnoreCase("")
+                                && !number.getText().toString().equalsIgnoreCase("")
+                                && !address_unit.getText().toString().equalsIgnoreCase("")
+                                && !address_block.getText().toString().equalsIgnoreCase("")
+                                && !address_street.getText().toString().equalsIgnoreCase("")
+                                && !address_postal.getText().toString().equalsIgnoreCase("")){
                             ShowProgress();
                             Register doregister = new Register();
                             doregister.execute(getlinkrequest.getRegister());
                         }else{
-                            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Please enter all your details", Toast.LENGTH_LONG).show();
                         }
                     }
                 }else{
-                    Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_SHORT).show();
-                }
+                    Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_LONG).show();
+                };
 
             } else {
-                Toast.makeText(RegisterActivity.this, "You are not connected to the internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "You are not connected to the internet", Toast.LENGTH_LONG).show();
             }
 
         });
@@ -159,7 +176,11 @@ public class RegisterActivity extends AppCompatActivity {
                             + "&email=" + email.getText().toString()
                             + "&password=" + password.getText().toString()
                             + "&contactnumber=" + number.getText().toString()
-                            + "&address=" + address.getText().toString());
+                            + "&address=" + address
+                            + "&block=" + address_block.getText().toString()
+                            + "&unit=" + address_unit.getText().toString()
+                            + "&street=" + address_street.getText().toString()
+                            + "&postal=" + address_postal.getText().toString());
 
             try{
                 JSONObject resultObject = new JSONObject(results);
@@ -212,8 +233,13 @@ public class RegisterActivity extends AppCompatActivity {
                     editor.putString("user_full_name", user.getString("full_name"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
+                    editor.putString("user_address_block", user.getString("block"));
+                    editor.putString("user_address_unit", user.getString("unit"));
+                    editor.putString("user_address_street", user.getString("street"));
+                    editor.putString("user_address_postal", user.getString("postal"));
                     editor.putInt("user_total_points", user.getInt("total_points"));
                     editor.putString("user_rank", user.getString("rank_name"));
+                    editor.putString("login_type", "normal");
                     editor.apply();
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     finish();
@@ -240,12 +266,17 @@ public class RegisterActivity extends AppCompatActivity {
         password.setEnabled(true);
         pwvisibility.setEnabled(true);
         number.setEnabled(true);
-        address.setEnabled(true);
         register.setEnabled(true);
         ctnc.setEnabled(true);
         fname.setEnabled(true);
         lname.setEnabled(true);
         btnc.setEnabled(true);
+
+        address_block.setEnabled(true);
+        address_unit.setEnabled(true);
+        address_street.setEnabled(true);
+        address_postal.setEnabled(true);
+
         progressbar.setVisibility(View.GONE);
     }
     public void ShowProgress() {
@@ -255,13 +286,38 @@ public class RegisterActivity extends AppCompatActivity {
         password.setEnabled(false);
         pwvisibility.setEnabled(false);
         number.setEnabled(false);
-        address.setEnabled(false);
+
         register.setEnabled(false);
         ctnc.setEnabled(false);
         fname.setEnabled(false);
         lname.setEnabled(false);
         btnc.setEnabled(false);
+
+        address_block.setEnabled(false);
+        address_unit.setEnabled(false);
+        address_street.setEnabled(false);
+        address_postal.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideSoftKeyBoard();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyBoard();
+    }
+
+    private void hideSoftKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        if(imm.isAcceptingText()) { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
 }

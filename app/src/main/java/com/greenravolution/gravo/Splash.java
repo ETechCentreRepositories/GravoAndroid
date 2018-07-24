@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.greenravolution.gravo.functions.GetAsyncRequest;
 import com.greenravolution.gravo.functions.HttpReq;
+import com.greenravolution.gravo.login.FacebookAddDetailsActivity;
 import com.greenravolution.gravo.login.Login;
 
 import org.json.JSONArray;
@@ -127,10 +128,22 @@ public class Splash extends AppCompatActivity {
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
+                        if(user.getString("password").equalsIgnoreCase("facebooklogin")){
+                            if(user.getString("first_name").equalsIgnoreCase("")||user.getString("last_name").equalsIgnoreCase("")){
+                                Intent i = new Intent(Splash.this, FacebookAddDetailsActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(Splash.this, MainActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }else{
+                            Intent i = new Intent(Splash.this, MainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
 
-                        Intent i = new Intent(Splash.this, MainActivity.class);
-                        startActivity(i);
-                        finish();
                     }else if (status == 201){
                         Log.e("Get User Status", String.valueOf(status));
                         SharedPreferences.Editor editor = sessionManager.edit();
@@ -149,10 +162,23 @@ public class Splash extends AppCompatActivity {
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
+                        if(user.getString("password").equalsIgnoreCase("facebooklogin")){
+                            if(user.getString("contact_number").equalsIgnoreCase("")||user.getString("address").equalsIgnoreCase("")){
+                                Intent i = new Intent(Splash.this, FacebookAddDetailsActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(Splash.this, MainActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }else{
+                            Intent i = new Intent(Splash.this, MainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
 
-                        Intent i = new Intent(Splash.this, MainActivity.class);
-                        startActivity(i);
-                        finish();
+
                     }else if (status == 404) {
                         Intent i = new Intent(Splash.this, Login.class);
                         Log.w("SESSION_ID:", "not logged in. ID ->" + sessionManager.getString(SESSION_ID, null));

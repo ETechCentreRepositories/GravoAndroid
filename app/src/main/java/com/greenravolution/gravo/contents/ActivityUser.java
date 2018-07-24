@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginManager;
 import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.login.Login;
@@ -48,16 +49,18 @@ public class ActivityUser extends AppCompatActivity {
         name.setText(getName);
         myName.setText(getName);
         myEmail.setText(getEmail);
-        myAddress.setText(getAddress);
-
+        if(getAddress.equalsIgnoreCase("")){
+            myAddress.setText("");
+        }else{
+            String[] addressarray = getAddress.split("_");
+            Log.e("address",addressarray[0]+" "+addressarray[1]+" "+addressarray[2]+" "+addressarray[3]);
+            myAddress.setText(addressarray[0]+" "+addressarray[1]+" "+addressarray[2]+" "+addressarray[3]);
+        }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_user);
-
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         profile_img = findViewById(R.id.profile_img);
         name = findViewById(R.id.name);
@@ -65,7 +68,6 @@ public class ActivityUser extends AppCompatActivity {
         myEmail = findViewById(R.id.myEmail);
         myAddress = findViewById(R.id.myAddress);
         profile_img = findViewById(R.id.profile_img);
-
         getName = sessionManager.getString("user_full_name","");
         getEmail = sessionManager.getString("user_email", "");
         getAddress = sessionManager.getString("user_address", "");
@@ -97,6 +99,9 @@ public class ActivityUser extends AppCompatActivity {
             Intent in = new Intent(ActivityUser.this,Login.class);
             in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(in);
+            if(sessionManager.getString("login_type","").equals("facebook")){
+                LoginManager.getInstance().logOut();
+            }
             finish();
         });
     }

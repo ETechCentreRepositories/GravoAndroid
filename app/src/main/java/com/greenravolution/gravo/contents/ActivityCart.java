@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -90,16 +91,13 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             } else if (status == 200) {
                 Log.e("CART DETAILS: ", message);
                 JSONArray cartDetailsArray = result.getJSONArray("result");
-
                 no_of_items = cartDetailsArray.length();
                 tvNoOfItems = findViewById(R.id.no_of_items);
                 tvNoOfItems.setText(no_of_items + " item(s)");
-
                 TextView tvTotalPrice = findViewById(R.id.totalPrice);
                 double totalPrice = 0.0;
                 double totalWeight = 0.0;
                 double totalPiece = 0.0;
-
                 for (int i = 0; i < cartDetailsArray.length(); i++) {
                     JSONObject cartDetails = cartDetailsArray.getJSONObject(i);
                     Log.e("cartDetails", cartDetails.toString());
@@ -114,14 +112,10 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     } else {
                         Log.e("price", itemTotalPrice + "");
                         itemRate = "";
-
                         totalWeight = totalWeight + itemTotalWeight;
                         totalPrice = totalPrice + itemTotalPrice;
                     }
-
                     //totalPrice = totalPrice + itemTotalPrice;
-
-
                     GetAsyncRequest.OnAsyncResult getCategoryById = (categoryResultCode, categoryMessage) -> {
                         try {
                             JSONObject results = new JSONObject(categoryMessage);
@@ -167,6 +161,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         }
     };
     private int mYear, mMonth, mDay;
+
     public View initView(String[] itemArray) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -276,7 +271,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     no_of_items = no_of_items - 1;
                     tvNoOfItems = findViewById(R.id.no_of_items);
                     tvNoOfItems.setText(no_of_items + " item(s)");
-                    Toast.makeText(ActivityCart.this, "Deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityCart.this, "Deleted", Toast.LENGTH_LONG).show();
                 });
                 dialog.setNegativeButton("No", (dialogInterface, i) -> {
                     Toast.makeText(getApplicationContext(), "Not deleted", Toast.LENGTH_LONG).show();
@@ -291,9 +286,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 if (getWeight <= 1) {
                     Log.i("Cart : ", "item is already 0");
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                        Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -308,7 +303,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     Log.e("TYPE", itemArray[1].split(" ")[0]);
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
                         if (Double.parseDouble(getTotalPiece) == 1.0) {
-                            Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_LONG).show();
                         } else {
                             getNewTotalPiece = String.valueOf(Double.parseDouble(getTotalPiece) - 1.0);
                             String newStringPieces = getTotalWeight + "KG, " + getNewTotalPiece + " Piece(s)";
@@ -318,7 +313,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                     } else {
                         if (Double.parseDouble(getTotalWeight) == 1.0) {
-                            Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_LONG).show();
                         } else {
                             getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) - 1.0);
                             String newStringPieces = getNewTotalWeight + "KG, " + getTotalPiece + " Piece(s)";
@@ -355,9 +350,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 if (getWeight >= 99) {
                     Log.i("Cart : ", "item is already 0");
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                        Toast.makeText(ActivityCart.this, "Cannot go above 99 pieces", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go above 99 pieces", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ActivityCart.this, "Cannot go above 99KG", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go above 99KG", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -416,6 +411,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         return null;
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -442,7 +438,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         tvTotalPrice.setText(R.string.defaultprice);
         tvTotalWeight.setText(R.string.defaultweight);
         etPhone.setText(preferences.getString("user_contact", ""));
-        etAddress.setText(preferences.getString("user_address", ""));
+        String[] addressarray = preferences.getString("user_address", "").split("_");
+        Log.e("address", addressarray[0] + " " + addressarray[1] + " " + addressarray[2] + " " + addressarray[3]);
+        etAddress.setText(addressarray[0] + " " + addressarray[1] + " " + addressarray[2] + " " + addressarray[3]);
         etAddress.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         etAddress.setOnItemClickListener(ActivityCart.this);
         cash = findViewById(R.id.cash);
@@ -456,9 +454,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             Log.e("price", userTotalPrice);
             Log.i("validation", scheduleDate.getText().toString() + etPhone.getText().toString() + etAddress.getText().toString());
             if (etPhone.getText().toString().equals("") || etAddress.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
-                Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Missing fields", Toast.LENGTH_LONG).show();
             } else if (no_of_items == 0) {
-                Toast.makeText(this, "No items in cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
             } else {
                 int status_id = 1;
                 String[] getdatesplit = scheduleDate.getText().toString().split("-");
@@ -486,7 +484,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", newdate));
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_LONG).show();
                     }
                 };
                 addTransaction.setOnResultListener(getTransactionId);
@@ -497,6 +495,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         scheduleDate = findViewById(R.id.scheduleDate);
         scheduleDate.setOnClickListener(v -> getScheduleDate());
     }
+
     public void getScheduleDate() {
         // Get Current Date
         final Calendar c = Calendar.getInstance();
@@ -522,6 +521,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
         datePickerDialog.show();
     }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (v.getId() == R.id.btnPlus) {
@@ -529,6 +529,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         }
         return false;
     }
+
     public void setAlarmForPickUpDay(Calendar calAlarm) {
         Log.i("calAlarm Status", calAlarm.toString());
         Intent iReminder = new Intent(this, PickUpDayReminder.class);
@@ -539,9 +540,11 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         //am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
         am.set(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
     }
+
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         String str = (String) adapterView.getItemAtPosition(position);
     }
+
     public static ArrayList autocomplete(String input) {
         ArrayList resultList = null;
 
@@ -553,11 +556,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             sb.append("&components=country:sg");
             sb.append("&input=");
             sb.append(URLEncoder.encode(input, "utf8"));
-
             URL url = new URL(sb.toString());
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
-
             // Load the results into a StringBuilder
             int read;
             char[] buff = new char[1024];
@@ -566,10 +567,10 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             }
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Error processing Places API URL", e);
-            return resultList;
+            return null;
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error connecting to Places API", e);
-            return resultList;
+            return null;
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -593,26 +594,25 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
         return resultList;
     }
+
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
+
     class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
         private ArrayList resultList;
 
         public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
             super(context, textViewResourceId);
         }
-
         @Override
         public int getCount() {
             return resultList.size();
         }
-
         @Override
         public String getItem(int index) {
             return String.valueOf(resultList.get(index));
         }
-
         @Override
         public Filter getFilter() {
             Filter filter = new Filter() {
@@ -629,7 +629,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     }
                     return filterResults;
                 }
-
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     if (results != null && results.count > 0) {
@@ -640,6 +639,22 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 }
             };
             return filter;
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        hideSoftKeyBoard();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSoftKeyBoard();
+    }
+    private void hideSoftKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm.isAcceptingText()) { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 }
