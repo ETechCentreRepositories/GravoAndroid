@@ -23,6 +23,12 @@
         android:paddingBottom="3dp"
         android:textAlignment="center">
 
+        <ImageView
+            android:id="@+id/btnProfile"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_user"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

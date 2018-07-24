@@ -162,10 +162,14 @@ public class LoginActivity extends AppCompatActivity {
             progressDrawable.stop();
 
             try {
-                String userName = "";
+                String userId = "";
+                String userFirstName = "";
+                String userLastName = "";
                 String userEmail = "";
                 String userNumber = "";
                 String userAddress = "";
+                String userLicenseNo = "";
+                String userVehicleNo = "";
 
                 JSONObject loginDetails = new JSONObject(s);
                 int status = loginDetails.getInt("status");
@@ -174,7 +178,9 @@ public class LoginActivity extends AppCompatActivity {
                     JSONArray getUser = loginDetails.getJSONArray("users");
                     for (int i = 0; i < getUser.length(); i++) {
                         JSONObject user = getUser.getJSONObject(i);
-                        userName = user.getString("first_name");
+                        userId = String.valueOf(user.getInt("id"));
+                        userFirstName = user.getString("first_name");
+                        userLastName = user.getString("last_name");
                         userEmail = user.getString("email");
 
 
@@ -183,23 +189,31 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             userAddress = null;
                         }
+
                         userNumber = user.getString("phone");
+                        userLicenseNo = user.getString("liscence_number");
+                        userVehicleNo = user.getString("vehicle_number");
+
                         userstatus = user.getInt("status");
                     }
                     if (userstatus == 1) {
                         re.setText("");
-                        Log.e("User Details", "Name: " + userName + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
+                        Log.e("User Details", "Name: " + userFirstName + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
                         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, String.valueOf(status));
-                        editor.putString("name", userName);
+                        editor.putString("id",userId);
+                        editor.putString("firstname", userFirstName);
+                        editor.putString("lastname", userLastName);
                         editor.putString("email", userEmail);
                         editor.putString("number", userNumber);
                         editor.putString("address", userAddress);
+                        editor.putString("license",userLicenseNo);
+                        editor.putString("vehicle",userVehicleNo);
 
                         editor.apply();
                         Intent itmchk = new Intent(LoginActivity.this, MainActivity.class);
-                        itmchk.putExtra("message", "Welcome Back " + userName + "!");
+                        itmchk.putExtra("message", "Welcome Back " + userFirstName + "!");
                         Intent ib = new Intent();
                         ib.putExtra("type", "1");
                         setResult(1, ib);

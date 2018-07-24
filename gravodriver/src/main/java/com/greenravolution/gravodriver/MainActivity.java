@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sessionManager;
     LinearLayout list;
     android.support.v7.widget.Toolbar toolbar;
+    ImageView btnProfile;
 
     CardView cardView;
     LinearLayout llotw, llarr, llContent;
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnProfile = findViewById(R.id.btnProfile);
+
         llProgress = findViewById(R.id.llProgress);
         progressbar = findViewById(R.id.progressBar);
         list = findViewById(R.id.list);
@@ -139,6 +143,14 @@ public class MainActivity extends AppCompatActivity {
         asyncRequest.execute("http://ehostingcentre.com/gravo/getCategories.php?type=all");
 
         refreshLayout.setOnRefreshListener(() -> getTransactions());
+
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, profile.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -316,15 +328,19 @@ public class MainActivity extends AppCompatActivity {
         botw = view.findViewById(R.id.botw);
         barr = view.findViewById(R.id.barr);
         bmap = view.findViewById(R.id.bmap);
-        llarr = view.findViewById(R.id.llarr);
-        llotw = view.findViewById(R.id.llotw);
+        //llarr = view.findViewById(R.id.llarr);
+        //llotw = view.findViewById(R.id.llotw);
         llContent = view.findViewById(R.id.llContent);
 
 
         if (order.getStatus_id() == 4) {
 
-            llotw.setVisibility(View.GONE);
-            llarr.setVisibility(View.GONE);
+            //llotw.setVisibility(View.GONE);
+            //llarr.setVisibility(View.GONE);
+            botw.setVisibility(View.GONE);
+            barr.setVisibility(View.GONE);
+//            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round));
+//            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
             String title = "Pickup " + String.valueOf(position) + " (Collected)";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
@@ -338,9 +354,15 @@ public class MainActivity extends AppCompatActivity {
             llContent.setBackgroundColor(getResources().getColor(R.color.grey));
 
         } else if (order.getStatus_id() == 3) {
-
-            llotw.setVisibility(View.GONE);
-            llarr.setVisibility(View.VISIBLE);
+//
+//            llotw.setVisibility(View.GONE);
+//            llarr.setVisibility(View.VISIBLE);
+            //botw.setVisibility(View.GONE);
+            //barr.setVisibility(View.VISIBLE);
+            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+            botw.setClickable(false);
+            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+            barr.setClickable(true);
             String title = "Pickup " + String.valueOf(position) + " (Arrived)";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
@@ -361,13 +383,17 @@ public class MainActivity extends AppCompatActivity {
             tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
         }
 
-//            holder.botw.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    holder.llarr.setVisibility(View.VISIBLE);
-//                    holder.llotw.setVisibility(View.GONE);
-//                }
-//            });
+        botw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //botw.setVisibility(View.GONE);
+               // barr.setVisibility(View.VISIBLE);
+                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+                botw.setClickable(false);
+                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+                barr.setClickable(true);
+            }
+        });
 
         barr.setOnClickListener(v -> {
             /// TODO: 14/3/2018 intent to transaction page add in details

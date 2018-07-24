@@ -68,29 +68,6 @@
                 android:layout_marginTop="10dp">
 
                 <LinearLayout
-                    android:id="@+id/llotw"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="1dp"
-                    android:gravity="end">
-
-                    <Button
-                        android:id="@+id/botw"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="2.5dp"
-                        android:layout_marginEnd="1dp"
-                        android:background="@drawable/btn_brand_green_round"
-                        android:padding="5dp"
-                        android:text="On The Way"
-                        android:textColor="@color/white"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/llarr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,10 +77,24 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/botw"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="2.5dp"
+                        android:layout_marginEnd="1dp"
+                        android:background="@drawable/btn_brand_pink_round"
+                        android:padding="5dp"
+                        android:text="On The Way"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"  />
+
+                    <Button
                         android:id="@+id/bmap"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
                         android:layout_margin="2.5dp"
                         android:layout_marginEnd="1dp"
@@ -111,21 +102,23 @@
                         android:padding="5dp"
                         android:text="Map"
                         android:textColor="@color/white"
-                        android:textSize="10sp" />
+                        android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/barr"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
                         android:layout_margin="2.5dp"
                         android:layout_marginEnd="1dp"
-                        android:background="@drawable/btn_brand_green_round"
+                        android:background="@drawable/btn_brand_green_round_disabled"
                         android:padding="5dp"
                         android:text="Arrived"
                         android:textColor="@color/white"
-                        android:textSize="10sp" />
+                        android:textSize="14sp"
+                        android:clickable="false"/>
+
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

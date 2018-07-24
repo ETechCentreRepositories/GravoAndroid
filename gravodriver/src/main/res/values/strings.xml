@@ -18,4 +18,8 @@ Place your fingertip on the Home button to verify your identity
     <string name="not_registered">You have not registered as a driver!</string>
     <string name="total_estimated_price_label">TOTAL PRICE</string>
     <string name="total_weight_label">TOTAL WEIGHT</string>
+    <string name="password">Password</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="email">Email</string>
+    <string name="address">Address</string>
 </resources>
