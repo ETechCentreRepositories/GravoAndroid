@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 Login login = new Login();
                 login.execute(getlinkrequest.getLogin(), email.getText().toString(), password.getText().toString());
             } else {
-                Toast.makeText(LoginActivity.this, "You are not connected to the internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "You are not connected to the internet", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -212,11 +212,11 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (status == 405) {
                     String logindetail = result.getString("users");
                     if (logindetail.equals("facebooklogin")) {
-                        Toast.makeText(LoginActivity.this, "Please Login via Facebook", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Please Login via Facebook", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     String message = result.getString("message");
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -385,7 +385,10 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
                     AddAchievements addachievements = new AddAchievements();
                     addachievements.execute(String.valueOf(user.getInt("id")));
-                } else {
+                } else if(status == 404) {
+                    Toast.makeText(LoginActivity.this, "Your account is not linked to facebook, please login manually!", Toast.LENGTH_LONG).show();
+                    LoginManager.getInstance().logOut();
+                }else{
                     Toast.makeText(LoginActivity.this, "An unexpected error has occured", Toast.LENGTH_LONG).show();
                     LoginManager.getInstance().logOut();
                 }
@@ -463,7 +466,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(LoginActivity.this, FacebookAddDetailsActivity.class));
                     finish();
                 } else if (status == 400) {
-                    Toast.makeText(LoginActivity.this, "Unable to create your achievements", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Unable to create your achievements", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(LoginActivity.this, "An unexpected error has occurred. please try again in a few minutes!", Toast.LENGTH_LONG).show();
                 }

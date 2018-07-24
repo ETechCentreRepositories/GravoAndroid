@@ -99,7 +99,6 @@ public class Transactions extends Fragment {
                     tvDate.setText(fixedDate);
 
                     fragmentTransaction.setOnClickListener(v -> {
-                        //Toast.makeText(getActivity(),"clicked "+fragmentCalendar.getTag(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
                         int chosenID = Integer.parseInt(fragmentTransaction.getTag().toString());
                         Log.i("getTag", chosenID + "");

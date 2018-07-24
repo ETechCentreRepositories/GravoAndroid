@@ -244,7 +244,7 @@ public class ActivityEditUser extends AppCompatActivity {
                     }
                 } else {
                     // Permission Denied
-                    Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_SHORT)
+                    Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_LONG)
                             .show();
                 }
                 break;
@@ -296,10 +296,10 @@ public class ActivityEditUser extends AppCompatActivity {
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.apply();
-                    Toast.makeText(ActivityEditUser.this, "Profile updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityEditUser.this, "Profile updated!", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityEditUser.this, "Unable to update details!", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

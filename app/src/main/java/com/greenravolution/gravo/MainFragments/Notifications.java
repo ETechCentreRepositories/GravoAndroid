@@ -56,7 +56,7 @@ public class Notifications extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Remove item from backing list here
                 if(swipeDir == ItemTouchHelper.ACTION_STATE_SWIPE){
-                    Toast.makeText(getContext(), "Swiped", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Swiped", Toast.LENGTH_LONG).show();
                     adapter.notifyDataSetChanged();
                 }
             }

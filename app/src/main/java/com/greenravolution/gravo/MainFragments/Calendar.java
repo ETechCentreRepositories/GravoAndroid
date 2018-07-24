@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.contents.ActivitySelectedTransaction;

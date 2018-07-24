@@ -73,7 +73,7 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
                     UpdateDetails updateDetails = new UpdateDetails();
                     updateDetails.execute();
                 }else{
-                    Toast.makeText(FacebookAddDetailsActivity.this, "Please fill in all your details!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FacebookAddDetailsActivity.this, "Please fill in all your details!", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -133,11 +133,11 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
                     editor.apply();
-                    Toast.makeText(FacebookAddDetailsActivity.this, "Profile updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FacebookAddDetailsActivity.this, "Profile updated!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(FacebookAddDetailsActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     finish();
                 } else {
-                    Toast.makeText(FacebookAddDetailsActivity.this, "Unable to update details!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FacebookAddDetailsActivity.this, "Unable to update details!", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

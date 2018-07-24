@@ -271,7 +271,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     no_of_items = no_of_items - 1;
                     tvNoOfItems = findViewById(R.id.no_of_items);
                     tvNoOfItems.setText(no_of_items + " item(s)");
-                    Toast.makeText(ActivityCart.this, "Deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityCart.this, "Deleted", Toast.LENGTH_LONG).show();
                 });
                 dialog.setNegativeButton("No", (dialogInterface, i) -> {
                     Toast.makeText(getApplicationContext(), "Not deleted", Toast.LENGTH_LONG).show();
@@ -286,9 +286,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 if (getWeight <= 1) {
                     Log.i("Cart : ", "item is already 0");
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                        Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -303,7 +303,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     Log.e("TYPE", itemArray[1].split(" ")[0]);
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
                         if (Double.parseDouble(getTotalPiece) == 1.0) {
-                            Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityCart.this, "Cannot go below 1 piece", Toast.LENGTH_LONG).show();
                         } else {
                             getNewTotalPiece = String.valueOf(Double.parseDouble(getTotalPiece) - 1.0);
                             String newStringPieces = getTotalWeight + "KG, " + getNewTotalPiece + " Piece(s)";
@@ -313,7 +313,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                     } else {
                         if (Double.parseDouble(getTotalWeight) == 1.0) {
-                            Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ActivityCart.this, "Cannot go below 1KG", Toast.LENGTH_LONG).show();
                         } else {
                             getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) - 1.0);
                             String newStringPieces = getNewTotalWeight + "KG, " + getTotalPiece + " Piece(s)";
@@ -350,9 +350,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 if (getWeight >= 99) {
                     Log.i("Cart : ", "item is already 0");
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                        Toast.makeText(ActivityCart.this, "Cannot go above 99 pieces", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go above 99 pieces", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ActivityCart.this, "Cannot go above 99KG", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go above 99KG", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -454,9 +454,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             Log.e("price", userTotalPrice);
             Log.i("validation", scheduleDate.getText().toString() + etPhone.getText().toString() + etAddress.getText().toString());
             if (etPhone.getText().toString().equals("") || etAddress.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
-                Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Missing fields", Toast.LENGTH_LONG).show();
             } else if (no_of_items == 0) {
-                Toast.makeText(this, "No items in cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
             } else {
                 int status_id = 1;
                 String[] getdatesplit = scheduleDate.getText().toString().split("-");
@@ -484,7 +484,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", newdate));
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_LONG).show();
                     }
                 };
                 addTransaction.setOnResultListener(getTransactionId);

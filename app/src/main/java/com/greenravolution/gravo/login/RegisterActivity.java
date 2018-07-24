@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (checkNetworks()) {
                 if(ctnc.isChecked()){
                     if(email.getText().toString().equalsIgnoreCase("")||password.getText().toString().equalsIgnoreCase("")){
-                        Toast.makeText(this, "Please enter your details", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please enter your details", Toast.LENGTH_LONG).show();
                     }else{
                         if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()
                                 && !email.getText().toString().equalsIgnoreCase("")
@@ -126,15 +126,15 @@ public class RegisterActivity extends AppCompatActivity {
                             Register doregister = new Register();
                             doregister.execute(getlinkrequest.getRegister());
                         }else{
-                            Toast.makeText(this, "Please enter all your details", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Please enter all your details", Toast.LENGTH_LONG).show();
                         }
                     }
                 }else{
-                    Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_LONG).show();
                 };
 
             } else {
-                Toast.makeText(RegisterActivity.this, "You are not connected to the internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "You are not connected to the internet", Toast.LENGTH_LONG).show();
             }
 
         });
