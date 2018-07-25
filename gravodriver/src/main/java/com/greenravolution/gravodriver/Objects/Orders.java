@@ -18,12 +18,13 @@ public class Orders {
     private String collecter_name;
     private String collector_number;
 
-    public Orders(int id, String tc, String ad, int uid, int stid) {
+    public Orders(int id, String tc, String ad, int uid, int stid, String cName) {
         this.id = id;
         this.transaction_code = tc;
         this.address = ad;
         this.user_id = uid;
         this.status_id = stid;
+        this.collecter_name = cName;
     }
 
     public int getId() {

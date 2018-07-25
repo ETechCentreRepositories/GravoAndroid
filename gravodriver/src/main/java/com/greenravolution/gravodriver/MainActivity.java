@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     CardView cardView;
     LinearLayout llotw, llarr, llContent;
     Button botw, barr, bmap;
-    TextView tt, ta, tpc, tst;
+    TextView tt, ta, tpc, tst,tName;
 
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
@@ -93,13 +93,14 @@ public class MainActivity extends AppCompatActivity {
                     int id = detail.getInt("id");
                     String tc = detail.getString("transaction_id_key");
                     String ad = detail.getString("collection_address");
+                    String cName = detail.getString("collection_user");
                     int uid = detail.getInt("recycler_id");
                     int stid = detail.getInt("status_id");
                     String statustype = detail.getString("status_type");
                     Double totalprice = detail.getDouble("total_price");
 
                     price = price + totalprice;
-                    Orders neworder = new Orders(id, tc, ad, uid, stid);
+                    Orders neworder = new Orders(id, tc, ad, uid, stid,cName);
                     list.addView(initview(neworder, i + 1));
 
                 }
@@ -239,6 +240,51 @@ public class MainActivity extends AppCompatActivity {
         asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=all");
     }
 
+    public static class updateotw extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Log.e("id", strings[0]);
+            String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatusotw.php", "transactionid=" + strings[0]);
+            Log.e("reqResult", reqResult);
+            try {
+                JSONObject resultObject = new JSONObject(reqResult);
+                if (resultObject.getInt("status") == 200) {
+                    JSONArray resultArray = resultObject.getJSONArray("result");
+                    JSONObject transactionObject = resultArray.getJSONObject(0);
+                    String recyclerID = transactionObject.getString("recycler_id");
+
+                    String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID);
+                    Log.e("reqNotification", reqNotification);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return reqResult;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            try {
+                JSONObject object = new JSONObject(s);
+                int status = object.getInt("status");
+                if (status == 200) {
+                    JSONObject items = object.getJSONArray("result").getJSONObject(0);
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     public static class updatetransaction extends AsyncTask<String, Void, String> {
 
         @Override
@@ -321,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
         View view = inflater.inflate(R.layout.schedule_item, null);
 
         cardView = view.findViewById(R.id.cardView);
+        tName = view.findViewById(R.id.pickupName);
         tt = view.findViewById(R.id.pickupTitle);
         ta = view.findViewById(R.id.pickupAddress);
         tpc = view.findViewById(R.id.pickupPostal);
@@ -341,6 +388,8 @@ public class MainActivity extends AppCompatActivity {
             barr.setVisibility(View.GONE);
 //            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round));
 //            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+            tName.setTextColor(getResources().getColor(R.color.white));
+            tName.setText(order.getCollecter_name());
             String title = "Pickup " + String.valueOf(position) + " (Collected)";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
@@ -361,8 +410,11 @@ public class MainActivity extends AppCompatActivity {
             //barr.setVisibility(View.VISIBLE);
             botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
             botw.setClickable(false);
-            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-            barr.setClickable(true);
+            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round_disabled));
+            barr.setClickable(false);
+
+            tName.setTextColor(getResources().getColor(R.color.white));
+            tName.setText(order.getCollecter_name());
             String title = "Pickup " + String.valueOf(position) + " (Arrived)";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
@@ -375,8 +427,28 @@ public class MainActivity extends AppCompatActivity {
             cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
             llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
+        } else if (order.getStatus_id() == 2){
+            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+            botw.setClickable(false);
+            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+            barr.setClickable(true);
+
+            tName.setTextColor(getResources().getColor(R.color.white));
+            tName.setText(order.getCollecter_name());
+            String title = "Pickup " + String.valueOf(position) + " (On The Way)";
+            tt.setTextColor(getResources().getColor(R.color.white));
+            tt.setText(title);
+            ta.setText("Address: " + order.getAddress());
+            ta.setTextColor(getResources().getColor(R.color.white));
+            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+            tpc.setTextColor(getResources().getColor(R.color.white));
+//                holder.tst.setText(String.valueOf(order.getSession_id()));
+//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
         } else {
             //normal pickup
+            tName.setText(order.getCollecter_name());
             String title = "Pickup " + String.valueOf(position);
             tt.setText(title);
             ta.setText(String.format("Address: %s", order.getAddress()));
@@ -388,10 +460,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //botw.setVisibility(View.GONE);
                // barr.setVisibility(View.VISIBLE);
-                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-                botw.setClickable(false);
-                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-                barr.setClickable(true);
+//                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+//                botw.setClickable(false);
+//                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+//                barr.setClickable(true);
+                Orders orders = order;
+                MainActivity.updateotw updateotw = new MainActivity.updateotw();
+                updateotw.execute(String.valueOf(orders.getId()));
+                Toast.makeText(MainActivity.this,"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
             }
         });
 

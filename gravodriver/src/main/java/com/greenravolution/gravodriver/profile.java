@@ -21,8 +21,8 @@ public class profile extends AppCompatActivity {
 
 
     CircleImageView profile_img;
-    TextView name, myEmail, myName, myAddress, myNumber, myLicenseNo, myVehicleNo;
-    String getName, getImage, getAddress, getEmail, getNumber, getLicenseNo, getVehicleNo;
+    TextView name, myEmail, myName, myNumber,myAddress, myBlock, myStreet, myUnit, myPostal, myLicenseNo, myVehicleNo;
+    String getName, getImage, getAddress, getEmail, getNumber, getBlock, getStreet, getUnit, getPostal, getLicenseNo, getVehicleNo;
     public static final String SESSION = "login_status";
     public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
@@ -36,8 +36,12 @@ public class profile extends AppCompatActivity {
         profile_img = findViewById(R.id.profile_img);
         name = findViewById(R.id.name);
         myName = findViewById(R.id.myName);
-        myEmail = findViewById(R.id.myEmail);
         myAddress = findViewById(R.id.myAddress);
+        //myUnit = findViewById(R.id.myUnit);
+       // myPostal = findViewById(R.id.myPostal);
+        //myStreet = findViewById(R.id.myStreet);
+        myEmail = findViewById(R.id.myEmail);
+        //myBlock = findViewById(R.id.myBlock);
         myNumber = findViewById(R.id.myNumber);
         myLicenseNo = findViewById(R.id.myLicenseNo);
         myVehicleNo = findViewById(R.id.myVehicleNo);
@@ -45,7 +49,11 @@ public class profile extends AppCompatActivity {
 
         getName = sessionManager.getString("firstname","") + " " + sessionManager.getString("lastname","");
         getEmail = sessionManager.getString("email", "");
-        getAddress = sessionManager.getString("address", "");
+        //getAddress = sessionManager.getString("address", "");
+        getUnit = sessionManager.getString("unit", "");
+        getStreet = sessionManager.getString("street", "");
+        getPostal = sessionManager.getString("postal", "");
+        getBlock = sessionManager.getString("block", "");
         getNumber = sessionManager.getString("number","");
         getLicenseNo = sessionManager.getString("license","");
         getVehicleNo = sessionManager.getString("vehicle","");
@@ -57,7 +65,12 @@ public class profile extends AppCompatActivity {
         myNumber.setText(getNumber);
         myLicenseNo.setText(getLicenseNo);
         myVehicleNo.setText(getVehicleNo);
-        myAddress.setText(getAddress);
+        myAddress.setText("Block " + getBlock + " " + getUnit + " " + getStreet + " Singapore " + getPostal);
+
+//        myBlock.setText(getBlock);
+//        myUnit.setText(getUnit);
+//        myPostal.setText(getPostal);
+//        myStreet.setText(getStreet);
 
         if(getImage.equals("")){
             profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
@@ -75,7 +88,11 @@ public class profile extends AppCompatActivity {
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         getName = sessionManager.getString("firstname","") + " " + sessionManager.getString("lastname","");
         getEmail = sessionManager.getString("email", "");
-        getAddress = sessionManager.getString("address", "");
+        getBlock = sessionManager.getString("block", "");
+        getPostal = sessionManager.getString("postal", "");
+        getStreet = sessionManager.getString("street", "");
+        getUnit = sessionManager.getString("unit", "");
+        //getAddress = sessionManager.getString("address", "");
         getNumber = sessionManager.getString("number","");
         getLicenseNo = sessionManager.getString("license","");
         getVehicleNo = sessionManager.getString("vehicle","");
@@ -91,7 +108,12 @@ public class profile extends AppCompatActivity {
         myNumber.setText(getNumber);
         myLicenseNo.setText(getLicenseNo);
         myVehicleNo.setText(getVehicleNo);
-        myAddress.setText(getAddress);
+        myAddress.setText("Block " + getBlock + " " + getUnit + " " + getStreet + " Singapore " + getPostal);
+//        myBlock.setText(getBlock);
+//        myStreet.setText(getStreet);
+//        myPostal.setText(getPostal);
+//        myUnit.setText(getUnit);
+        //myAddress.setText(getAddress);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -214,9 +214,45 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="15dp"
                             android:layout_marginTop="15dp"
-                            android:text="Blk 234 Tampines street 22"
                             android:textColor="@color/black"
-                            android:textSize="15sp" />
+                            android:text="Address Here"
+                            android:textSize="15sp"/>
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/myBlock"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="15dp"-->
+                            <!--android:layout_marginTop="15dp"-->
+                            <!--android:textColor="@color/black"-->
+                            <!--android:textSize="15sp"/>-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/myUnit"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="15dp"-->
+                            <!--android:layout_marginTop="15dp"-->
+                            <!--android:textColor="@color/black"-->
+                            <!--android:textSize="15sp" />-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/myStreet"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="15dp"-->
+                            <!--android:layout_marginTop="15dp"-->
+                            <!--android:textColor="@color/black"-->
+                            <!--android:textSize="15sp" />-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/myPostal"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="15dp"-->
+                            <!--android:layout_marginTop="15dp"-->
+                            <!--android:textColor="@color/black"-->
+                            <!--android:textSize="15sp" />>-->
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

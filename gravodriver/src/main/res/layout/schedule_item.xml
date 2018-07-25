@@ -25,6 +25,15 @@
             android:padding="5dp">
 
             <TextView
+                android:id="@+id/pickupName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:textColor="@color/brand_pink"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/pickupTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
