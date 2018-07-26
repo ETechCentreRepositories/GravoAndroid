@@ -430,6 +430,8 @@ public class MainActivity extends AppCompatActivity {
                 barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
                 barr.setEnabled(true);
 
+//                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+//                barr.setClickable(true);
                 Orders orders = order;
                 Log.i("clicked",orders.getTransaction_code()+"");
                 String transactionCode = orders.getTransaction_code()+"";
