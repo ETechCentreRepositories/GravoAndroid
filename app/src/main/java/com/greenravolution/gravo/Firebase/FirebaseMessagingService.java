@@ -45,7 +45,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         class addNotificationThread implements Runnable {
             public void run() {
-                addNotification();
+                addNotification(message);
             }
         }
         Thread t = new Thread(new addNotificationThread());
@@ -76,7 +76,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         manager.notify(0,builder.build());
     }
 
-    public void addNotification(){
+    public void addNotification(String message){
         SharedPreferences preferences = getSharedPreferences("login_status", Context.MODE_PRIVATE);
         String user_id = String.valueOf(preferences.getInt("user_id", 0));
 
@@ -85,7 +85,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         NotificationRoomDatabase db = Room.databaseBuilder(this,
                 NotificationRoomDatabase.class, "notification_database").build();
         NotificationDao dao = db.notificationDao();
-        com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification(user_id,"Driver has Arrived!",time);
+        com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification(user_id,message,time);
         //com.greenravolution.gravo.objects.Notification noti = new com.greenravolution.gravo.objects.Notification("Driver has Arrived!");
         dao.insert(noti);
     }
