@@ -213,6 +213,8 @@ public class LoginActivity extends AppCompatActivity {
                     String logindetail = result.getString("users");
                     if (logindetail.equals("facebooklogin")) {
                         Toast.makeText(LoginActivity.this, "Please Login via Facebook", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Wrong credentials", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     String message = result.getString("message");
@@ -481,7 +483,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
         hideSoftKeyBoard();
     }
-
     private void hideSoftKeyBoard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
