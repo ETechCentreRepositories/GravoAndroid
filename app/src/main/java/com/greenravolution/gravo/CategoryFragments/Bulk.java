@@ -309,12 +309,11 @@ public class Bulk extends Fragment {
                     for(int i = 0; i < result.length();i++){
                         JSONObject item = result.getJSONObject(i);
                         int id = item.getInt("id");
-                        String quote = item.getString("price_quote");
+                        String quote = item.getString("status");
                         String link = item.getString("image");
                         String description = item.getString("description");
                         String code = item.getString("transaction_id_key");
                         bulklist.addView(initView(id,code,description,quote,link));
-
 
                     }
                 } else if (status == 404) {
