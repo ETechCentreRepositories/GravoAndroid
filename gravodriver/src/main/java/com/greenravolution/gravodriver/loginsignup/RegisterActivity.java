@@ -35,9 +35,10 @@ import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
 
         Toolbar toolbar;
-        EditText ete, etfn, etln, etnum, etadd, etic, etpw, etli, etvl;
+        EditText ete, etfn, etln, etnum, etstreet, etic, etpw, etli, etvl, etBlock, etUnit, etPostal;
         Button bca;
         CheckBox ctnc;
+
         RelativeLayout rl;
         TextView btnc;
         LinearLayout llProgress;
@@ -48,29 +49,34 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences sessionManager;
         int userstatus;
 
+        String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_register);
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        this.getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         toolbar = findViewById(R.id.toolbar);
         ete = findViewById(R.id.getEmail);
         etfn = findViewById(R.id.getFirstName);
         etln = findViewById(R.id.getLastName);
         etnum = findViewById(R.id.getNumber);
-        etadd = findViewById(R.id.getAddress);
+        etstreet = findViewById(R.id.getStreet);
         etic = findViewById(R.id.getNRIC);
         etpw = findViewById(R.id.getPassword);
         etli = findViewById(R.id.getLiscenseNo);
         etvl = findViewById(R.id.getVehicleNumber);
+        etUnit = findViewById(R.id.address_unit);
+        etBlock = findViewById(R.id.address_blk);
+        etPostal = findViewById(R.id.getPostal);
 
         llProgress = findViewById(R.id.avi);
         progressBar = findViewById(R.id.progressBar);
@@ -81,7 +87,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnc = findViewById(R.id.btnc);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         toolbar.setNavigationOnClickListener(v -> {
             Intent ib = new Intent();
             ib.putExtra("type", "0");
@@ -93,10 +98,13 @@ public class RegisterActivity extends AppCompatActivity {
                     || etfn.getText().toString().isEmpty()
                     || etln.getText().toString().isEmpty()
                     || etnum.getText().toString().isEmpty()
-                    || etadd.getText().toString().isEmpty()
+                    || etstreet.getText().toString().isEmpty()
                     || etic.getText().toString().isEmpty()
                     || etpw.getText().toString().isEmpty()
                     || etli.getText().toString().isEmpty()
+                    || etBlock.getText().toString().isEmpty()
+                    || etUnit.getText().toString().isEmpty()
+                    || etPostal.getText().toString().isEmpty()
                     || etvl.getText().toString().isEmpty()) {
 
                 Snackbar.make(rl, "Please fill in all fields!", Snackbar.LENGTH_LONG).show();
@@ -111,10 +119,18 @@ public class RegisterActivity extends AppCompatActivity {
 //                    setResult(1, ib);
 //                    finish();
 //                    startActivity(itmn);
-                    ShowProgress();
+                    if(etPostal.length() == 6){
 
-                    Register register = new Register();
-                    register.execute("http://ehostingcentre.com/gravo/collectorsignup.php");
+                        ShowProgress();
+
+                        Register register = new Register();
+                        register.execute("http://ehostingcentre.com/gravo/collectorsignup.php");
+
+                    } else {
+
+                        Snackbar.make(rl, "Invalid Postal Code", Snackbar.LENGTH_LONG).show();
+                    }
+
 
                 } else {
                     Snackbar.make(rl, "Please accept our Terms and Conditions", Snackbar.LENGTH_LONG).show();
@@ -155,7 +171,11 @@ public class RegisterActivity extends AppCompatActivity {
                     +"&email="+ete.getText().toString()
                     +"&password="+etpw.getText().toString()
                     +"&contactnumber="+etnum.getText().toString()
-                    +"&address="+etadd.getText().toString()
+                    +"&block="+etBlock.getText().toString()
+                    +"&unit="+etUnit.getText().toString()
+                    +"&street="+etstreet.getText().toString()
+                    +"&address="+etBlock.getText().toString() + "_" + etUnit.getText().toString() + "_" + etstreet.getText().toString() + "_Singapore" + etPostal
+                    +"&postal="+etPostal.getText().toString()
                     +"&nric="+etic.getText().toString()
                     +"&liscencenumber="+etli.getText().toString()
                     +"&vehiclenumber="+etvl.getText().toString());
@@ -171,7 +191,10 @@ public class RegisterActivity extends AppCompatActivity {
                 String userName = "";
                 String userEmail = "";
                 String userNumber = "";
-                String userAddress = "";
+                String userBlock = "";
+                String userUnit = "";
+                String userStreet = "";
+                String userPostal = "";
 
                 JSONObject result = new JSONObject(s);
                 int status = result.getInt("status");
@@ -189,7 +212,10 @@ public class RegisterActivity extends AppCompatActivity {
                         editor.putString("name", userName);
                         editor.putString("email", userEmail);
                         editor.putString("number", userNumber);
-                        editor.putString("address", userAddress);
+                        editor.putString("block", userBlock);
+                        editor.putString("unit", userUnit);
+                        editor.putString("street", userStreet);
+                        editor.putString("postal", userPostal);
 
                         editor.apply();
                         Intent itmchk = new Intent(RegisterActivity.this, MainActivity.class);
@@ -200,20 +226,65 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(itmchk);
 
                     }else if(userstatus == 0){
-                        Toast.makeText(RegisterActivity.this,"You have not been approved to drive with Gravo yet! We will get back to you shortly.\n\nThank you for your patience!",Toast.LENGTH_SHORT).show();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                        LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+                        //Toast.makeText(RegisterActivity.this,"You have not been approved to drive with Gravo yet! We will get back to you shortly.\n\nThank you for your patience!",Toast.LENGTH_SHORT).show();
 
                     }else if (userstatus == 2){
-                        Toast.makeText(RegisterActivity.this,"Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                        LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                        final View gtnc = li.inflate(R.layout.dialog_rejecteduser, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("I understand.", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+                        //Toast.makeText(RegisterActivity.this,"Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
 
                     }else{
-                        Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                        LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+                        //Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
 
                     }
                 }else if(status == 404){
 
-                    Toast.makeText(RegisterActivity.this,"You have already registered!",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                    LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_userhasregistered, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("Log in now", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,LoginActivity.class)));
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+
                 }else if(status == 400){
-                    Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                    LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_unexpectederror, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("I understand", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                   //Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

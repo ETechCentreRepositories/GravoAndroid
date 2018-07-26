@@ -79,7 +79,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.register:
                 Intent itr = new Intent(Login.this, RegisterActivity.class);
-
+                //Intent itr = new Intent(Login.this, RegisterActivity_fix.class);
                 progressDrawable.stop();
                 startActivityForResult(itr, 1);
                 break;

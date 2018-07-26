@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     CardView cardView;
     LinearLayout llotw, llarr, llContent;
     Button botw, barr, bmap;
-    TextView tt, ta, tpc, tst;
+    TextView tt, ta, tpc, tst,tName;
 
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
@@ -93,13 +93,14 @@ public class MainActivity extends AppCompatActivity {
                     int id = detail.getInt("id");
                     String tc = detail.getString("transaction_id_key");
                     String ad = detail.getString("collection_address");
+                    String cName = detail.getString("collection_user");
                     int uid = detail.getInt("recycler_id");
                     int stid = detail.getInt("status_id");
                     String statustype = detail.getString("status_type");
                     Double totalprice = detail.getDouble("total_price");
 
                     price = price + totalprice;
-                    Orders neworder = new Orders(id, tc, ad, uid, stid);
+                    Orders neworder = new Orders(id, tc, ad, uid, stid,cName);
                     list.addView(initview(neworder, i + 1));
 
                 }
@@ -247,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("id", strings[0]);
             @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("h:mm a");
             String date = df.format(Calendar.getInstance().getTime());
-            String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=3&arrivaltime=" + date + "");
+            String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status="+strings[1]+"&arrivaltime=" + date + "");
             Log.e("reqResult", reqResult);
             try {
                 JSONObject resultObject = new JSONObject(reqResult);
@@ -255,13 +256,18 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
-
                     String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php", "userID=" + recyclerID);
                     Log.e("reqNotification", reqNotification);
-
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
-
+                }else if(resultObject.getInt("status") == 201){
+                    JSONArray resultArray = resultObject.getJSONArray("result");
+                    JSONObject transactionObject = resultArray.getJSONObject(0);
+                    String recyclerID = transactionObject.getString("recycler_id");
+                    String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID);
+                    Log.e("reqNotification", reqNotification);
+                    JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
+                    int transactionID = items.getInt("id");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -321,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
         View view = inflater.inflate(R.layout.schedule_item, null);
 
         cardView = view.findViewById(R.id.cardView);
+        tName = view.findViewById(R.id.pickupName);
         tt = view.findViewById(R.id.pickupTitle);
         ta = view.findViewById(R.id.pickupAddress);
         tpc = view.findViewById(R.id.pickupPostal);
@@ -341,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
             barr.setVisibility(View.GONE);
 //            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round));
 //            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+            tName.setTextColor(getResources().getColor(R.color.white));
+            tName.setText(order.getCollecter_name());
             String title = "Pickup " + String.valueOf(position) + " (Collected)";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
@@ -361,8 +370,11 @@ public class MainActivity extends AppCompatActivity {
             //barr.setVisibility(View.VISIBLE);
             botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
             botw.setClickable(false);
-            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-            barr.setClickable(true);
+            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round_disabled));
+            barr.setClickable(false);
+
+            tName.setTextColor(getResources().getColor(R.color.white));
+            tName.setText(order.getCollecter_name());
             String title = "Pickup " + String.valueOf(position) + " (Arrived)";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
@@ -375,8 +387,28 @@ public class MainActivity extends AppCompatActivity {
             cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
             llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
+        } else if (order.getStatus_id() == 2){
+            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+            botw.setClickable(false);
+            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+            barr.setClickable(true);
+
+            tName.setTextColor(getResources().getColor(R.color.white));
+            tName.setText(order.getCollecter_name());
+            String title = "Pickup " + String.valueOf(position) + " (On The Way)";
+            tt.setTextColor(getResources().getColor(R.color.white));
+            tt.setText(title);
+            ta.setText("Address: " + order.getAddress());
+            ta.setTextColor(getResources().getColor(R.color.white));
+            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+            tpc.setTextColor(getResources().getColor(R.color.white));
+//                holder.tst.setText(String.valueOf(order.getSession_id()));
+//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
         } else {
             //normal pickup
+            tName.setText(order.getCollecter_name());
             String title = "Pickup " + String.valueOf(position);
             tt.setText(title);
             ta.setText(String.format("Address: %s", order.getAddress()));
@@ -388,10 +420,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //botw.setVisibility(View.GONE);
                // barr.setVisibility(View.VISIBLE);
-                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-                botw.setClickable(false);
-                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-                barr.setClickable(true);
+//                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+//                botw.setClickable(false);
+//                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+//                barr.setClickable(true);
+                Orders orders = order;
+                updatetransaction updatetransaction = new updatetransaction();
+                updatetransaction.execute(String.valueOf(orders.getId()),"2");
+                Toast.makeText(MainActivity.this,"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -404,8 +440,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("transaction_id", orders.getTransaction_code());
             intent.putExtra("id", orders.getId());
 
-            MainActivity.updatetransaction updatetransaction = new MainActivity.updatetransaction();
-            updatetransaction.execute(String.valueOf(orders.getId()));
+            updatetransaction updatetransaction = new updatetransaction();
+            updatetransaction.execute(String.valueOf(orders.getId()),"3");
             startActivityForResult(intent, 1);
 //                } else if (order.getTransaction_type().equals("2")) {
 //                    Intent intent = new Intent(context, BulkTransactionDetails.class);

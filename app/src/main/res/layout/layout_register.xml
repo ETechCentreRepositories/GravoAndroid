@@ -168,7 +168,7 @@
                 android:drawablePadding="5dp"
                 android:drawableStart="@drawable/ic_location"
                 android:gravity="center_vertical"
-                android:hint="Address"
+                android:hint="Street"
                 android:inputType="text"
                 android:padding="5dp" />
             <EditText

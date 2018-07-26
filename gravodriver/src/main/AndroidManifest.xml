@@ -33,8 +33,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".loginsignup.RegisterActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TransactionDetails"
             android:screenOrientation="portrait" />
@@ -43,7 +42,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".loginsignup.ForgotPassword" />
         <activity android:name=".profile" />
-        <activity android:name=".profileEdit"></activity>
+        <activity android:name=".profileEdit" />
     </application>
 
 </manifest>

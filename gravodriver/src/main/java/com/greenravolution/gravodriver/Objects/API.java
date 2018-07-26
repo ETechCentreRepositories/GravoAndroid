@@ -59,6 +59,9 @@ public class API {
     public String getEditUser(){
         return "http://ehostingcentre.com/gravo/updateuserdetails.php";
     }
+    public String getEditDriver(){
+        return "http://ehostingcentre.com/gravo/updatedriverdetails.php";
+    }
     public String getUpdateImage(){
         return "http://ehostingcentre.com/gravo/updateimage.php";
     }

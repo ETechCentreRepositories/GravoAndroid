@@ -168,6 +168,10 @@ public class LoginActivity extends AppCompatActivity {
                 String userEmail = "";
                 String userNumber = "";
                 String userAddress = "";
+                String userBlock= "";
+                String userUnit= "";
+                String userPostal= "";
+                String userStreet= "";
                 String userLicenseNo = "";
                 String userVehicleNo = "";
 
@@ -184,8 +188,12 @@ public class LoginActivity extends AppCompatActivity {
                         userEmail = user.getString("email");
 
 
-                        if (user.getString("address") != null) {
+                        if (user.getString("address") != null && user.getString("block") != null && user.getString("unit") != null && user.getString("street") != null && user.getString("postal") != null) {
                             userAddress = user.getString("address");
+                            userBlock =  user.getString("block");
+                            userUnit = user.getString("unit");
+                            userPostal = user.getString("postal");
+                            userStreet = user.getString("street");
                         } else {
                             userAddress = null;
                         }
@@ -198,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     if (userstatus == 1) {
                         re.setText("");
-                        Log.e("User Details", "Name: " + userFirstName + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
+                        Log.e("User Details", "UserID: " + userId + "\nName: " + userFirstName + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
                         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, String.valueOf(status));
@@ -208,6 +216,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("email", userEmail);
                         editor.putString("number", userNumber);
                         editor.putString("address", userAddress);
+                        editor.putString("block", userBlock);
+                        editor.putString("unit", userUnit);
+                        editor.putString("street", userStreet);
+                        editor.putString("postal", userPostal);
                         editor.putString("license",userLicenseNo);
                         editor.putString("vehicle",userVehicleNo);
 
