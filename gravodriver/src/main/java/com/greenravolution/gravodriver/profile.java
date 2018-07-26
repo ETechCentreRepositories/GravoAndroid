@@ -33,8 +33,8 @@ public class profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-        profile_img = findViewById(R.id.profile_img);
-        name = findViewById(R.id.name);
+        //profile_img = findViewById(R.id.profile_img);
+        //name = findViewById(R.id.name);
         myName = findViewById(R.id.myName);
         myAddress = findViewById(R.id.myAddress);
         //myUnit = findViewById(R.id.myUnit);
@@ -45,7 +45,7 @@ public class profile extends AppCompatActivity {
         myNumber = findViewById(R.id.myNumber);
         myLicenseNo = findViewById(R.id.myLicenseNo);
         myVehicleNo = findViewById(R.id.myVehicleNo);
-        profile_img = findViewById(R.id.profile_img);
+        //profile_img = findViewById(R.id.profile_img);
 
         getName = sessionManager.getString("firstname","") + " " + sessionManager.getString("lastname","");
         getEmail = sessionManager.getString("email", "");
@@ -59,7 +59,7 @@ public class profile extends AppCompatActivity {
         getVehicleNo = sessionManager.getString("vehicle","");
         getImage = sessionManager.getString("user_image", "");
 
-        name.setText(getName);
+        //name.setText(getName);
         myName.setText(getName);
         myEmail.setText(getEmail);
         myNumber.setText(getNumber);
@@ -72,11 +72,11 @@ public class profile extends AppCompatActivity {
 //        myPostal.setText(getPostal);
 //        myStreet.setText(getStreet);
 
-        if(getImage.equals("")){
-            profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
-        }else{
-            Glide.with(profile.this).load(getImage).into(profile_img);
-        }
+//        if(getImage.equals("")){
+//            profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
+//        }else{
+//            Glide.with(profile.this).load(getImage).into(profile_img);
+//        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,12 +97,12 @@ public class profile extends AppCompatActivity {
         getLicenseNo = sessionManager.getString("license","");
         getVehicleNo = sessionManager.getString("vehicle","");
         getImage = sessionManager.getString("user_image", "");
-        if(getImage.equals("")){
-            profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
-        }else{
-            Glide.with(profile.this).load(getImage).into(profile_img);
-        }
-        name.setText(getName);
+//        if(getImage.equals("")){
+//            profile_img.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
+//        }else{
+//            Glide.with(profile.this).load(getImage).into(profile_img);
+//        }
+//        name.setText(getName);
         myName.setText(getName);
         myEmail.setText(getEmail);
         myNumber.setText(getNumber);

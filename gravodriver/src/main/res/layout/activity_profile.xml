@@ -45,46 +45,46 @@
                     android:textSize="20sp" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/profilePortion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tool"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:padding="10dp">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/profilePortion"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/tool"-->
+                <!--android:background="@color/white"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:padding="10dp">-->
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_img"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/profile_image_1" />
+                <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                    <!--android:id="@+id/profile_img"-->
+                    <!--android:layout_width="100dp"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:src="@drawable/profile_image_1" />-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingEnd="0dp"
-                    android:paddingStart="20dp">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:paddingEnd="0dp"-->
+                    <!--android:paddingStart="20dp">-->
 
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ryme Hobbs"
-                        android:textSize="25sp" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/name"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Ryme Hobbs"-->
+                        <!--android:textSize="25sp" />-->
 
-                </LinearLayout>
-            </LinearLayout>
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/acc_info_portion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profilePortion"
+                android:layout_below="@id/tool"
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"

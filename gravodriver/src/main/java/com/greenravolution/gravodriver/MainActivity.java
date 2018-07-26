@@ -256,16 +256,20 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
-                    String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php", "userID=" + recyclerID);
-                    Log.e("reqNotification", reqNotification);
+                    if(strings[2].equalsIgnoreCase("send")) {
+                        String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php", "userID=" + recyclerID);
+                        Log.e("reqNotification", reqNotification);
+                    }
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
                 }else if(resultObject.getInt("status") == 201){
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
-                    String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID);
-                    Log.e("reqNotification", reqNotification);
+                    if(strings[2].equalsIgnoreCase("send")) {
+                        String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID);
+                        Log.e("reqNotification", reqNotification);
+                    }
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
                 }
@@ -346,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
             //llarr.setVisibility(View.GONE);
             botw.setVisibility(View.GONE);
             barr.setVisibility(View.GONE);
+            bmap.setVisibility(View.GONE);
 //            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round));
 //            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
             tName.setTextColor(getResources().getColor(R.color.white));
@@ -369,9 +374,9 @@ public class MainActivity extends AppCompatActivity {
             //botw.setVisibility(View.GONE);
             //barr.setVisibility(View.VISIBLE);
             botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-            botw.setClickable(false);
-            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round_disabled));
-            barr.setClickable(false);
+            botw.setEnabled(false);
+            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+            barr.setEnabled(true);
 
             tName.setTextColor(getResources().getColor(R.color.white));
             tName.setText(order.getCollecter_name());
@@ -389,9 +394,9 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (order.getStatus_id() == 2){
             botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-            botw.setClickable(false);
+            botw.setEnabled(false);
             barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-            barr.setClickable(true);
+            barr.setEnabled(true);
 
             tName.setTextColor(getResources().getColor(R.color.white));
             tName.setText(order.getCollecter_name());
@@ -420,14 +425,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //botw.setVisibility(View.GONE);
                // barr.setVisibility(View.VISIBLE);
-//                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-//                botw.setClickable(false);
-//                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-//                barr.setClickable(true);
+                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+                botw.setEnabled(false);
+                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+                barr.setEnabled(true);
+
                 Orders orders = order;
+                Log.i("clicked",orders.getTransaction_code()+"");
+                String transactionCode = orders.getTransaction_code()+"";
+                SharedPreferences.Editor prefEdit = sessionManager.edit();
+                prefEdit.putString(transactionCode,"otw");
+
                 updatetransaction updatetransaction = new updatetransaction();
-                updatetransaction.execute(String.valueOf(orders.getId()),"2");
+                updatetransaction.execute(String.valueOf(orders.getId()),"2","send");
                 Toast.makeText(MainActivity.this,"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
+
+                getTransactions();
             }
         });
 
@@ -440,9 +453,29 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("transaction_id", orders.getTransaction_code());
             intent.putExtra("id", orders.getId());
 
-            updatetransaction updatetransaction = new updatetransaction();
-            updatetransaction.execute(String.valueOf(orders.getId()),"3");
-            startActivityForResult(intent, 1);
+            if(String.valueOf(orders.getStatus_id()) != null){
+                Log.i("clicked","checking for transactionCode");
+                if(orders.getStatus_id() == 2) {
+                    botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+                    botw.setEnabled(false);
+                    barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+                    barr.setEnabled(true);
+
+                    updatetransaction updatetransaction = new updatetransaction();
+                    updatetransaction.execute(String.valueOf(orders.getId()), "3", "send");
+                    startActivityForResult(intent, 1);
+
+                } else if(orders.getStatus_id() == 3){
+
+                    updatetransaction updatetransaction = new updatetransaction();
+                    updatetransaction.execute(String.valueOf(orders.getId()),"3","dontsend");
+                    startActivityForResult(intent, 1);
+                } else {
+                    Toast.makeText(MainActivity.this,"An error has occured1",Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(MainActivity.this,"An error has occured2",Toast.LENGTH_SHORT).show();
+            }
 //                } else if (order.getTransaction_type().equals("2")) {
 //                    Intent intent = new Intent(context, BulkTransactionDetails.class);
 //                    Orders orders = getItem(position);

@@ -8,9 +8,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -233,29 +235,79 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(itmchk);
                         bl.setEnabled(true);
                     } else if (userstatus == 0) {
-                        Toast.makeText(LoginActivity.this, "You have not been approved to drive with gravo yet! We will get back to you shortly.\n\nThank you for your patience!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, "You have not been approved to drive with gravo yet! We will get back to you shortly.\n\nThank you for your patience!", Toast.LENGTH_SHORT).show();
                         bl.setEnabled(true);
                         re.setText("");
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+                        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
                     } else if (userstatus == 2) {
                         re.setText("");
-                        Toast.makeText(LoginActivity.this, "Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, "Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                         bl.setEnabled(true);
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+                        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                        final View gtnc = li.inflate(R.layout.dialog_rejecteduser, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("I understand.", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
                     } else {
                         re.setText("");
-                        Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                         bl.setEnabled(true);
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+                        LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
                     }
                 } else if (status == 403) {
                     re.setText("");
-                    Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                     bl.setEnabled(true);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                    final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
                 } else if (status == 404) {
-                    re.setText(R.string.not_registered);
+                    //re.setText(R.string.not_registered);
                     bl.setEnabled(true);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_userhasnotregistered, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("I would like to Register", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+                    dialog.setNegativeButton("Cancel", (dialogInterface,i) -> dialogInterface.dismiss());
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
                 } else {
                     re.setText("");
-                    Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                     bl.setEnabled(true);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                    final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
