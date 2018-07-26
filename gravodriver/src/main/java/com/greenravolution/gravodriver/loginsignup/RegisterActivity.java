@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText ete, etfn, etln, etnum, etstreet, etic, etpw, etli, etvl, etBlock, etUnit, etPostal;
         Button bca;
         CheckBox ctnc;
+
         RelativeLayout rl;
         TextView btnc;
         LinearLayout llProgress;
@@ -55,13 +56,13 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_register);
-        this.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        this.getWindow().getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         toolbar = findViewById(R.id.toolbar);
         ete = findViewById(R.id.getEmail);
@@ -225,20 +226,65 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(itmchk);
 
                     }else if(userstatus == 0){
-                        Toast.makeText(RegisterActivity.this,"You have not been approved to drive with Gravo yet! We will get back to you shortly.\n\nThank you for your patience!",Toast.LENGTH_SHORT).show();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                        LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+                        //Toast.makeText(RegisterActivity.this,"You have not been approved to drive with Gravo yet! We will get back to you shortly.\n\nThank you for your patience!",Toast.LENGTH_SHORT).show();
 
                     }else if (userstatus == 2){
-                        Toast.makeText(RegisterActivity.this,"Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                        LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                        final View gtnc = li.inflate(R.layout.dialog_rejecteduser, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("I understand.", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+                        //Toast.makeText(RegisterActivity.this,"Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
 
                     }else{
-                        Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                        LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        dialog.setCancelable(true);
+                        dialog.setView(gtnc);
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                        AlertDialog dialogue = dialog.create();
+                        dialogue.show();
+
+                        //Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
 
                     }
                 }else if(status == 404){
 
-                    Toast.makeText(RegisterActivity.this,"You have already registered!",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                    LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_userhasregistered, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("Log in now", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,LoginActivity.class)));
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+
                 }else if(status == 400){
-                    Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
+                    LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_unexpectederror, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("I understand", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,Login.class)));
+                    AlertDialog dialogue = dialog.create();
+                    dialogue.show();
+                   //Toast.makeText(RegisterActivity.this,"An unexpected error has occurred. We apologize for the inconvenience!",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
