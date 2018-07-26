@@ -420,8 +420,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //botw.setVisibility(View.GONE);
                // barr.setVisibility(View.VISIBLE);
-//                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-//                botw.setClickable(false);
+                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+                botw.setClickable(false);
 //                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
 //                barr.setClickable(true);
                 Orders orders = order;
