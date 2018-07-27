@@ -28,4 +28,7 @@ Place your fingertip on the Home button to verify your identity
     <string name="userhasnotregistered">The email you provided does not have a account with us, Please register for an account.</string>
     <string name="acceptance">Thank you for registering an account with us. \nHowever, You have not been approved to drive with Gravo yet! We will get back to you shortly.\n\nThank you for your patience!
 </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

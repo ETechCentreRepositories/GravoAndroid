@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".today">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/collectDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:id="@+id/refreshLayout"
+            android:layout_height="match_parent">
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/llProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/progress_background"
+            android:padding="0dp">
+
+            <ImageView
+                android:id="@+id/progressBar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/gravo_logo_black"
+                android:src="@drawable/ic_progressbar"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

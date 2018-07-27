@@ -8,6 +8,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
+import com.greenravolution.gravodriver.adapters.FragmentPageAdapter;
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
 import com.greenravolution.gravodriver.functions.HttpReq;
 import com.greenravolution.gravodriver.loginsignup.Login;
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                     price = price + totalprice;
                     Orders neworder = new Orders(id, tc, ad, uid, stid,cName);
-                    list.addView(initview(neworder, i + 1));
+                    //list.addView(initview(neworder, i + 1));
 
                 }
             }
@@ -118,6 +121,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        FragmentPageAdapter adapter = new FragmentPageAdapter(getSupportFragmentManager());
+
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+//        onTabSelected(): triggered when a tab enters the selected state.
+//        onTabUnselected(): invoked when a tab exits the selected state.
+//        onTabReselected(): invoked when a tab that is already selected is chosen again by the user.
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         btnProfile = findViewById(R.id.btnProfile);
 
         llProgress = findViewById(R.id.llProgress);
@@ -129,21 +159,21 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) if (getSupportActionBar().getTitle() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        oal = new ArrayList<>();
-        odal = new ArrayList<>();
-        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
-        String date = df.format(Calendar.getInstance().getTime());
-        collectDate = findViewById(R.id.collectDate);
-        refreshLayout = findViewById(R.id.refreshLayout);
-        collectDate.setText(String.format("Pickups for Today: %s", date));
-        // temp
-        llProgress.setVisibility(View.GONE);
+//        oal = new ArrayList<>();
+//        odal = new ArrayList<>();
+//        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy");
+//        String date = df.format(Calendar.getInstance().getTime());
+//        collectDate = findViewById(R.id.collectDate);
+//        refreshLayout = findViewById(R.id.refreshLayout);
+//        collectDate.setText(String.format("Pickups for Today: %s", date));
+//        // temp
+//        llProgress.setVisibility(View.GONE);
+//
+//        GetAsyncRequest asyncRequest = new GetAsyncRequest();
+//        asyncRequest.setOnResultListener(getRates);
+//        asyncRequest.execute("http://ehostingcentre.com/gravo/getCategories.php?type=all");
 
-        GetAsyncRequest asyncRequest = new GetAsyncRequest();
-        asyncRequest.setOnResultListener(getRates);
-        asyncRequest.execute("http://ehostingcentre.com/gravo/getCategories.php?type=all");
-
-        refreshLayout.setOnRefreshListener(() -> getTransactions());
+        //refreshLayout.setOnRefreshListener(() -> getTransactions());
 
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getTransactions();
+        //getTransactions();
     }
 
     @Override
@@ -325,185 +355,185 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public View initview(Orders order, int position) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        assert inflater != null;
-        View view = inflater.inflate(R.layout.schedule_item, null);
-
-        cardView = view.findViewById(R.id.cardView);
-        tName = view.findViewById(R.id.pickupName);
-        tt = view.findViewById(R.id.pickupTitle);
-        ta = view.findViewById(R.id.pickupAddress);
-        tpc = view.findViewById(R.id.pickupPostal);
-        tst = view.findViewById(R.id.pickupTiming);
-        botw = view.findViewById(R.id.botw);
-        barr = view.findViewById(R.id.barr);
-        bmap = view.findViewById(R.id.bmap);
-        //llarr = view.findViewById(R.id.llarr);
-        //llotw = view.findViewById(R.id.llotw);
-        llContent = view.findViewById(R.id.llContent);
-
-
-        if (order.getStatus_id() == 4) {
-
-            //llotw.setVisibility(View.GONE);
-            //llarr.setVisibility(View.GONE);
-            botw.setVisibility(View.GONE);
-            barr.setVisibility(View.GONE);
-            bmap.setVisibility(View.GONE);
-//            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round));
+//    public View initview(Orders order, int position) {
+//        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//        assert inflater != null;
+//        View view = inflater.inflate(R.layout.schedule_item, null);
+//
+//        cardView = view.findViewById(R.id.cardView);
+//        tName = view.findViewById(R.id.pickupName);
+//        tt = view.findViewById(R.id.pickupTitle);
+//        ta = view.findViewById(R.id.pickupAddress);
+//        tpc = view.findViewById(R.id.pickupPostal);
+//        tst = view.findViewById(R.id.pickupTiming);
+//        botw = view.findViewById(R.id.botw);
+//        barr = view.findViewById(R.id.barr);
+//        bmap = view.findViewById(R.id.bmap);
+//        //llarr = view.findViewById(R.id.llarr);
+//        //llotw = view.findViewById(R.id.llotw);
+//        llContent = view.findViewById(R.id.llContent);
+//
+//
+//        if (order.getStatus_id() == 4) {
+//
+//            //llotw.setVisibility(View.GONE);
+//            //llarr.setVisibility(View.GONE);
+//            botw.setVisibility(View.GONE);
+//            barr.setVisibility(View.GONE);
+//            bmap.setVisibility(View.GONE);
+////            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round));
+////            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+//            tName.setTextColor(getResources().getColor(R.color.white));
+//            tName.setText(order.getCollecter_name());
+//            String title = "Pickup " + String.valueOf(position) + " (Collected)";
+//            tt.setTextColor(getResources().getColor(R.color.white));
+//            tt.setText(title);
+//            ta.setText("Address: " + order.getAddress());
+//            ta.setTextColor(getResources().getColor(R.color.white));
+//            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+//            tpc.setTextColor(getResources().getColor(R.color.white));
+////                holder.tst.setText(String.valueOf(order.getSession_id()));
+////                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+//            cardView.setBackgroundColor(getResources().getColor(R.color.grey));
+//            llContent.setBackgroundColor(getResources().getColor(R.color.grey));
+//
+//        } else if (order.getStatus_id() == 3) {
+////
+////            llotw.setVisibility(View.GONE);
+////            llarr.setVisibility(View.VISIBLE);
+//            //botw.setVisibility(View.GONE);
+//            //barr.setVisibility(View.VISIBLE);
+//            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+//            botw.setEnabled(false);
 //            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-            tName.setTextColor(getResources().getColor(R.color.white));
-            tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position) + " (Collected)";
-            tt.setTextColor(getResources().getColor(R.color.white));
-            tt.setText(title);
-            ta.setText("Address: " + order.getAddress());
-            ta.setTextColor(getResources().getColor(R.color.white));
-            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
-            tpc.setTextColor(getResources().getColor(R.color.white));
-//                holder.tst.setText(String.valueOf(order.getSession_id()));
-//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
-            cardView.setBackgroundColor(getResources().getColor(R.color.grey));
-            llContent.setBackgroundColor(getResources().getColor(R.color.grey));
-
-        } else if (order.getStatus_id() == 3) {
+//            barr.setEnabled(true);
 //
-//            llotw.setVisibility(View.GONE);
-//            llarr.setVisibility(View.VISIBLE);
-            //botw.setVisibility(View.GONE);
-            //barr.setVisibility(View.VISIBLE);
-            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-            botw.setEnabled(false);
-            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-            barr.setEnabled(true);
-
-            tName.setTextColor(getResources().getColor(R.color.white));
-            tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position) + " (Arrived)";
-            tt.setTextColor(getResources().getColor(R.color.white));
-            tt.setText(title);
-            ta.setText("Address: " + order.getAddress());
-            ta.setTextColor(getResources().getColor(R.color.white));
-            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
-            tpc.setTextColor(getResources().getColor(R.color.white));
-//                holder.tst.setText(String.valueOf(order.getSession_id()));
-//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
-            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-
-        } else if (order.getStatus_id() == 2){
-            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-            botw.setEnabled(false);
-            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-            barr.setEnabled(true);
-
-            tName.setTextColor(getResources().getColor(R.color.white));
-            tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position) + " (On The Way)";
-            tt.setTextColor(getResources().getColor(R.color.white));
-            tt.setText(title);
-            ta.setText("Address: " + order.getAddress());
-            ta.setTextColor(getResources().getColor(R.color.white));
-            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
-            tpc.setTextColor(getResources().getColor(R.color.white));
-//                holder.tst.setText(String.valueOf(order.getSession_id()));
-//                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
-            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-        } else {
-            //normal pickup
-            tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position);
-            tt.setText(title);
-            ta.setText(String.format("Address: %s", order.getAddress()));
-            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
-        }
-
-        botw.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //botw.setVisibility(View.GONE);
-               // barr.setVisibility(View.VISIBLE);
-                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-                botw.setEnabled(false);
-                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-                barr.setEnabled(true);
-
+//            tName.setTextColor(getResources().getColor(R.color.white));
+//            tName.setText(order.getCollecter_name());
+//            String title = "Pickup " + String.valueOf(position) + " (Arrived)";
+//            tt.setTextColor(getResources().getColor(R.color.white));
+//            tt.setText(title);
+//            ta.setText("Address: " + order.getAddress());
+//            ta.setTextColor(getResources().getColor(R.color.white));
+//            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+//            tpc.setTextColor(getResources().getColor(R.color.white));
+////                holder.tst.setText(String.valueOf(order.getSession_id()));
+////                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+//            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+//            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+//
+//        } else if (order.getStatus_id() == 2){
+//            botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+//            botw.setEnabled(false);
+//            barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+//            barr.setEnabled(true);
+//
+//            tName.setTextColor(getResources().getColor(R.color.white));
+//            tName.setText(order.getCollecter_name());
+//            String title = "Pickup " + String.valueOf(position) + " (On The Way)";
+//            tt.setTextColor(getResources().getColor(R.color.white));
+//            tt.setText(title);
+//            ta.setText("Address: " + order.getAddress());
+//            ta.setTextColor(getResources().getColor(R.color.white));
+//            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+//            tpc.setTextColor(getResources().getColor(R.color.white));
+////                holder.tst.setText(String.valueOf(order.getSession_id()));
+////                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
+//            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+//            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+//        } else {
+//            //normal pickup
+//            tName.setText(order.getCollecter_name());
+//            String title = "Pickup " + String.valueOf(position);
+//            tt.setText(title);
+//            ta.setText(String.format("Address: %s", order.getAddress()));
+//            tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
+//        }
+//
+//        botw.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //botw.setVisibility(View.GONE);
+//               // barr.setVisibility(View.VISIBLE);
+//                botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+//                botw.setEnabled(false);
 //                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-//                barr.setClickable(true);
-                Orders orders = order;
-                Log.i("clicked",orders.getTransaction_code()+"");
-                String transactionCode = orders.getTransaction_code()+"";
-                SharedPreferences.Editor prefEdit = sessionManager.edit();
-                prefEdit.putString(transactionCode,"otw");
-
-                updatetransaction updatetransaction = new updatetransaction();
-                updatetransaction.execute(String.valueOf(orders.getId()),"2","send");
-                Toast.makeText(MainActivity.this,"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
-
-                getTransactions();
-            }
-        });
-
-        barr.setOnClickListener(v -> {
-            /// TODO: 14/3/2018 intent to transaction page add in details
-//                if (order.getTransaction_type().equals("1")) {
-            Intent intent = new Intent(MainActivity.this, TransactionDetails.class);
-            Orders orders = order;
-            intent.putExtra("address", orders.getAddress());
-            intent.putExtra("transaction_id", orders.getTransaction_code());
-            intent.putExtra("id", orders.getId());
-
-            if(String.valueOf(orders.getStatus_id()) != null){
-                Log.i("clicked","checking for transactionCode");
-                if(orders.getStatus_id() == 2) {
-                    botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
-                    botw.setEnabled(false);
-                    barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
-                    barr.setEnabled(true);
-
-                    updatetransaction updatetransaction = new updatetransaction();
-                    updatetransaction.execute(String.valueOf(orders.getId()), "3", "send");
-                    startActivityForResult(intent, 1);
-
-                } else if(orders.getStatus_id() == 3){
-
-                    updatetransaction updatetransaction = new updatetransaction();
-                    updatetransaction.execute(String.valueOf(orders.getId()),"3","dontsend");
-                    startActivityForResult(intent, 1);
-                } else {
-                    Toast.makeText(MainActivity.this,"An error has occured1",Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(MainActivity.this,"An error has occured2",Toast.LENGTH_SHORT).show();
-            }
-//                } else if (order.getTransaction_type().equals("2")) {
-//                    Intent intent = new Intent(context, BulkTransactionDetails.class);
-//                    Orders orders = getItem(position);
-//                    intent.putExtra("address", orders.getAddress());
-//                    intent.putExtra("transaction_id", orders.getTransaction_code());
-//                    intent.putExtra("id", orders.getId());
+//                barr.setEnabled(true);
 //
-//                    ((MainActivity) context).startActivityForResult(intent, 1);
+////                barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+////                barr.setClickable(true);
+//                Orders orders = order;
+//                Log.i("clicked",orders.getTransaction_code()+"");
+//                String transactionCode = orders.getTransaction_code()+"";
+//                SharedPreferences.Editor prefEdit = sessionManager.edit();
+//                prefEdit.putString(transactionCode,"otw");
+//
+//                updatetransaction updatetransaction = new updatetransaction();
+//                updatetransaction.execute(String.valueOf(orders.getId()),"2","send");
+//                Toast.makeText(MainActivity.this,"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
+//
+//                getTransactions();
+//            }
+//        });
+//
+//        barr.setOnClickListener(v -> {
+//            /// TODO: 14/3/2018 intent to transaction page add in details
+////                if (order.getTransaction_type().equals("1")) {
+//            Intent intent = new Intent(MainActivity.this, TransactionDetails.class);
+//            Orders orders = order;
+//            intent.putExtra("address", orders.getAddress());
+//            intent.putExtra("transaction_id", orders.getTransaction_code());
+//            intent.putExtra("id", orders.getId());
+//
+//            if(String.valueOf(orders.getStatus_id()) != null){
+//                Log.i("clicked","checking for transactionCode");
+//                if(orders.getStatus_id() == 2) {
+//                    botw.setBackground(getDrawable(R.drawable.btn_brand_pink_round_disabled));
+//                    botw.setEnabled(false);
+//                    barr.setBackground(getDrawable(R.drawable.btn_brand_green_round));
+//                    barr.setEnabled(true);
+//
+//                    updatetransaction updatetransaction = new updatetransaction();
+//                    updatetransaction.execute(String.valueOf(orders.getId()), "3", "send");
+//                    startActivityForResult(intent, 1);
+//
+//                } else if(orders.getStatus_id() == 3){
+//
+//                    updatetransaction updatetransaction = new updatetransaction();
+//                    updatetransaction.execute(String.valueOf(orders.getId()),"3","dontsend");
+//                    startActivityForResult(intent, 1);
 //                } else {
-//                    //TODO completed page summary;
+//                    Toast.makeText(MainActivity.this,"An error has occured1",Toast.LENGTH_SHORT).show();
 //                }
-
-        });
-
-        bmap.setOnClickListener(v -> {
-            // Create a Uri from an intent string. Use the result to create an Intent.
-            String url = "https://www.google.com/maps/dir/?api=1&destination=" + order.getAddress() + "&travelmode=driving";
-            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            // Make the Intent explicit by setting the Google Maps package
-            mapIntent.setPackage("com.google.android.apps.maps");
-            // Attempt to start an activity that can handle the Intent
-            startActivity(mapIntent);
-        });
-
-        return view;
-    }
+//            } else {
+//                Toast.makeText(MainActivity.this,"An error has occured2",Toast.LENGTH_SHORT).show();
+//            }
+////                } else if (order.getTransaction_type().equals("2")) {
+////                    Intent intent = new Intent(context, BulkTransactionDetails.class);
+////                    Orders orders = getItem(position);
+////                    intent.putExtra("address", orders.getAddress());
+////                    intent.putExtra("transaction_id", orders.getTransaction_code());
+////                    intent.putExtra("id", orders.getId());
+////
+////                    ((MainActivity) context).startActivityForResult(intent, 1);
+////                } else {
+////                    //TODO completed page summary;
+////                }
+//
+//        });
+//
+//        bmap.setOnClickListener(v -> {
+//            // Create a Uri from an intent string. Use the result to create an Intent.
+//            String url = "https://www.google.com/maps/dir/?api=1&destination=" + order.getAddress() + "&travelmode=driving";
+//            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+//            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//            // Make the Intent explicit by setting the Google Maps package
+//            mapIntent.setPackage("com.google.android.apps.maps");
+//            // Attempt to start an activity that can handle the Intent
+//            startActivity(mapIntent);
+//        });
+//
+//        return view;
+//    }
 
 }
