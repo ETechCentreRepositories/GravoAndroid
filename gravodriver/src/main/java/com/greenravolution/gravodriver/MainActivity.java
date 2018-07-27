@@ -440,8 +440,6 @@ public class MainActivity extends AppCompatActivity {
 
                 updatetransaction updatetransaction = new updatetransaction();
                 updatetransaction.execute(String.valueOf(orders.getId()),"2","send");
-                Toast.makeText(MainActivity.this,"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
-
                 getTransactions();
             }
         });
@@ -473,10 +471,10 @@ public class MainActivity extends AppCompatActivity {
                     updatetransaction.execute(String.valueOf(orders.getId()),"3","dontsend");
                     startActivityForResult(intent, 1);
                 } else {
-                    Toast.makeText(MainActivity.this,"An error has occured1",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"An error has occured",Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(MainActivity.this,"An error has occured2",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"An error has occured",Toast.LENGTH_SHORT).show();
             }
 //                } else if (order.getTransaction_type().equals("2")) {
 //                    Intent intent = new Intent(context, BulkTransactionDetails.class);

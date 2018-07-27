@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.greenravolution.gravo.R;
+import com.greenravolution.gravo.contents.BulkDetails;
 import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.functions.Utility;
 
@@ -333,6 +334,9 @@ public class Bulk extends Fragment {
             view = inflater.inflate(R.layout.bulk_page_items, null);
             TextView code, description, price_quote;
             ImageView image;
+            Button viewmore;
+            viewmore = view.findViewById(R.id.viewmore);
+            viewmore.setOnClickListener((View v)-> startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid",id)));
             code = view.findViewById(R.id.code);
             description = view.findViewById(R.id.description);
             price_quote = view.findViewById(R.id.price_quote);
