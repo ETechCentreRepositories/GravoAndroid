@@ -2,6 +2,7 @@ package com.greenravolution.gravo.contents;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -31,5 +32,11 @@ public class ActivitySuccessfullTransaction extends AppCompatActivity {
         Intent intent = getIntent();
         date.setText(String.format("See you on %s", intent.getStringExtra("date")));
         toolbar.setNavigationOnClickListener(v -> finish());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 5000);
     }
 }

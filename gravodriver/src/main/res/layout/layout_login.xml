@@ -59,7 +59,7 @@
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/white"
             android:textSize="15sp" />
 
         <EditText
@@ -76,7 +76,7 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/white"
             android:textSize="15sp" />
 
         <!--is the remember me rly necessary?-->

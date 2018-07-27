@@ -198,7 +198,9 @@ public class history extends Fragment {
         progressDrawable.start();
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
-        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=all");
+        sessionManager = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        String collectorid = sessionManager.getString("id","");
+        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id="+collectorid);
     }
 
     public View initview(Orders order, int position) {
@@ -244,6 +246,13 @@ public class history extends Fragment {
             llContent.setBackgroundColor(getResources().getColor(R.color.grey));
 
         }
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"clicked on cardview",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
