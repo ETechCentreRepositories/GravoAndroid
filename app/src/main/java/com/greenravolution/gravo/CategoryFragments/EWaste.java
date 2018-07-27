@@ -95,6 +95,9 @@ public class EWaste extends Fragment {
             int getWeight = Integer.parseInt(itemsWeight.getText().toString());
             if (getWeight == 0) {
                 Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_LONG).show();
+            }else if(getWeight > 500) {
+                Toast.makeText(getContext(), "Items cannot be above 500 Pieces.", Toast.LENGTH_LONG).show();
+                itemsWeight.setText("500");
             } else {
                 int itemId = rate.getId();
                 String chosenItemRate = rate.getRate();
@@ -140,8 +143,8 @@ public class EWaste extends Fragment {
                 } else {
                     itemLabel.setText(R.string.string_pieces);
                 }
-                if (getWeight >= 99) {
-                    Toast.makeText(getContext(), "Cannot go above 99 pieces", Toast.LENGTH_LONG).show();
+                if (getWeight >= 500) {
+                    Toast.makeText(getContext(), "Cannot go above 500 pieces", Toast.LENGTH_LONG).show();
                 } else {
                     getWeight = getWeight + 1;
                     itemsWeight.setText(String.valueOf(getWeight));

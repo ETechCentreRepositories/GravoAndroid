@@ -92,7 +92,10 @@ public class Metals extends Fragment {
             int getWeight = Integer.parseInt(itemsWeight.getText().toString());
             if (getWeight == 0) {
                 Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_LONG).show();
-            } else {
+            } else if(getWeight > 500) {
+                Toast.makeText(getContext(), "Items cannot be above 500KG.", Toast.LENGTH_LONG).show();
+                itemsWeight.setText("500");
+            }else{
                 int itemId = rate.getId();
                 String chosenItemRate = rate.getRate();
                 SharedPreferences preferences = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -124,8 +127,8 @@ public class Metals extends Fragment {
                 itemsWeight.setText(String.valueOf(weightInt));
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-                if (getWeight >= 99) {
-                    Toast.makeText(getContext(), "Cannot go above 99KG", Toast.LENGTH_LONG).show();
+                if (getWeight >= 500) {
+                    Toast.makeText(getContext(), "Cannot go above 500KG", Toast.LENGTH_LONG).show();
                 } else {
                     getWeight = getWeight + 1;
                     itemsWeight.setText(String.valueOf(getWeight));
