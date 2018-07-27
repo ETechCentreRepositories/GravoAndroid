@@ -250,7 +250,12 @@ public class history extends Fragment {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"clicked on cardview",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), history_details.class);
+                Orders orders = order;
+                intent.putExtra("address", orders.getAddress());
+                intent.putExtra("transaction_id", orders.getTransaction_code());
+                intent.putExtra("id", orders.getId());
+                startActivityForResult(intent, 1);
             }
         });
 

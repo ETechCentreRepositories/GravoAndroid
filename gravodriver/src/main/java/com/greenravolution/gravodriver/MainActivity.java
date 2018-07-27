@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
     LinearLayout llProgress;
     ImageView progressbar;
-    SwipeRefreshLayout refreshLayout;git
+    SwipeRefreshLayout refreshLayout;
 
     TextView collectDate;
     SharedPreferences sessionManager;
