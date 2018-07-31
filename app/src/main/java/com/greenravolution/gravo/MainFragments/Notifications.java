@@ -49,16 +49,21 @@ public class Notifications extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                Toast.makeText(getContext(), "Moving", Toast.LENGTH_LONG).show();
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Remove item from backing list here
-                if(swipeDir == ItemTouchHelper.ACTION_STATE_SWIPE){
-                    Toast.makeText(getContext(), "Swiped", Toast.LENGTH_LONG).show();
-                    adapter.notifyDataSetChanged();
-                }
+
+                Toast.makeText(getContext(), "deleted " , Toast.LENGTH_SHORT).show();
+                int position = viewHolder.getAdapterPosition();
+                    Notification myNotification = adapter.getNotificationAtPosition(position);
+
+                // Delete the word
+                mNotificationViewModel.deleteNotification(myNotification);
+                adapter.notifyDataSetChanged();
             }
         });
 

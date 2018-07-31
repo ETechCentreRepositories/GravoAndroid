@@ -2,6 +2,7 @@ package com.greenravolution.gravo.objects;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -18,5 +19,8 @@ public interface NotificationDao {
 
     @Query("SELECT * FROM notification_table WHERE userId = :userId ORDER BY time ASC")
     LiveData<List<Notification>> getAllNotifications(String userId);
+
+    @Delete
+    void deleteWord(Notification notification);
 
 }
