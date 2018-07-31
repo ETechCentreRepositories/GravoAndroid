@@ -47,6 +47,8 @@ public class TransactionDetails extends AppCompatActivity {
     ImageView progressbar;
     TextView totalPrice, totalWeight;
 
+    SharedPreferences sessionManager;
+
     Rates getRates = new Rates();
     GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
         StopLoading();
@@ -145,8 +147,10 @@ public class TransactionDetails extends AppCompatActivity {
                 Intent intent1 = getIntent();
                 int transactionid = intent1.getIntExtra("id", -1);
 
-                updateTransactionStatus.execute(String.valueOf(transactionid));
-                finish();
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                String collectorid = sessionManager.getString("id","");
+
+                updateTransactionStatus.execute(String.valueOf(transactionid),collectorid);
 
                 //update collection user.
             } else {
@@ -181,6 +185,11 @@ public class TransactionDetails extends AppCompatActivity {
         setResult(1, ib);
         finish();
 
+    }
+
+    public void FinishAfterAsyncTask()
+    {
+        this.finish();
     }
 
     public void getTransacionDetails(int id) {
@@ -419,7 +428,7 @@ public class TransactionDetails extends AppCompatActivity {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
             return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatuscomplete.php"
-                    , "transactionid=" + strings[0] + "&status=4");
+                    , "transactionid=" + strings[0] + "&status=4" + "&collectorid=" + strings[1]);
         }
 
         @Override
@@ -430,9 +439,15 @@ public class TransactionDetails extends AppCompatActivity {
                 JSONObject object = new JSONObject(s);
                 int status = object.getInt("status");
                 if (status == 200) {
-                    int transactionid = object.getJSONArray("result").getJSONObject(0).getInt("id");
+                    int transactionid = object.getJSONArray("data").getJSONObject(0).getInt("id");
                     UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
                     updateStatusMessages.execute(String.valueOf(transactionid));
+                    Log.i("called",object.toString());
+
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString("alltransactionsObject",s);
+                    editor.commit();
+                    FinishAfterAsyncTask();
 
                 }
             } catch (JSONException e) {

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,18 +57,49 @@ public class MainActivity extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
     ImageView btnProfile;
 
+
+    GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
+        llProgress.setVisibility(View.GONE);
+        Log.e("GET TRANSACTION ALL: ", message);
+        AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
+
+
+        SharedPreferences.Editor editor = sessionManager.edit();
+        editor.putString("alltransactionsObject",message);
+        editor.commit();
+        progressDrawable.stop();
+
+    };
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.i("Called","Mainactivity oncreate");
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager viewPager = findViewById(R.id.view_pager);
         FragmentPageAdapter adapter = new FragmentPageAdapter(getSupportFragmentManager());
 
+        llProgress = findViewById(R.id.llProgress);
+        progressbar = findViewById(R.id.progressBar);
+
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        if(hasNetworkConnectivity()){
+            getTransactions();
+        } else {
+            refreshLayout.setRefreshing(false);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            LayoutInflater li = LayoutInflater.from(this);
+            final View gtnc = li.inflate(R.layout.dialog_noconnectivity, null);
+            dialog.setCancelable(true);
+            dialog.setView(gtnc);
+            dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(this,Login.class)));
+            AlertDialog dialogue = dialog.create();
+            dialogue.show();
+        }
 
 //        onTabSelected(): triggered when a tab enters the selected state.
 //        onTabUnselected(): invoked when a tab exits the selected state.
@@ -106,10 +139,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public void getTransactions() {     //get list of items
+        llProgress.setVisibility(View.VISIBLE);
+        AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
+        progressDrawable.start();
+        GetAsyncRequest asyncRequest = new GetAsyncRequest();
+        asyncRequest.setOnResultListener(asyncResult);
+        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+        String collectorid = sessionManager.getString("id","");
+        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id="+collectorid);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -180,5 +221,19 @@ public class MainActivity extends AppCompatActivity {
             Log.e("res: ", String.valueOf(requestCode));
         }
     }
+
+
+
+    public Boolean hasNetworkConnectivity(){
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
+
 
 }

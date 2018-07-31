@@ -22,6 +22,7 @@ Place your fingertip on the Home button to verify your identity
     <string name="contact_number">Contact Number</string>
     <string name="email">Email</string>
     <string name="address">Address</string>
+    <string name="noconnectivity">Network connection error. \n Please make sure your network settings are correct and your network connection is active, or try again later. </string>
     <string name="unexpectederror">An unexpected error has occurred. We apologize for the inconvenience!</string>
     <string name="userisrejected">Unfortunately, You do not fit the requirements to be a collector. \nWe apologize for the inconvenience!</string>
     <string name="userhasregistered">The email you provided already has an existing account. Please try logging in</string>
