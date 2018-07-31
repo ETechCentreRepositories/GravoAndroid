@@ -66,7 +66,6 @@ public class Bulk extends Fragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +95,6 @@ public class Bulk extends Fragment {
                 String encoded_image = bitmapToBase64(bitmap);
                 AddBulk addBulk = new AddBulk();
                 addBulk.execute(encoded_image, bulk_description.getText().toString());
-// convert bitmap to drawable
             }
         } else {
             Toast.makeText(getContext(), "Please take a photo of the item you want to recycle", Toast.LENGTH_LONG).show();
@@ -114,23 +112,20 @@ public class Bulk extends Fragment {
         final CharSequence[] items = {"Take a photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Pick Profile Image");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = Utility.checkPermission(getContext());
-                if (items[item].equals("Take a photo")) {
-                    userChosenTask = "Take a photo";
-                    if (result) {
-                        cameraIntent();
-                    }
-                } else if (items[item].equals("Choose from Library")) {
-                    userChosenTask = "Choose from Library";
-                    if (result) {
-                        galleryIntent();
-                    }
-                } else {
-                    dialog.dismiss();
+        builder.setItems(items, (dialog, item) -> {
+            boolean result = Utility.checkPermission(getContext());
+            if (items[item].equals("Take a photo")) {
+                userChosenTask = "Take a photo";
+                if (result) {
+                    cameraIntent();
                 }
+            } else if (items[item].equals("Choose from Library")) {
+                userChosenTask = "Choose from Library";
+                if (result) {
+                    galleryIntent();
+                }
+            } else {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -315,7 +310,6 @@ public class Bulk extends Fragment {
                         String description = item.getString("description");
                         String code = item.getString("transaction_id_key");
                         bulklist.addView(initView(id,code,description,quote,link));
-
                     }
                 } else if (status == 404) {
                     Log.e("STATUS", "No transactions");

@@ -79,18 +79,14 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
         });
     }
     public boolean validateItems(){
-        if(getFN.getText().toString().equalsIgnoreCase("")
-                ||getLN.getText().toString().equalsIgnoreCase("")
-                ||getBlk.getText().toString().equalsIgnoreCase("")
-                ||getUnit.getText().toString().equalsIgnoreCase("")
-                ||getStreet.getText().toString().equalsIgnoreCase("")
-                ||getPostal.getText().toString().equalsIgnoreCase("")
-                ||getContact.getText().toString().equalsIgnoreCase("")
-                ||getEmail.getText().toString().equalsIgnoreCase("")){
-            return false;
-        }else{
-            return true;
-        }
+        return !getFN.getText().toString().equalsIgnoreCase("")
+                && !getLN.getText().toString().equalsIgnoreCase("")
+                && !getBlk.getText().toString().equalsIgnoreCase("")
+                && !getUnit.getText().toString().equalsIgnoreCase("")
+                && !getStreet.getText().toString().equalsIgnoreCase("")
+                && !getPostal.getText().toString().equalsIgnoreCase("")
+                && !getContact.getText().toString().equalsIgnoreCase("")
+                && !getEmail.getText().toString().equalsIgnoreCase("");
     }
     public class UpdateDetails extends AsyncTask<String, Void,String>{
 

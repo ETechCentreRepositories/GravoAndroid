@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -201,11 +202,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 } else if (status == 404) {
+                    //re.setText(R.string.not_registered);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-                    dialog.setCancelable(false);
-                    dialog.setMessage("You have not registered yet!\nPlease register to be able to enjoy the services which Gravo provides!");
-                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                    });
+                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_userhasnotregistered, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("I would like to Register", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+                    dialog.setNegativeButton("Cancel", (dialogInterface,i) -> dialogInterface.dismiss());
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
 
@@ -253,7 +257,6 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             fbname = "";
                         }
-                        fbname = "";
                         if (object.has("picture")) {
                             JSONObject imageitems = object.getJSONObject("picture");
                             if (imageitems.has("data")) {
@@ -387,6 +390,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
                     AddAchievements addachievements = new AddAchievements();
                     addachievements.execute(String.valueOf(user.getInt("id")));
+
                 } else if(status == 404) {
                     Toast.makeText(LoginActivity.this, "Your account is not linked to facebook, please login manually!", Toast.LENGTH_LONG).show();
                     LoginManager.getInstance().logOut();

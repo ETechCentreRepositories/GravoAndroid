@@ -229,11 +229,9 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 circle2.setImageResource(R.drawable.stepper_circle_grey);
                 circle3.setImageResource(R.drawable.stepper_circle_grey);
                 circle4.setImageResource(R.drawable.stepper_circle_grey);
-                line1.setImageResource(R.drawable.stepper_line_pink_animated);
+                line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_grey);
                 line3.setImageResource(R.drawable.stepper_line_grey);
-                AnimationDrawable progressDrawable = (AnimationDrawable) line1.getDrawable();
-                progressDrawable.start();
                 break;
             case "2":
                 Log.e("function status", "2");
@@ -242,10 +240,8 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 circle3.setImageResource(R.drawable.stepper_circle_grey);
                 circle4.setImageResource(R.drawable.stepper_circle_grey);
                 line1.setImageResource(R.drawable.stepper_line_pink);
-                line2.setImageResource(R.drawable.stepper_line_pink_animated);
+                line2.setImageResource(R.drawable.stepper_line_pink);
                 line3.setImageResource(R.drawable.stepper_line_grey);
-                AnimationDrawable progressDrawable2 = (AnimationDrawable) line2.getDrawable();
-                progressDrawable2.start();
                 break;
             case "3":
                 Log.e("function status", "3");
@@ -255,9 +251,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 circle4.setImageResource(R.drawable.stepper_circle_grey);
                 line1.setImageResource(R.drawable.stepper_line_pink);
                 line2.setImageResource(R.drawable.stepper_line_pink);
-                line3.setImageResource(R.drawable.stepper_line_pink_animated);
-                AnimationDrawable progressDrawable3 = (AnimationDrawable) line3.getDrawable();
-                progressDrawable3.start();
+                line3.setImageResource(R.drawable.stepper_line_pink);
                 break;
             case "4":
                 Log.e("function status", "4");
