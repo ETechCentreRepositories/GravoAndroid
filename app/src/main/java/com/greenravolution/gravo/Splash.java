@@ -128,23 +128,26 @@ public class Splash extends AppCompatActivity {
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
-                        if(user.getString("password").equalsIgnoreCase("facebooklogin")){
-                            if(user.getString("first_name").equalsIgnoreCase("")||user.getString("last_name").equalsIgnoreCase("")){
+                        if (user.getString("password").equalsIgnoreCase("facebooklogin")) {
+                            if (user.getString("first_name").equalsIgnoreCase("") || user.getString("last_name").equalsIgnoreCase("")) {
                                 Intent i = new Intent(Splash.this, FacebookAddDetailsActivity.class);
+                                Log.e("ACTIVITY", "SPLASH TO DETAILS FACEBOOK");
                                 startActivity(i);
                                 finish();
-                            }else{
+                            } else {
                                 Intent i = new Intent(Splash.this, MainActivity.class);
+                                Log.e("ACTIVITY", "SPLASH TO MAIN FACEBOOK");
                                 startActivity(i);
                                 finish();
                             }
-                        }else{
+                        } else {
                             Intent i = new Intent(Splash.this, MainActivity.class);
+                            Log.e("ACTIVITY", "SPLASH TO MAIN NORMAL");
                             startActivity(i);
                             finish();
                         }
 
-                    }else if (status == 201){
+                    } else if (status == 201) {
                         Log.e("Get User Status", String.valueOf(status));
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, String.valueOf(status));
@@ -162,24 +165,27 @@ public class Splash extends AppCompatActivity {
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
-                        if(user.getString("password").equalsIgnoreCase("facebooklogin")){
-                            if(user.getString("contact_number").equalsIgnoreCase("")||user.getString("address").equalsIgnoreCase("")){
+                        if (user.getString("password").equalsIgnoreCase("facebooklogin")) {
+                            if (user.getString("contact_number").equalsIgnoreCase("") || user.getString("address").equalsIgnoreCase("")) {
                                 Intent i = new Intent(Splash.this, FacebookAddDetailsActivity.class);
+                                Log.e("ACTIVITY", "SPLASH TO DETAILS FACEBOOK");
                                 startActivity(i);
                                 finish();
-                            }else{
+                            } else {
                                 Intent i = new Intent(Splash.this, MainActivity.class);
+                                Log.e("ACTIVITY", "SPLASH TO MAIN FACEBOOK");
                                 startActivity(i);
                                 finish();
                             }
-                        }else{
+                        } else {
                             Intent i = new Intent(Splash.this, MainActivity.class);
+                            Log.e("ACTIVITY", "SPLASH TO MAIN NORMAL");
                             startActivity(i);
                             finish();
                         }
 
 
-                    }else if (status == 404) {
+                    } else if (status == 404) {
                         Intent i = new Intent(Splash.this, Login.class);
                         Log.w("SESSION_ID:", "not logged in. ID ->" + sessionManager.getString(SESSION_ID, null));
                         startActivity(i);

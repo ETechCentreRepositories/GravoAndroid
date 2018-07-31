@@ -347,12 +347,12 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             plus.setOnClickListener((View v) -> {
                 double getWeight = Double.parseDouble(tvWeight.getText().toString());
                 double getPrice = Double.parseDouble(tvTotalPrice.getText().toString().substring(1));
-                if (getWeight >= 500) {
+                if (getWeight >= 999) {
                     Log.i("Cart : ", "item is already 0");
                     if (itemArray[1].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                        Toast.makeText(ActivityCart.this, "Cannot go above 500 pieces", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go above 999 pieces", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(ActivityCart.this, "Cannot go above 500KG", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ActivityCart.this, "Cannot go above 999KG", Toast.LENGTH_LONG).show();
                     }
 
                 } else {

@@ -131,7 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }else{
                     Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_LONG).show();
-                };
+                }
 
             } else {
                 Toast.makeText(RegisterActivity.this, "You are not connected to the internet", Toast.LENGTH_LONG).show();
@@ -209,10 +209,11 @@ public class RegisterActivity extends AppCompatActivity {
                 int status = result.getInt("status");
                 if (status == 404) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog.setCancelable(false);
-                    dialog.setMessage("You have already registered!\nPlease Login via our login page");
-                    dialog.setPositiveButton("OK", (dialogInterface, i) -> {
-                    });
+                    LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
+                    final View gtnc = li.inflate(R.layout.dialog_userhasregistered, null);
+                    dialog.setCancelable(true);
+                    dialog.setView(gtnc);
+                    dialog.setPositiveButton("Log in now", (dialogInterface, i) ->  startActivity(new Intent(RegisterActivity.this,LoginActivity.class)));
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
                 } else if (status == 200) {
