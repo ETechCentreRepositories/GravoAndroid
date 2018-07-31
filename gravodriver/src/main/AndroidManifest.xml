@@ -43,6 +43,7 @@
         <activity android:name=".loginsignup.ForgotPassword" />
         <activity android:name=".profile" />
         <activity android:name=".profileEdit" />
+        <activity android:name=".history_details"></activity>
     </application>
 
 </manifest>
