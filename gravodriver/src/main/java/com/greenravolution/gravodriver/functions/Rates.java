@@ -78,29 +78,29 @@ public class Rates {
 
     public int getImage(String type) {
         switch (type) {
-            case "Paper | Old Newspaper":
+            case "Paper | Newspaper":
                 return R.drawable.paper_main;
-            case "Paper | Old Paper":
+            case "Paper | White Paper (black print only)":
                 return R.drawable.paper_bp;
-            case "Paper | Old Cardboard Cartons":
+            case "Paper | Cardboard Cartons":
                 return R.drawable.paper_oc;
-            case "Paper | Old Textbooks":
+            case "Paper | Textbooks, Magazines, Colored Paper":
                 return R.drawable.paper_otb;
-            case "Metals | Copper Wires -( <= 4mm diameter )":
+            case "Metals | Copper Wire -( <= 4mm)":
                 return R.drawable.metal_copper_wire_one;
-            case "Metals | Copper Wires -( > 4mm diameter)":
+            case "Metals | Copper Wire -( > 4mm)":
                 return R.drawable.metal_copper_wire_one;
             case "Metals | Untainted -Stripped Copper Wires":
                 return R.drawable.metal_untainted_copper_wire;
             case "Metals | Dirty  -Stripped Copper Wires":
                 return R.drawable.metal_copper_wire_two;
-            case "Metals | Brass Items - ":
+            case "Metals | Brass - ":
                 return R.drawable.metal_brass_item;
-            case "Metals | Copper Pipes or -Copper Plates":
+            case "Metals | Copper Pipe -Copper Plate":
                 return R.drawable.metal_main;
             case "Metals | Telephone Wires - ":
                 return R.drawable.metal_telephone_cable;
-            case "Metals | Aluminium Items - ":
+            case "Metals | Aluminium (UBC)- ":
                 return R.drawable.metal_aluminium;
             case "Metals | Mixed Wires -(bundled / coiled)":
                 return R.drawable.metal_mixed_wires;
