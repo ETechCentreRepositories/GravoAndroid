@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
                         bl.setEnabled(true);
                         AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
                         LayoutInflater li = LayoutInflater.from(LoginActivity.this);
-                        final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+                        final View gtnc = li.inflate(R.layout.dialog_unexpectederror, null);
                         dialog.setCancelable(true);
                         dialog.setView(gtnc);
                         dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
@@ -274,16 +274,16 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } else if (status == 403) {
                     re.setText("");
-                    //Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
                     bl.setEnabled(true);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
-                    final View gtnc = li.inflate(R.layout.acceptancedialog, null);
-                    dialog.setCancelable(true);
-                    dialog.setView(gtnc);
-                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
-                    AlertDialog dialogue = dialog.create();
-                    dialogue.show();
+//                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+//                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
+//                    final View gtnc = li.inflate(R.layout.acceptancedialog, null);
+//                    dialog.setCancelable(true);
+//                    dialog.setView(gtnc);
+//                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+//                    AlertDialog dialogue = dialog.create();
+//                    dialogue.show();
                 } else if (status == 404) {
                     //re.setText(R.string.not_registered);
                     bl.setEnabled(true);

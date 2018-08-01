@@ -214,6 +214,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="15dp"
                             android:layout_marginTop="15dp"
+                            android:layout_marginLeft="10dp"
                             android:textColor="@color/black"
                             android:text="Address Here"
                             android:textSize="15sp"/>
