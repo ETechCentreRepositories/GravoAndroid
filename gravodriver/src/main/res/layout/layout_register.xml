@@ -232,6 +232,7 @@
                 android:drawableStart="@drawable/ic_account_padding"
                 android:hint="NRIC Number"
                 android:inputType="text"
+                android:maxLength="9"
                 android:padding="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"

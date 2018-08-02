@@ -159,13 +159,18 @@ public class TransactionDetails extends AppCompatActivity {
                 UpdateTransactionDetails updateTransactionDetails = new UpdateTransactionDetails();
                 Intent intent1 = getIntent();
                 int transactionid = intent1.getIntExtra("id", -1);
-                updateTransactionDetails.execute(String.valueOf(transactionid), name, contact);
-                //update collection
+
                 Intent ib = new Intent();
                 ib.putExtra("type", "1");
                 ib.putExtra("transaction_id", trans_id);
                 setResult(1, ib);
-                finish();
+
+                sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+                String collectorid = sessionManager.getString("id","");
+
+                updateTransactionDetails.execute(String.valueOf(transactionid), name, contact, collectorid);
+                //update collection
+                //finish();
             }
         });
         //temp
@@ -412,13 +417,31 @@ public class TransactionDetails extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
-            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionuserandcontact.php", "transactionid=" + strings[0] + "&user=" + strings[1] + "&number=" + strings[2] + "&status=4");
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionuserandcontact.php", "transactionid=" + strings[0] + "&user=" + strings[1] + "&number=" + strings[2] + "&status=4" + "&collectorid=" + strings[3]);
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e("UPDATE TRANSACTIONS:", s + "");
+            try {
+                JSONObject object = new JSONObject(s);
+                int status = object.getInt("status");
+                if (status == 200) {
+                    int transactionid = object.getJSONArray("data").getJSONObject(0).getInt("id");
+                    UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
+                    updateStatusMessages.execute(String.valueOf(transactionid));
+                    Log.i("called",object.toString());
+
+                    SharedPreferences.Editor editor = sessionManager.edit();
+                    editor.putString("alltransactionsObject",s);
+                    editor.commit();
+                    FinishAfterAsyncTask();
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

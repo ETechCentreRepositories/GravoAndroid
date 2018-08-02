@@ -83,4 +83,8 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
         else return 0;
     }
 
+    public Notification getNotificationAtPosition (int position) {
+        return allNotifications.get(position);
+    }
+
 }
