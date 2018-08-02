@@ -78,29 +78,29 @@ public class Rates {
     }
     public int getImage(String type) {
         switch (type) {
-            case "Paper | Old Newspaper":
+            case "Paper | Newspaper":
                 return R.drawable.paper_main;
-            case "Paper | Old Paper":
+            case "Paper | White Paper (black print only)":
                 return R.drawable.paper_bp;
-            case "Paper | Old Cardboard Cartons":
+            case "Paper | Cardboard Cartons":
                 return R.drawable.paper_oc;
-            case "Paper | Old Textbooks":
+            case "Paper | Textbooks, Magazines, Colored Paper":
                 return R.drawable.paper_otb;
-            case "Metals | Copper Wires -( <= 4mm diameter )":
+            case "Metals | Copper Wire -( <= 4mm)":
                 return R.drawable.metal_copper_wire_one;
-            case "Metals | Copper Wires -( > 4mm diameter)":
+            case "Metals | Copper Wire -( > 4mm)":
                 return R.drawable.metal_copper_wire_one;
             case "Metals | Untainted -Stripped Copper Wires":
                 return R.drawable.metal_untainted_copper_wire;
-            case "Metals | Dirty  -Stripped Copper Wires":
+            case "Metals | Dirty -Stripped Copper Wires":
                 return R.drawable.metal_copper_wire_two;
-            case "Metals | Brass Items - ":
+            case "Metals | Brass - ":
                 return R.drawable.metal_brass_item;
-            case "Metals | Copper Pipes or -Copper Plates":
+            case "Metals | Copper Pipe -Copper Plate":
                 return R.drawable.metal_main;
             case "Metals | Telephone Wires - ":
                 return R.drawable.metal_telephone_cable;
-            case "Metals | Aluminium Items - ":
+            case "Metals | Aluminium (UBC)- ":
                 return R.drawable.metal_aluminium;
             case "Metals | Mixed Wires -(bundled / coiled)":
                 return R.drawable.metal_mixed_wires;
@@ -121,30 +121,6 @@ public class Rates {
 
     }
 
-    public int getImageColour(int cat_id, String rates) {
-        try {
-            JSONArray getRates = new JSONArray(rates);
-            for (int i = 0; i < getRates.length(); i++) {
-                JSONObject rate = getRates.getJSONObject(i);
-                if (cat_id == rate.getInt("id")) {
-                    String price = rate.getString("type");
-                    String[] wasteType = price.split(" ");
-                    switch (wasteType[0]) {
-                        case "Paper":
-                            return R.color.brand_yellow;
-                        case "Metals":
-                            return R.color.brand_orange;
-                        case "E-Waste":
-                            return R.color.brand_purple;
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public int getImageColour(String color) {
         switch (color) {
             case "Paper":
@@ -156,75 +132,4 @@ public class Rates {
         }
         return 0;
     }
-
-    public int GetTotalWeight(ArrayList<OrderDetails> orderDetails) {
-        int weight = 0;
-
-        for (int j = 0; j < orderDetails.size(); j++) {
-            weight = weight + Integer.parseInt(orderDetails.get(j).getWeight());
-        }
-        return weight;
-    }
-
-    public int GetCollectedWeight(ArrayList<OrderDetails> orderDetails, ArrayList<Orders> orders) {
-        ArrayList<OrderDetails> collectedOrders = new ArrayList<>();
-        int weight = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getStatus_id() == 4) {
-                for (int j = 0; j < orderDetails.size(); j++) {
-                    if (collectedOrders.get(j).getTransaction_id() == orders.get(i).getId()) {
-                        collectedOrders.add(orderDetails.get(j));
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < collectedOrders.size(); i++) {
-            weight = weight + Integer.parseInt(collectedOrders.get(i).getWeight());
-        }
-        return weight;
-    }
-
-    public double EstimateAmountPayment(ArrayList<OrderDetails> orders, String rates) {
-
-        double price = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            for (int position = 0; position < orders.size(); position++) {
-                int item = orders.get(i).getCategory_id();
-                int weight = Integer.parseInt(orders.get(i).getWeight());
-                Rates getRates = new Rates();
-                String itemPrice = getRates.getRates(item, weight, rates);
-                price = price + Double.parseDouble(itemPrice);
-            }
-        }
-        return price;
-    }
-
-    public double EstimateAmountPaid(ArrayList<Orders> orders, String rates) {
-        ArrayList<Orders> collectedOrders = new ArrayList<Orders>();
-        double price = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getStatus_id() == 4) {
-                collectedOrders.add(orders.get(i));
-            }
-        }
-        for (int i = 0; i < collectedOrders.size(); i++) {
-            String itemDetails = "[{'id':1,'cat_id':1,'weight':20},{'id':1,'cat_id':2,'weight':30},{'id':1,'cat_id':5,'weight':30}]";
-            try {
-                JSONArray details = new JSONArray(itemDetails);
-                for (int position = 0; position < details.length(); position++) {
-                    JSONObject detail = details.getJSONObject(position);
-                    int item = detail.getInt("cat_id");
-                    int getWeight = detail.getInt("weight");
-                    Rates getRates = new Rates();
-                    String itemPrice = getRates.getRates(item, getWeight, rates);
-                    price = price + Double.parseDouble(itemPrice);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return price;
-    }
-
 }
