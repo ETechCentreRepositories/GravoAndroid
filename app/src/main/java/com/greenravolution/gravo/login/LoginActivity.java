@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login, forgot_password;
     EditText email, password;
     Toolbar toolbar;
-    String fbemail, fbname, fbpic;
+    String fbemail, fbname, fbpic, fbid ;
     HttpReq loginRequest = new HttpReq();
     API getlinkrequest = new API();
     LoginButton facebook_login;
@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Please Login via Facebook", Toast.LENGTH_SHORT).show();
                     } else {
                         editor.putInt("user_id", user.getInt("id"));
+                        editor.putString("user_facebook_id", user.getString("facebook_id"));
                         editor.putString("user_image", user.getString("photo"));
                         editor.putString("user_first_name", user.getString("first_name"));
                         editor.putString("user_last_name", user.getString("last_name"));
@@ -247,6 +248,17 @@ public class LoginActivity extends AppCompatActivity {
                     Log.wtf("jsonString: ", "" + json_object);
                     try {
                         JSONObject object = new JSONObject(String.valueOf(json_object));
+
+                       fbid = "";
+                        if(object.has("id")){
+                            if(object.getString("id").equals("")){
+                                fbid = "";
+                            }else{
+                                fbid = object.getString("id");
+                            }
+                        }else{
+                            fbid = "";
+                        }
                         fbname = "";
                         if (object.has("name")) {
                             if (object.getString("name").equals("")) {
@@ -281,14 +293,12 @@ public class LoginActivity extends AppCompatActivity {
                                 fbemail = object.getString("email");
                             }
                         } else {
-                            LoginManager.getInstance().logOut();
-                            Toast.makeText(LoginActivity.this, "Facebook does not allow us to retrieve your email. Please register manually. Sorry for the inconvenience!", Toast.LENGTH_LONG).show();
-                            HideProgress();
+                            fbemail = "";
                         }
-                        if(object.has("email")){
+                        if(object.has("id")){
                             ShowProgress();
                             FacebookLogin fbLogin = new FacebookLogin();
-                            fbLogin.execute(fbname, fbemail, fbpic);
+                            fbLogin.execute(fbname, fbemail, fbpic, fbid);
 
                         }
 
@@ -327,7 +337,7 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             API api = new API();
-            return req.PostRequest(api.getFacebookLogin(), "fullname=" + strings[0] + "&email=" + strings[1] + "&contactnumber=" + "&address=" + "" + "&image=" + strings[2]);
+            return req.PostRequest(api.getFacebookLogin(), "facebook_id="+strings[3]+"&fullname=" + strings[0] + "&email=" + strings[1] + "&contactnumber=" + "&address=" + "" + "&image=" + strings[2]);
         }
 
         @Override

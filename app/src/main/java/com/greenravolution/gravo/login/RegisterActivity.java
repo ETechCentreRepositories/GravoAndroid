@@ -106,7 +106,15 @@ public class RegisterActivity extends AppCompatActivity {
         HideProgress();
 
         register.setOnClickListener(v -> {
-            address = "Blk "+address_block.getText().toString()+"_#"+address_unit.getText().toString()+"_"+address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+            if(address_unit.getText().toString().equals("")){
+                address = "Blk "+address_block.getText().toString()+", "+address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
+            }else if(address_block.getText().toString().equals("")){
+                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
+            }else if(address_block.getText().toString().equals("") && address_unit.getText().toString().equals("")){
+                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
+            }else{
+                address = "Blk " + address_block.getText().toString() + " #" + address_unit.getText().toString() + ", " + address_street.getText().toString() + " Singapore " + address_postal.getText().toString();
+            }
             if (checkNetworks()) {
                 if(ctnc.isChecked()){
                     if(email.getText().toString().equalsIgnoreCase("")||password.getText().toString().equalsIgnoreCase("")){
@@ -118,8 +126,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 && !lname.getText().toString().equalsIgnoreCase("")
                                 && !password.getText().toString().equalsIgnoreCase("")
                                 && !number.getText().toString().equalsIgnoreCase("")
-                                && !address_unit.getText().toString().equalsIgnoreCase("")
-                                && !address_block.getText().toString().equalsIgnoreCase("")
                                 && !address_street.getText().toString().equalsIgnoreCase("")
                                 && !address_postal.getText().toString().equalsIgnoreCase("")){
                             ShowProgress();
@@ -242,7 +248,7 @@ public class RegisterActivity extends AppCompatActivity {
                     editor.putString("user_rank", user.getString("rank_name"));
                     editor.putString("login_type", "normal");
                     editor.apply();
-                    startActivity(new Intent(RegisterActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                     finish();
                 }else{
                     Log.e("STATUS CODE: ",status+"");

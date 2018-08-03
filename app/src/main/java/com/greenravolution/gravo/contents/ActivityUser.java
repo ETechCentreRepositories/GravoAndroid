@@ -53,9 +53,7 @@ public class ActivityUser extends AppCompatActivity {
         if (getAddress.equalsIgnoreCase("")) {
             myAddress.setText("");
         } else {
-            String[] addressarray = getAddress.split("_");
-            Log.e("address", addressarray[0] + " " + addressarray[1] + " " + addressarray[2] + " " + addressarray[3]);
-            myAddress.setText(addressarray[0] + " " + addressarray[1] + " " + addressarray[2] + " " + addressarray[3]);
+            myAddress.setText(getAddress);
         }
     }
 

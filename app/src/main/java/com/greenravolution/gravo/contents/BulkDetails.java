@@ -165,8 +165,7 @@ public class BulkDetails extends AppCompatActivity {
                         bulkname.setText(item.getString("full_name"));
                         bulkquote.setText(item.getString("price_quote"));
                         bulkstatus.setText(item.getString("status"));
-                        String[] address = item.getString("address").split("_");
-                        bulkaddress.setText(address[0]+" "+address[1]+"\n"+address[2]+"\n"+address[3]);
+                        bulkaddress.setText(item.getString("address"));
                         bulkdescription.setText(item.getString("description"));
                         bulktransactionid.setText(item.getString("transaction_id_key"));
                         int status_id = item.getInt("bulk_transaction_status_id");

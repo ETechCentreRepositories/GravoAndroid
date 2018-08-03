@@ -3,14 +3,12 @@ package com.greenravolution.gravo.contents;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,8 +34,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -55,8 +51,8 @@ public class ActivityEditUser extends AppCompatActivity {
     TextView newEmail;
     CircleImageView newProfile;
     Button cancel, save, uploadImage;
-    String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask;
-    EditText address_unit,address_block,address_street,address_postal;
+    String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask, getBlock, getUnit, getStreet, getPostal;
+    EditText address_unit, address_block, address_street, address_postal;
     int getId;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 1962018;
@@ -84,9 +80,19 @@ public class ActivityEditUser extends AppCompatActivity {
         address_postal = findViewById(R.id.address_postal);
 
         save.setOnClickListener(v -> {
-            EditUser editUser = new EditUser();
-            ShowProgress();
-            editUser.execute();
+            if (address_block.getText().toString().equals("")
+                    && address_unit.getText().toString().equals("")
+                    && address_street.getText().toString().equals("")
+                    && address_postal.getText().toString().equals("")
+                    && newFirstName.getText().toString().equals("")
+                    && newLastName.getText().toString().equals("")
+                    && newPhone.getText().toString().equals("")) {
+                Toast.makeText(this, "Please fill in all details", Toast.LENGTH_SHORT).show();
+            } else {
+                EditUser editUser = new EditUser();
+                ShowProgress();
+                editUser.execute();
+            }
         });
         uploadImage = findViewById(R.id.uploadImage);
         cancel.setOnClickListener(v -> finish());
@@ -100,21 +106,17 @@ public class ActivityEditUser extends AppCompatActivity {
         getAddress = sessionManager.getString("user_address", "");
         getImage = sessionManager.getString("user_image", "");
         getPhone = sessionManager.getString("user_contact", "");
+        getBlock = sessionManager.getString("user_address_block", "");
+        getUnit = sessionManager.getString("user_address_unit", "");
+        getStreet = sessionManager.getString("user_address_street", "");
+        getPostal = sessionManager.getString("user_address_postal", "");
         newFirstName.setText(getFirstName);
         newLastName.setText(getLastName);
         newEmail.setText(getEmail);
-        if(getAddress.equals("")){
-            address_block.setText("");
-            address_unit.setText("");
-            address_street.setText("");
-            address_postal.setText("");
-        }else{
-            String[] addressarray = getAddress.split("_");
-            address_block.setText(addressarray[0].split(" ")[1]);
-            address_unit.setText(addressarray[1].substring(1));
-            address_street.setText(addressarray[2]);
-            address_postal.setText(addressarray[3].split(" ")[1]);
-        }
+        address_block.setText(getBlock);
+        address_unit.setText(getUnit);
+        address_street.setText(getStreet);
+        address_postal.setText(getPostal);
 
         newPhone.setText(getPhone);
         HideProgress();
@@ -189,7 +191,7 @@ public class ActivityEditUser extends AppCompatActivity {
             Log.e("BULK: result Code", resultCode + "");
             if (resultCode == Activity.RESULT_OK) {
                 if (requestCode == SELECT_FILE) {
-                   onSelectFromGalleryResult(data);
+                    onSelectFromGalleryResult(data);
                 } else if (requestCode == REQUEST_CAMERA) {
                     Log.e("BULK: ", requestCode + "");
                     onCaptureImageResult(data);
@@ -211,9 +213,9 @@ public class ActivityEditUser extends AppCompatActivity {
             }
         }
 
-            newProfile.setImageBitmap(bm);
-            UploadPhoto(bm);
-            ShowProgress();
+        newProfile.setImageBitmap(bm);
+        UploadPhoto(bm);
+        ShowProgress();
 //                bulk_image.setImageBitmap(cameraImage);
     }
 
@@ -257,7 +259,15 @@ public class ActivityEditUser extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            address = "Blk "+address_block.getText().toString()+"_#"+address_unit.getText().toString()+"_"+address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+            if(address_unit.getText().toString().equals("")){
+                address = "Blk "+address_block.getText().toString()+"_"+address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+            }else if(address_block.getText().toString().equals("")){
+                address = address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+            }else if(address_block.getText().toString().equals("") && address_unit.getText().toString().equals("")){
+                address = address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+            }else{
+                address = "Blk " + address_block.getText().toString() + "_#" + address_unit.getText().toString() + "_" + address_street.getText().toString() + "_Singapore " + address_postal.getText().toString();
+            }
             HttpReq req = new HttpReq();
             API api = new API();
 
@@ -295,6 +305,10 @@ public class ActivityEditUser extends AppCompatActivity {
                     editor.putString("user_email", user.getString("email"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
+                    editor.putString("user_address_block", user.getString("block"));
+                    editor.putString("user_address_unit", user.getString("unit"));
+                    editor.putString("user_address_street", user.getString("street"));
+                    editor.putString("user_address_postal", user.getString("postal"));
                     editor.apply();
                     Toast.makeText(ActivityEditUser.this, "Profile updated!", Toast.LENGTH_LONG).show();
                     finish();
@@ -307,6 +321,7 @@ public class ActivityEditUser extends AppCompatActivity {
 
         }
     }
+
     public class EditProfilePic extends AsyncTask<String, Void, String> {
 
         @Override
@@ -338,7 +353,7 @@ public class ActivityEditUser extends AppCompatActivity {
                     editor.apply();
                     Glide.with(ActivityEditUser.this).load(user.getString("photo")).into(newProfile);
                     Toast.makeText(ActivityEditUser.this, "Profile Photo Updated", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(ActivityEditUser.this, "Unable to update photo", Toast.LENGTH_SHORT).show();
                 }
 
@@ -390,6 +405,7 @@ public class ActivityEditUser extends AppCompatActivity {
         uploadImage.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

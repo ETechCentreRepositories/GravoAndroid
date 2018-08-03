@@ -24,16 +24,19 @@
             android:textSize="25sp" />
 
     </android.support.v7.widget.Toolbar>
+
     <ScrollView
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
         android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
 
             <LinearLayout
                 android:id="@+id/form"
@@ -41,6 +44,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Details"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp" />
+
 
                 <EditText
                     android:id="@+id/email"
@@ -54,6 +65,7 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:padding="5dp" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,19 +86,21 @@
                         android:padding="5dp" />
 
                     <EditText
-                        android:background="@drawable/text_field_background"
                         android:id="@+id/last_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2.5dp"
                         android:layout_weight="0.5"
+                        android:background="@drawable/text_field_background"
                         android:hint="Last Name"
                         android:inputType="textPersonName"
                         android:padding="5dp" />
                 </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <EditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
@@ -98,17 +112,16 @@
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:padding="5dp" />
+
                     <ImageButton
                         android:id="@+id/pwvisibility"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:src="@drawable/ic_visibility_24dp"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp" />
+                        android:src="@drawable/ic_visibility_24dp" />
                 </RelativeLayout>
-
-
 
 
                 <EditText
@@ -123,35 +136,51 @@
                     android:hint="@string/contact_number"
                     android:inputType="phone"
                     android:padding="5dp" />
-                <LinearLayout
-                    android:weightSum="3"
-                    android:orientation="horizontal"
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Address"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="*The postal code and Street names are compulsory"
+                    android:textColor="@color/brand_pink" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
                     <EditText
                         android:id="@+id/address_blk"
-                        android:layout_weight="1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
                         android:background="@drawable/text_field_background"
                         android:drawablePadding="5dp"
-                        android:drawableStart="@drawable/ic_location"
                         android:gravity="center_vertical"
                         android:hint="Block"
                         android:inputType="text"
                         android:padding="5dp" />
+
                     <EditText
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
                         android:id="@+id/address_unit"
-                        android:layout_weight="2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="2"
                         android:background="@drawable/text_field_background"
                         android:drawablePadding="5dp"
-                        android:drawableStart="@drawable/ic_location"
                         android:gravity="center_vertical"
                         android:hint="unit"
                         android:inputType="text"
@@ -165,7 +194,6 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/text_field_background"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_location"
                     android:gravity="center_vertical"
                     android:hint="Street"
                     android:inputType="text"
@@ -178,7 +206,6 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/text_field_background"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_location"
                     android:gravity="center_vertical"
                     android:hint="Postal Code"
                     android:inputType="text"
@@ -214,16 +241,16 @@
                 </LinearLayout>
 
                 <Button
-                    android:layout_marginTop="10dp"
                     android:id="@+id/register"
                     android:layout_width="wrap_content"
-                    android:paddingStart="30dp"
-                    android:paddingEnd="30dp"
-                    android:layout_gravity="center_horizontal"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_brand_green_round"
+                    android:paddingEnd="30dp"
+                    android:paddingStart="30dp"
                     android:text="@string/create_account"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btn_brand_green_round"/>
+                    android:textColor="@color/white" />
 
             </LinearLayout>
         </LinearLayout>
@@ -231,20 +258,20 @@
 
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="#90000000"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:indicatorName="BallClipRotateMultipleIndicator"
-            app:indicatorColor="@color/brand_green"/>
+            app:indicatorColor="@color/brand_green"
+            app:indicatorName="BallClipRotateMultipleIndicator" />
     </LinearLayout>
-
 
 
 </RelativeLayout>

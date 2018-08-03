@@ -204,7 +204,7 @@
                                 android:textAlignment="center"
                                 android:textSize="20dp"
                                 android:layout_height="wrap_content"
-                                android:text="BULK ITEMS"/>
+                                android:text="BIG ITEMS"/>
                             <TextView
                                 android:layout_width="match_parent"
                                 android:textAlignment="textEnd"

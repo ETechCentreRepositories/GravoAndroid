@@ -73,7 +73,8 @@
                     android:padding="5dp" />
             </LinearLayout>
 
-            <TextView
+            <EditText
+                android:background="#05000000"
                 android:id="@+id/newEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

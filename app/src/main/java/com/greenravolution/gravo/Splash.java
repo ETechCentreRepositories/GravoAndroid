@@ -117,6 +117,7 @@ public class Splash extends AppCompatActivity {
                         JSONArray users = result.getJSONArray("users");
                         JSONObject user = users.getJSONObject(0);
                         editor.putInt("user_id", user.getInt("id"));
+                        editor.putString("user_facebook_id", user.getString("facebook_id"));
                         editor.putString("user_image", user.getString("photo"));
                         editor.putString("user_first_name", user.getString("first_name"));
                         editor.putString("user_last_name", user.getString("last_name"));
@@ -125,10 +126,14 @@ public class Splash extends AppCompatActivity {
                         editor.putString("user_email", user.getString("email"));
                         editor.putString("user_contact", user.getString("contact_number"));
                         editor.putString("user_address", user.getString("address"));
+                        editor.putString("user_address_block", user.getString("block"));
+                        editor.putString("user_address_unit", user.getString("unit"));
+                        editor.putString("user_address_street", user.getString("street"));
+                        editor.putString("user_address_postal", user.getString("postal"));
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
-                        if (user.getString("password").equalsIgnoreCase("facebooklogin")) {
+                        if (user.getString("facebook_id")!=null) {
                             if (user.getString("first_name").equalsIgnoreCase("") || user.getString("last_name").equalsIgnoreCase("")) {
                                 Intent i = new Intent(Splash.this, FacebookAddDetailsActivity.class);
                                 Log.e("ACTIVITY", "SPLASH TO DETAILS FACEBOOK");
@@ -154,6 +159,7 @@ public class Splash extends AppCompatActivity {
                         JSONArray users = result.getJSONArray("users");
                         JSONObject user = users.getJSONObject(0);
                         editor.putInt("user_id", user.getInt("id"));
+                        editor.putString("user_facebook_id", user.getString("facebook_id"));
                         editor.putString("user_image", user.getString("photo"));
                         editor.putString("user_first_name", user.getString("first_name"));
                         editor.putString("user_last_name", user.getString("last_name"));
@@ -162,11 +168,15 @@ public class Splash extends AppCompatActivity {
                         editor.putString("user_email", user.getString("email"));
                         editor.putString("user_contact", user.getString("contact_number"));
                         editor.putString("user_address", user.getString("address"));
+                        editor.putString("user_address_block", user.getString("block"));
+                        editor.putString("user_address_unit", user.getString("unit"));
+                        editor.putString("user_address_street", user.getString("street"));
+                        editor.putString("user_address_postal", user.getString("postal"));
                         editor.putInt("user_total_points", user.getInt("total_points"));
                         editor.putString("user_rank", user.getString("rank_name"));
                         editor.apply();
-                        if (user.getString("password").equalsIgnoreCase("facebooklogin")) {
-                            if (user.getString("contact_number").equalsIgnoreCase("") || user.getString("address").equalsIgnoreCase("")) {
+                        if (user.getString("facebook_id")!=null) {
+                            if (user.getString("first_name").equalsIgnoreCase("") || user.getString("last_name").equalsIgnoreCase("")) {
                                 Intent i = new Intent(Splash.this, FacebookAddDetailsActivity.class);
                                 Log.e("ACTIVITY", "SPLASH TO DETAILS FACEBOOK");
                                 startActivity(i);

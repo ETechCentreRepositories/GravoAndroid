@@ -7,11 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +30,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +54,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -61,17 +66,15 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     TextView scheduleDate;
     String requestParameters = "userid=";
     LinearLayout cartItems;
+    LinearLayout summary;
+    RelativeLayout checkout;
     ImageView ivItem;
+    ImageView arrow;
     String itemType, itemRate;
     TextView tvTotalWeight, tvTotalPrice, tvNoOfItems;
-    EditText etPhone, etRemarks;
-    AutoCompleteTextView etAddress;
+    EditText etPhone, etRemarks, etBlock, etUnit, etStreet, etPostal;
     JSONObject item;
-    private static final String LOG_TAG = "Places Autocomplete";
-    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private static final String OUT_JSON = "/json";
-    private static final String API_KEY = "AIzaSyAcySxtEoAxt3PcTc-LAAa506DeOGAV7nY";
+    ScrollView scollview;
     int no_of_items = 0;
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
         try {
@@ -429,38 +432,59 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
+        Display display = getWindowManager().getDefaultDisplay(); Point size = new Point(); display.getSize(size); int width = size.x; int height = size.y;
+        arrow = findViewById(R.id.arrow);
         cartItems = findViewById(R.id.cartItems);
+        checkout = findViewById(R.id.checkout);
+        scollview = findViewById(R.id.scrollview);
+        summary = findViewById(R.id.summary);
+
+        summary.setTranslationY((height/3));
+        checkout.setOnClickListener(v -> {
+            if(summary.getTranslationY()==(height/3)){
+                summary.animate().setDuration(500).translationY(0);
+                arrow.animate().setDuration(550).rotation(180);
+
+            }else{
+                summary.animate().setDuration(500).translationY((height/3));
+                arrow.animate().setDuration(550).rotation(0);
+            }
+        });
         etPhone = findViewById(R.id.etPhone);
-        etAddress = findViewById(R.id.etAddress);
+        etBlock = findViewById(R.id.address_blk);
+        etUnit = findViewById(R.id.address_unit);
+        etStreet = findViewById(R.id.address_street);
+        etPostal = findViewById(R.id.address_postal);
+
         etRemarks = findViewById(R.id.etRemarks);
         tvTotalPrice = findViewById(R.id.totalPrice);
         tvTotalWeight = findViewById(R.id.totalWeight);
         tvTotalPrice.setText(R.string.defaultprice);
         tvTotalWeight.setText(R.string.defaultweight);
         etPhone.setText(preferences.getString("user_contact", ""));
-        String[] addressarray = preferences.getString("user_address", "").split("_");
-        Log.e("address", addressarray[0] + " " + addressarray[1] + " " + addressarray[2] + " " + addressarray[3]);
-        etAddress.setText(addressarray[0] + " " + addressarray[1] + " " + addressarray[2] + " " + addressarray[3]);
-        etAddress.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
-        etAddress.setOnItemClickListener(ActivityCart.this);
+
+        etBlock.setText(preferences.getString("user_address_block",""));
+        etUnit.setText(preferences.getString("user_address_unit",""));
+        etStreet.setText(preferences.getString("user_address_street",""));
+        etPostal.setText(preferences.getString("user_address_postal",""));
+
         cash = findViewById(R.id.cash);
         cash.setOnClickListener((View v) -> {
             String userPhoneNo = etPhone.getText().toString();
-            String userAddress = etAddress.getText().toString();
             String userRemarks = etRemarks.getText().toString();
             String userPreTotalPrice = tvTotalPrice.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
             Log.e("Cart total price", userTotalPrice);
             Log.e("price", userTotalPrice);
-            Log.i("validation", scheduleDate.getText().toString() + etPhone.getText().toString() + etAddress.getText().toString());
-            if (etPhone.getText().toString().equals("") || etAddress.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
-                Toast.makeText(this, "Missing fields", Toast.LENGTH_LONG).show();
+            if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
+                Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
             } else if (no_of_items == 0) {
                 Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
             } else {
                 int status_id = 1;
-                String[] getdatesplit = scheduleDate.getText().toString().split("-");
-                String newdate = getdatesplit[2] + "-" + getdatesplit[1] + "-" + getdatesplit[0];
+
+                String newdate = datetodateformat(scheduleDate.getText().toString());
+                String[] getdatesplit = newdate.split("-");
                 String addTransactionUrl = links.addTransaction();
                 Calendar calAlarm = Calendar.getInstance();
                 calAlarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(getdatesplit[0]));
@@ -473,6 +497,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 calAlarm.set(Calendar.AM_PM, 0);
                 setAlarmForPickUpDay(calAlarm);
                 AsyncAddTransaction addTransaction = new AsyncAddTransaction();
+                String userAddress = "Blk " + etBlock.getText().toString() + " #" + etUnit.getText().toString() + ", " + etStreet.getText().toString() + " Singapore " + etPostal.getText().toString();
                 String[] paramsArray = {addTransactionUrl, newdate, userAddress, name, userPhoneNo, userTotalPrice, tvTotalWeight.getText().toString(), userRemarks, "00000", id, status_id + ""};
                 for (int i = 0; i < paramsArray.length; i++) {
                     Log.e("params", paramsArray[i]);
@@ -481,7 +506,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     Log.i("message", message);
                     Log.i("resultCodeHere", resultCode + "");
                     if (resultCode == 200) {
-                        startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", newdate));
+                        startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", scheduleDate.getText().toString()));
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_LONG).show();
@@ -504,7 +529,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year, monthOfYear, dayOfMonth) -> scheduleDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year), mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) ->
+                    scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth+1, mDay);
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
 
@@ -545,102 +571,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         String str = (String) adapterView.getItemAtPosition(position);
     }
 
-    public static ArrayList autocomplete(String input) {
-        ArrayList resultList = null;
 
-        HttpURLConnection conn = null;
-        StringBuilder jsonResults = new StringBuilder();
-        try {
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
-            sb.append("?key=" + API_KEY);
-            sb.append("&components=country:sg");
-            sb.append("&input=");
-            sb.append(URLEncoder.encode(input, "utf8"));
-            URL url = new URL(sb.toString());
-            conn = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-            // Load the results into a StringBuilder
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
-            }
-        } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error processing Places API URL", e);
-            return null;
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error connecting to Places API", e);
-            return null;
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-
-        try {
-            // Create a JSON object hierarchy from the results
-            JSONObject jsonObj = new JSONObject(jsonResults.toString());
-            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList(predsJsonArray.length());
-            for (int i = 0; i < predsJsonArray.length(); i++) {
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-            }
-
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, "Cannot process JSON results", e);
-        }
-
-        return resultList;
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-    }
-
-    class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
-        private ArrayList resultList;
-
-        public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-        }
-        @Override
-        public int getCount() {
-            return resultList.size();
-        }
-        @Override
-        public String getItem(int index) {
-            return String.valueOf(resultList.get(index));
-        }
-        @Override
-        public Filter getFilter() {
-            Filter filter = new Filter() {
-                @Override
-                protected FilterResults performFiltering(CharSequence constraint) {
-                    FilterResults filterResults = new FilterResults();
-                    if (constraint != null) {
-                        // Retrieve the autocomplete results.
-                        resultList = autocomplete(constraint.toString());
-
-                        // Assign the data to the FilterResults
-                        filterResults.values = resultList;
-                        filterResults.count = resultList.size();
-                    }
-                    return filterResults;
-                }
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    if (results != null && results.count > 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyDataSetInvalidated();
-                    }
-                }
-            };
-            return filter;
-        }
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -655,6 +586,66 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (imm.isAcceptingText()) { // verify if the soft keyboard is open
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+    public String datetodateformat(String date){
+        String[] datesplit = date.split(" ");
+        if(datesplit[1].equals("January")){
+            return datesplit[0]+"-1-"+datesplit[2];
+        }else if (datesplit[1].equals("February")){
+            return datesplit[0]+"-2"+datesplit[2];
+        }else if (datesplit[1].equals("March")){
+            return datesplit[0]+"-3-"+datesplit[2];
+        }else if (datesplit[1].equals("April")){
+            return datesplit[0]+"-4-"+datesplit[2];
+        }else if (datesplit[1].equals("May")){
+            return datesplit[0]+"-5-"+datesplit[2];
+        }else if (datesplit[1].equals("June")){
+            return datesplit[0]+"-6-"+datesplit[2];
+        }else if (datesplit[1].equals("July")){
+            return datesplit[0]+"-7-"+datesplit[2];
+        }else if (datesplit[1].equals("August")){
+            return datesplit[0]+"-8-"+datesplit[2];
+        }else if (datesplit[1].equals("September")){
+            return datesplit[0]+"-9-"+datesplit[2];
+        }else if (datesplit[1].equals("October")){
+            return datesplit[0]+"-10-"+datesplit[2];
+        }else if (datesplit[1].equals("November")){
+            return datesplit[0]+"-11-"+datesplit[2];
+        }else if (datesplit[1].equals("December")){
+            return datesplit[0]+"-12-"+datesplit[2];
+        }else{
+            return "date unavailable";
+        }
+    }
+    public String dateformattodate(String date){
+        String[] datesplit = date.split("-");
+        if(datesplit[1].equals("1")){
+            return datesplit[0]+" January "+datesplit[2];
+        }else if (datesplit[1].equals("2")){
+            return datesplit[0]+" February "+datesplit[2];
+        }else if (datesplit[1].equals("3")){
+            return datesplit[0]+" March "+datesplit[2];
+        }else if (datesplit[1].equals("4")){
+            return datesplit[0]+" April "+datesplit[2];
+        }else if (datesplit[1].equals("5")){
+            return datesplit[0]+" May "+datesplit[2];
+        }else if (datesplit[1].equals("6")){
+            return datesplit[0]+" June "+datesplit[2];
+        }else if (datesplit[1].equals("7")){
+            return datesplit[0]+" July "+datesplit[2];
+        }else if (datesplit[1].equals("8")){
+            return datesplit[0]+" August "+datesplit[2];
+        }else if (datesplit[1].equals("9")){
+            return datesplit[0]+" September "+datesplit[2];
+        }else if (datesplit[1].equals("10")){
+            return datesplit[0]+" October "+datesplit[2];
+        }else if (datesplit[1].equals("11")){
+            return datesplit[0]+" November "+datesplit[2];
+        }else if (datesplit[1].equals("12")){
+            return datesplit[0]+" December "+datesplit[2];
+        }else{
+            return "date unavailable";
         }
     }
 }

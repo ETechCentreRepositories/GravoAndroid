@@ -31,7 +31,7 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     public static final String SESSION = "login_status";
     LinearLayout progress;
-    String address;
+    String address, getBlock, getUnits, getStreets, getPostals;
 
 
     @Override
@@ -48,19 +48,17 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
         getStreet = findViewById(R.id.address_street);
         getPostal = findViewById(R.id.address_postal);
         getContact = findViewById(R.id.getPhone);
-        String getAddress = sharedPreferences.getString("user_address", "");
-        if(getAddress.equals("")){
-            getBlk.setText("");
-            getUnit.setText("");
-            getStreet.setText("");
-            getPostal.setText("");
-        }else{
-            String[] addressarray = getAddress.split("_");
-            getBlk.setText(addressarray[0].split(" ")[1]);
-            getUnit.setText(addressarray[1].substring(1));
-            getStreet.setText(addressarray[2]);
-            getPostal.setText(addressarray[3].split(" ")[1]);
-        }
+
+        getBlock = sharedPreferences.getString("user_address_block", "");
+        getUnits = sharedPreferences.getString("user_address_unit", "");
+        getStreets = sharedPreferences.getString("user_address_street", "");
+        getPostals = sharedPreferences.getString("user_address_postal", "");
+
+        getBlk.setText(getBlock);
+        getUnit.setText(getUnits);
+        getStreet.setText(getStreets);
+        getPostal.setText(getPostals);
+
         progress = findViewById(R.id.progressbar);
         getContact.setText(sharedPreferences.getString("user_contact",""));
         getEmail = findViewById(R.id.newEmail);
@@ -92,7 +90,15 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            address = "Blk "+getBlk.getText().toString()+"_#"+getUnit.getText().toString()+"_"+getStreet.getText().toString()+"_Singapore "+getPostal.getText().toString();
+            if(getUnit.getText().toString().equals("")){
+                address = "Blk "+getBlk.getText().toString()+", "+getStreet.getText().toString()+" Singapore "+getPostal.getText().toString();
+            }else if(getBlk.getText().toString().equals("")){
+                address = getStreet.getText().toString()+" Singapore "+getPostal.getText().toString();
+            }else if(getBlk.getText().toString().equals("") && getUnit.getText().toString().equals("")){
+                address = getStreet.getText().toString()+" Singapore "+getPostal.getText().toString();
+            }else{
+                address = "Blk " + getBlk.getText().toString() + " #" + getUnit.getText().toString() + ", " + getStreet.getText().toString() + " Singapore " + getPostal.getText().toString();
+            }
             HttpReq req = new HttpReq();
             sharedPreferences = getSharedPreferences(SESSION,Context.MODE_PRIVATE);
             return req.PostRequest("http://ehostingcentre.com/gravo/updateuserdetails.php"
@@ -128,6 +134,10 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
                     editor.putString("user_email", user.getString("email"));
                     editor.putString("user_contact", user.getString("contact_number"));
                     editor.putString("user_address", user.getString("address"));
+                    editor.putString("user_address_block", user.getString("block"));
+                    editor.putString("user_address_unit", user.getString("unit"));
+                    editor.putString("user_address_street", user.getString("street"));
+                    editor.putString("user_address_postal", user.getString("postal"));
                     editor.apply();
                     Toast.makeText(FacebookAddDetailsActivity.this, "Profile updated!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(FacebookAddDetailsActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
