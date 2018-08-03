@@ -439,17 +439,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         scollview = findViewById(R.id.scrollview);
         summary = findViewById(R.id.summary);
 
-        summary.setTranslationY((height/3));
-        checkout.setOnClickListener(v -> {
-            if(summary.getTranslationY()==(height/3)){
-                summary.animate().setDuration(500).translationY(0);
-                arrow.animate().setDuration(550).rotation(180);
 
-            }else{
-                summary.animate().setDuration(500).translationY((height/3));
-                arrow.animate().setDuration(550).rotation(0);
-            }
-        });
         etPhone = findViewById(R.id.etPhone);
         etBlock = findViewById(R.id.address_blk);
         etUnit = findViewById(R.id.address_unit);
