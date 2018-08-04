@@ -33,7 +33,7 @@ public class Settings extends Fragment {
         RelativeLayout tnc = view.findViewById(R.id.tnc);
         RelativeLayout pp = view.findViewById(R.id.pp);
         RelativeLayout ag = view.findViewById(R.id.ag);
-        ag.setOnClickListener(v->startActivity(new Intent(getContext(), ActivityWebView.class)));
+        ag.setOnClickListener(v->startActivity(new Intent(getContext(), ActivitySettingsItems.class).putExtra("tnc","Green Ravolution aspires for a GREENER world. To that end, Green Ravolution embraces technology that brings together different, relevant stakeholders, to implement sustainability solutions that are more inclusive and collaborative. Every one of us needs to play our part, to REDUCE, REUSE and RECYCLE (3R). The more of us who come together and contribute our ideas and efforts, the more we can promote 3R awareness, assimilation and action.  For us, this is REAL 3R.")));
         tnc.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySettingsItems.class).putExtra("tnc","at green ravolution, we care about you and the trust you give us\n" +
                 "Last updated [JUNE, 10, 2018]\n" +
                 "\n" +

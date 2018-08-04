@@ -30,6 +30,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import com.greenravolution.gravo.functions.AsyncEditCartDetails;
 import com.greenravolution.gravo.functions.GetAsyncRequest;
 import com.greenravolution.gravo.functions.PickUpDayReminder;
 import com.greenravolution.gravo.functions.Rates;
+import com.greenravolution.gravo.functions.Utility;
 import com.greenravolution.gravo.objects.API;
 
 import org.json.JSONArray;
@@ -63,13 +65,12 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     SharedPreferences preferences;
     Toolbar toolbar;
     Button cash;
-    TextView scheduleDate;
+    TextView scheduleDate,scheduleDateTiming;
     String requestParameters = "userid=";
     LinearLayout cartItems;
     LinearLayout summary;
     RelativeLayout checkout;
     ImageView ivItem;
-    ImageView arrow;
     String itemType, itemRate;
     TextView tvTotalWeight, tvTotalPrice, tvNoOfItems;
     EditText etPhone, etRemarks, etBlock, etUnit, etStreet, etPostal;
@@ -432,8 +433,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
-        Display display = getWindowManager().getDefaultDisplay(); Point size = new Point(); display.getSize(size); int width = size.x; int height = size.y;
-        arrow = findViewById(R.id.arrow);
+
         cartItems = findViewById(R.id.cartItems);
         checkout = findViewById(R.id.checkout);
         scollview = findViewById(R.id.scrollview);
@@ -466,7 +466,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userTotalPrice = userPreTotalPrice.substring(1);
             Log.e("Cart total price", userTotalPrice);
             Log.e("price", userTotalPrice);
-            if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")) {
+            if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")||  scheduleDate.getText().toString().equals("SELECT TIME")) {
                 Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
             } else if (no_of_items == 0) {
                 Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
@@ -476,6 +476,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 String newdate = datetodateformat(scheduleDate.getText().toString());
                 String[] getdatesplit = newdate.split("-");
                 String addTransactionUrl = links.addTransaction();
+                Log.e("CHANGED DATE =",newdate);
                 Calendar calAlarm = Calendar.getInstance();
                 calAlarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(getdatesplit[0]));
                 calAlarm.set(Calendar.MONTH, Integer.parseInt(getdatesplit[1]));
@@ -488,7 +489,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 setAlarmForPickUpDay(calAlarm);
                 AsyncAddTransaction addTransaction = new AsyncAddTransaction();
                 String userAddress = "Blk " + etBlock.getText().toString() + " #" + etUnit.getText().toString() + ", " + etStreet.getText().toString() + " Singapore " + etPostal.getText().toString();
-                String[] paramsArray = {addTransactionUrl, newdate, userAddress, name, userPhoneNo, userTotalPrice, tvTotalWeight.getText().toString(), userRemarks, "00000", id, status_id + ""};
+                String[] paramsArray = {addTransactionUrl, newdate, userAddress, name, userPhoneNo, userTotalPrice, tvTotalWeight.getText().toString(), userRemarks, "00000", id, status_id + "",scheduleDateTiming.getText().toString()};
                 for (int i = 0; i < paramsArray.length; i++) {
                     Log.e("params", paramsArray[i]);
                 }
@@ -508,6 +509,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             }
         });
         scheduleDate = findViewById(R.id.scheduleDate);
+        scheduleDateTiming = findViewById(R.id.scheduleDateTiming);
+        scheduleDateTiming.setOnClickListener(v -> getScheduleDateTiming());
         scheduleDate.setOnClickListener(v -> getScheduleDate());
     }
 
@@ -536,6 +539,23 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         datePicker.setMaxDate(maxDate);
 
         datePickerDialog.show();
+    }
+    public void getScheduleDateTiming(){
+        final CharSequence[] items = {"9:00am - 11:30am","12:30pm - 2:00pm","Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityCart.this);
+        builder.setTitle("Select Time Slot");
+        builder.setItems(items, (dialog, item) -> {
+            if (items[item].equals("9:00am - 11:30am")) {
+               scheduleDateTiming.setText("9:00am - 11:30am");
+               dialog.dismiss();
+            } else if (items[item].equals("12:30pm - 2:00pm")) {
+               scheduleDateTiming.setText("12:30pm - 2:00pm");
+                dialog.dismiss();
+            } else {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -581,29 +601,29 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     public String datetodateformat(String date){
         String[] datesplit = date.split(" ");
         if(datesplit[1].equals("January")){
-            return datesplit[0]+"-1-"+datesplit[2];
+            return datesplit[2]+"-1-"+datesplit[0];
         }else if (datesplit[1].equals("February")){
-            return datesplit[0]+"-2"+datesplit[2];
+            return datesplit[2]+"-2"+datesplit[0];
         }else if (datesplit[1].equals("March")){
-            return datesplit[0]+"-3-"+datesplit[2];
+            return datesplit[2]+"-3-"+datesplit[0];
         }else if (datesplit[1].equals("April")){
-            return datesplit[0]+"-4-"+datesplit[2];
+            return datesplit[2]+"-4-"+datesplit[0];
         }else if (datesplit[1].equals("May")){
-            return datesplit[0]+"-5-"+datesplit[2];
+            return datesplit[2]+"-5-"+datesplit[0];
         }else if (datesplit[1].equals("June")){
-            return datesplit[0]+"-6-"+datesplit[2];
+            return datesplit[2]+"-6-"+datesplit[0];
         }else if (datesplit[1].equals("July")){
-            return datesplit[0]+"-7-"+datesplit[2];
+            return datesplit[2]+"-7-"+datesplit[0];
         }else if (datesplit[1].equals("August")){
-            return datesplit[0]+"-8-"+datesplit[2];
+            return datesplit[2]+"-8-"+datesplit[0];
         }else if (datesplit[1].equals("September")){
-            return datesplit[0]+"-9-"+datesplit[2];
+            return datesplit[2]+"-9-"+datesplit[0];
         }else if (datesplit[1].equals("October")){
-            return datesplit[0]+"-10-"+datesplit[2];
+            return datesplit[2]+"-10-"+datesplit[0];
         }else if (datesplit[1].equals("November")){
-            return datesplit[0]+"-11-"+datesplit[2];
+            return datesplit[2]+"-11-"+datesplit[0];
         }else if (datesplit[1].equals("December")){
-            return datesplit[0]+"-12-"+datesplit[2];
+            return datesplit[2]+"-12-"+datesplit[0];
         }else{
             return "date unavailable";
         }

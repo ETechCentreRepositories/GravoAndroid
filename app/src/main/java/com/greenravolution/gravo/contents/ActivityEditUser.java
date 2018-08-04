@@ -260,13 +260,13 @@ public class ActivityEditUser extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             if(address_unit.getText().toString().equals("")){
-                address = "Blk "+address_block.getText().toString()+"_"+address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
             }else if(address_block.getText().toString().equals("")){
-                address = address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
             }else if(address_block.getText().toString().equals("") && address_unit.getText().toString().equals("")){
-                address = address_street.getText().toString()+"_Singapore "+address_postal.getText().toString();
+                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
             }else{
-                address = "Blk " + address_block.getText().toString() + "_#" + address_unit.getText().toString() + "_" + address_street.getText().toString() + "_Singapore " + address_postal.getText().toString();
+                address = "Blk " + address_block.getText().toString() + " #" + address_unit.getText().toString() + ", " + address_street.getText().toString() + " Singapore " + address_postal.getText().toString();
             }
             HttpReq req = new HttpReq();
             API api = new API();

@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         register.setOnClickListener(v -> {
             if(address_unit.getText().toString().equals("")){
-                address = "Blk "+address_block.getText().toString()+", "+address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
+                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
             }else if(address_block.getText().toString().equals("")){
                 address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
             }else if(address_block.getText().toString().equals("") && address_unit.getText().toString().equals("")){

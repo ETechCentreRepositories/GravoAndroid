@@ -330,6 +330,7 @@ public class Bulk extends Fragment {
             ImageView image;
             Button viewmore;
             viewmore = view.findViewById(R.id.viewmore);
+            view.setOnClickListener((View v)->startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid",id)));
             viewmore.setOnClickListener((View v)-> startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid",id)));
             code = view.findViewById(R.id.code);
             description = view.findViewById(R.id.description);

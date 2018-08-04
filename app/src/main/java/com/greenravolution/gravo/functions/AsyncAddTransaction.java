@@ -37,7 +37,7 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
 
         String postTransactionResult = httpReq.PostRequest(paramsArray[0],"collectiondate=" + paramsArray[1] + "&collectionaddress=" + paramsArray[2] + "&collectionuser=" + paramsArray[3] + "&collectionnumber=" + paramsArray[4]
             + "&total_price=" + paramsArray[5] + "&total_weight=" + paramsArray[6] + "&remarks=" + paramsArray[7] + "&transaction_id=" + paramsArray[8] + "&userid=" + paramsArray[9]
-            + "&status=" + paramsArray[10]);
+            + "&status=" + paramsArray[10] +"&collectiondatetiming="+ paramsArray[11]);
 
         String getCartDetailsResult = httpReq.GetRequest(getCartUrl);
         Log.e("RESULT ADD TRANS", getCartDetailsResult);
