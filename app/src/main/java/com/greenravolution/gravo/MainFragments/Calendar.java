@@ -90,7 +90,7 @@ public class Calendar extends Fragment {
                     if(status_id == 4){
                         layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
                     }
-                    TextView tvDay = fragmentCalendar.findViewById(R.id.tvDay);
+                    TextView tvid = fragmentCalendar.findViewById(R.id.id);
                     TextView tvDetails = fragmentCalendar.findViewById(R.id.tvDetails);
                     cvCalendar = getView().findViewById(R.id.calendar);
 
@@ -99,9 +99,8 @@ public class Calendar extends Fragment {
                     Log.e("long date","getTime : " + date.getTime());
 
                     fragmentCalendar.setTag(transactionID);
-
-                    tvDay.setText(day);
-                    tvDetails.setText(dayWord + " " +monthWord + " " + year + " Transaction: " + transactionIDKey);
+                    tvid.setText("Transaction "+transactionObject.getString("transaction_id_key"));
+                    tvDetails.setText(dayWord + " ("+day+" "+monthWord + " " + year+")");
 
                     fragmentCalendar.setOnClickListener(v ->{
                         //Toast.makeText(getActivity(),"clicked "+fragmentCalendar.getTag(),Toast.LENGTH_SHORT).show();

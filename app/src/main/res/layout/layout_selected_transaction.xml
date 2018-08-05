@@ -56,12 +56,7 @@
                     android:id="@+id/transaction_details_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-
-                </LinearLayout>
-
+                    android:orientation="vertical"/>
 
                 <TextView
                     android:id="@+id/tvStatus"
@@ -72,23 +67,7 @@
                     android:textColor="@color/brand_green"
                     android:textSize="20sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Collection Date: " />
-
-                    <TextView
-                        android:id="@+id/date_of_collection"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -117,10 +96,10 @@
                         android:contentDescription="@string/circle1_description" />
 
                     <ImageView
-                        android:layout_weight="1"
                         android:id="@+id/line1"
                         android:layout_width="100dp"
                         android:layout_height="10dp"
+                        android:layout_weight="1"
                         android:contentDescription="@string/line1_description" />
 
                     <ImageView
@@ -129,11 +108,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:contentDescription="@string/circle2_description" />
+
                     <ImageView
-                        android:layout_weight="1"
                         android:id="@+id/line2"
                         android:layout_width="100dp"
                         android:layout_height="10dp"
+                        android:layout_weight="1"
                         android:contentDescription="@string/line2_description" />
 
                     <ImageView
@@ -141,13 +121,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:contentDescription="@string/circle3_description"/>
+                        android:contentDescription="@string/circle3_description" />
 
                     <ImageView
-                        android:layout_weight="1"
                         android:id="@+id/line3"
                         android:layout_width="100dp"
                         android:layout_height="10dp"
+                        android:layout_weight="1"
                         android:contentDescription="@string/line3_description" />
 
 
@@ -156,10 +136,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:contentDescription="@string/circle4_description"/>
+                        android:contentDescription="@string/circle4_description" />
 
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,17 +146,20 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
-                        android:text="Transaction Status: " />
+                        android:layout_height="wrap_content"
+                        android:text="Collection Date: " />
 
                     <TextView
-                        android:id="@+id/transaction_status"
+                        android:id="@+id/date_of_collection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black" />
+
                 </LinearLayout>
+
+
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -209,8 +191,7 @@
                             <TextView
                                 android:id="@+id/tvStatusDetails"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Items Scheduled to be picked up on " />
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -229,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="DELIVERY ADDRESS" />
+                    android:text="DELIVERY DETAILS" />
 
                 <LinearLayout
                     android:id="@+id/billing_details"
@@ -245,10 +226,24 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="DELIVERY ADDRESS" />
+
+                    <TextView
                         android:id="@+id/tvBillingAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="EMAIL" />
 
                     <TextView
                         android:id="@+id/tvBillingEmail"
@@ -257,7 +252,28 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="CONTACT NUMBER" />
+
+                    <TextView
                         android:id="@+id/tvBillingContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="REMARKS"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tvRemarks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black" />
@@ -279,7 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="TOTAL WEIGHT" />
+                    android:text="TOTAL WEIGHT/QTY" />
 
                 <TextView
                     android:id="@+id/priceLabel"
@@ -287,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/weightLabel"
-                    android:text="TOTAL ESTIMATED PRICE" />
+                    android:text="TOTAL PRICE" />
 
                 <TextView
                     android:id="@+id/tvWeight"
@@ -313,17 +329,21 @@
 
         </LinearLayout>
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="#90000000"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:indicatorName="BallClipRotateMultipleIndicator"
-            app:indicatorColor="@color/brand_green"/>
+            app:indicatorColor="@color/brand_green"
+            app:indicatorName="BallClipRotateMultipleIndicator" />
+
     </LinearLayout>
 </RelativeLayout>

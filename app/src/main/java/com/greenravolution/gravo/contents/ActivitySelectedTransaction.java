@@ -49,9 +49,9 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
                 TextView tvTransaction = findViewById(R.id.tvTransaction);
                 TextView tvDate = findViewById(R.id.date_of_collection);
+                TextView tvRemarks = findViewById(R.id.tvRemarks);
 
                 TextView tvStatus = findViewById(R.id.tvStatus);
-                TextView transactionStatus = findViewById(R.id.transaction_status);
                 TextView tvStatusDetails = findViewById(R.id.tvStatusDetails);
 
                 TextView tvBillingName = findViewById(R.id.tvBillingName);
@@ -76,8 +76,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 Log.i("id key", transactionObject.getString("transaction_id_key"));
                 tvTransaction.setText(String.format("TRANSACTION #%s", transactionObject.getString("transaction_id_key")));
                 tvStatus.setText(transactionObject.getString("status_type"));
-                tvDate.setText(transactionObject.getString("collection_date"));
-                transactionStatus.setText(transactionObject.getString("status_type"));
+                tvDate.setText(dateformattodate(transactionObject.getString("collection_date"))+" ("+transactionObject.getString("collection_date_timing")+")");
 
                 if (transactionObject.getString("status_id").equals("1")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
@@ -101,6 +100,12 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 }
 
                 tvBillingName.setText(transactionObject.getString("collection_user"));
+                if(transactionObject.getString("remarks").equals("")){
+                    tvRemarks.setText(" - No Remarks - ");
+                }else{
+                    tvRemarks.setText(transactionObject.getString("remarks"));
+                }
+
                 tvBillingAddress.setText(transactionObject.getString("collection_address"));
                 tvBillingContact.setText(transactionObject.getString("collection_contact_number"));
                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -139,14 +144,20 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             ivDetailImage.setBackgroundColor(getResources().getColor(rateClass.getImageColour(formattedType)));
                             ivDetailImage.setImageResource(rateClass.getImage(categoryType));
 
-                            tvDetailTitle.setText(detailObject.getString("category_type"));
                             tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
                             tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
 
                             if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
+                                if(formattedType.equals("Paper")){
+                                    tvDetailTitle.setText(detailObject.getString("category_type")+"\n");
+                                }else{
+                                    tvDetailTitle.setText(detailObject.getString("category_type").split("-")[0]+"\n"+detailObject.getString("category_type").split("-")[1]);
+                                }
                                 tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
+
                             } else if (formattedType.equals("E-Waste")) {
                                 tvDetailWeight.setText(String.format("%s Piece(s)", detailObject.getString("weight")));
+                                tvDetailTitle.setText(detailObject.getString("category_type")+"\n");
                             }
                             detailList.addView(view_selected_transaction);
 
@@ -284,6 +295,37 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 line3.setImageResource(R.drawable.stepper_line_grey);
                 break;
 
+        }
+    }
+
+    public String dateformattodate(String date){
+        String[] datesplit = date.split("-");
+        if(datesplit[1].equals("01")){
+            return datesplit[2]+" January "+datesplit[0];
+        }else if (datesplit[1].equals("02")){
+            return datesplit[2]+" February "+datesplit[0];
+        }else if (datesplit[1].equals("03")){
+            return datesplit[2]+" March "+datesplit[0];
+        }else if (datesplit[1].equals("04")){
+            return datesplit[2]+" April "+datesplit[0];
+        }else if (datesplit[1].equals("05")){
+            return datesplit[2]+" May "+datesplit[0];
+        }else if (datesplit[1].equals("06")){
+            return datesplit[2]+" June "+datesplit[0];
+        }else if (datesplit[1].equals("07")){
+            return datesplit[2]+" July "+datesplit[0];
+        }else if (datesplit[1].equals("08")){
+            return datesplit[2]+" August "+datesplit[0];
+        }else if (datesplit[1].equals("09")){
+            return datesplit[2]+" September "+datesplit[0];
+        }else if (datesplit[1].equals("10")){
+            return datesplit[2]+" October "+datesplit[0];
+        }else if (datesplit[1].equals("11")){
+            return datesplit[2]+" November "+datesplit[0];
+        }else if (datesplit[1].equals("12")){
+            return datesplit[2]+" December "+datesplit[0];
+        }else{
+            return "date unavailable";
         }
     }
 }

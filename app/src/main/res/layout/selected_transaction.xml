@@ -18,65 +18,90 @@
             app:srcCompat="@drawable/newspaper" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="vertical">
 
             <TextView
+                android:textSize="20sp"
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PAPER | OLD NEWSPAPER" />
-
-            <TextView
-                android:id="@+id/tvPrice"
+                android:fontFamily="@font/quicksand_bold" />
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="$6.00" />
+                android:orientation="horizontal">
+                <TextView
+                    android:gravity="start|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ESTIMATED PRICE" />
 
-            <LinearLayout
+                <android.support.v4.widget.Space
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="end|right"
+                    android:id="@+id/tvPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_bold" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:gravity="start|left"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="WEIGHT" />
+                    android:text="ESTIMATED WEIGHT" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="30dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="end|right"
                     android:id="@+id/tvWeight"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="30KG" />
-            </LinearLayout>
+                    android:fontFamily="@font/quicksand_bold" />
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:gravity="start|left"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="AMOUNT" />
+                    android:text="ITEM VALUE" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="30dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="end|right"
                     android:id="@+id/tvRate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="$0.11/KG" />
-            </LinearLayout>
+                    android:fontFamily="@font/quicksand_bold"  />
+            </RelativeLayout>
 
 
         </LinearLayout>
