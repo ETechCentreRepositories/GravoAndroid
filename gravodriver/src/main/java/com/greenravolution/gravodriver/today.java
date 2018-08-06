@@ -71,7 +71,7 @@ public class today extends Fragment {
     CardView cardView;
     LinearLayout llotw, llarr, llContent;
     Button botw, barr, bmap;
-    TextView tt, ta, tpc, tst,tName;
+    TextView tt, ta, tpc, tst,tName, dt;
     Boolean allowRefresh = false;
 
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
@@ -104,7 +104,11 @@ public class today extends Fragment {
             list.removeAllViews();
             odal.clear();
             Double price = 0.00;
-            JSONObject object = new JSONObject(message);
+
+            String sortedMessage = doInsertionSort(message);
+            Log.i("doInsertionSorted",sortedMessage);
+            JSONObject object = new JSONObject(sortedMessage);
+
             int status = object.getInt("status");
 
             if (status == 200) {
@@ -121,30 +125,35 @@ public class today extends Fragment {
                     int stid = detail.getInt("status_id");
                     String statustype = detail.getString("status_type");
                     Double totalprice = detail.getDouble("total_price");
+                    String cTime = detail.getString("collection_date_timing");
 
                     price = price + totalprice;
-                    Orders neworder = new Orders(id, tc, ad, uid, stid,cName);
-                    if(stid !=4){
+                    Orders neworder = new Orders(id, tc, ad, uid, stid, cName, cDate, cTime);
+                    if (stid != 4) {
                         Calendar cal = Calendar.getInstance();
                         String todayDate = cal.get(Calendar.YEAR) + "";
                         if (cal.get(Calendar.MONTH) < 10) {
-                            todayDate = todayDate + "-0" + (cal.get(Calendar.MONTH)+1);
+                            todayDate = todayDate + "-0" + (cal.get(Calendar.MONTH) + 1);
                         } else {
-                            todayDate = todayDate + "-" + (cal.get(Calendar.MONTH)+1);
+                            todayDate = todayDate + "-" + (cal.get(Calendar.MONTH) + 1);
                         }
 
-                        if(cal.get(Calendar.DAY_OF_MONTH) < 10){
+                        if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
                             todayDate = todayDate + "-0" + cal.get(Calendar.DAY_OF_MONTH);
                         } else {
                             todayDate = todayDate + "-" + cal.get(Calendar.DAY_OF_MONTH);
                         }
-                        Log.i("today's Date",todayDate + ", " + results.length());
-                        if(cDate.equalsIgnoreCase(todayDate)){
+                        Log.i("today's Date", todayDate + ", " + results.length());
+                        if (cDate.equalsIgnoreCase(todayDate)) {
                             list.addView(initview(neworder, i + 1));
                         }
                     }
 
                 }
+
+            } else if (status == 404){
+                refreshLayout.setRefreshing(false);
+                Toast.makeText(getActivity(),"No transactions",Toast.LENGTH_SHORT).show();
             } else {
                 refreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(),"Failed to load data",Toast.LENGTH_SHORT).show();
@@ -201,64 +210,6 @@ public class today extends Fragment {
             }
         });
 
-        //getLocalTransactions();
-//        try {
-//
-//            sessionManager = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-//            String message = sessionManager.getString("alltransactionsObject",null);
-//            if(message != null){
-//
-//                oal.clear();
-//                list.removeAllViews();
-//                odal.clear();
-//                Double price = 0.00;
-//                JSONObject object = new JSONObject(message);
-//                int status = object.getInt("status");
-//                if (status == 200) {
-//                    JSONArray results = object.getJSONArray("result");
-//                    for (int i = 0; i < results.length(); i++) {
-//                        JSONObject detail = results.getJSONObject(i);
-//                        int id = detail.getInt("id");
-//                        String tc = detail.getString("transaction_id_key");
-//                        String cDate = detail.getString("collection_date");
-//                        String ad = detail.getString("collection_address");
-//                        String cName = detail.getString("collection_user");
-//                        int uid = detail.getInt("recycler_id");
-//                        int stid = detail.getInt("status_id");
-//                        String statustype = detail.getString("status_type");
-//                        Double totalprice = detail.getDouble("total_price");
-//
-//                        price = price + totalprice;
-//                        Orders neworder = new Orders(id, tc, ad, uid, stid,cName);
-//                        if(stid !=4){
-//                            Calendar cal = Calendar.getInstance();
-//                            String todayDate = cal.get(Calendar.YEAR) + "";
-//                            if (cal.get(Calendar.MONTH) < 10) {
-//                                todayDate = todayDate + "-0" + (cal.get(Calendar.MONTH)+1);
-//                            } else {
-//                                todayDate = todayDate + "-" + (cal.get(Calendar.MONTH)+1);
-//                            }
-//
-//                            if(cal.get(Calendar.DAY_OF_MONTH) < 10){
-//                                todayDate = todayDate + "-0" + cal.get(Calendar.DAY_OF_MONTH);
-//                            } else {
-//                                todayDate = todayDate + "-" + cal.get(Calendar.DAY_OF_MONTH);
-//                            }
-//
-//                            Log.i("today's Date",todayDate + ", " + results.length());
-//                            if(cDate.equalsIgnoreCase(todayDate)){
-//                                list.addView(initview(neworder, i + 1));
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-
-
         return view;
     }
 
@@ -301,7 +252,11 @@ public class today extends Fragment {
                 list.removeAllViews();
                 odal.clear();
                 Double price = 0.00;
-                JSONObject object = new JSONObject(message);
+
+                String sortedMessage = doInsertionSort(message);
+                Log.i("doInsertionSorted",sortedMessage);
+                JSONObject object = new JSONObject(sortedMessage);
+
                 int status = object.getInt("status");
                 if (status == 200) {
                     JSONArray results = object.getJSONArray("result");
@@ -316,9 +271,10 @@ public class today extends Fragment {
                         int stid = detail.getInt("status_id");
                         String statustype = detail.getString("status_type");
                         Double totalprice = detail.getDouble("total_price");
+                        String cTime = detail.getString("collection_date_timing");
 
                         price = price + totalprice;
-                        Orders neworder = new Orders(id, tc, ad, uid, stid,cName);
+                        Orders neworder = new Orders(id, tc, ad, uid, stid,cName, cDate, cTime);
                         if(stid !=4){
                             Calendar cal = Calendar.getInstance();
                             String todayDate = cal.get(Calendar.YEAR) + "";
@@ -464,6 +420,8 @@ public class today extends Fragment {
         //llarr = view.view.findViewById(R.id.llarr);
         //llotw = view.view.findViewById(R.id.llotw);
         llContent = view.findViewById(R.id.llContent);
+        dt = view.findViewById(R.id.pickupDatetime);
+
 
 
        if (order.getStatus_id() == 3) {
@@ -475,17 +433,22 @@ public class today extends Fragment {
 
             tName.setTextColor(getResources().getColor(R.color.white));
             tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position) + " (Arrived)";
+            String title = "Driver has arrived";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
             ta.setText("Address: " + order.getAddress());
             ta.setTextColor(getResources().getColor(R.color.white));
             tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
             tpc.setTextColor(getResources().getColor(R.color.white));
+            dt.setTextColor(getResources().getColor(R.color.white));
+            dt.setText(order.getCollection_date() + " " + order.getCollection_time());
 //                holder.tst.setText(String.valueOf(order.getSession_id()));
 //                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
-            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+//            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+//            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+
+           cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
+           llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
         } else if (order.getStatus_id() == 2){
             botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
@@ -495,22 +458,27 @@ public class today extends Fragment {
 
             tName.setTextColor(getResources().getColor(R.color.white));
             tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position) + " (On The Way)";
+            String title = "On The Way";
             tt.setTextColor(getResources().getColor(R.color.white));
             tt.setText(title);
             ta.setText("Address: " + order.getAddress());
             ta.setTextColor(getResources().getColor(R.color.white));
             tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
             tpc.setTextColor(getResources().getColor(R.color.white));
+           dt.setTextColor(getResources().getColor(R.color.white));
+           dt.setText(order.getCollection_date() + " " + order.getCollection_time());
 //                holder.tst.setText(String.valueOf(order.getSession_id()));
 //                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
-            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            //cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            //llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+           cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
+           llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
         } else {
             //normal pickup
             tName.setText(order.getCollecter_name());
-            String title = "Pickup " + String.valueOf(position);
+            String title = "Waiting for collection day";
             tt.setText(title);
+            dt.setText(order.getCollection_date() + " " + order.getCollection_time());
             ta.setText(String.format("Address: %s", order.getAddress()));
             tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
         }
@@ -638,6 +606,73 @@ public class today extends Fragment {
         super.onResume();
         Log.i("Called","today onResume");
         getLocalTransactions();
+    }
+
+    public String doInsertionSort(String jsonString){
+        try{
+            JSONObject object = new JSONObject(jsonString);
+            JSONArray results = object.getJSONArray("result");
+            JSONArray newResult = results;
+
+            JSONObject tempDetail;
+            int counter = 0;
+            for (int i = 1; i < newResult.length(); i++) {
+                counter++;
+                JSONObject currDetail = newResult.getJSONObject(i);
+                for(int j = i ; j > 0 ; j--){
+                    JSONObject prevDetail = newResult.getJSONObject(i);
+                    String isEarlierResult = dateTimeCompare(currDetail.getString("collection_date"),currDetail.getString("collection_date_timing"),prevDetail.getString("collection_date"),prevDetail.getString("collection_date_timing"));
+                    Log.i("isEarlier",counter+ " " +isEarlierResult);
+                    if(isEarlierResult.equalsIgnoreCase("isAfter")){
+                        tempDetail = prevDetail;
+                        newResult.put(j,currDetail);
+                        newResult.put(i,tempDetail);
+                    }
+                }
+            }
+
+            Log.i("doInsertionSortedPrev",newResult.toString());
+            return object.put("result",results).toString();
+        } catch (JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String dateTimeCompare(String currDate, String currTime , String prevDate , String prevTime){
+        int currYear=Integer.parseInt(currDate.split("-")[0]);
+        int currMonth=Integer.parseInt(currDate.split("-")[1]);
+        int currDay=Integer.parseInt(currDate.split("-")[2]);
+
+        int prevYear=Integer.parseInt(prevDate.split("-")[0]);
+        int prevMonth=Integer.parseInt(prevDate.split("-")[1]);
+        int prevDay=Integer.parseInt(prevDate.split("-")[2]);
+
+        if(currYear > prevYear){
+            return "isAfter";
+        } else if (currYear < prevYear){
+            return "isBefore";
+        } else {
+            if(currMonth > prevMonth){
+                return "isAfter";
+            } else if (currMonth < prevMonth){
+                return "isBefore";
+            } else {
+                if(currDay > prevDay){
+                    return "isAfter";
+                } else if (currDay < prevDay){
+                    return "isBefore";
+                } else {
+                    if(currTime.equalsIgnoreCase("9:00am - 12:00pm") && prevTime.equalsIgnoreCase("1:00pm - 4:00pm")){
+                        return "isBefore";
+                    } else if (currTime.equalsIgnoreCase("1:00pm - 4:00pm") && prevTime.equalsIgnoreCase("9:00am - 12:00pm")){
+                        return "isAfter";
+                    } else {
+                        return "isEqual";
+                    }
+                }
+            }
+        }
     }
 
 
