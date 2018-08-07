@@ -156,16 +156,13 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     //tvTotalWeight.setText(String.format("%sKG, %s Piece(s)", String.valueOf(totalWeight), String.valueOf(totalPiece)));
                     tvTotalWeight.setText(totalWeight + "KG, " + totalPiece + " Piece(s)");
                 }
-
             }
-
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     };
     private int mYear, mMonth, mDay;
-
     public View initView(String[] itemArray) {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -415,7 +412,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         return null;
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -438,7 +434,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         checkout = findViewById(R.id.checkout);
         scollview = findViewById(R.id.scrollview);
         summary = findViewById(R.id.summary);
-
 
         etPhone = findViewById(R.id.etPhone);
         etBlock = findViewById(R.id.address_blk);
@@ -466,7 +461,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userTotalPrice = userPreTotalPrice.substring(1);
             Log.e("Cart total price", userTotalPrice);
             Log.e("price", userTotalPrice);
-            if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")||  scheduleDate.getText().toString().equals("SELECT TIME")) {
+            if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE") || scheduleDateTiming.getText().toString().equals("SELECT TIME")) {
                 Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
             } else if (no_of_items == 0) {
                 Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
@@ -541,15 +536,15 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         datePickerDialog.show();
     }
     public void getScheduleDateTiming(){
-        final CharSequence[] items = {"9:00am - 11:30am","12:30pm - 2:00pm","Cancel"};
+        final CharSequence[] items = {"9:00am - 12:00pm","1:00pm - 4:00pm","Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityCart.this);
         builder.setTitle("Select Time Slot");
         builder.setItems(items, (dialog, item) -> {
-            if (items[item].equals("9:00am - 11:30am")) {
-               scheduleDateTiming.setText("9:00am - 11:30am");
+            if (items[item].equals("9:00am - 12:00pm")) {
+               scheduleDateTiming.setText("9:00am - 12:00pm");
                dialog.dismiss();
-            } else if (items[item].equals("12:30pm - 2:00pm")) {
-               scheduleDateTiming.setText("12:30pm - 2:00pm");
+            } else if (items[item].equals("1:00pm - 4:00pm")) {
+               scheduleDateTiming.setText("1:00pm - 4:00pm");
                 dialog.dismiss();
             } else {
                 dialog.dismiss();
@@ -573,8 +568,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 PendingIntent.getBroadcast(this, 1234, iReminder,
                         PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager am = (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
-        //am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
-        am.set(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(), pendingIntent);
+//        am.set(AlarmManager.RTC_WAKEUP, 2000, pendingIntent);
     }
 
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {

@@ -91,7 +91,7 @@ public class BulkDetails extends AppCompatActivity {
         confirmschedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(scheduleDate.getText().toString().equals("SELECT DATE") || scheduleDate.getText().toString().equals("SELECT DATE")){
+                if(scheduleDate.getText().toString().equals("SELECT DATE") || scheduleDateTiming.getText().toString().equals("SELECT TIME")){
                     Toast.makeText(BulkDetails.this, "Please select a date and time slot!", Toast.LENGTH_LONG).show();
                 }else{
                     Scheduledate scheduledates = new Scheduledate();
@@ -150,16 +150,19 @@ public class BulkDetails extends AppCompatActivity {
                                 statustwo.setVisibility(View.VISIBLE);
                                 statusthree.setVisibility(View.GONE);
                                 scheduledate.setVisibility(View.GONE);
+                                scheduleddate.setVisibility(View.GONE);
                             }else if(status_id==6){
                                 btmlayout.setVisibility(View.GONE);
                                 statustwo.setVisibility(View.GONE);
                                 statusthree.setVisibility(View.VISIBLE);
                                 scheduledate.setVisibility(View.VISIBLE);
+                                scheduleddate.setVisibility(View.GONE);
                             }else{
                                 btmlayout.setVisibility(View.GONE);
                                 statustwo.setVisibility(View.GONE);
                                 statusthree.setVisibility(View.GONE);
                                 scheduledate.setVisibility(View.GONE);
+                                scheduleddate.setVisibility(View.VISIBLE);
                             }
                         }else if(status==404){
                             refreshLayout.setRefreshing(false);

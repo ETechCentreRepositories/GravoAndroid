@@ -89,6 +89,7 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
         if(addDetailsStatus == 200 && deleteDetailsStatus == 200){
+            Log.e("ADDING TRANS STATUS","ADDING TRANS HISTORY");
             HttpReq req = new HttpReq();
             Date d = new Date();
             CharSequence s  = DateFormat.format("MMMM d, yyyy ", d.getTime());

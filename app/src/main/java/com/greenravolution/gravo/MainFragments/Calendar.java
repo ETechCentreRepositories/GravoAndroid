@@ -87,9 +87,7 @@ public class Calendar extends Fragment {
 
                     View fragmentCalendar = inflater.inflate(R.layout.transaction_page_item, null);
                     LinearLayout layout = fragmentCalendar.findViewById(R.id.layout);
-                    if(status_id == 4){
-                        layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-                    }
+
                     TextView tvid = fragmentCalendar.findViewById(R.id.id);
                     TextView tvDetails = fragmentCalendar.findViewById(R.id.tvDetails);
                     cvCalendar = getView().findViewById(R.id.calendar);
@@ -97,10 +95,16 @@ public class Calendar extends Fragment {
                     cvCalendar.markDate(new DateData(Integer.parseInt(year),Integer.parseInt(month),Integer.parseInt(day))).setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
                     Log.e("long date","getTime : " + date.getTime());
+                    if(status_id == 4){
+                        layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+                        tvDetails.setText("Collected on "+dayWord + " ("+day+" "+monthWord + " " + year+")");
+                    }else{
+                        tvDetails.setText("Collection booked for "+dayWord + " ("+day+" "+monthWord + " " + year+")");
+                    }
 
                     fragmentCalendar.setTag(transactionID);
-                    tvid.setText("Transaction "+transactionObject.getString("transaction_id_key"));
-                    tvDetails.setText(dayWord + " ("+day+" "+monthWord + " " + year+")");
+                    tvid.setText("Transaction #"+transactionObject.getString("transaction_id_key"));
+
 
                     fragmentCalendar.setOnClickListener(v ->{
                         //Toast.makeText(getActivity(),"clicked "+fragmentCalendar.getTag(),Toast.LENGTH_SHORT).show();
@@ -141,7 +145,7 @@ public class Calendar extends Fragment {
         GetAsyncRequest getTransactions = new GetAsyncRequest();
         getTransactions.setOnResultListener(getDates);
 
-        List<String> monthList = Arrays.asList("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+        List<String> monthList = Arrays.asList("January","February","March","April","May","June","July","August","September","October","November","December");
 
         preferences = getActivity().getSharedPreferences("login_status",Context.MODE_PRIVATE);
         String id = String.valueOf(preferences.getInt("user_id",0));

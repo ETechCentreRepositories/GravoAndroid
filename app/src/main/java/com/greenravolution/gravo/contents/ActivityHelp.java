@@ -79,7 +79,6 @@ public class ActivityHelp extends AppCompatActivity {
                 }
             } catch (JSONException e) {
 
-
             }
 
         }

@@ -95,7 +95,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                     setStatusStepper("4");
 
                 } else {
-                    tvStatusDetails.setText("N/A");
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
                     setStatusStepper("null");
                 }
 
@@ -118,7 +118,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 Log.e("TOTAL PRICE TRANSACTION", totalPrice.toString());
                 tvPrice.setText(String.format("$%s", totalPrice));
                 tvWeight.setText(transactionObject.getString("total_weight"));
-
 
                 //Populating details layout
                 if (detailsArray.length() > 0) {

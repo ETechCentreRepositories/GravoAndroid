@@ -67,8 +67,6 @@
                     android:textColor="@color/brand_green"
                     android:textSize="20sp" />
 
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -139,6 +137,7 @@
                         android:contentDescription="@string/circle4_description" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -148,19 +147,17 @@
                         android:layout_width="wrap_content"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
+                        android:textSize="20sp"
                         android:layout_height="wrap_content"
-                        android:text="Collection Date: " />
+                        android:text="Collection on " />
 
                     <TextView
                         android:id="@+id/date_of_collection"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black" />
+                        android:textSize="20sp"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
-
-
-
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -195,6 +192,21 @@
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:background="@color/brand_pink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:text="Payment will be made using PayNOW. Get your mobile number ready!"
+                        />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
