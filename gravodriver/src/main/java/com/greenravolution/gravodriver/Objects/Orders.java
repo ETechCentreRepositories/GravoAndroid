@@ -17,14 +17,17 @@ public class Orders {
     private String collection_date;
     private String collecter_name;
     private String collector_number;
+    private String collection_time;
 
-    public Orders(int id, String tc, String ad, int uid, int stid, String cName) {
+    public Orders(int id, String tc, String ad, int uid, int stid, String cName, String cDate, String cTime) {
         this.id = id;
         this.transaction_code = tc;
         this.address = ad;
         this.user_id = uid;
         this.status_id = stid;
         this.collecter_name = cName;
+        this.collection_date = cDate;
+        this.collection_time = cTime;
     }
 
     public int getId() {
@@ -105,6 +108,14 @@ public class Orders {
 
     public void setCollection_date(String collection_date) {
         this.collection_date = collection_date;
+    }
+
+    public String getCollection_time() {
+        return collection_time;
+    }
+
+    public void setCollection_time(String collection_time) {
+        this.collection_time = collection_time;
     }
 
     public String getCollecter_name() {
