@@ -1,10 +1,14 @@
 package com.greenravolution.gravo.contents;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,11 +16,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
+import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.functions.Rates;
 import com.greenravolution.gravo.functions.asyncGetSelectedTransaction;
 
@@ -24,15 +32,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 public class ActivitySelectedTransaction extends AppCompatActivity {
     public static final String SESSION = "login_status";
     Toolbar toolbar;
     TextView title;
-    LinearLayout detailList, progressbar;
+    LinearLayout detailList, progressbar, transactionchanges;
     SharedPreferences sessionManager;
+
+    Button reschedule, cancel;
 
     ImageView ivDetailImage;
     TextView tvDetailTitle, tvDetailPrice, tvDetailRate, tvDetailWeight;
+    TextView date, timeslot;
+    private int mYear, mMonth, mDay;
 
     asyncGetSelectedTransaction.OnAsyncResult getSelectedTransaction = (resultCode, message) -> {
         Log.i("ActivitySelected", message);
@@ -44,7 +58,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 JSONArray transactionArray = messageObject.getJSONArray("transactionArray");
                 JSONArray transactionHistory = messageObject.getJSONArray("transactionHistory");
                 JSONObject transactionObject = transactionArray.getJSONObject(0);
-
 
 
                 TextView tvTransaction = findViewById(R.id.tvTransaction);
@@ -63,48 +76,124 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 TextView tvWeight = findViewById(R.id.tvWeight);
 
                 StringBuilder statuses = new StringBuilder();
-                if(transactionHistory!=null){
-                    for(int i = 0; i < transactionHistory.length(); i ++){
+
+                if (transactionHistory != null) {
+                    for (int i = 0; i < transactionHistory.length(); i++) {
                         JSONObject getstatus = transactionHistory.getJSONObject(i);
                         statuses.append(getstatus.getString("status")).append("\n\n");
                     }
                     tvStatusDetails.setText(statuses.toString());
-                }else{
+                } else {
                     tvStatusDetails.setText(String.format("Item Scheduled to be picked up on %s", transactionObject.getString("collection_date")));
                 }
 
                 Log.i("id key", transactionObject.getString("transaction_id_key"));
                 tvTransaction.setText(String.format("TRANSACTION #%s", transactionObject.getString("transaction_id_key")));
                 tvStatus.setText(transactionObject.getString("status_type"));
-                tvDate.setText(dateformattodate(transactionObject.getString("collection_date"))+" ("+transactionObject.getString("collection_date_timing")+")");
+                tvDate.setText(dateformattodate(transactionObject.getString("collection_date")) + " (" + transactionObject.getString("collection_date_timing") + ")");
 
                 if (transactionObject.getString("status_id").equals("1")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
+                    transactionchanges.setVisibility(View.VISIBLE);
                     setStatusStepper("1");
 
                 } else if (transactionObject.getString("status_id").equals("2")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
+                    transactionchanges.setVisibility(View.VISIBLE);
                     setStatusStepper("2");
 
                 } else if (transactionObject.getString("status_id").equals("3")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
+                    transactionchanges.setVisibility(View.GONE);
                     setStatusStepper("3");
 
                 } else if (transactionObject.getString("status_id").equals("4")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
+                    transactionchanges.setVisibility(View.GONE);
                     setStatusStepper("4");
 
+                } else if (transactionObject.getString("status_id").equals("5")) {
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
+                    transactionchanges.setVisibility(View.GONE);
+                    setStatusStepper("4");
+
+                } else if (transactionObject.getString("status_id").equals("8")) {
+                    Log.e("Transaction status", transactionObject.getString("status_id"));
+                    transactionchanges.setVisibility(View.GONE);
+                    setStatusStepper("null");
+
                 } else {
+                    transactionchanges.setVisibility(View.VISIBLE);
                     Log.e("Transaction status", transactionObject.getString("status_id"));
                     setStatusStepper("null");
                 }
 
                 tvBillingName.setText(transactionObject.getString("collection_user"));
-                if(transactionObject.getString("remarks").equals("")){
+                if (transactionObject.getString("remarks").equals("")) {
                     tvRemarks.setText(" - No Remarks - ");
-                }else{
+                } else {
                     tvRemarks.setText(transactionObject.getString("remarks"));
                 }
+
+                cancel.setOnClickListener(v -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this)
+                            .setCancelable(false).setMessage("Are you sure you want to cancel this transaction?")
+                            .setTitle("Cancel transaction");
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CancelTransaction cancel = new CancelTransaction();
+                            cancel.execute();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                });
+
+                reschedule.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Dialog dialog = new Dialog(ActivitySelectedTransaction.this);
+                        dialog.setContentView(R.layout.reschedule_dialog);
+                        dialog.setTitle("Re-schedule Transaction");
+                        date = dialog.findViewById(R.id.date);
+                        timeslot = dialog.findViewById(R.id.timeslot);
+                        Button confirm = dialog.findViewById(R.id.submit);
+                        date.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getScheduleDate();
+                            }
+                        });
+                        timeslot.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getScheduleDateTiming();
+                            }
+                        });
+                        confirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (timeslot.getText().toString().equals("SELECT TIME") || date.getText().toString().equals("SELECT DATE")) {
+                                    Toast.makeText(ActivitySelectedTransaction.this, "Please select both details", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    ReScheduleTransaction reScheduleTransaction = new ReScheduleTransaction();
+                                    reScheduleTransaction.execute(timeslot.getText().toString(), datetodateformat(date.getText().toString()));
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
+                        dialog.show();
+                    }
+                });
+
 
                 tvBillingAddress.setText(transactionObject.getString("collection_address"));
                 tvBillingContact.setText(transactionObject.getString("collection_contact_number"));
@@ -147,16 +236,16 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
 
                             if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
-                                if(formattedType.equals("Paper")){
-                                    tvDetailTitle.setText(detailObject.getString("category_type")+"\n");
-                                }else{
-                                    tvDetailTitle.setText(detailObject.getString("category_type").split("-")[0]+"\n"+detailObject.getString("category_type").split("-")[1]);
+                                if (formattedType.equals("Paper")) {
+                                    tvDetailTitle.setText(detailObject.getString("category_type") + "\n");
+                                } else {
+                                    tvDetailTitle.setText(detailObject.getString("category_type").split("-")[0] + "\n" + detailObject.getString("category_type").split("-")[1]);
                                 }
                                 tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
 
                             } else if (formattedType.equals("E-Waste")) {
                                 tvDetailWeight.setText(String.format("%s Piece(s)", detailObject.getString("weight")));
-                                tvDetailTitle.setText(detailObject.getString("category_type")+"\n");
+                                tvDetailTitle.setText(detailObject.getString("category_type") + "\n");
                             }
                             detailList.addView(view_selected_transaction);
 
@@ -172,6 +261,53 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         }
     };
 
+    public void getScheduleDate() {
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = null;
+
+//        datePickerDialog = new DatePickerDialog(this,
+//                (view, year, monthOfYear, dayOfMonth) ->
+//                        date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth + 1, mDay);
+
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+
+        Calendar minC = Calendar.getInstance();
+        minC.add(Calendar.DAY_OF_YEAR, 1);
+        long minDate = minC.getTimeInMillis();
+
+        Calendar current = Calendar.getInstance();
+        current.add(Calendar.DATE, 14);
+        long maxDate = current.getTimeInMillis();
+
+        datePicker.setMinDate(minDate);
+        datePicker.setMaxDate(maxDate);
+
+        datePickerDialog.show();
+    }
+
+    public void getScheduleDateTiming() {
+        final CharSequence[] items = {"9:00am - 12:00pm", "1:00pm - 4:00pm", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this);
+        builder.setTitle("Select Time Slot");
+        builder.setItems(items, (dialog, item) -> {
+            if (items[item].equals("9:00am - 12:00pm")) {
+                timeslot.setText("9:00am - 12:00pm");
+                dialog.dismiss();
+            } else if (items[item].equals("1:00pm - 4:00pm")) {
+                timeslot.setText("1:00pm - 4:00pm");
+                dialog.dismiss();
+            } else {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +319,10 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         progressbar = findViewById(R.id.progressbar);
         title = findViewById(R.id.transaction_title);
 
+        transactionchanges = findViewById(R.id.transactionchanges);
+        transactionchanges.setVisibility(View.GONE);
+        reschedule = findViewById(R.id.reschedule);
+        cancel = findViewById(R.id.cancel);
 
         asyncGetSelectedTransaction getSelected = new asyncGetSelectedTransaction();
         getSelected.setOnResultListener(getSelectedTransaction);
@@ -297,34 +437,165 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         }
     }
 
-    public String dateformattodate(String date){
+    public String dateformattodate(String date) {
+        Log.e("Selected Date", date);
         String[] datesplit = date.split("-");
-        if(datesplit[1].equals("01")){
-            return datesplit[2]+" January "+datesplit[0];
-        }else if (datesplit[1].equals("02")){
-            return datesplit[2]+" February "+datesplit[0];
-        }else if (datesplit[1].equals("03")){
-            return datesplit[2]+" March "+datesplit[0];
-        }else if (datesplit[1].equals("04")){
-            return datesplit[2]+" April "+datesplit[0];
-        }else if (datesplit[1].equals("05")){
-            return datesplit[2]+" May "+datesplit[0];
-        }else if (datesplit[1].equals("06")){
-            return datesplit[2]+" June "+datesplit[0];
-        }else if (datesplit[1].equals("07")){
-            return datesplit[2]+" July "+datesplit[0];
-        }else if (datesplit[1].equals("08")){
-            return datesplit[2]+" August "+datesplit[0];
-        }else if (datesplit[1].equals("09")){
-            return datesplit[2]+" September "+datesplit[0];
-        }else if (datesplit[1].equals("10")){
-            return datesplit[2]+" October "+datesplit[0];
-        }else if (datesplit[1].equals("11")){
-            return datesplit[2]+" November "+datesplit[0];
-        }else if (datesplit[1].equals("12")){
-            return datesplit[2]+" December "+datesplit[0];
-        }else{
+        if (datesplit[1].equals("01")) {
+            return datesplit[0] + " January " + datesplit[2];
+        } else if (datesplit[1].equals("1")) {
+            return datesplit[0] + " January " + datesplit[2];
+        } else if (datesplit[1].equals("02")) {
+            return datesplit[0] + " February " + datesplit[2];
+        } else if (datesplit[1].equals("2")) {
+            return datesplit[0] + " February " + datesplit[2];
+        } else if (datesplit[1].equals("03")) {
+            return datesplit[0] + " March " + datesplit[2];
+        } else if (datesplit[1].equals("3")) {
+            return datesplit[0] + " March " + datesplit[2];
+        } else if (datesplit[1].equals("04")) {
+            return datesplit[0] + " April " + datesplit[2];
+        } else if (datesplit[1].equals("4")) {
+            return datesplit[0] + " April " + datesplit[2];
+        } else if (datesplit[1].equals("05")) {
+            return datesplit[0] + " May " + datesplit[2];
+        } else if (datesplit[1].equals("5")) {
+            return datesplit[0] + " May " + datesplit[2];
+        } else if (datesplit[1].equals("06")) {
+            return datesplit[0] + " June " + datesplit[2];
+        } else if (datesplit[1].equals("6")) {
+            return datesplit[0] + " June " + datesplit[2];
+        } else if (datesplit[1].equals("07")) {
+            return datesplit[0] + " July " + datesplit[2];
+        } else if (datesplit[1].equals("7")) {
+            return datesplit[0] + " July " + datesplit[2];
+        } else if (datesplit[1].equals("08")) {
+            return datesplit[0] + " August " + datesplit[2];
+        } else if (datesplit[1].equals("8")) {
+            return datesplit[0] + " August " + datesplit[2];
+        } else if (datesplit[1].equals("09")) {
+            return datesplit[0] + " September " + datesplit[2];
+        } else if (datesplit[1].equals("9")) {
+            return datesplit[0] + " September " + datesplit[2];
+        } else if (datesplit[1].equals("10")) {
+            return datesplit[0] + " October " + datesplit[2];
+        } else if (datesplit[1].equals("11")) {
+            return datesplit[0] + " November " + datesplit[2];
+        } else if (datesplit[1].equals("12")) {
+            return datesplit[0] + " December " + datesplit[2];
+        } else {
             return "date unavailable";
+        }
+    }
+
+    public String datetodateformat(String date) {
+        String[] datesplit = date.split(" ");
+        if (datesplit[1].equals("January")) {
+            return datesplit[2] + "-1-" + datesplit[0];
+        } else if (datesplit[1].equals("February")) {
+            return datesplit[2] + "-2" + datesplit[0];
+        } else if (datesplit[1].equals("March")) {
+            return datesplit[2] + "-3-" + datesplit[0];
+        } else if (datesplit[1].equals("April")) {
+            return datesplit[2] + "-4-" + datesplit[0];
+        } else if (datesplit[1].equals("May")) {
+            return datesplit[2] + "-5-" + datesplit[0];
+        } else if (datesplit[1].equals("June")) {
+            return datesplit[2] + "-6-" + datesplit[0];
+        } else if (datesplit[1].equals("July")) {
+            return datesplit[2] + "-7-" + datesplit[0];
+        } else if (datesplit[1].equals("August")) {
+            return datesplit[2] + "-8-" + datesplit[0];
+        } else if (datesplit[1].equals("September")) {
+            return datesplit[2] + "-9-" + datesplit[0];
+        } else if (datesplit[1].equals("October")) {
+            return datesplit[2] + "-10-" + datesplit[0];
+        } else if (datesplit[1].equals("November")) {
+            return datesplit[2] + "-11-" + datesplit[0];
+        } else if (datesplit[1].equals("December")) {
+            return datesplit[2] + "-12-" + datesplit[0];
+        } else {
+            return "date unavailable";
+        }
+    }
+
+    public class ReScheduleTransaction extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Intent extras = getIntent();
+            int chosenID = extras.getIntExtra("intChosenID", 0);
+            return req.PostRequest("http://ehostingcentre.com/gravo/rescheduletransaction.php", "id=" + chosenID
+                    + "&time=" + strings[0]
+                    + "&date=" + strings[1]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.equals("") || s.length() <= 0) {
+                Toast.makeText(ActivitySelectedTransaction.this, "an unexpected has occurred\nerror 404(result empty)", Toast.LENGTH_LONG).show();
+            } else {
+                try {
+                    JSONObject result = new JSONObject(s);
+                    int status = result.getInt("status");
+                    if (status == 200) {
+                        asyncGetSelectedTransaction getSelected = new asyncGetSelectedTransaction();
+                        getSelected.setOnResultListener(getSelectedTransaction);
+                        Bundle extras = getIntent().getExtras();
+                        int chosenID = extras.getInt("intChosenID", 0);
+                        Log.i("chosenID", chosenID + "");
+                        String[] paramsArray = {chosenID + ""};
+                        ShowProgress();
+                        getSelected.execute(paramsArray);
+                    } else {
+                        Toast.makeText(ActivitySelectedTransaction.this, "an unexpected error has occurred. please contact the administrator\nerror " + String.valueOf(status) + "\n" + result.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    public class CancelTransaction extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            Intent extras = getIntent();
+            int chosenID = extras.getIntExtra("intChosenID", 0);
+            return req.PostRequest("http://ehostingcentre.com/gravo/canceltransaction.php", "id=" + chosenID);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.equals("") || s.length() <= 0) {
+                Toast.makeText(ActivitySelectedTransaction.this, "an unexpected has occurred\nerror 404(result empty)", Toast.LENGTH_LONG).show();
+            } else {
+                try {
+                    JSONObject result = new JSONObject(s);
+                    int status = result.getInt("status");
+                    if (status == 200) {
+                        Toast.makeText(ActivitySelectedTransaction.this, "Transaction Cancelled", Toast.LENGTH_SHORT).show();
+                        asyncGetSelectedTransaction getSelected = new asyncGetSelectedTransaction();
+                        getSelected.setOnResultListener(getSelectedTransaction);
+                        Bundle extras = getIntent().getExtras();
+                        int chosenID = extras.getInt("intChosenID", 0);
+                        Log.i("chosenID", chosenID + "");
+                        String[] paramsArray = {chosenID + ""};
+                        ShowProgress();
+                        getSelected.execute(paramsArray);
+                    } else {
+                        Toast.makeText(ActivitySelectedTransaction.this, "an unexpected error has occurred. please contact the administrator\nerror " + String.valueOf(status) + "\n" + result.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
     }
 }

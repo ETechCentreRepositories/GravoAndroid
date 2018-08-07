@@ -56,7 +56,7 @@
                     android:id="@+id/transaction_details_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
                 <TextView
                     android:id="@+id/tvStatus"
@@ -139,25 +139,64 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/transactionchanges"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/reschedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:height="20dp"
+                        android:background="@drawable/btn_black_round"
+                        android:paddingEnd="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingStart="10dp"
+                        android:text="Re-Schedule"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                    <Space
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:height="20dp"
+                        android:background="@drawable/btn_brand_pink_round"
+                        android:paddingEnd="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingStart="10dp"
+                        android:text="Cancel"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:paddingStart="10dp"
                         android:paddingTop="10dp"
-                        android:textSize="20sp"
-                        android:layout_height="wrap_content"
-                        android:text="Collection on " />
+                        android:text="Collection on "
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/date_of_collection"
                         android:layout_width="wrap_content"
-                        android:textSize="20sp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,20 +231,21 @@
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
                 <LinearLayout
-                    android:background="@color/brand_pink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/brand_pink"
                     android:orientation="vertical"
-                    android:padding="5dp"
-                    android:layout_margin="10dp">
+                    android:padding="5dp">
+
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
                         android:text="Payment will be made using PayNOW. Get your mobile number ready!"
-                        />
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
 
