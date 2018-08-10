@@ -92,7 +92,7 @@ public class Rates {
                 return R.drawable.metal_copper_wire_one;
             case "Metals | Untainted -Stripped Copper Wires":
                 return R.drawable.metal_untainted_copper_wire;
-            case "Metals | Dirty  -Stripped Copper Wires":
+            case "Metals | Dirty -Stripped Copper Wires":
                 return R.drawable.metal_copper_wire_two;
             case "Metals | Brass - ":
                 return R.drawable.metal_brass_item;
