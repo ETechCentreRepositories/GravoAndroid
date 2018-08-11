@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.greenravolution.gravo.R;
@@ -26,7 +27,8 @@ public class ActivitySettingsItems extends AppCompatActivity {
         Intent intent = getIntent();
         String item = intent.getStringExtra("tnc");
         String title = intent.getStringExtra("type");
-        text.setText(item);
+
+        text.setText(Html.fromHtml(item));
         activityTitle.setText(title);
     }
 }

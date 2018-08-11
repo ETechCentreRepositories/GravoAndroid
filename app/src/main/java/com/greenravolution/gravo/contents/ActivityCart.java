@@ -460,13 +460,13 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userPreTotalPrice = tvTotalPrice.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
             Log.e("Cart total price", userTotalPrice);
-            Log.e("price", userTotalPrice);
-            if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE") || scheduleDateTiming.getText().toString().equals("SELECT TIME")) {
-                Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
-            } else if (no_of_items == 0) {
-                Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
-            } else {
-                int status_id = 1;
+                Log.e("price", userTotalPrice);
+                if (etPhone.getText().toString().equals("") || etBlock.getText().toString().equals("") || etUnit.getText().toString().equals("") || etStreet.getText().toString().equals("") || etPostal.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE") || scheduleDateTiming.getText().toString().equals("SELECT TIME")) {
+                    Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
+                } else if (no_of_items == 0) {
+                    Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
+                } else {
+                    int status_id = 1;
 
                 String newdate = datetodateformat(scheduleDate.getText().toString());
                 String[] getdatesplit = newdate.split("-");

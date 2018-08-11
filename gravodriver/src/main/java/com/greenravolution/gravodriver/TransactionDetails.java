@@ -148,9 +148,9 @@ public class TransactionDetails extends AppCompatActivity {
                 int transactionid = intent1.getIntExtra("id", -1);
 
                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                String collectorid = sessionManager.getString("id","");
+                String collectorid = sessionManager.getString("id", "");
 
-                updateTransactionStatus.execute(String.valueOf(transactionid),collectorid);
+                updateTransactionStatus.execute(String.valueOf(transactionid), collectorid);
 
                 //update collection user.
             } else {
@@ -166,7 +166,7 @@ public class TransactionDetails extends AppCompatActivity {
                 setResult(1, ib);
 
                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-                String collectorid = sessionManager.getString("id","");
+                String collectorid = sessionManager.getString("id", "");
 
                 updateTransactionDetails.execute(String.valueOf(transactionid), name, contact, collectorid);
                 //update collection
@@ -192,8 +192,7 @@ public class TransactionDetails extends AppCompatActivity {
 
     }
 
-    public void FinishAfterAsyncTask()
-    {
+    public void FinishAfterAsyncTask() {
         this.finish();
     }
 
@@ -431,10 +430,10 @@ public class TransactionDetails extends AppCompatActivity {
                     int transactionid = object.getJSONArray("data").getJSONObject(0).getInt("id");
                     UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
                     updateStatusMessages.execute(String.valueOf(transactionid));
-                    Log.i("called",object.toString());
+                    Log.i("called", object.toString());
 
                     SharedPreferences.Editor editor = sessionManager.edit();
-                    editor.putString("alltransactionsObject",s);
+                    editor.putString("alltransactionsObject", s);
                     editor.commit();
                     FinishAfterAsyncTask();
 
@@ -465,10 +464,10 @@ public class TransactionDetails extends AppCompatActivity {
                     int transactionid = object.getJSONArray("data").getJSONObject(0).getInt("id");
                     UpdateStatusMessages updateStatusMessages = new UpdateStatusMessages();
                     updateStatusMessages.execute(String.valueOf(transactionid));
-                    Log.i("called",object.toString());
+                    Log.i("called", object.toString());
 
                     SharedPreferences.Editor editor = sessionManager.edit();
-                    editor.putString("alltransactionsObject",s);
+                    editor.putString("alltransactionsObject", s);
                     editor.commit();
                     FinishAfterAsyncTask();
 

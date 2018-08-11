@@ -268,11 +268,9 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = null;
-
-//        datePickerDialog = new DatePickerDialog(this,
-//                (view, year, monthOfYear, dayOfMonth) ->
-//                        date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth + 1, mDay);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year, monthOfYear, dayOfMonth) ->
+                        date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth+1, mDay);
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
 
@@ -289,7 +287,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
         datePickerDialog.show();
     }
-
     public void getScheduleDateTiming() {
         final CharSequence[] items = {"9:00am - 12:00pm", "1:00pm - 4:00pm", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this);

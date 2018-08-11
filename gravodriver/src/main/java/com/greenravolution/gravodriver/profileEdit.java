@@ -116,66 +116,8 @@ public class profileEdit extends AppCompatActivity {
         newVehicleNo.setText(getVehicleNo);
 
         HideProgress();
-//        if (getImage.equals("")) {
-//            newProfile.setImageDrawable(getDrawable(R.drawable.gravo_logo_black));
-//        } else {
-//            Glide.with(profileEdit.this).load(getImage).into(newProfile);
-//        }
+
     }
-
-//    public void selectImage() {
-//        final CharSequence[] items = {"Take a photo", "Choose from Library", "Cancel"};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(profileEdit.this);
-//        builder.setTitle("Pick Profile Image");
-//        builder.setItems(items, (dialog, item) -> {
-//            boolean result = Utility.checkPermission(profileEdit.this);
-//            if (items[item].equals("Take a photo")) {
-//                userChosenTask = "Take a photo";
-//                if (result) {
-//                    cameraIntent();
-//                }
-//            } else if (items[item].equals("Choose from Library")) {
-//                userChosenTask = "Choose from Library";
-//                if (result) {
-//                    galleryIntent();
-//                }
-//            } else {
-//                dialog.dismiss();
-//            }
-//        });
-//        builder.show();
-//    }
-
-//    public void cameraIntent() {
-//        if (android.os.Build.VERSION.SDK_INT >= 23) {
-//            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
-//            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-//                Log.i("Test 19/6", "Requesting permissions");
-//                requestPermissions(new String[]{Manifest.permission.CAMERA},
-//                        REQUEST_CODE_ASK_PERMISSIONS);
-//                return;
-//            }
-//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//            startActivityForResult(intent, REQUEST_CAMERA);
-//        }
-//    }
-
-//    public void galleryIntent() {
-//        if (android.os.Build.VERSION.SDK_INT >= 23) {
-//            int hasCameraPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-//            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-//                Log.i("Test", "Requesting permissions");
-//                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-//                        REQUEST_CODE_ASK_PERMISSIONS);
-//                return;
-//            }
-//            Intent intent = new Intent();
-//            intent.setType("image/*");
-//            intent.setAction(Intent.ACTION_GET_CONTENT);
-//            startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
-//        }
-//
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -184,69 +126,9 @@ public class profileEdit extends AppCompatActivity {
             Log.e("camera intent:", data.toString());
             super.onActivityResult(requestCode, resultCode, data);
             Log.e("BULK: result Code", resultCode + "");
-//            if (resultCode == Activity.RESULT_OK) {
-//                if (requestCode == SELECT_FILE) {
-//                    onSelectFromGalleryResult(data);
-//                } else if (requestCode == REQUEST_CAMERA) {
-//                    Log.e("BULK: ", requestCode + "");
-//                    onCaptureImageResult(data);
-//                }
-//            }
+
         }
     }
-
-//    @SuppressWarnings("deprecation")
-//    private void onSelectFromGalleryResult(Intent data) {
-//        Bitmap bm = null;
-//
-//        if (data != null) {
-//            try {
-//                bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getContentResolver()), data.getData());
-//                Log.e("BULK: bitmap:", bm.toString());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        newProfile.setImageBitmap(bm);
-//        UploadPhoto(bm);
-////                bulk_image.setImageBitmap(cameraImage);
-//    }
-
-//    private void onCaptureImageResult(Intent data) {
-//        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        assert thumbnail != null;
-//        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-//        Log.e("BULK: bitmap:", thumbnail.toString());
-//        newProfile.setImageBitmap(thumbnail);
-//        UploadPhoto(thumbnail);
-//
-////        bulk_image.setImageBitmap(thumbnail);
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_ASK_PERMISSIONS:
-//                Log.i("permissions", permissions[0]);
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    // Permission Granted
-//                    if (permissions[0].equalsIgnoreCase("android.permission.CAMERA")) {
-//                        cameraIntent();
-//                    } else if (permissions[0].equalsIgnoreCase("android.permission.READ_EXTERNAL_STORAGE")) {
-//                        galleryIntent();
-//                    }
-//                } else {
-//                    // Permission Denied
-//                    Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_SHORT)
-//                            .show();
-//                }
-//                break;
-//            default:
-//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//    }
 
     public class EditUser extends AsyncTask<String, Void, String> {
 
@@ -308,67 +190,6 @@ public class profileEdit extends AppCompatActivity {
 
         }
     }
-
-//    public class EditProfilePic extends AsyncTask<String, Void, String> {
-//
-//        @Override
-//        protected String doInBackground(String... strings) {
-//            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-//            int userid = sessionManager.getInt("user_id", -1);
-//            API api = new API();
-//            HttpReq req = new HttpReq();
-//            return req.PostRequest(api.getUpdateImage(), "userid=" + userid + "&encoded_string=" + strings[0]);
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-//            Log.e("EDIT PROFILE", String.valueOf(s));
-//            HideProgress();
-//            try {
-//                JSONObject result = new JSONObject(s);
-//                int status = result.getInt("status");
-//                Log.e("EDIT PHOTO STATUS", result.getString("status") + "");
-//                if (status == 200) {
-//                    JSONArray profiles = result.getJSONArray("result");
-//                    JSONObject user = profiles.getJSONObject(0);
-//                    sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sessionManager.edit();
-//                    editor.putString("user_image", user.getString("photo"));
-//                    editor.apply();
-//                    Glide.with(profileEdit.this).load(user.getString("photo")).into(newProfile);
-//                    Toast.makeText(profileEdit.this, "Profile Photo Updated", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(profileEdit.this, "Unable to update photo", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            } catch (JSONException e) {
-//
-//            }
-//        }
-//    }
-
-//    public void UploadPhoto(Bitmap image) {
-//        Bitmap icon = image;
-//        String encodedimage = bitmapToBase64(icon);
-//        Log.e("BITMAP: ", encodedimage);
-//        EditProfilePic editProfilePic = new EditProfilePic();
-//        editProfilePic.execute(encodedimage);
-//    }
-//
-//    private String bitmapToBase64(Bitmap bitmap) {
-//        String encodedImage = "";
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-//        byte[] byteArray = byteArrayOutputStream.toByteArray();
-//        try {
-//            encodedImage += URLEncoder.encode(Base64.encodeToString(byteArray, Base64.DEFAULT), "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        return encodedImage;
-//    }
 
     public void HideProgress() {
         save.setEnabled(true);
