@@ -53,11 +53,17 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
         getUnits = sharedPreferences.getString("user_address_unit", "");
         getStreets = sharedPreferences.getString("user_address_street", "");
         getPostals = sharedPreferences.getString("user_address_postal", "");
-
-        getBlk.setText(getBlock);
-        getUnit.setText(getUnits);
-        getStreet.setText(getStreets);
-        getPostal.setText(getPostals);
+        if(getBlock.equals("null")||getUnits.equals("null")||getStreets.equals("null")||getPostals.equals("null")){
+            getBlk.setText("");
+            getUnit.setText("");
+            getStreet.setText("");
+            getPostal.setText("");
+        }else{
+            getBlk.setText(getBlock);
+            getUnit.setText(getUnits);
+            getStreet.setText(getStreets);
+            getPostal.setText(getPostals);
+        }
 
         progress = findViewById(R.id.progressbar);
         getContact.setText(sharedPreferences.getString("user_contact",""));
