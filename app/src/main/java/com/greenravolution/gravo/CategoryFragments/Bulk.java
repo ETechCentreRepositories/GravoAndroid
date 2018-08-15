@@ -180,7 +180,6 @@ public class Bulk extends Fragment {
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
         Bitmap bm = null;
-
         if (data != null) {
             try {
                 bm = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getActivity()).getContentResolver(), data.getData());
@@ -269,6 +268,7 @@ public class Bulk extends Fragment {
                     dialog.setPositiveButton("Done", (dialogInterface, i) -> {
                         bulk_image.setImageDrawable(null);
                         bulk_take_photo.setVisibility(View.VISIBLE);
+                        bulk_description.setText("");
                     });
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();

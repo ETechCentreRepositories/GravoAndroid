@@ -25,6 +25,7 @@ import com.greenravolution.gravo.CategoryFragments.Bulk;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.HttpReq;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,6 +41,7 @@ public class BulkDetails extends AppCompatActivity {
     RelativeLayout statusthree;
     RelativeLayout btmlayout;
     Button accept, reject, confirmschedule;
+    TextView tvStatusDetails;
     private int mYear, mMonth, mDay;
     public static final String SESSION = "login_status";
 
@@ -59,6 +61,7 @@ public class BulkDetails extends AppCompatActivity {
         bulktransactionid = findViewById(R.id.bulktransactionid);
         refreshLayout = findViewById(R.id.swipelayout);
         bulkquote = findViewById(R.id.bulkquote);
+        tvStatusDetails = findViewById(R.id.tvStatusDetails);
 
         collectiondate = findViewById(R.id.bulkcollectiondate);
         collectiondatetiming = findViewById(R.id.bulkcollectiondatetiming);
@@ -133,6 +136,7 @@ public class BulkDetails extends AppCompatActivity {
                         int status = result.getInt("status");
                         Log.e("UPDATE STATUS",status+"");
                         if(status == 200){
+                            JSONArray history = result.getJSONArray("history");
                             JSONObject item = result.getJSONArray("result").getJSONObject(0);
                             Glide.with(BulkDetails.this).load(item.getString("image")).into(bulkimage);
                             bulkname.setText(item.getString("full_name"));
@@ -140,30 +144,18 @@ public class BulkDetails extends AppCompatActivity {
                             bulkstatus.setText(item.getString("status"));
                             collectiondate.setText(item.getString("collection_date"));
                             collectiondatetiming.setText(item.getString("collection_date_timing"));
+                            StringBuilder histories = new StringBuilder();
+                            for(int i=0;i<history.length();i++){
+                                histories.append(history.getJSONObject(i).getString("history")).append("\n\n");
+                                Log.e("history id "+history.getJSONObject(i).getInt("id"),history.getJSONObject(i).getString("history"));
+                            }
+                            tvStatusDetails.setText(String.valueOf(histories));
 
                             bulkaddress.setText(item.getString("address"));
                             bulkdescription.setText(item.getString("description"));
                             bulktransactionid.setText(item.getString("transaction_id_key"));
                             int status_id = item.getInt("bulk_transaction_status_id");
-                            if(status_id==12){
-                                btmlayout.setVisibility(View.VISIBLE);
-                                statustwo.setVisibility(View.VISIBLE);
-                                statusthree.setVisibility(View.GONE);
-                                scheduledate.setVisibility(View.GONE);
-                                scheduleddate.setVisibility(View.GONE);
-                            }else if(status_id==6){
-                                btmlayout.setVisibility(View.GONE);
-                                statustwo.setVisibility(View.GONE);
-                                statusthree.setVisibility(View.VISIBLE);
-                                scheduledate.setVisibility(View.VISIBLE);
-                                scheduleddate.setVisibility(View.GONE);
-                            }else{
-                                btmlayout.setVisibility(View.GONE);
-                                statustwo.setVisibility(View.GONE);
-                                statusthree.setVisibility(View.GONE);
-                                scheduledate.setVisibility(View.GONE);
-                                scheduleddate.setVisibility(View.VISIBLE);
-                            }
+                            layoutchange(status_id);
                         }else if(status==404){
                             refreshLayout.setRefreshing(false);
                         }else{
@@ -212,6 +204,7 @@ public class BulkDetails extends AppCompatActivity {
                         int status = result.getInt("status");
                         Log.e("UPDATE STATUS",status+"");
                         if(status == 200){
+                            JSONArray history = result.getJSONArray("history");
                             JSONObject item = result.getJSONArray("result").getJSONObject(0);
                             Glide.with(BulkDetails.this).load(item.getString("image")).into(bulkimage);
                             bulkname.setText(item.getString("full_name"));
@@ -220,29 +213,18 @@ public class BulkDetails extends AppCompatActivity {
                             collectiondate.setText(item.getString("collection_date"));
                             collectiondatetiming.setText(item.getString("collection_date_timing"));
 
+                            StringBuilder histories = new StringBuilder();
+                            for(int i=0;i<history.length();i++){
+                                histories.append(history.getJSONObject(i).getString("history")).append("\n\n");
+                                Log.e("history id "+history.getJSONObject(i).getInt("id"),history.getJSONObject(i).getString("history"));
+                            }
+                            tvStatusDetails.setText(String.valueOf(histories));
+
                             bulkaddress.setText(item.getString("address"));
                             bulkdescription.setText(item.getString("description"));
                             bulktransactionid.setText(item.getString("transaction_id_key"));
                             int status_id = item.getInt("bulk_transaction_status_id");
-                            if(status_id==12){
-                                btmlayout.setVisibility(View.VISIBLE);
-                                statustwo.setVisibility(View.VISIBLE);
-                                statusthree.setVisibility(View.GONE);
-                                scheduledate.setVisibility(View.GONE);
-                                scheduleddate.setVisibility(View.GONE);
-                            }else if(status_id==6){
-                                btmlayout.setVisibility(View.GONE);
-                                statustwo.setVisibility(View.GONE);
-                                statusthree.setVisibility(View.VISIBLE);
-                                scheduledate.setVisibility(View.VISIBLE);
-                                scheduleddate.setVisibility(View.GONE);
-                            }else{
-                                btmlayout.setVisibility(View.GONE);
-                                statustwo.setVisibility(View.GONE);
-                                statusthree.setVisibility(View.GONE);
-                                scheduledate.setVisibility(View.GONE);
-                                scheduleddate.setVisibility(View.VISIBLE);
-                            }
+                            layoutchange(status_id);
                         }else if(status==404){
                             refreshLayout.setRefreshing(false);
                         }else{
@@ -279,6 +261,7 @@ public class BulkDetails extends AppCompatActivity {
                     JSONObject result = new JSONObject(s);
                     int status = result.getInt("status");
                     if(status==200){
+                        JSONArray history = result.getJSONArray("history");
                         JSONObject item = result.getJSONArray("result").getJSONObject(0);
                         Glide.with(BulkDetails.this).load(item.getString("image")).into(bulkimage);
                         bulkname.setText(item.getString("full_name"));
@@ -289,26 +272,15 @@ public class BulkDetails extends AppCompatActivity {
                         collectiondatetiming.setText(item.getString("collection_date_timing"));
                         bulkdescription.setText(item.getString("description"));
                         bulktransactionid.setText(item.getString("transaction_id_key"));
-                        int status_id = item.getInt("bulk_transaction_status_id");
-                        if(status_id==12){
-                            btmlayout.setVisibility(View.VISIBLE);
-                            statustwo.setVisibility(View.VISIBLE);
-                            statusthree.setVisibility(View.GONE);
-                            scheduledate.setVisibility(View.GONE);
-                            scheduleddate.setVisibility(View.GONE);
-                        }else if(status_id==6){
-                            btmlayout.setVisibility(View.GONE);
-                            statustwo.setVisibility(View.GONE);
-                            statusthree.setVisibility(View.VISIBLE);
-                            scheduledate.setVisibility(View.VISIBLE);
-                            scheduleddate.setVisibility(View.GONE);
-                        }else{
-                            btmlayout.setVisibility(View.GONE);
-                            statustwo.setVisibility(View.GONE);
-                            statusthree.setVisibility(View.GONE);
-                            scheduledate.setVisibility(View.GONE);
-                            scheduleddate.setVisibility(View.VISIBLE);
+
+                        StringBuilder histories = new StringBuilder();
+                        for(int i=0;i<history.length();i++){
+                            histories.append(history.getJSONObject(i).getString("history")).append("\n\n");
+                            Log.e("history id "+history.getJSONObject(i).getInt("id"),history.getJSONObject(i).getString("history"));
                         }
+                        tvStatusDetails.setText(String.valueOf(histories));
+                        int status_id = item.getInt("bulk_transaction_status_id");
+                        layoutchange(status_id);
 
                     }else if(status==404){
                         refreshLayout.setRefreshing(false);
@@ -399,6 +371,27 @@ public class BulkDetails extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    public void layoutchange(int status_id){
+        if(status_id==12){
+            btmlayout.setVisibility(View.VISIBLE);
+            statustwo.setVisibility(View.VISIBLE);
+            statusthree.setVisibility(View.GONE);
+            scheduledate.setVisibility(View.GONE);
+            scheduleddate.setVisibility(View.GONE);
+        }else if(status_id==6){
+            btmlayout.setVisibility(View.GONE);
+            statustwo.setVisibility(View.GONE);
+            statusthree.setVisibility(View.VISIBLE);
+            scheduledate.setVisibility(View.VISIBLE);
+            scheduleddate.setVisibility(View.GONE);
+        }else{
+            btmlayout.setVisibility(View.GONE);
+            statustwo.setVisibility(View.GONE);
+            statusthree.setVisibility(View.GONE);
+            scheduledate.setVisibility(View.GONE);
+            scheduleddate.setVisibility(View.VISIBLE);
+        }
     }
 
 }

@@ -80,9 +80,7 @@ public class ActivityEditUser extends AppCompatActivity {
         address_postal = findViewById(R.id.address_postal);
 
         save.setOnClickListener(v -> {
-            if (address_block.getText().toString().equals("")
-                    && address_unit.getText().toString().equals("")
-                    && address_street.getText().toString().equals("")
+            if (address_street.getText().toString().equals("")
                     && address_postal.getText().toString().equals("")
                     && newFirstName.getText().toString().equals("")
                     && newLastName.getText().toString().equals("")
@@ -256,7 +254,6 @@ public class ActivityEditUser extends AppCompatActivity {
     }
 
     public class EditUser extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... strings) {
             if(address_unit.getText().toString().equals("")){
@@ -270,7 +267,6 @@ public class ActivityEditUser extends AppCompatActivity {
             }
             HttpReq req = new HttpReq();
             API api = new API();
-
             return req.PostRequest(api.getEditUser()
                     , "userid=" + getId
                             + "&firstname=" + newFirstName.getText().toString()
@@ -283,7 +279,6 @@ public class ActivityEditUser extends AppCompatActivity {
                             + "&street=" + address_street.getText().toString()
                             + "&postal=" + address_postal.getText().toString());
         }
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);

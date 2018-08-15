@@ -90,7 +90,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 Log.i("id key", transactionObject.getString("transaction_id_key"));
                 tvTransaction.setText(String.format("TRANSACTION #%s", transactionObject.getString("transaction_id_key")));
                 tvStatus.setText(transactionObject.getString("status_type"));
-                tvDate.setText(dateformattodate(transactionObject.getString("collection_date")) + " (" + transactionObject.getString("collection_date_timing") + ")");
+                tvDate.setText(dateformattodate2(transactionObject.getString("collection_date")) + " (" + transactionObject.getString("collection_date_timing") + ")");
 
                 if (transactionObject.getString("status_id").equals("1")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
@@ -270,7 +270,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (view, year, monthOfYear, dayOfMonth) ->
-                        date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth+1, mDay);
+                        date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth + 1, mDay);
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
 
@@ -287,6 +287,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
         datePickerDialog.show();
     }
+
     public void getScheduleDateTiming() {
         final CharSequence[] items = {"9:00am - 12:00pm", "1:00pm - 4:00pm", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this);
@@ -327,7 +328,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         int chosenID = extras.getInt("intChosenID", 0);
         Log.i("chosenID", chosenID + "");
-        String[] paramsArray = {chosenID + ""};
+        String[] paramsArray = {String.valueOf(chosenID)};
         ShowProgress();
         getSelected.execute(paramsArray);
 
@@ -431,6 +432,56 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 line3.setImageResource(R.drawable.stepper_line_grey);
                 break;
 
+        }
+    }
+
+    public String dateformattodate2(String date) {
+        Log.e("Selected Date", date);
+        String[] datesplit = date.split("-");
+        if (datesplit[1].equals("01")) {
+            return datesplit[2] + " January " + datesplit[0];
+        } else if (datesplit[1].equals("1")) {
+            return datesplit[2] + " January " + datesplit[0];
+        } else if (datesplit[1].equals("02")) {
+            return datesplit[2] + " February " + datesplit[0];
+        } else if (datesplit[1].equals("2")) {
+            return datesplit[2] + " February " + datesplit[0];
+        } else if (datesplit[1].equals("03")) {
+            return datesplit[2] + " March " + datesplit[0];
+        } else if (datesplit[1].equals("3")) {
+            return datesplit[2] + " March " + datesplit[0];
+        } else if (datesplit[1].equals("04")) {
+            return datesplit[2] + " April " + datesplit[0];
+        } else if (datesplit[1].equals("4")) {
+            return datesplit[2] + " April " + datesplit[0];
+        } else if (datesplit[1].equals("05")) {
+            return datesplit[2] + " May " + datesplit[0];
+        } else if (datesplit[1].equals("5")) {
+            return datesplit[2] + " May " + datesplit[0];
+        } else if (datesplit[1].equals("06")) {
+            return datesplit[2] + " June " + datesplit[0];
+        } else if (datesplit[1].equals("6")) {
+            return datesplit[2] + " June " + datesplit[0];
+        } else if (datesplit[1].equals("07")) {
+            return datesplit[2] + " July " + datesplit[0];
+        } else if (datesplit[1].equals("7")) {
+            return datesplit[2] + " July " + datesplit[0];
+        } else if (datesplit[1].equals("08")) {
+            return datesplit[2] + " August " + datesplit[0];
+        } else if (datesplit[1].equals("8")) {
+            return datesplit[2] + " August " + datesplit[0];
+        } else if (datesplit[1].equals("09")) {
+            return datesplit[2] + " September " + datesplit[0];
+        } else if (datesplit[1].equals("9")) {
+            return datesplit[2] + " September " + datesplit[0];
+        } else if (datesplit[1].equals("10")) {
+            return datesplit[2] + " October " + datesplit[0];
+        } else if (datesplit[1].equals("11")) {
+            return datesplit[2] + " November " + datesplit[0];
+        } else if (datesplit[1].equals("12")) {
+            return datesplit[2] + " December " + datesplit[0];
+        } else {
+            return "date unavailable";
         }
     }
 

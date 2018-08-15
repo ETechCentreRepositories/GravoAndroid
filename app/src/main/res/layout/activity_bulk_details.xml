@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow_back"/>
+            app:navigationIcon="@drawable/ic_arrow_back" />
 
         <TextView
             android:layout_width="match_parent"
@@ -27,17 +27,16 @@
     </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_above="@id/btmlayout"
         android:id="@+id/swipelayout"
-        android:layout_below="@id/toolbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbarlayout">
 
         <android.support.v4.widget.NestedScrollView
-            android:scrollbars="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbarlayout">
+            android:layout_below="@id/toolbarlayout"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,218 +44,288 @@
                 android:layout_below="@id/toolbarlayout"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/bulkimage"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/bulkimage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/bulkstatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@color/grey"
+                        android:padding="5dp"
+                        android:text="Waiting for scheduling"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+
+
                 <TextView
-                    android:background="@color/grey"
                     android:id="@+id/bulktransactionid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/brand_green"
                     android:padding="5dp"
                     android:textColor="@color/white"
-                    android:textSize="25sp"
-                    android:layout_marginBottom="10dp"/>
+                    android:textSize="25sp" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:padding="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:paddingLeft="5dp"
-                            android:paddingStart="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="description"/>
-                        <TextView
-                            android:layout_marginBottom="10dp"
-                            android:id="@+id/bulkdescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textColor="@color/black" />
-                        <TextView
-                            android:paddingLeft="5dp"
-                            android:paddingStart="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Price Quote"/>
-                        <TextView
-                            android:layout_marginBottom="10dp"
-                            android:id="@+id/bulkquote"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:id="@+id/bulkstatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginStart="5dp"
-                            android:background="@color/grey"
-                            android:padding="5dp"
-                            android:text="Waiting for scheduling"
-                            android:textColor="@color/white" />
-
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_margin="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp">
+
                         <TextView
-                            android:paddingLeft="5dp"
-                            android:paddingStart="5dp"
-                            android:paddingTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Name"/>
-                        <TextView
-                            android:id="@+id/bulkname"
-                            android:textColor="@color/black"
-                            android:padding="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
                             android:paddingLeft="5dp"
                             android:paddingStart="5dp"
+                            android:text="description" />
+
+                        <TextView
+                            android:id="@+id/bulkdescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:padding="5dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Address"/>
+                            android:paddingLeft="5dp"
+                            android:paddingStart="5dp"
+                            android:text="Price Quote" />
+
                         <TextView
+                            android:id="@+id/bulkquote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-                            android:id="@+id/bulkaddress"
-                            android:textColor="@color/black"
                             android:padding="5dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:textColor="@color/black" />
+
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="History"
+                    android:textSize="20sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:cardBackgroundColor="#FFCBD8"
+                    app:cardCornerRadius="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical">
+
                         <LinearLayout
-                            android:id="@+id/scheduledate"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
                             <TextView
-                                android:id="@+id/scheduleDate"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/black"
-                                android:padding="5dp"
-                                android:text="SELECT DATE"
-                                android:textColor="@color/white" />
+                                android:layout_height="wrap_content" />
+
+                            <android.support.v4.widget.Space
+                                android:layout_width="20dp"
+                                android:layout_height="wrap_content" />
+
                             <TextView
-                                android:id="@+id/scheduleDateTiming"
+                                android:id="@+id/tvStatusDetails"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@color/black"
-                                android:padding="5dp"
-                                android:text="SELECT TIME"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:id="@+id/scheduleddate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:paddingLeft="5dp"
-                                android:paddingStart="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Collection Date"/>
-                            <TextView
-                                android:layout_marginBottom="10dp"
-                                android:id="@+id/bulkcollectiondate"
-                                android:textColor="@color/black"
-                                android:padding="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
-                            <TextView
-                                android:paddingLeft="5dp"
-                                android:paddingStart="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Collection Time Slot"/>
-                            <TextView
-                                android:layout_marginBottom="10dp"
-                                android:id="@+id/bulkcollectiondatetiming"
-                                android:textColor="@color/black"
-                                android:padding="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingTop="5dp"
+                        android:text="Name" />
+
+                    <TextView
+                        android:id="@+id/bulkname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingStart="5dp"
+                        android:text="Address" />
+
+                    <TextView
+                        android:id="@+id/bulkaddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:id="@+id/scheduledate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/scheduleDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/black"
+                            android:padding="5dp"
+                            android:text="SELECT DATE"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/scheduleDateTiming"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/black"
+                            android:padding="5dp"
+                            android:text="SELECT TIME"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/scheduleddate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingStart="5dp"
+                            android:text="Collection Date" />
+
+                        <TextView
+                            android:id="@+id/bulkcollectiondate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:padding="5dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingStart="5dp"
+                            android:text="Collection Time Slot" />
+
+                        <TextView
+                            android:id="@+id/bulkcollectiondatetiming"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:padding="5dp"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:id="@+id/btmlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true">
+
+                        <LinearLayout
+                            android:id="@+id/statustwo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <Button
+                                android:id="@+id/bulkaccept"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/btn_brand_green_round"
+                                android:text="Accept"
+                                android:textColor="@color/white" />
+
+                            <Button
+                                android:id="@+id/bulkreject"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/btn_brand_pink_round"
+                                android:text="Reject"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/statusthree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="5dp">
+
+                        <Button
+                            android:id="@+id/bulkconfirmschedule"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/btn_black_round"
+                            android:text="Schedule Collecton"
+                            android:textColor="@color/white" />
+                    </RelativeLayout>
+                </RelativeLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
-    <RelativeLayout
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btmlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/statustwo"
-            android:layout_margin="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-            <Button
-                android:id="@+id/bulkaccept"
-                android:layout_margin="5dp"
-                android:background="@drawable/btn_brand_green_round"
-                android:textColor="@color/white"
-                android:text="Accept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <Button
-                android:id="@+id/bulkreject"
-                android:layout_margin="5dp"
-                android:background="@drawable/btn_brand_pink_round"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reject"
-                android:textColor="@color/white"
-                android:layout_weight="1"/>
-
-
-        </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/statusthree"
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-        <Button
-            android:id="@+id/bulkconfirmschedule"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_black_round"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Schedule Collecton"
-            android:textColor="@color/white"
-            android:layout_weight="1"/>
-    </RelativeLayout>
 </RelativeLayout>
+

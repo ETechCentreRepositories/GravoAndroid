@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -31,12 +32,18 @@ public class ActivitySuccessfullTransaction extends AppCompatActivity {
         date = findViewById(R.id.date);
         Intent intent = getIntent();
         date.setText(String.format("See you on %s", intent.getStringExtra("date")));
+
         toolbar.setNavigationOnClickListener(v -> finish());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                Intent putintent = new Intent(ActivitySuccessfullTransaction.this, ActivitySelectedTransaction.class);
+                int chosenID = Integer.parseInt(intent.getStringExtra("transactionid"));
+                Log.i("getTag", chosenID + "");
+                putintent.putExtra("intChosenID", chosenID);
+                startActivity(putintent);
                 finish();
             }
-        }, 5000);
+        }, 3000);
     }
 }

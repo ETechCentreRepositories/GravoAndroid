@@ -68,16 +68,10 @@ public class asyncGetSelectedTransaction extends AsyncTask<String, Void , String
             resultObject.put("message","OK");
             resultObject.put("detailsArray",transactionDetailResultArray);
 
-
             JSONObject transactionObject = new JSONObject(getTransactionResult);
             JSONArray transactionResultArray = transactionObject.getJSONArray("result");
-
-            if(transactionObject.getJSONArray("history")!=null){
-                JSONArray transactionHistory = transactionObject.getJSONArray("history");
-                resultObject.put("transactionHistory", transactionHistory);
-            }else{
-                resultObject.put("transactionHistory",null);
-            }
+            JSONArray transactionHistory = transactionObject.getJSONArray("history");
+            resultObject.put("transactionHistory", transactionHistory);
             resultObject.put("transactionArray",transactionResultArray);
 
 

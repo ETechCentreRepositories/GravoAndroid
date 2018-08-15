@@ -97,8 +97,9 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
             try {
                 JSONObject results = new JSONObject(addmessage);
                 int status = results.getInt("status");
+                int id = results.getJSONArray("data").getJSONObject(0).getInt("id");
                 if(status == 200){
-                    return "Success";
+                    return "Success "+String.valueOf(id);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -112,7 +113,7 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if(s.equalsIgnoreCase("Success")){
+        if(s.split(" ")[0].equalsIgnoreCase("Success")){
 
             onAsyncResult.result(200, s);
         } else {

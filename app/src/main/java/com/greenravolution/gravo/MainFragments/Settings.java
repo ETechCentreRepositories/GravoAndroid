@@ -37,7 +37,7 @@ public class Settings extends Fragment {
                 "<html>" +
                 "<head>" +
                 "</head>" +
-                "<body>" +
+                "<body style='text-align:justify;'>" +
                 "<h3>Green Ravolution aspires for a GREENER world. To that end, Green Ravolution embraces technology that brings together different, relevant stakeholders, to implement sustainability solutions that are more inclusive and collaborative. Every one of us needs to play our part, to REDUCE, REUSE and RECYCLE (3R). The more of us who come together and contribute our ideas and efforts, the more we can promote 3R awareness, assimilation and action.  For us, this is REAL 3R." +
                 "</h3></body></html>").putExtra("type","About Gravo")));
         tnc.setOnClickListener(v-> startActivity(new Intent(getContext(), ActivitySettingsItems.class).putExtra("tnc","" +
@@ -47,21 +47,8 @@ public class Settings extends Fragment {
                 "<HEAD>\n" +
                 "\t<META HTTP-EQUIV=\"CONTENT-TYPE\" CONTENT=\"text/html; charset=utf-8\">\n" +
                 "\t<TITLE></TITLE>\n" +
-                "\t<META NAME=\"GENERATOR\" CONTENT=\"LibreOffice 4.1.6.2 (Linux)\">\n" +
-                "\t<META NAME=\"CREATED\" CONTENT=\"20180610;184900000000000\">\n" +
-                "\t<META NAME=\"CHANGEDBY\" CONTENT=\"Allan Helen\">\n" +
-                "\t<META NAME=\"CHANGED\" CONTENT=\"20180610;184900000000000\">\n" +
-                "\t<META NAME=\"AppVersion\" CONTENT=\"16.0000\">\n" +
-                "\t<META NAME=\"DocSecurity\" CONTENT=\"0\">\n" +
-                "\t<META NAME=\"HyperlinksChanged\" CONTENT=\"false\">\n" +
-                "\t<META NAME=\"LinksUpToDate\" CONTENT=\"false\">\n" +
-                "\t<META NAME=\"ScaleCrop\" CONTENT=\"false\">\n" +
-                "\t<META NAME=\"ShareDoc\" CONTENT=\"false\">\n" +
-                "\t<STYLE TYPE=\"text/css\">\n" +
-
-                "\t</STYLE>\n" +
                 "</HEAD>\n" +
-                "<BODY LANG=\"en-US\" BGCOLOR=\"#ffffff\" DIR=\"LTR\">\n" +
+                "<BODY style='text-align:justify;' LANG=\'en-US\' BGCOLOR=\'#ffffff\' DIR=\'LTR\'>\n" +
                 "<P STYLE=\"margin-bottom: 0in; line-height: 115%\"><BR>\n" +
                 "</P>\n" +
                 "<P ALIGN=CENTER STYLE=\"margin-bottom: 0in; line-height: 115%; page-break-inside: auto; page-break-after: auto\"><A NAME=\"_2cipo4yr3w5d\"></A>\n" +

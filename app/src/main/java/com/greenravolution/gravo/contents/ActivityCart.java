@@ -466,7 +466,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 } else if (no_of_items == 0) {
                     Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
                 } else {
-                    int status_id = 1;
+                    int status_id = 6;
 
                 String newdate = datetodateformat(scheduleDate.getText().toString());
                 String[] getdatesplit = newdate.split("-");
@@ -492,7 +492,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     Log.i("message", message);
                     Log.i("resultCodeHere", resultCode + "");
                     if (resultCode == 200) {
-                        startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", scheduleDate.getText().toString()));
+                        Log.e("TRANSACTION ID",message.split(" ")[1]);
+                        startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", scheduleDate.getText().toString()).putExtra("transactionid",message.split(" ")[1]));
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_LONG).show();
@@ -508,7 +509,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         scheduleDateTiming.setOnClickListener(v -> getScheduleDateTiming());
         scheduleDate.setOnClickListener(v -> getScheduleDate());
     }
-
     public void getScheduleDate() {
         // Get Current Date
         final Calendar c = Calendar.getInstance();

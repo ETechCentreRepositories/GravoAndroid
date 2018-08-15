@@ -61,7 +61,7 @@ public class Transactions extends Fragment {
                     String month = transactionDate.substring(transactionDate.indexOf('-') + 1, transactionDate.lastIndexOf('-'));
                     String year = transactionDate.substring(0, transactionDate.indexOf('-'));
 
-                    String fixedDate = day + "/" + month + "/" + year;
+                    String fixedDate = day + " " + getmonth(month) + " " + year;
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
                     Date date = new Date();
@@ -157,6 +157,36 @@ public class Transactions extends Fragment {
         String url = links.getTransaction() + "?type=userid&userid=" + id;
         StartLoading();
         getTransactions.execute(url);
+    }
+
+    public String getmonth(String month){
+        if(month.equals("1")||month.equals("01")){
+            return "January";
+        }else if(month.equals("2")||month.equals("02")){
+            return "February";
+        }else if(month.equals("3")||month.equals("03")){
+            return "March";
+        }else if(month.equals("4")||month.equals("04")){
+            return "April";
+        }else if(month.equals("5")||month.equals("05")){
+            return "May";
+        }else if(month.equals("6")||month.equals("06")){
+            return "June";
+        }else if(month.equals("7")||month.equals("07")){
+            return "July";
+        }else if(month.equals("8")||month.equals("08")){
+            return "August";
+        }else if(month.equals("9")||month.equals("09")){
+            return "September";
+        }else if(month.equals("10")||month.equals("10")){
+            return "October";
+        }else if(month.equals("11")||month.equals("11")){
+            return "November";
+        }else if(month.equals("12")||month.equals("12")){
+            return "December";
+        }else{
+            return "Month Unavailable";
+        }
     }
 
 }

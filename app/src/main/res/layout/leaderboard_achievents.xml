@@ -50,9 +50,9 @@
                 <ProgressBar
                     style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
                     android:id="@+id/progress"
+                    android:progressDrawable="@drawable/achievement_progress"
                     android:layout_width="150dp"
                     android:layout_height="20dp" />
-
                 <TextView
                     android:id="@+id/points"
                     android:layout_marginStart="10dp"
