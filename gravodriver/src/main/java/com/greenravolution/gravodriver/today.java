@@ -612,27 +612,47 @@ public class today extends Fragment {
         try{
             JSONObject object = new JSONObject(jsonString);
             JSONArray results = object.getJSONArray("result");
-            JSONArray newResult = results;
+            //JSONArray newResult = results;
+            JSONArray newResult = new JSONArray();
 
-            JSONObject tempDetail;
-            int counter = 0;
-            for (int i = 1; i < newResult.length(); i++) {
-                counter++;
-                JSONObject currDetail = newResult.getJSONObject(i);
-                for(int j = i ; j > 0 ; j--){
-                    JSONObject prevDetail = newResult.getJSONObject(i);
-                    String isEarlierResult = dateTimeCompare(currDetail.getString("collection_date"),currDetail.getString("collection_date_timing"),prevDetail.getString("collection_date"),prevDetail.getString("collection_date_timing"));
-                    Log.i("isEarlier",counter+ " " +isEarlierResult);
-                    if(isEarlierResult.equalsIgnoreCase("isAfter")){
-                        tempDetail = prevDetail;
-                        newResult.put(j,currDetail);
-                        newResult.put(i,tempDetail);
-                    }
+            for(int i = 0; i < results.length(); i++){
+                JSONObject curr = results.getJSONObject(i);
+                if(curr.getString("collection_date_timing").equalsIgnoreCase("9:00am - 12:00pm")){
+                    newResult.put(curr);
                 }
             }
 
+            for(int i = 0; i < results.length(); i++){
+                JSONObject curr = results.getJSONObject(i);
+                if(curr.getString("collection_date_timing").equalsIgnoreCase("1:00pm - 4:00pm")){
+                    newResult.put(curr);
+                }
+            }
+
+//            JSONObject tempDetail = null;
+//            int counter = 0;
+//            for (int i = 1; i < newResult.length(); i++) {
+//                counter++;
+//                JSONObject currDetail = newResult.getJSONObject(i);
+//                for(int j = i ; j > 0 ; j--){
+//                    JSONObject prevDetail = newResult.getJSONObject(i);
+//                    String isEarlierResult = dateTimeCompare(currDetail.getString("collection_date"),currDetail.getString("collection_date_timing"),prevDetail.getString("collection_date"),prevDetail.getString("collection_date_timing"));
+//                    Log.i("isEarlier",counter+ " " +isEarlierResult);
+//                    if(isEarlierResult.equalsIgnoreCase("isBefore")){
+//                        tempDetail = prevDetail;
+//                        newResult.put(j,currDetail);
+//                        newResult.put(i,tempDetail);
+//                    }
+//                    if(currDetail.getString("collection_date_timing").equalsIgnoreCase("9:00am - 12:00pm")){
+//                        tempDetail = prevDetail;
+//                        newResult.put(j,currDetail);
+//                        newResult.put(i,tempDetail);
+//                    }
+//                }
+//            }
+
             Log.i("doInsertionSortedPrev",newResult.toString());
-            return object.put("result",results).toString();
+            return object.put("result",newResult).toString();
         } catch (JSONException e){
             e.printStackTrace();
             return null;
