@@ -1,5 +1,6 @@
 package com.greenravolution.gravo.contents;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,8 +17,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,43 +43,35 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
     TextView title;
     LinearLayout detailList, progressbar, transactionchanges;
     SharedPreferences sessionManager;
-
+    TextView tvRemarks;
     Button reschedule, cancel;
-
     ImageView ivDetailImage;
-    TextView tvDetailTitle, tvDetailPrice, tvDetailRate, tvDetailWeight;
+    TextView tvDetailTitle, tvDetailPrice, tvDetailRate, tvDetailWeight, tvEditRemarks;
     TextView date, timeslot;
     private int mYear, mMonth, mDay;
-
     asyncGetSelectedTransaction.OnAsyncResult getSelectedTransaction = (resultCode, message) -> {
         Log.i("ActivitySelected", message);
         HideProgress();
         try {
             JSONObject messageObject = new JSONObject(message);
             if (messageObject.getInt("status") == 200) {
+
                 JSONArray detailsArray = messageObject.getJSONArray("detailsArray");
                 JSONArray transactionArray = messageObject.getJSONArray("transactionArray");
                 JSONArray transactionHistory = messageObject.getJSONArray("transactionHistory");
                 JSONObject transactionObject = transactionArray.getJSONObject(0);
-
-
                 TextView tvTransaction = findViewById(R.id.tvTransaction);
                 TextView tvDate = findViewById(R.id.date_of_collection);
-                TextView tvRemarks = findViewById(R.id.tvRemarks);
-
+                tvRemarks = findViewById(R.id.tvRemarks);
                 TextView tvStatus = findViewById(R.id.tvStatus);
                 TextView tvStatusDetails = findViewById(R.id.tvStatusDetails);
-
                 TextView tvBillingName = findViewById(R.id.tvBillingName);
                 TextView tvBillingAddress = findViewById(R.id.tvBillingAddress);
                 TextView tvBillingEmail = findViewById(R.id.tvBillingEmail);
                 TextView tvBillingContact = findViewById(R.id.tvBillingContact);
-
                 TextView tvPrice = findViewById(R.id.tvPrice);
                 TextView tvWeight = findViewById(R.id.tvWeight);
-
                 StringBuilder statuses = new StringBuilder();
-
                 if (transactionHistory != null) {
                     for (int i = 0; i < transactionHistory.length(); i++) {
                         JSONObject getstatus = transactionHistory.getJSONObject(i);
@@ -91,6 +86,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                 tvTransaction.setText(String.format("TRANSACTION #%s", transactionObject.getString("transaction_id_key")));
                 tvStatus.setText(transactionObject.getString("status_type"));
                 tvDate.setText(dateformattodate2(transactionObject.getString("collection_date")) + " (" + transactionObject.getString("collection_date_timing") + ")");
+                hideedit(Integer.parseInt(transactionObject.getString("status_id")));
 
                 if (transactionObject.getString("status_id").equals("1")) {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
@@ -127,14 +123,12 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
                     setStatusStepper("null");
                 }
-
                 tvBillingName.setText(transactionObject.getString("collection_user"));
                 if (transactionObject.getString("remarks").equals("")) {
                     tvRemarks.setText(" - No Remarks - ");
                 } else {
                     tvRemarks.setText(transactionObject.getString("remarks"));
                 }
-
                 cancel.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this)
                             .setCancelable(false).setMessage("Are you sure you want to cancel this transaction?")
@@ -155,7 +149,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 });
-
                 reschedule.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -193,8 +186,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                         dialog.show();
                     }
                 });
-
-
                 tvBillingAddress.setText(transactionObject.getString("collection_address"));
                 tvBillingContact.setText(transactionObject.getString("collection_contact_number"));
                 sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
@@ -205,12 +196,13 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                     totalPrice = totalPrice + Double.parseDouble((detailsArray.getJSONObject(detail)).getString("price"));
                 }
                 Log.e("TOTAL PRICE TRANSACTION", totalPrice.toString());
-                tvPrice.setText(String.format("$%s", totalPrice));
+                tvPrice.setText(String.format("$%.2f", totalPrice));
                 tvWeight.setText(transactionObject.getString("total_weight"));
 
                 //Populating details layout
                 if (detailsArray.length() > 0) {
                     detailList = findViewById(R.id.transaction_details_list);
+                    detailList.removeAllViews();
                     for (int detail = 0; detail < detailsArray.length(); detail++) {
                         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
                         View view_selected_transaction;
@@ -248,19 +240,14 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                                 tvDetailTitle.setText(detailObject.getString("category_type") + "\n");
                             }
                             detailList.addView(view_selected_transaction);
-
                         }
-
                     }
                 }
-
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
     };
-
     public void getScheduleDate() {
         // Get Current Date
         final Calendar c = Calendar.getInstance();
@@ -287,7 +274,6 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
         datePickerDialog.show();
     }
-
     public void getScheduleDateTiming() {
         final CharSequence[] items = {"9:00am - 12:00pm", "1:00pm - 4:00pm", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this);
@@ -317,16 +303,53 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         progressbar = findViewById(R.id.progressbar);
         title = findViewById(R.id.transaction_title);
 
+        Bundle extras = getIntent().getExtras();
+        int chosenID = extras.getInt("intChosenID", 0);
+
         transactionchanges = findViewById(R.id.transactionchanges);
         transactionchanges.setVisibility(View.GONE);
         reschedule = findViewById(R.id.reschedule);
         cancel = findViewById(R.id.cancel);
+        tvEditRemarks = findViewById(R.id.tv_edit_remarks);
+        tvEditRemarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this);
+                builder.setTitle("Edit Remarks");
+                final EditText input = new EditText(ActivitySelectedTransaction.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                input.setHint("Remarks");
+                builder.setView(input);
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (input.getText().toString().equals("")) {
+                            dialog.dismiss();
+                        } else {
+                            UpdateTransactionRemarks updateTransactionRemarks = new UpdateTransactionRemarks();
+                            updateTransactionRemarks.execute(String.valueOf(chosenID), input.getText().toString());
+
+                        }
+                    }
+                });
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
         asyncGetSelectedTransaction getSelected = new asyncGetSelectedTransaction();
         getSelected.setOnResultListener(getSelectedTransaction);
 
-        Bundle extras = getIntent().getExtras();
-        int chosenID = extras.getInt("intChosenID", 0);
+
         Log.i("chosenID", chosenID + "");
         String[] paramsArray = {String.valueOf(chosenID)};
         ShowProgress();
@@ -646,4 +669,54 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
             }
         }
     }
+
+    public class UpdateTransactionRemarks extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            return req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionremarks.php", "id=" + strings[0] + "&remarks=" + strings[1]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            hideKeyboard(ActivitySelectedTransaction.this);
+            Log.e("REMARKS RESULT", s);
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                int status = jsonObject.getInt("status");
+                if (status == 200) {
+                    String newremarks = jsonObject.getJSONArray("result").getJSONObject(0).getString("remarks");
+                    tvRemarks.setText(newremarks);
+                } else {
+                    Toast.makeText(ActivitySelectedTransaction.this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public void hideedit(int id) {
+        if (id == 5) {
+            tvEditRemarks.setVisibility(View.GONE);
+        } else if (id == 4) {
+            tvEditRemarks.setVisibility(View.GONE);
+        } else if (id == 3) {
+            tvEditRemarks.setVisibility(View.GONE);
+        } else {
+            tvEditRemarks.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 }

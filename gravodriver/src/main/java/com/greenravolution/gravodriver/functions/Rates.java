@@ -10,33 +10,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by user on 14/3/2018.
- */
-
 public class Rates {
     public Rates() {
-
-    }
-
-    public Double getRates(int category_id, Double weight, String rates) {
-        try {
-            JSONArray getRates = new JSONArray(rates);
-            for (int i = 0; i < getRates.length(); i++) {
-                JSONObject rate = getRates.getJSONObject(i);
-                if (category_id == rate.getInt("id")) {
-                    String price = rate.getString("rate");
-                    String[] getPrice = price.split("/");
-                    Double pricing = Double.parseDouble(getPrice[0]) * weight;
-                    return pricing;
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return 0.00;
 
     }
 
@@ -59,92 +34,49 @@ public class Rates {
 
     }
 
-    public String getItem(int cat_id, String rates) {
-        try {
-            JSONArray getRates = new JSONArray(rates);
-            for (int i = 0; i < getRates.length(); i++) {
-                JSONObject rate = getRates.getJSONObject(i);
-                if (cat_id == rate.getInt("id")) {
-                    String cat = rate.getString("item");
-                    return cat;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "No Such Item";
-
-    }
-
     public int getImage(String type) {
         switch (type) {
             case "Paper | Newspaper":
                 return R.drawable.paper_main;
             case "Paper | White Paper (black print only)":
                 return R.drawable.paper_bp;
-            case "Paper | Cardboard Cartons":
+            case "Paper | Cardboard Carton":
                 return R.drawable.paper_oc;
-            case "Paper | Textbooks, Magazines, Colored Paper":
+            case "Paper | Textbook, Magazine, Colored Paper":
                 return R.drawable.paper_otb;
-            case "Metals | Copper Wire -( <= 4mm)":
+            case "Metals | Copper Wire -(Diameter <= 4mm)":
                 return R.drawable.metal_copper_wire_one;
-            case "Metals | Copper Wire -( > 4mm)":
+            case "Metals | Copper Wire -(Diameter > 4mm)":
                 return R.drawable.metal_copper_wire_one;
-            case "Metals | Untainted -Stripped Copper Wires":
-                return R.drawable.metal_untainted_copper_wire;
-            case "Metals | Dirty -Stripped Copper Wires":
-                return R.drawable.metal_copper_wire_two;
+            case "Metals | Dirty Stripped -Copper Wire":
+                return R.drawable.metals_dirty_copper;
             case "Metals | Brass - ":
                 return R.drawable.metal_brass_item;
             case "Metals | Copper Pipe -Copper Plate":
-                return R.drawable.metal_main;
-            case "Metals | Telephone Wires - ":
-                return R.drawable.metal_telephone_cable;
+                return R.drawable.metals_copper;
             case "Metals | Aluminium (UBC)- ":
                 return R.drawable.metal_aluminium;
-            case "Metals | Mixed Wires -(bundled / coiled)":
+            case "Metals | Mixed Wire -(bundled / coiled)":
                 return R.drawable.metal_mixed_wires;
-            case "E-Waste | Smartphone (operational)":
+            case "E-Waste | Smartphone":
                 return R.drawable.ewaste_mobile_phone;
-            case "E-Waste | Smartphone (non-operational)":
-                return R.drawable.ewaste_mobile_phone;
-            case "E-Waste | Laptop (non-operational)":
+            case "E-Waste | Laptop":
                 return R.drawable.ewaste_laptop;
-            case "E-Waste | CPU":
+            case "E-Waste | Computer CPU":
                 return R.drawable.ewaste_cpu;
-            case "E-Waste | LCD Screen":
+            case "E-Waste | Computer Display":
                 return R.drawable.ewaste_lcd_screen;
-            case "E-Waste | LCD Screen (Cracked)":
-                return R.drawable.ewaste_lcd_screen;
+            case "E-Waste | PCB":
+                return R.drawable.ewaste_pcb;
+            case "E-Waste | Battery":
+                return R.drawable.ewaste_battery;
+            case "E-Waste | Printer":
+                return R.drawable.ewaste_printer;
         }
         return 0;
 
     }
 
-    public int getImageColour(int cat_id, String rates) {
-        try {
-            JSONArray getRates = new JSONArray(rates);
-            for (int i = 0; i < getRates.length(); i++) {
-                JSONObject rate = getRates.getJSONObject(i);
-                if (cat_id == rate.getInt("id")) {
-                    String price = rate.getString("item");
-                    String[] wasteType = price.split(" ");
-                    switch (wasteType[0]) {
-                        case "Paper":
-                            return R.color.brand_yellow;
-                        case "Metals":
-                            return R.color.brand_orange;
-                        case "E-Waste":
-                            return R.color.brand_purple;
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return 0;
-
-    }
     public int getImageColour(String color) {
         switch (color) {
             case "Paper":
@@ -156,32 +88,4 @@ public class Rates {
         }
         return 0;
     }
-
-    public int GetTotalWeight(ArrayList<OrderDetails> orderDetails) {
-        int weight = 0;
-
-        for (int j = 0; j < orderDetails.size(); j++) {
-            weight = weight + Integer.parseInt(orderDetails.get(j).getWeight());
-        }
-        return weight;
-    }
-
-    public int GetCollectedWeight(ArrayList<OrderDetails> orderDetails, ArrayList<Orders> orders) {
-        ArrayList<OrderDetails> collectedOrders = new ArrayList<>();
-        int weight = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getStatus_id() == 4) {
-                for (int j = 0; j < orderDetails.size(); j++) {
-                    if (collectedOrders.get(j).getTransaction_id() == orders.get(i).getId()) {
-                        collectedOrders.add(orderDetails.get(j));
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < collectedOrders.size(); i++) {
-            weight = weight + Integer.parseInt(collectedOrders.get(i).getWeight());
-        }
-        return weight;
-    }
-
 }

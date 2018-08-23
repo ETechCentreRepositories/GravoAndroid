@@ -12,7 +12,6 @@
     <color name="brand_orange">#F4602E</color>
     <color name="brand_yellow">#FFDB49</color>
     <color name="brand_blue">#33C0C4</color>
-    <color name="brand_blue_pressed">#9033C0C4</color>
     <color name="brand_purple">#6B45A4</color>
     <color name="brand_pink">#FF3868</color>
     <color name="brand_pink_pressed">#90FF3868</color>
@@ -20,6 +19,4 @@
     <color name="brand_green_pressed">#904BC399</color>
     <color name="facebook_blue">#4267B2</color>
     <color name="facebook_blue_pressed">#904267B2</color>
-    <color name="google_orange">#C43333</color>
-    <color name="google_orange_pressed">#90C43333</color>
 </resources>

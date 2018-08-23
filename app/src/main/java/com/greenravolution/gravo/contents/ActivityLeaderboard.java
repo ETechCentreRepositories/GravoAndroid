@@ -33,7 +33,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
     SharedPreferences sessionManager;
     TextView share, invite;
     CircleImageView profilpic;
-    LinearLayout achievements,summary;
+    LinearLayout achievements,summary,totalkgpiece;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,11 @@ public class ActivityLeaderboard extends AppCompatActivity {
         points = findViewById(R.id.points);
         share = findViewById(R.id.share);
         invite = findViewById(R.id.invite);
+
         achievements = findViewById(R.id.achievements);
         summary = findViewById(R.id.summary);
+        totalkgpiece = findViewById(R.id.totalkgpiece);
+
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         Glide.with(ActivityLeaderboard.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profilpic);
         points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", -1)));
@@ -64,7 +67,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String shareBody = "I have " + String.valueOf(sessionManager.getInt("user_total_points", -1)) + " Points in the gravo app doing recycling!\n you can join me too!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
+            String shareBody = "I make money and feel good about recycling\n\nJoin me on the new GRAVO App and make money too while saving the environment";
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         });
@@ -105,8 +108,10 @@ public class ActivityLeaderboard extends AppCompatActivity {
                         String category = item.getString("category_id");
                         if(category.equals("paper") || category.equals("metals") || category.equals("ewaste")){
                             achievements.addView(initView(count, title, points, category));
-                        }else {
+                        }else if(category.equals("total_trees")||category.equals("total_co2")){
                             summary.addView(initView(count, title, points, category));
+                        }else if(category.equals("total_kg")||category.equals("total_ewaste")){
+                            totalkgpiece.addView(initView(count, title, points, category));
                         }
                     }
                 } else if (status == 404) {
@@ -152,7 +157,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
             } else {
                 return null;
             }
-        } else if (category.equals("total_kg") || category.equals("total_co2") || category.equals("total_ewaste")) {
+        } else if (category.equals("total_co2")|| category.equals("total_trees")) {
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             if (inflater != null) {
@@ -163,10 +168,32 @@ public class ActivityLeaderboard extends AppCompatActivity {
                 title.setText(gettitle);
                 if(category.equals("total_kg")){
                     totalweight.setText(String.format("%s KG", getpoints));
-                }else if(category.equals("total_co2")){
-                    totalweight.setText(String.format("%s kgC02w/KG", getpoints));
                 }else if(category.equals("total_ewaste")){
                     totalweight.setText(String.format("%s Pieces", getpoints));
+                }else if(category.equals("total_co2")){
+                    totalweight.setText(String.format("%s kgC02w/KG", getpoints));
+                }else if(category.equals("total_trees")){
+                    totalweight.setText(String.format("%.2f", Double.parseDouble(getpoints)));
+                }
+                return view;
+            }
+        }else if(category.equals("total_kg") || category.equals("total_ewaste")){
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            if (inflater != null) {
+                View view;
+                view = inflater.inflate(R.layout.total_kg_piece, null);
+                TextView title = view.findViewById(R.id.title);
+                TextView totalweight = view.findViewById(R.id.totalweight);
+                title.setText(gettitle);
+                if(category.equals("total_kg")){
+                    totalweight.setText(String.format("%s KG", getpoints));
+                }else if(category.equals("total_ewaste")){
+                    totalweight.setText(String.format("%s Pieces", getpoints));
+                }else if(category.equals("total_co2")){
+                    totalweight.setText(String.format("%s kgC02w/KG", getpoints));
+                }else if(category.equals("total_trees")){
+                    totalweight.setText(String.format("%.2f", Double.parseDouble(getpoints)));
                 }
                 return view;
             }

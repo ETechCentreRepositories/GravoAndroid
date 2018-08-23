@@ -28,6 +28,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBoBznhrZtVl2ZiX03y8dnZHtV1ouBlU9o"/>
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -114,7 +117,6 @@
             android:name=".ActivitySelectedTransactionDone"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <service android:name=".Firebase.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -125,26 +127,15 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <!--
-             Set custom default icon. This is used when no icon is set for incoming notification messages.
-             See README(https://goo.gl/l4GJaQ) for more.
-        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/gravo_logo_black_full" />
-        <!--
-             Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more.
-        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
         <receiver android:name=".functions.PickUpDayReminder" />
-
         <activity android:name=".login.FacebookAddDetailsActivity" />
-        <activity android:name=".contents.BulkDetails"></activity>
+        <activity android:name=".contents.BulkDetails"/>
     </application>
 
 </manifest>

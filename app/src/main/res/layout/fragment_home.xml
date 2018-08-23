@@ -85,8 +85,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <ImageView
-                            android:padding="25dp"
-                            app:srcCompat="@drawable/metal_main"
+                            android:padding="10dp"
+                            app:srcCompat="@drawable/metals_main"
                             android:layout_above="@id/metalLabel"
                             android:id="@+id/metalImg"
                             android:layout_width="match_parent"
@@ -138,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <ImageView
-                            android:padding="25dp"
+                            android:padding="10dp"
                             app:srcCompat="@drawable/ewaste_main"
                             android:layout_above="@id/ewasteLabel"
                             android:id="@+id/ewasteImg"

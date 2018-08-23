@@ -44,12 +44,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:gravity="center"
                     android:text="Details"
-                    android:layout_marginBottom="10dp"
                     android:textSize="20sp" />
 
 
@@ -137,79 +138,27 @@
                     android:inputType="phone"
                     android:padding="5dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Address"
-                    android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/tvaddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:text="*The postal code and Street names are compulsory"
-                    android:textColor="@color/brand_pink" />
+                    android:background="@drawable/text_field_background"
+                    android:gravity="center_vertical"
+                    android:text="Select address..."
+                    android:padding="10dp" />
 
                 <LinearLayout
+                    android:id="@+id/getaddresslayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <EditText
-                        android:id="@+id/address_blk"
-                        android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <fragment
+                        android:id="@+id/place_autocomplete_fragment"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/text_field_background"
-                        android:drawablePadding="5dp"
-                        android:gravity="center_vertical"
-                        android:hint="Block"
-                        android:inputType="text"
-                        android:padding="5dp" />
-
-                    <EditText
-                        android:id="@+id/address_unit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="2"
-                        android:background="@drawable/text_field_background"
-                        android:drawablePadding="5dp"
-                        android:gravity="center_vertical"
-                        android:hint="unit"
-                        android:inputType="text"
-                        android:padding="5dp" />
+                        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
                 </LinearLayout>
-
-                <EditText
-                    android:id="@+id/address_street"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/text_field_background"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
-                    android:hint="Street"
-                    android:inputType="text"
-                    android:padding="5dp" />
-
-                <EditText
-                    android:id="@+id/address_postal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/text_field_background"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
-                    android:hint="Postal Code"
-                    android:inputType="text"
-                    android:padding="5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -239,6 +188,166 @@
                         android:textColor="@color/brand_pink"
                         android:textSize="12sp" />
                 </LinearLayout>
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/inputaddress"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Address"-->
+                        <!--android:textSize="20sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="*The postal code and Street names are compulsory"-->
+                        <!--android:textColor="@color/brand_pink" />-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:weightSum="2">-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:weightSum="4">-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="0.5"-->
+                                <!--android:gravity="center_vertical|start"-->
+                                <!--android:paddingBottom="5dp"-->
+                                <!--android:paddingRight="5dp"-->
+                                <!--android:paddingTop="5dp"-->
+                                <!--android:text="BLK" />-->
+
+                            <!--<EditText-->
+                                <!--android:id="@+id/address_blk"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:layout_weight="3.5"-->
+                                <!--android:background="@drawable/text_field_background"-->
+                                <!--android:gravity="center_vertical"-->
+                                <!--android:hint="Block"-->
+                                <!--android:inputType="text"-->
+                                <!--android:maxLength="5"-->
+                                <!--android:padding="5dp" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:weightSum="4">-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center_vertical|end"-->
+                                <!--android:padding="5dp"-->
+                                <!--android:text="#" />-->
+
+                            <!--<EditText-->
+                                <!--android:id="@+id/address_unit_one"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_gravity="center"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:background="@drawable/text_field_background"-->
+                                <!--android:drawablePadding="5dp"-->
+                                <!--android:gravity="center_vertical"-->
+                                <!--android:hint="floor"-->
+                                <!--android:inputType="number"-->
+                                <!--android:maxLength="2"-->
+                                <!--android:padding="5dp" />-->
+
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:gravity="center"-->
+                                <!--android:padding="5dp"-->
+                                <!--android:text="-" />-->
+
+                            <!--<EditText-->
+                                <!--android:id="@+id/address_unit_two"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_gravity="center"-->
+                                <!--android:layout_weight="1"-->
+                                <!--android:background="@drawable/text_field_background"-->
+                                <!--android:drawablePadding="5dp"-->
+                                <!--android:gravity="center_vertical"-->
+                                <!--android:hint="unit"-->
+                                <!--android:inputType="number"-->
+                                <!--android:maxLength="4"-->
+                                <!--android:padding="5dp" />-->
+                        <!--</LinearLayout>-->
+                    <!--</LinearLayout>-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/address_street"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:background="@drawable/text_field_background"-->
+                        <!--android:drawablePadding="5dp"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:hint="Street"-->
+                        <!--android:inputType="text"-->
+                        <!--android:padding="5dp" />-->
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:orientation="horizontal">-->
+
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginRight="5dp"-->
+                            <!--android:gravity="center_vertical|end"-->
+                            <!--android:paddingLeft="10dp"-->
+                            <!--android:paddingStart="10dp"-->
+                            <!--android:text="S" />-->
+
+                        <!--<EditText-->
+                            <!--android:id="@+id/address_postal"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/text_field_background"-->
+                            <!--android:drawablePadding="5dp"-->
+                            <!--android:gravity="center_vertical"-->
+                            <!--android:hint="Postal Code"-->
+                            <!--android:inputType="number"-->
+                            <!--android:maxLength="6"-->
+                            <!--android:padding="5dp" />-->
+
+                    <!--</LinearLayout>-->
+
+                <!--</LinearLayout>-->
+
 
                 <Button
                     android:id="@+id/register"

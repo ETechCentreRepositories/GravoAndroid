@@ -223,7 +223,7 @@ public class TransactionDetails extends AppCompatActivity {
         String rate = itemArray[3];
         String category = itemArray[0];
         itemImg.setBackgroundColor(getRates.getImageColour(category));
-        itemImg.setImageDrawable(getDrawable(getRates.getImage(category)));
+        itemImg.setImageResource(getRates.getImage(category));
         getTitle.setText(category);
         getRate.setText(rate);
         getPrice.setText(String.format("$%s", df2.format(price)));
@@ -249,7 +249,6 @@ public class TransactionDetails extends AppCompatActivity {
                     totalWeight.setText(newStringPieces);
                     totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
                     Log.e("newStringPieces", newStringPieces);
-
                 } else {
                     double newTotalWeight = getOnlyWeight - Double.parseDouble(getWeight.getText().toString());
                     double itemTotalPrice = Double.parseDouble(getTotalPrice);

@@ -20,7 +20,6 @@
 
         <TextView
             android:id="@+id/title"
-            android:text="@string/about_gravo"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:gravity="center"

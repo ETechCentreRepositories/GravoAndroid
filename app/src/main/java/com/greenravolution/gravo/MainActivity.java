@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
-                    String shareBody = "I Just downloaded this cool new recycling app!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
+                    String shareBody = "I make money and feel good about recycling\n\nJoin me on the new GRAVO App and make money too while saving the environment";
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                     startActivity(Intent.createChooser(sharingIntent, "Share via"));
                     CloseDrawer();
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.invite:
                     Intent sharingIntent2 = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent2.setType("text/plain");
-                    String shareBody2 = "I Just downloaded this cool new recycling app!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
+                    String shareBody2 = "I make money and feel good about recycling\n\nJoin me on the new GRAVO App and make money too while saving the environment";
                     sharingIntent2.putExtra(android.content.Intent.EXTRA_TEXT, shareBody2);
                     startActivity(Intent.createChooser(sharingIntent2, "Share via"));
                     CloseDrawer();

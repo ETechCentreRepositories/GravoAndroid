@@ -1,52 +1,68 @@
 package com.greenravolution.gravo.login;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Base64;
-import android.util.Log;
-import android.util.Patterns;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.inputmethod.InputMethod;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.greenravolution.gravo.Firebase.FirebaseInstanceIDService;
-import com.greenravolution.gravo.MainActivity;
-import com.greenravolution.gravo.R;
-import com.greenravolution.gravo.functions.HttpReq;
-import com.greenravolution.gravo.objects.API;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.Toast;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
+import android.view.LayoutInflater;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.greenravolution.gravo.Firebase.FirebaseInstanceIDService;
+import com.greenravolution.gravo.MainActivity;
+import com.greenravolution.gravo.R;
+import com.greenravolution.gravo.contents.ActivityWebView;
+import com.greenravolution.gravo.functions.HttpReq;
+import com.greenravolution.gravo.objects.API;
 
 
 public class RegisterActivity extends AppCompatActivity {
     EditText email, fname, lname, password,number;
-    EditText address_unit,address_block,address_street,address_postal;
+    TextView getaddress;
+
     ImageButton pwvisibility;
     CheckBox ctnc;
     RelativeLayout rl;
@@ -54,7 +70,8 @@ public class RegisterActivity extends AppCompatActivity {
     Toolbar toolbar;
     String address;
     Button register;
-    LinearLayout progressbar;
+    LinearLayout progressbar,getaddresslayout;
+    TextView tvaddress;
 
     HttpReq registerRequest = new HttpReq();
     API getlinkrequest = new API();
@@ -63,11 +80,44 @@ public class RegisterActivity extends AppCompatActivity {
     public static final String SESSION_ID = "session";
     SharedPreferences sessionManager;
 
+    private PlaceAutocompleteFragment placeAutocompleteFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_register);
         progressbar = findViewById(R.id.progressbar);
+        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        getaddresslayout = findViewById(R.id.getaddresslayout);
+        getaddresslayout.setVisibility(View.GONE);
+
+        tvaddress = findViewById(R.id.tvaddress);
+        tvaddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getaddresslayout.getVisibility()==View.GONE){
+                    getaddresslayout.setVisibility(View.VISIBLE);
+                }else{
+                    getaddresslayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("SG").build();
+        placeAutocompleteFragment.setFilter(autocompleteFilter);
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    tvaddress.setText(place.getAddress().toString());
+                    placeAutocompleteFragment.setText("");
+                    getaddresslayout.setVisibility(View.GONE);
+
+                }
+
+            @Override
+            public void onError(Status status) {
+            }
+        });
 
         fname = findViewById(R.id.first_name);
         lname = findViewById(R.id.last_name);
@@ -96,44 +146,32 @@ public class RegisterActivity extends AppCompatActivity {
         lname.setMaxWidth(lname.getWidth());
         btnc = findViewById(R.id.btnc);
 
-        address_block = findViewById(R.id.address_blk);
-        address_unit = findViewById(R.id.address_unit);
-        address_street = findViewById(R.id.address_street);
-        address_postal = findViewById(R.id.address_postal);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         HideProgress();
 
         register.setOnClickListener(v -> {
-            if(address_unit.getText().toString().equals("")){
-                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
-            }else if(address_block.getText().toString().equals("")){
-                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
-            }else if(address_block.getText().toString().equals("") && address_unit.getText().toString().equals("")){
-                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
-            }else{
-                address = "Blk " + address_block.getText().toString() + " #" + address_unit.getText().toString() + ", " + address_street.getText().toString() + " Singapore " + address_postal.getText().toString();
-            }
+
             if (checkNetworks()) {
                 if(ctnc.isChecked()){
                     if(email.getText().toString().equalsIgnoreCase("")||password.getText().toString().equalsIgnoreCase("")){
                         Toast.makeText(this, "Please enter your details", Toast.LENGTH_LONG).show();
                     }else{
-                        if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()
-                                && !email.getText().toString().equalsIgnoreCase("")
-                                && !fname.getText().toString().equalsIgnoreCase("")
-                                && !lname.getText().toString().equalsIgnoreCase("")
-                                && !password.getText().toString().equalsIgnoreCase("")
-                                && !number.getText().toString().equalsIgnoreCase("")
-                                && !address_street.getText().toString().equalsIgnoreCase("")
-                                && !address_postal.getText().toString().equalsIgnoreCase("")){
-                            ShowProgress();
-                            Register doregister = new Register();
-                            doregister.execute(getlinkrequest.getRegister());
-                        }else{
-                            Toast.makeText(this, "Please enter all your details", Toast.LENGTH_LONG).show();
-                        }
+
+                            if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()
+                                    && !email.getText().toString().equalsIgnoreCase("")
+                                    && !fname.getText().toString().equalsIgnoreCase("")
+                                    && !lname.getText().toString().equalsIgnoreCase("")
+                                    && !password.getText().toString().equalsIgnoreCase("")
+                                    && !number.getText().toString().equalsIgnoreCase("")){
+                                ShowProgress();
+                                Register doregister = new Register();
+                                doregister.execute(getlinkrequest.getRegister());
+                            }else{
+                                Toast.makeText(this, "Please enter all your details", Toast.LENGTH_LONG).show();
+                            }
+
+
                     }
                 }else{
                     Toast.makeText(RegisterActivity.this, "Please read and accept our terms and conditions", Toast.LENGTH_LONG).show();
@@ -153,16 +191,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         btnc.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterActivity.this);
-            LayoutInflater li = LayoutInflater.from(RegisterActivity.this);
-            final View gtnc = li.inflate(R.layout.tnc_dialog, null);
-            dialog.setCancelable(true);
-            dialog.setView(gtnc);
-            dialog.setPositiveButton("Accept", (dialogInterface, i) -> ctnc.setChecked(true));
-            dialog.setNegativeButton("Later", (dialogInterface, i) -> {
-            });
-            AlertDialog dialogue = dialog.create();
-            dialogue.show();
+            startActivity(new Intent(this, ActivityWebView.class).putExtra("link","http://ehostingcentre.com/gravo/content/termsandconditions.php"));
         });
     }
     @Override
@@ -182,11 +211,8 @@ public class RegisterActivity extends AppCompatActivity {
                             + "&email=" + email.getText().toString()
                             + "&password=" + password.getText().toString()
                             + "&contactnumber=" + number.getText().toString()
-                            + "&address=" + address
-                            + "&block=" + address_block.getText().toString()
-                            + "&unit=" + address_unit.getText().toString()
-                            + "&street=" + address_street.getText().toString()
-                            + "&postal=" + address_postal.getText().toString());
+                            + "&address=" + tvaddress.getText().toString());
+
 
             try{
                 JSONObject resultObject = new JSONObject(results);
@@ -279,11 +305,6 @@ public class RegisterActivity extends AppCompatActivity {
         lname.setEnabled(true);
         btnc.setEnabled(true);
 
-        address_block.setEnabled(true);
-        address_unit.setEnabled(true);
-        address_street.setEnabled(true);
-        address_postal.setEnabled(true);
-
         progressbar.setVisibility(View.GONE);
     }
     public void ShowProgress() {
@@ -300,10 +321,6 @@ public class RegisterActivity extends AppCompatActivity {
         lname.setEnabled(false);
         btnc.setEnabled(false);
 
-        address_block.setEnabled(false);
-        address_unit.setEnabled(false);
-        address_street.setEnabled(false);
-        address_postal.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);
     }
 
@@ -326,5 +343,6 @@ public class RegisterActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
+
 
 }

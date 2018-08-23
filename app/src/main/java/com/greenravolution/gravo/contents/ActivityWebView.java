@@ -2,6 +2,7 @@ package com.greenravolution.gravo.contents;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.greenravolution.gravo.R;
 
@@ -25,6 +27,7 @@ public class ActivityWebView extends AppCompatActivity {
     private Button mButton;
     private WebView mWebView;
     private ProgressBar mProgressBar;
+    private TextView title;
 
     public ActivityWebView() {
     }
@@ -46,7 +49,11 @@ public class ActivityWebView extends AppCompatActivity {
         mRelativeLayout = findViewById(R.id.rl);
         mWebView = findViewById(R.id.web_view);
         mProgressBar = findViewById(R.id.pb);
-        renderWebPage("https://greenravolution.com");
+        title = findViewById(R.id.title);
+        Intent intent = getIntent();
+        if (intent.hasExtra("link")){
+            renderWebPage(intent.getStringExtra("link"));
+        }
     }
     // Custom method to render a web page
     protected void renderWebPage(String urlToRender){
@@ -61,6 +68,8 @@ public class ActivityWebView extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url){
                 // Do something when page loading finished
+                title.setText(view.getTitle());
+
 
             }
 

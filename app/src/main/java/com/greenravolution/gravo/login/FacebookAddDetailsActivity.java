@@ -13,6 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.greenravolution.gravo.MainActivity;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.HttpReq;
@@ -22,14 +27,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FacebookAddDetailsActivity extends AppCompatActivity {
-    EditText getFN, getLN, getBlk, getUnit, getStreet, getPostal, getContact;
+    EditText getFN, getLN, getContact;
+    TextView tvaddress;
     TextView getEmail;
     Button completeProfile;
     SharedPreferences sharedPreferences;
     public static final String SESSION = "login_status";
-    LinearLayout progress;
-    String address, getBlock, getUnits, getStreets, getPostals;
-
+    LinearLayout progress,getaddresslayout;
+    String getUnits;
+    private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +46,41 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
         getFN.setText(sharedPreferences.getString("user_first_name", ""));
         getLN = findViewById(R.id.last_name);
         getLN.setText(sharedPreferences.getString("user_last_name", ""));
-        getBlk = findViewById(R.id.address_blk);
-        getUnit = findViewById(R.id.address_unit);
-        getStreet = findViewById(R.id.address_street);
-        getPostal = findViewById(R.id.address_postal);
         getContact = findViewById(R.id.getPhone);
 
-        getBlock = sharedPreferences.getString("user_address_block", "");
         getUnits = sharedPreferences.getString("user_address_unit", "");
-        getStreets = sharedPreferences.getString("user_address_street", "");
-        getPostals = sharedPreferences.getString("user_address_postal", "");
-        if (getBlock.equals("null") || getUnits.equals("null") || getStreets.equals("null") || getPostals.equals("null")) {
-            getBlk.setText("");
-            getUnit.setText("");
-            getStreet.setText("");
-            getPostal.setText("");
-        } else {
-            getBlk.setText(getBlock);
-            getUnit.setText(getUnits);
-            getStreet.setText(getStreets);
-            getPostal.setText(getPostals);
-        }
+
+        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        getaddresslayout = findViewById(R.id.getaddresslayout);
+        getaddresslayout.setVisibility(View.GONE);
+
+        tvaddress = findViewById(R.id.tvaddress);
+        tvaddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getaddresslayout.getVisibility()==View.GONE){
+                    getaddresslayout.setVisibility(View.VISIBLE);
+                }else{
+                    getaddresslayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("SG").build();
+        placeAutocompleteFragment.setFilter(autocompleteFilter);
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                tvaddress.setText(place.getAddress().toString());
+                placeAutocompleteFragment.setText("");
+                getaddresslayout.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onError(Status status) {
+            }
+        });
 
         progress = findViewById(R.id.progressbar);
         getContact.setText(sharedPreferences.getString("user_contact", ""));
@@ -83,10 +103,6 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
     public boolean validateItems() {
         return !getFN.getText().toString().equalsIgnoreCase("")
                 && !getLN.getText().toString().equalsIgnoreCase("")
-                && !getBlk.getText().toString().equalsIgnoreCase("")
-                && !getUnit.getText().toString().equalsIgnoreCase("")
-                && !getStreet.getText().toString().equalsIgnoreCase("")
-                && !getPostal.getText().toString().equalsIgnoreCase("")
                 && !getContact.getText().toString().equalsIgnoreCase("")
                 && !getEmail.getText().toString().equalsIgnoreCase("");
     }
@@ -95,15 +111,7 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            if (getUnit.getText().toString().equals("")) {
-                address = "Blk " + getBlk.getText().toString() + ", " + getStreet.getText().toString() + " Singapore " + getPostal.getText().toString();
-            } else if (getBlk.getText().toString().equals("")) {
-                address = getStreet.getText().toString() + " Singapore " + getPostal.getText().toString();
-            } else if (getBlk.getText().toString().equals("") && getUnit.getText().toString().equals("")) {
-                address = getStreet.getText().toString() + " Singapore " + getPostal.getText().toString();
-            } else {
-                address = "Blk " + getBlk.getText().toString() + " #" + getUnit.getText().toString() + ", " + getStreet.getText().toString() + " Singapore " + getPostal.getText().toString();
-            }
+
             HttpReq req = new HttpReq();
             sharedPreferences = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
             return req.PostRequest("http://ehostingcentre.com/gravo/updateuserdetails.php"
@@ -113,11 +121,7 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
                             + "&lastname=" + getLN.getText().toString()
                             + "&email=" + getEmail.getText().toString()
                             + "&contactnumber=" + getContact.getText().toString()
-                            + "&address=" + address
-                            + "&block=" + getBlk.getText().toString()
-                            + "&unit=" + getUnit.getText().toString()
-                            + "&street=" + getStreet.getText().toString()
-                            + "&postal=" + getPostal.getText().toString());
+                            + "&address=" + tvaddress.getText().toString());
         }
 
         @Override

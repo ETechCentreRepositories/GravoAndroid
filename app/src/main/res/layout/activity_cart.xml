@@ -138,77 +138,61 @@
                 android:textColor="@color/white" />
         </RelativeLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvaddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <EditText
-                android:id="@+id/address_blk"
-                android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/text_field_background"
+            android:gravity="center_vertical"
+            android:text="Select address..."
+            android:padding="10dp" />
+        <LinearLayout
+            android:id="@+id/getaddresslayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/text_field_background"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:hint="Block"
-                android:inputType="text"
-                android:padding="5dp" />
-
-            <EditText
-                android:id="@+id/address_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="10dp"
-                android:layout_weight="2"
-                android:background="@drawable/text_field_background"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:hint="unit"
-                android:inputType="text"
-                android:padding="5dp" />
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/address_street"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/text_field_background"
-            android:drawablePadding="5dp"
+        <LinearLayout
+            android:layout_marginTop="5dp"
             android:gravity="center_vertical"
-            android:hint="Street"
-            android:inputType="text"
-            android:padding="5dp" />
-
-        <EditText
-            android:id="@+id/address_postal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/text_field_background"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:hint="Postal Code"
-            android:inputType="text"
-            android:padding="5dp" />
+            android:orientation="horizontal">
+            <TextView
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unit"/>
+            <EditText
+                android:id="@+id/etfloor"
+                android:background="@drawable/text_field_background"
+                android:inputType="number"
+                android:padding="5dp"
+                android:maxLength="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="floor"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="-"/>
+            <EditText
+                android:maxLength="4"
+                android:background="@drawable/text_field_background"
+                android:id="@+id/etunit"
+                android:inputType="number"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="unit"/>
+        </LinearLayout>
 
         <EditText
             android:id="@+id/etPhone"

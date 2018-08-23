@@ -24,6 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.greenravolution.gravo.R;
 import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.functions.Utility;
@@ -43,19 +48,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ActivityEditUser extends AppCompatActivity {
     Toolbar toolbar;
-    LinearLayout progressbar;
+    LinearLayout progressbar,getaddresslayout;
     public static final String SESSION = "login_status";
     SharedPreferences sessionManager;
-    EditText newFirstName, newLastName, newPhone;
-    String address;
-    TextView newEmail;
+    EditText newFirstName, newLastName, newPhone, etFloor, etUnit;
+    TextView newEmail, tvaddress;
     CircleImageView newProfile;
     Button cancel, save, uploadImage;
-    String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask, getBlock, getUnit, getStreet, getPostal;
-    EditText address_unit, address_block, address_street, address_postal;
+    String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask;
     int getId;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 1962018;
+
+    private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,18 +78,47 @@ public class ActivityEditUser extends AppCompatActivity {
         newPhone = findViewById(R.id.newPhone);
         cancel = findViewById(R.id.cancel);
         save = findViewById(R.id.save);
+        etFloor = findViewById(R.id.etfloor);
+        etUnit = findViewById(R.id.etunit);
 
-        address_block = findViewById(R.id.address_blk);
-        address_unit = findViewById(R.id.address_unit);
-        address_street = findViewById(R.id.address_street);
-        address_postal = findViewById(R.id.address_postal);
+
+        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        getaddresslayout = findViewById(R.id.getaddresslayout);
+        getaddresslayout.setVisibility(View.GONE);
+
+        tvaddress = findViewById(R.id.tvaddress);
+        tvaddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getaddresslayout.getVisibility()==View.GONE){
+                    getaddresslayout.setVisibility(View.VISIBLE);
+                }else{
+                    getaddresslayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("SG").build();
+        placeAutocompleteFragment.setFilter(autocompleteFilter);
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                tvaddress.setText(place.getAddress().toString());
+                placeAutocompleteFragment.setText("");
+                getaddresslayout.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onError(Status status) {
+            }
+        });
 
         save.setOnClickListener(v -> {
-            if (address_street.getText().toString().equals("")
-                    && address_postal.getText().toString().equals("")
-                    && newFirstName.getText().toString().equals("")
+            if (newFirstName.getText().toString().equals("")
                     && newLastName.getText().toString().equals("")
-                    && newPhone.getText().toString().equals("")) {
+                    && newPhone.getText().toString().equals("")
+                    && tvaddress.getText().toString().equals("Select address...")) {
                 Toast.makeText(this, "Please fill in all details", Toast.LENGTH_SHORT).show();
             } else {
                 EditUser editUser = new EditUser();
@@ -102,19 +136,20 @@ public class ActivityEditUser extends AppCompatActivity {
         getLastName = sessionManager.getString("user_last_name", "");
         getEmail = sessionManager.getString("user_email", "");
         getAddress = sessionManager.getString("user_address", "");
+        tvaddress.setText(getAddress);
         getImage = sessionManager.getString("user_image", "");
         getPhone = sessionManager.getString("user_contact", "");
-        getBlock = sessionManager.getString("user_address_block", "");
-        getUnit = sessionManager.getString("user_address_unit", "");
-        getStreet = sessionManager.getString("user_address_street", "");
-        getPostal = sessionManager.getString("user_address_postal", "");
+
         newFirstName.setText(getFirstName);
         newLastName.setText(getLastName);
         newEmail.setText(getEmail);
-        address_block.setText(getBlock);
-        address_unit.setText(getUnit);
-        address_street.setText(getStreet);
-        address_postal.setText(getPostal);
+        if(sessionManager.getString("user_address_unit","").equals("")||sessionManager.getString("user_address_unit","").equals("-")){
+            etFloor.setText("");
+            etUnit.setText("");
+        }else{
+            etFloor.setText(sessionManager.getString("user_address_unit","").split("-")[0]);
+            etUnit.setText(sessionManager.getString("user_address_unit","").split("-")[1]);
+        }
 
         newPhone.setText(getPhone);
         HideProgress();
@@ -256,15 +291,7 @@ public class ActivityEditUser extends AppCompatActivity {
     public class EditUser extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
-            if(address_unit.getText().toString().equals("")){
-                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
-            }else if(address_block.getText().toString().equals("")){
-                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
-            }else if(address_block.getText().toString().equals("") && address_unit.getText().toString().equals("")){
-                address = address_street.getText().toString()+" Singapore "+address_postal.getText().toString();
-            }else{
-                address = "Blk " + address_block.getText().toString() + " #" + address_unit.getText().toString() + ", " + address_street.getText().toString() + " Singapore " + address_postal.getText().toString();
-            }
+
             HttpReq req = new HttpReq();
             API api = new API();
             return req.PostRequest(api.getEditUser()
@@ -273,12 +300,10 @@ public class ActivityEditUser extends AppCompatActivity {
                             + "&lastname=" + newLastName.getText().toString()
                             + "&email=" + newEmail.getText().toString()
                             + "&contactnumber=" + newPhone.getText().toString()
-                            + "&address=" + address
-                            + "&block=" + address_block.getText().toString()
-                            + "&unit=" + address_unit.getText().toString()
-                            + "&street=" + address_street.getText().toString()
-                            + "&postal=" + address_postal.getText().toString());
+                            + "&address=" + tvaddress.getText().toString()
+                            + "&unit="+etUnit.getText().toString()+"-"+etFloor.getText().toString());
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
