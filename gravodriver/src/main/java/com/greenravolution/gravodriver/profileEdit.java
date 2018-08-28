@@ -23,6 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.greenravolution.gravodriver.Objects.API;
 import com.greenravolution.gravodriver.functions.HttpReq;
 import com.greenravolution.gravodriver.functions.Utility;
@@ -42,14 +47,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class profileEdit extends AppCompatActivity {
 
     Toolbar toolbar;
-    LinearLayout progressbar;
+    LinearLayout progressbar,getaddresslayout;
     public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session_collector";
     SharedPreferences sessionManager;
-    EditText newFirstName, newLastName, newBlock, newStreet, newUnit, newPostal, newPhone, newLicenseNo, newVehicleNo;
+    EditText newFirstName, newLastName, newPhone, newLicenseNo, newVehicleNo;
+    TextView tvaddress;
+    private PlaceAutocompleteFragment placeAutocompleteFragment;
     TextView newEmail;
     //CircleImageView newProfile;
-    Button cancel, save, uploadImage;
-    String getName,getBlock, getStreet,getUnit,getPostal, getEmail, getFirstName, getLastName, getPhone, userChosenTask, getLicenseNo, getVehicleNo;
+    Button cancel, save;
+    String getEmail, getFirstName, getLastName, getPhone, getLicenseNo, getVehicleNo, getAddress;
     String getId;
     //private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     //final private int REQUEST_CODE_ASK_PERMISSIONS = 1962018;
@@ -67,11 +75,37 @@ public class profileEdit extends AppCompatActivity {
         newFirstName = findViewById(R.id.first_name);
         newLastName = findViewById(R.id.last_name);
         newEmail = findViewById(R.id.newEmail);
+        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        getaddresslayout = findViewById(R.id.getaddresslayout);
+        getaddresslayout.setVisibility(View.GONE);
+
+        tvaddress = findViewById(R.id.tvaddress);
+        tvaddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getaddresslayout.getVisibility()==View.GONE){
+                    getaddresslayout.setVisibility(View.VISIBLE);
+                }else{
+                    getaddresslayout.setVisibility(View.GONE);
+                }
+            }
+        });
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setCountry("SG").build();
+        placeAutocompleteFragment.setFilter(autocompleteFilter);
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                tvaddress.setText(place.getAddress().toString());
+                placeAutocompleteFragment.setText("");
+                getaddresslayout.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onError(Status status) {
+            }
+        });
         //newAddress = findViewById(R.id.newAddress);
-        newBlock = findViewById(R.id.newBlock);
-        newUnit = findViewById(R.id.newUnit);
-        newPostal = findViewById(R.id.newPostal);
-        newStreet = findViewById(R.id.newStreet);
 
         //newProfile = findViewById(R.id.newImage);
         newPhone = findViewById(R.id.newPhone);
@@ -93,12 +127,8 @@ public class profileEdit extends AppCompatActivity {
         getFirstName = sessionManager.getString("firstname", "");
         getLastName = sessionManager.getString("lastname", "");
         getEmail = sessionManager.getString("email", "");
-        getUnit = sessionManager.getString("unit", "");
-        getPostal = sessionManager.getString("postal", "");
-        getStreet = sessionManager.getString("street", "");
-        getBlock = sessionManager.getString("block", "");
-        //getAddress = sessionManager.getString("address", "");
-        //getImage = sessionManager.getString("image", "");
+
+        getAddress = sessionManager.getString("address", "");
         getPhone = sessionManager.getString("number", "");
         getLicenseNo = sessionManager.getString("license","");
         getVehicleNo = sessionManager.getString("vehicle","");
@@ -106,12 +136,9 @@ public class profileEdit extends AppCompatActivity {
         newFirstName.setText(getFirstName);
         newLastName.setText(getLastName);
         newEmail.setText(getEmail);
-        //newAddress.setText(getAddress);
-        newStreet.setText(getStreet);
-        newBlock.setText(getBlock);
-        newUnit.setText(getUnit);
-        newPostal.setText(getPostal);
+
         newPhone.setText(getPhone);
+        tvaddress.setText(getAddress);
         newLicenseNo.setText(getLicenseNo);
         newVehicleNo.setText(getVehicleNo);
 
@@ -143,11 +170,7 @@ public class profileEdit extends AppCompatActivity {
                             + "&lastname=" + newLastName.getText().toString()
                             + "&email=" + newEmail.getText().toString()
                             + "&contactnumber=" + newPhone.getText().toString()
-                            +"&block="+newBlock.getText().toString()
-                            +"&unit="+newUnit.getText().toString()
-                            +"&street="+newStreet.getText().toString()
-                            +"&address="+newBlock.getText().toString() + "_" + newUnit.getText().toString() + "_" + newStreet.getText().toString() + "_Singapore" + newPostal.getText().toString()
-                            +"&postal="+newPostal.getText().toString()
+                            +"&address="+tvaddress.getText().toString()
                             +"&licensenumber="+newLicenseNo.getText().toString()
                             +"&vehiclenumber="+newVehicleNo.getText().toString());
         }
@@ -172,12 +195,10 @@ public class profileEdit extends AppCompatActivity {
                     editor.putString("email", user.getString("email"));
                     editor.putString("contact", user.getString("phone"));
                     editor.putString("address", user.getString("address"));
-                    editor.putString("block", user.getString("block"));
-                    editor.putString("unit", user.getString("unit"));
-                    editor.putString("street", user.getString("street"));
-                    editor.putString("postal", user.getString("postal"));
+
                     editor.putString("license", user.getString("liscence_number"));
                     editor.putString("vehicle", user.getString("vehicle_number"));
+                    editor.putString("address",user.getString("address"));
                     editor.apply();
                     Toast.makeText(profileEdit.this, "Profile updated!", Toast.LENGTH_SHORT).show();
                     finish();
@@ -197,10 +218,7 @@ public class profileEdit extends AppCompatActivity {
         newFirstName.setEnabled(true);
         newLastName.setEnabled(true);
         //newAddress.setEnabled(true);
-        newBlock.setEnabled(true);
-        newUnit.setEnabled(true);
-        newPostal.setEnabled(true);
-        newStreet.setEnabled(true);
+        tvaddress.setEnabled(true);
         newPhone.setEnabled(true);
         //uploadImage.setEnabled(true);
         progressbar.setVisibility(View.GONE);
@@ -212,10 +230,7 @@ public class profileEdit extends AppCompatActivity {
         newFirstName.setEnabled(false);
         newLastName.setEnabled(false);
         //newAddress.setEnabled(false);
-        newBlock.setEnabled(false);
-        newUnit.setEnabled(false);
-        newPostal.setEnabled(false);
-        newStreet.setEnabled(false);
+        tvaddress.setEnabled(false);
         newPhone.setEnabled(false);
         //uploadImage.setEnabled(false);
         progressbar.setVisibility(View.VISIBLE);

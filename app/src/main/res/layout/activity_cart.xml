@@ -32,41 +32,48 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tool"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/no_of_items"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 item(s)"
-            android:textColor="@color/brand_orange" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" in your bag" />
-
-    </LinearLayout>
-
     <ScrollView
-        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/summary"
-        android:layout_below="@id/count">
+        android:layout_below="@id/tool">
+
 
         <LinearLayout
-            android:id="@+id/cartItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/no_of_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 item(s)"
+                    android:textColor="@color/brand_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" in your bag" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cartItems"
+                android:layout_marginBottom="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" />
+
+
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout
@@ -90,205 +97,224 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="BOOK YOUR COLLECTION DATE NOW"
+                android:text="BOOK YOUR COLLECTION DATE"
                 android:textColor="@color/white" />
 
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/scheduleTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:text="SCHEDULE"
-                android:textColor="@color/brand_green" />
-
-            <TextView
-                android:id="@+id/scheduleDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/arrow"
+                android:padding="10dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/black"
-                android:padding="5dp"
-                android:text="SELECT DATE"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/scheduleDateTiming"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@id/scheduleDate"
-                android:background="@color/black"
-                android:padding="5dp"
-                android:text="SELECT TIME"
-                android:textColor="@color/white" />
-        </RelativeLayout>
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_keyboard_arrow_up"/>
 
-        <TextView
-            android:id="@+id/tvaddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/text_field_background"
-            android:gravity="center_vertical"
-            android:text="Select address..."
-            android:padding="10dp" />
-        <LinearLayout
-            android:id="@+id/getaddresslayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:padding="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Unit"/>
-            <EditText
-                android:id="@+id/etfloor"
-                android:background="@drawable/text_field_background"
-                android:inputType="number"
-                android:padding="5dp"
-                android:maxLength="2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="floor"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="-"/>
-            <EditText
-                android:maxLength="4"
-                android:background="@drawable/text_field_background"
-                android:id="@+id/etunit"
-                android:inputType="number"
-                android:padding="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="unit"/>
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/etPhone"
+            android:id="@+id/checkoutdetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/text_field_background"
-            android:gravity="top"
-            android:hint="Contact Number"
-            android:inputType="phone"
-            android:maxLength="15"
-            android:padding="5dp" />
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/totalWeightTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:text="TOTAL EST.WEIGHT/QTY" />
-
-            <TextView
-                android:id="@+id/totalWeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:textColor="@color/black" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/totalPriceTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="TOTAL EST. PRICE" />
-
-            <TextView
-                android:id="@+id/totalPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/etRemarks"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/totalPriceTitle"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/scheduleTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="SCHEDULE"
+                    android:textColor="@color/brand_green" />
+
+                <TextView
+                    android:id="@+id/scheduleDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/black"
+                    android:padding="5dp"
+                    android:text="SELECT DATE"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/scheduleDateTiming"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toLeftOf="@id/scheduleDate"
+                    android:background="@color/black"
+                    android:padding="5dp"
+                    android:text="SELECT TIME"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/text_field_background"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="Select address..." />
+
+            <LinearLayout
+                android:id="@+id/getaddresslayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Unit" />
+
+                <EditText
+                    android:id="@+id/etfloor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_field_background"
+                    android:hint="floor"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="-" />
+
+                <EditText
+                    android:id="@+id/etunit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_field_background"
+                    android:hint="unit"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/text_field_background"
                 android:gravity="top"
-                android:hint="Remarks or comments"
-                android:inputType="textMultiLine"
+                android:hint="Contact Number"
+                android:inputType="phone"
+                android:maxLength="15"
                 android:padding="5dp" />
-        </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/cash"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/brand_green"
-                android:text="RECYCLE!"
-                android:textColor="@color/white" />
+                android:paddingTop="10dp">
 
+                <TextView
+                    android:id="@+id/totalWeightTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="TOTAL EST.WEIGHT/QTY" />
+
+                <TextView
+                    android:id="@+id/totalWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/totalPriceTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="TOTAL EST. PRICE" />
+
+                <TextView
+                    android:id="@+id/totalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/etRemarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/totalPriceTitle"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/text_field_background"
+                    android:gravity="top"
+                    android:hint="Remarks or comments"
+                    android:inputType="textMultiLine"
+                    android:padding="5dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/brand_green"
+                    android:text="RECYCLE!"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
-
 </RelativeLayout>

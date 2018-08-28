@@ -57,6 +57,7 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 public class today extends Fragment {
 
     public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session_collector";
     LinearLayout llProgress;
     ImageView progressbar;
     SwipeRefreshLayout refreshLayout;

@@ -86,6 +86,7 @@ public class EWaste extends Fragment {
         ImageView itemImage = contents.findViewById(R.id.itemImage);
         ImageView itemMinus = contents.findViewById(R.id.itemMinus);
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
+        itemsWeight.setCursorVisible(false);
         frameLayout = contents.findViewById(R.id.framelayout);
 
         itemLabel.setText(R.string.string_Piece);

@@ -706,6 +706,8 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
             tvEditRemarks.setVisibility(View.GONE);
         } else if (id == 3) {
             tvEditRemarks.setVisibility(View.GONE);
+        } else if (id == 8) {
+            tvEditRemarks.setVisibility(View.GONE);
         } else {
             tvEditRemarks.setVisibility(View.VISIBLE);
         }

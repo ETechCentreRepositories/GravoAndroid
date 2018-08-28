@@ -56,7 +56,7 @@ public class Bulk extends Fragment {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     TextView bulk_description;
     String userChosenTask;
-    LinearLayout bulklist;
+    LinearLayout bulklist,progress;
 
     public static final String SESSION = "login_status";
 
@@ -74,6 +74,8 @@ public class Bulk extends Fragment {
         bulk_submit = view.findViewById(R.id.bulk_submit);
         bulk_take_photo = view.findViewById(R.id.takephoto);
         bulk_description = view.findViewById(R.id.bulk_description);
+        progress = view.findViewById(R.id.progressbar);
+        progress.setVisibility(View.GONE);
         bulklist = view.findViewById(R.id.bulktransactions);
         bulk_image.setVisibility(View.GONE);
         bulk_take_photo.setOnClickListener(v -> selectImage());
@@ -81,6 +83,7 @@ public class Bulk extends Fragment {
         bulk_submit.setOnClickListener(v -> addData());
         GetBulk getBulk = new GetBulk();
         getBulk.execute();
+        progress.setVisibility(View.VISIBLE);
         return view;
 
     }
@@ -95,6 +98,7 @@ public class Bulk extends Fragment {
                 String encoded_image = bitmapToBase64(bitmap);
                 AddBulk addBulk = new AddBulk();
                 addBulk.execute(encoded_image, bulk_description.getText().toString());
+                progress.setVisibility(View.VISIBLE);
             }
         } else {
             Toast.makeText(getContext(), "Please take a photo of the item you want to recycle", Toast.LENGTH_LONG).show();
@@ -244,6 +248,8 @@ public class Bulk extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progress.setVisibility(View.GONE);
+
             bulklist.removeAllViews();
             Log.e("Add Bulk", s);
             try {
@@ -294,6 +300,7 @@ public class Bulk extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            progress.setVisibility(View.GONE);
             bulklist.removeAllViews();
             Log.e("Add Bulk", s);
             try {

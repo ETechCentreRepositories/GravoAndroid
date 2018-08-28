@@ -60,7 +60,6 @@
                         android:layout_margin="10dp"
                         android:background="@color/grey"
                         android:padding="5dp"
-                        android:text="Waiting for scheduling"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
                 </RelativeLayout>

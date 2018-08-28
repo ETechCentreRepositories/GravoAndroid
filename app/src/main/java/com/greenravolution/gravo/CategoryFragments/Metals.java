@@ -86,6 +86,7 @@ public class Metals extends Fragment {
         ImageView itemMinus = contents.findViewById(R.id.itemMinus);
         TextView itemLabel = contents.findViewById(R.id.weightLabel);
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
+        itemsWeight.setCursorVisible(false);
         Button addToBag = contents.findViewById(R.id.add_to_bag);
         frameLayout = contents.findViewById(R.id.framelayout);
         addToBag.setOnClickListener(v -> {

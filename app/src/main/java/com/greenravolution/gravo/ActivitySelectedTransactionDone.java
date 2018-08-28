@@ -29,6 +29,7 @@ public class ActivitySelectedTransactionDone extends AppCompatActivity {
         title = findViewById(R.id.transaction_title);
 
     }
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();

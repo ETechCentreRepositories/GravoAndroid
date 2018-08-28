@@ -93,7 +93,7 @@ public class AsyncAddTransaction extends AsyncTask<String, Void, String> {
             HttpReq req = new HttpReq();
             Date d = new Date();
             CharSequence s  = DateFormat.format("MMMM d, yyyy ", d.getTime());
-            String addmessage = req.PostRequest("http://ehostingcentre.com/gravo/addtransactionhistory.php","transactionid="+transactionID+"&message=Collection confirmed on "+s);
+            String addmessage = req.PostRequest("http://ehostingcentre.com/gravo/addtransactionhistory.php","transactionid="+transactionID+"&message=Transaction is confirmed on "+s);
             try {
                 JSONObject results = new JSONObject(addmessage);
                 int status = results.getInt("status");

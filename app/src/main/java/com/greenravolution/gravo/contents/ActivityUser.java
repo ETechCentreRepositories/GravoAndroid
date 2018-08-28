@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ActivityUser extends AppCompatActivity {
     Toolbar toolbar;
     RelativeLayout gravosPage;
-    TextView logout;
+    TextView logout, points;
     CircleImageView profile_img;
     TextView name, myEmail, myName, myAddress;
     String getName, getImage, getAddress, getEmail;
@@ -68,10 +69,12 @@ public class ActivityUser extends AppCompatActivity {
         myEmail = findViewById(R.id.myEmail);
         myAddress = findViewById(R.id.myAddress);
         profile_img = findViewById(R.id.profile_img);
+        points = findViewById(R.id.points);
         getName = sessionManager.getString("user_full_name", "");
         getEmail = sessionManager.getString("user_email", "");
         getAddress = sessionManager.getString("user_address", "");
         getImage = sessionManager.getString("user_image", "");
+        points.setText(String.valueOf(sessionManager.getInt("user_total_points",-1))+" points");
 
         name.setText(getName);
         myName.setText(getName);
@@ -104,9 +107,6 @@ public class ActivityUser extends AppCompatActivity {
                 Intent in = new Intent(ActivityUser.this, Login.class);
                 in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(in);
-                if (sessionManager.getString("login_type", "").equals("facebook")) {
-                    LoginManager.getInstance().logOut();
-                }
                 finish();
             });
             dialog.setNeutralButton("No", new DialogInterface.OnClickListener() {
@@ -117,8 +117,6 @@ public class ActivityUser extends AppCompatActivity {
             });
             AlertDialog dialogue = dialog.create();
             dialogue.show();
-
-
         });
     }
 

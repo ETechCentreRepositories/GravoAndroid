@@ -89,6 +89,7 @@ public class Paper extends Fragment {
         frameLayout = contents.findViewById(R.id.framelayout);
 
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
+        itemsWeight.setCursorVisible(false);
         itemsWeight.setText(String.valueOf(weightInt));
         Button addToBag = contents.findViewById(R.id.add_to_bag);
         addToBag.setOnClickListener(v -> {

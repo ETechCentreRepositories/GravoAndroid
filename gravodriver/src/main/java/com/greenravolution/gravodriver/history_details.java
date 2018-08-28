@@ -38,6 +38,7 @@ import java.util.Objects;
 
 public class history_details extends AppCompatActivity {
     public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session_collector";
     Toolbar toolbar;
     TextView taddress, ttiming;
     LinearLayout items;

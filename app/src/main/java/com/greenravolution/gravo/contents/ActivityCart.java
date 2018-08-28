@@ -49,6 +49,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class ActivityCart extends AppCompatActivity implements View.OnTouchListener, OnItemClickListener {
     public static final String SESSION = "login_status";
@@ -56,10 +57,11 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     Toolbar toolbar;
     Button cash;
     TextView scheduleDate, scheduleDateTiming, tvaddress;
+    ImageView arrow;
     String requestParameters = "userid=";
     LinearLayout cartItems;
     LinearLayout summary;
-    LinearLayout getaddresslayout;
+    LinearLayout getaddresslayout, checkoutdetails;
     RelativeLayout checkout;
     ImageView ivItem;
     String itemType, itemRate;
@@ -76,7 +78,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 TextView noitems = new TextView(getApplicationContext());
                 noitems.setText("No items to recycle yet!");
                 noitems.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-                noitems.setPadding(00, 250, 0, 00);
+                noitems.setPadding(0, 350, 0, 350);
                 noitems.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 noitems.setTextColor(getResources().getColor(R.color.grey));
                 noitems.setTextSize(20);
@@ -186,8 +188,12 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             Rates rateClass = new Rates();
             ivItem.setBackgroundColor(getResources().getColor(rateClass.getImageColour(color)));
             ivItem.setImageResource(rateClass.getImage(itemArray[1]));
+            if(itemArray[1].split(" ")[0].equals("Metals")){
+                tvTitle.setText(itemArray[1].split("-")[0]+"\n"+itemArray[1].split("-")[1]);
+            }else{
+                tvTitle.setText(itemArray[1]);
+            }
 
-            tvTitle.setText(itemArray[1]);
             tvTotalPrice.setText(String.format("$%s", itemArray[2]));
             tvWeight.setText(itemArray[3]);
             tvRate.setText(String.format("$%s", itemArray[4]));
@@ -423,9 +429,25 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(v -> finish());
+        arrow = findViewById(R.id.arrow);
 
         cartItems = findViewById(R.id.cartItems);
         checkout = findViewById(R.id.checkout);
+        checkoutdetails = findViewById(R.id.checkoutdetails);
+        checkoutdetails.setVisibility(View.GONE);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkoutdetails.getVisibility()==View.GONE){
+                    checkoutdetails.setVisibility(View.VISIBLE);
+                    arrow.animate().rotation(180).setDuration(100);
+
+                }else{
+                    checkoutdetails.setVisibility(View.GONE);
+                    arrow.animate().rotation(0).setDuration(100);
+                }
+            }
+        });
         scollview = findViewById(R.id.scrollview);
         summary = findViewById(R.id.summary);
         etPhone = findViewById(R.id.etPhone);
@@ -462,14 +484,11 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 tvaddress.setText(place.getAddress().toString());
                 placeAutocompleteFragment.setText("");
                 getaddresslayout.setVisibility(View.GONE);
-
             }
-
             @Override
             public void onError(Status status) {
             }
         });
-
 
         etPhone.setText(preferences.getString("user_contact", ""));
         tvaddress.setText(preferences.getString("user_address", ""));
@@ -481,7 +500,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             etUnit.setText(preferences.getString("user_address_unit","").split("-")[1]);
         }
 
-
         cash = findViewById(R.id.cash);
         cash.setOnClickListener((View v) -> {
             String userPhoneNo = etPhone.getText().toString();
@@ -490,7 +508,11 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userTotalPrice = userPreTotalPrice.substring(1);
             Log.e("Cart total price", userTotalPrice);
             Log.e("price", userTotalPrice);
-            if (etPhone.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE") || scheduleDateTiming.getText().toString().equals("SELECT TIME")) {
+            if (etPhone.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")
+                    || scheduleDateTiming.getText().toString().equals("SELECT TIME")
+                    || tvaddress.getText().toString().equals("Select address...")
+                    || etFloor.getText().toString().equals("")
+                    || etUnit.getText().toString().equals("")) {
                 Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
             } else if (no_of_items == 0) {
                 Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
@@ -604,19 +626,19 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        hideSoftKeyBoard();
+//        hideSoftKeyBoard();
     }
     @Override
     protected void onPause() {
         super.onPause();
-        hideSoftKeyBoard();
+//        hideSoftKeyBoard();
     }
-    private void hideSoftKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        if (imm.isAcceptingText()) { // verify if the soft keyboard is open
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
+//    private void hideSoftKeyBoard() {
+//        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//        if (imm != null && imm.isAcceptingText()) { // verify if the soft keyboard is open
+//            imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
+//        }
+//    }
     public String datetodateformat(String date) {
         String[] datesplit = date.split(" ");
         if (datesplit[1].equals("January")) {

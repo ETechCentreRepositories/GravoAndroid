@@ -47,7 +47,6 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
         getLN = findViewById(R.id.last_name);
         getLN.setText(sharedPreferences.getString("user_last_name", ""));
         getContact = findViewById(R.id.getPhone);
-
         getUnits = sharedPreferences.getString("user_address_unit", "");
 
         placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -158,14 +157,6 @@ public class FacebookAddDetailsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void HideProgress() {
-        progress.setVisibility(View.GONE);
-    }
-
-    public void ShowProgress() {
-        progress.setVisibility(View.VISIBLE);
     }
 
 }

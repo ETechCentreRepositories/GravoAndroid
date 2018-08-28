@@ -18,8 +18,7 @@
             android:layout_height="100dp"
             android:layout_margin="5dp"
             android:background="@color/grey"
-            android:padding="10dp"
-            android:src="@drawable/recycle_paper" />
+            android:padding="10dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"

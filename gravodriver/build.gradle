@@ -51,6 +51,7 @@ dependencies {
 
     //maps
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
 
     //stepper
     implementation 'com.github.travijuu:numberpicker:1.0.7'

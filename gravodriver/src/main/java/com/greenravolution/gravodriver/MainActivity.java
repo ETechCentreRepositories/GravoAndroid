@@ -47,6 +47,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
+    public static final String SESSION_ID = "session_collector";
     LinearLayout llProgress;
     ImageView progressbar;
     SwipeRefreshLayout refreshLayout;

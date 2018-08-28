@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import com.greenravolution.gravodriver.MainActivity;
 import com.greenravolution.gravodriver.R;
 import com.greenravolution.gravodriver.functions.HttpReq;
-import com.greenravolution.gravodriver.functions.PostAsyncRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +32,7 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
-    public static final String SESSION_ID = "session";
+    public static final String SESSION_ID = "session_collector";
 
     Toolbar toolbar;
     EditText ete, etp;
@@ -45,6 +43,15 @@ public class LoginActivity extends AppCompatActivity {
     LinearLayout llProgress;
     ImageView progressBar;
 
+    String userId;
+    String userFirstName;
+    String userLastName;
+    String userEmail;
+    String userNumber;
+    String userAddress;
+    String userLicenseNo;
+    String userVehicleNo;
+
     int userstatus;
 
 
@@ -54,12 +61,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.layout_login);
 
 
-
         toolbar = findViewById(R.id.toolbar);
         ete = findViewById(R.id.getEmail);
         etp = findViewById(R.id.getPassword);
         forgetpassword = findViewById(R.id.forgetpassword);
-        forgetpassword.setOnClickListener(v->startActivity(new Intent(LoginActivity.this,ForgotPassword.class)));
+        forgetpassword.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ForgotPassword.class)));
 
 //        ctnc = findViewById(R.id.rbmMe);
         bl = findViewById(R.id.login);
@@ -86,13 +92,6 @@ public class LoginActivity extends AppCompatActivity {
         });
         bl.setOnClickListener(v -> {
 
-//            Intent itmnochk = new Intent(LoginActivity.this, MainActivity.class);
-//            Intent ib = new Intent();
-//            ib.putExtra("type", "1");
-//            setResult(1, ib);
-//            finish();
-//            startActivity(itmnochk);
-//             login complete. can be used after front end presentation
             boolean networkState1 = checkNetwork();
             if (!networkState1) {
                 Toast.makeText(LoginActivity.this, "Please Switch your data on", Toast.LENGTH_SHORT).show();
@@ -158,66 +157,36 @@ public class LoginActivity extends AppCompatActivity {
             progressDrawable.stop();
 
             try {
-                String userId = "";
-                String userFirstName = "";
-                String userLastName = "";
-                String userEmail = "";
-                String userNumber = "";
-                String userAddress = "";
-                String userBlock= "";
-                String userUnit= "";
-                String userPostal= "";
-                String userStreet= "";
-                String userLicenseNo = "";
-                String userVehicleNo = "";
+
 
                 JSONObject loginDetails = new JSONObject(s);
                 int status = loginDetails.getInt("status");
                 if (status == 200) {
-
                     JSONArray getUser = loginDetails.getJSONArray("users");
-                    for (int i = 0; i < getUser.length(); i++) {
-                        JSONObject user = getUser.getJSONObject(i);
-                        userId = String.valueOf(user.getInt("id"));
-                        userFirstName = user.getString("first_name");
-                        userLastName = user.getString("last_name");
-                        userEmail = user.getString("email");
+                    JSONObject user = getUser.getJSONObject(0);
+                    userId = String.valueOf(user.getInt("id"));
+                    userFirstName = user.getString("first_name");
+                    userLastName = user.getString("last_name");
+                    userEmail = user.getString("email");
+                    userAddress = user.getString("address");
+                    userNumber = user.getString("phone");
+                    userLicenseNo = user.getString("liscence_number");
+                    userVehicleNo = user.getString("vehicle_number");
+                    userstatus = user.getInt("status");
 
-
-                        if (user.getString("address") != null && user.getString("block") != null && user.getString("unit") != null && user.getString("street") != null && user.getString("postal") != null) {
-                            userAddress = user.getString("address");
-                            userBlock =  user.getString("block");
-                            userUnit = user.getString("unit");
-                            userPostal = user.getString("postal");
-                            userStreet = user.getString("street");
-                        } else {
-                            userAddress = null;
-                        }
-
-                        userNumber = user.getString("phone");
-                        userLicenseNo = user.getString("liscence_number");
-                        userVehicleNo = user.getString("vehicle_number");
-
-                        userstatus = user.getInt("status");
-                    }
                     if (userstatus == 1) {
                         re.setText("");
-                        Log.e("User Details", "UserID: " + userId + "\nName: " + userFirstName + "\nEmail: " + userEmail + "\nNumber: " + userNumber + "\nAddress: " + userAddress);
                         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sessionManager.edit();
                         editor.putString(SESSION_ID, String.valueOf(status));
-                        editor.putString("id",userId);
+                        editor.putString("id", userId);
                         editor.putString("firstname", userFirstName);
                         editor.putString("lastname", userLastName);
                         editor.putString("email", userEmail);
                         editor.putString("number", userNumber);
                         editor.putString("address", userAddress);
-                        editor.putString("block", userBlock);
-                        editor.putString("unit", userUnit);
-                        editor.putString("street", userStreet);
-                        editor.putString("postal", userPostal);
-                        editor.putString("license",userLicenseNo);
-                        editor.putString("vehicle",userVehicleNo);
+                        editor.putString("license", userLicenseNo);
+                        editor.putString("vehicle", userVehicleNo);
 
                         editor.apply();
                         Intent itmchk = new Intent(LoginActivity.this, MainActivity.class);
@@ -237,32 +206,30 @@ public class LoginActivity extends AppCompatActivity {
                         final View gtnc = li.inflate(R.layout.acceptancedialog, null);
                         dialog.setCancelable(true);
                         dialog.setView(gtnc);
-                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) -> startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
                         AlertDialog dialogue = dialog.create();
                         dialogue.show();
 
                     } else if (userstatus == 2) {
                         re.setText("");
-                        //Toast.makeText(LoginActivity.this, "Unfortunately, You do not fit the requirements to be a collector. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                         bl.setEnabled(true);
                         AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
                         LayoutInflater li = LayoutInflater.from(LoginActivity.this);
                         final View gtnc = li.inflate(R.layout.dialog_rejecteduser, null);
                         dialog.setCancelable(true);
                         dialog.setView(gtnc);
-                        dialog.setPositiveButton("I understand.", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                        dialog.setPositiveButton("I understand.", (dialogInterface, i) -> startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
                         AlertDialog dialogue = dialog.create();
                         dialogue.show();
                     } else {
                         re.setText("");
-                        //Toast.makeText(LoginActivity.this, "An unexpected error has occurred. We apologize for the inconvenience!", Toast.LENGTH_SHORT).show();
                         bl.setEnabled(true);
                         AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
                         LayoutInflater li = LayoutInflater.from(LoginActivity.this);
                         final View gtnc = li.inflate(R.layout.dialog_unexpectederror, null);
                         dialog.setCancelable(true);
                         dialog.setView(gtnc);
-                        dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                        dialog.setPositiveButton("Ok", (dialogInterface, i) -> startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
                         AlertDialog dialogue = dialog.create();
                         dialogue.show();
                     }
@@ -270,24 +237,16 @@ public class LoginActivity extends AppCompatActivity {
                     re.setText("");
                     Toast.makeText(LoginActivity.this, "Wrong email or password", Toast.LENGTH_SHORT).show();
                     bl.setEnabled(true);
-//                    AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-//                    LayoutInflater li = LayoutInflater.from(LoginActivity.this);
-//                    final View gtnc = li.inflate(R.layout.acceptancedialog, null);
-//                    dialog.setCancelable(true);
-//                    dialog.setView(gtnc);
-//                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
-//                    AlertDialog dialogue = dialog.create();
-//                    dialogue.show();
+
                 } else if (status == 404) {
-                    //re.setText(R.string.not_registered);
                     bl.setEnabled(true);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
                     LayoutInflater li = LayoutInflater.from(LoginActivity.this);
                     final View gtnc = li.inflate(R.layout.dialog_userhasnotregistered, null);
                     dialog.setCancelable(true);
                     dialog.setView(gtnc);
-                    dialog.setPositiveButton("I would like to Register", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
-                    dialog.setNegativeButton("Cancel", (dialogInterface,i) -> dialogInterface.dismiss());
+                    dialog.setPositiveButton("I would like to Register", (dialogInterface, i) -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+                    dialog.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
                 } else {
@@ -299,7 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                     final View gtnc = li.inflate(R.layout.acceptancedialog, null);
                     dialog.setCancelable(true);
                     dialog.setView(gtnc);
-                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
+                    dialog.setPositiveButton("Ok", (dialogInterface, i) -> startActivity(new Intent(LoginActivity.this, com.greenravolution.gravodriver.loginsignup.Login.class)));
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
                 }

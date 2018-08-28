@@ -138,87 +138,108 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="15sp" />
+            <TextView
+                android:id="@+id/tvaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/grey_text_box"
+                android:gravity="center_vertical"
+                android:text="Select address..."
+                android:textColor="@color/white"
+                android:padding="10dp" />
 
             <LinearLayout
-                android:weightSum="3"
-                android:orientation="horizontal"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:id="@+id/getaddresslayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/address_blk"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/grey_text_box"
-                    android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_location"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:hint="Block"
-                    android:textSize="15sp"
-                    android:inputType="text"
-                    android:padding="10dp" />
-                <EditText
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/address_unit"
-                    android:layout_weight="2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/grey_text_box"
-                    android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/ic_location"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:hint="unit"
-                    android:textSize="15sp"
-                    android:inputType="text"
-                    android:padding="10dp"/>
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"/>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/getStreet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/grey_text_box"
-                android:drawablePadding="5dp"
-                android:drawableStart="@drawable/ic_location"
-                android:hint="Street"
-                android:inputType="textPostalAddress"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="15sp" />
+            <!--<LinearLayout-->
+                <!--android:weightSum="3"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_marginEnd="10dp"-->
+                <!--android:layout_marginStart="10dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<EditText-->
+                    <!--android:id="@+id/address_blk"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:background="@drawable/grey_text_box"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:drawableStart="@drawable/ic_location"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textColorHint="@color/white"-->
+                    <!--android:hint="Block"-->
+                    <!--android:textSize="15sp"-->
+                    <!--android:inputType="text"-->
+                    <!--android:padding="10dp" />-->
+                <!--<EditText-->
+                    <!--android:layout_marginStart="10dp"-->
+                    <!--android:layout_marginLeft="10dp"-->
+                    <!--android:id="@+id/address_unit"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:background="@drawable/grey_text_box"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:drawableStart="@drawable/ic_location"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textColorHint="@color/white"-->
+                    <!--android:hint="unit"-->
+                    <!--android:textSize="15sp"-->
+                    <!--android:inputType="text"-->
+                    <!--android:padding="10dp"/>-->
+            <!--</LinearLayout>-->
 
-            <EditText
-                android:id="@+id/getPostal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/grey_text_box"
-                android:drawablePadding="5dp"
-                android:drawableStart="@drawable/ic_location"
-                android:hint="Postal"
-                android:inputType="number"
-                android:padding="10dp"
-                android:maxLength="6"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="15sp" />
+            <!--<EditText-->
+                <!--android:id="@+id/getStreet"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginEnd="10dp"-->
+                <!--android:layout_marginStart="10dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@drawable/grey_text_box"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableStart="@drawable/ic_location"-->
+                <!--android:hint="Street"-->
+                <!--android:inputType="textPostalAddress"-->
+                <!--android:padding="10dp"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textColorHint="@color/white"-->
+                <!--android:textSize="15sp" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/getPostal"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginEnd="10dp"-->
+                <!--android:layout_marginStart="10dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@drawable/grey_text_box"-->
+                <!--android:drawablePadding="5dp"-->
+                <!--android:drawableStart="@drawable/ic_location"-->
+                <!--android:hint="Postal"-->
+                <!--android:inputType="number"-->
+                <!--android:padding="10dp"-->
+                <!--android:maxLength="6"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textColorHint="@color/white"-->
+                <!--android:textSize="15sp" />-->
 
             <EditText
                 android:id="@+id/getNRIC"

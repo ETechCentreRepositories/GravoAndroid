@@ -54,12 +54,11 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_img"
                     android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/profile_image_1" />
+                    android:layout_height="100dp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:paddingEnd="0dp"
@@ -67,10 +66,45 @@
 
                     <TextView
                         android:id="@+id/name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ryme Hobbs"
+                        android:text="Bryan"
+                        android:padding="10dp"
                         android:textSize="25sp" />
+
+                    <RelativeLayout
+                        android:orientation="horizontal"
+                        android:id="@+id/gravosPage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_alignParentStart="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gravos:"
+                            android:textColor="@color/brand_orange"
+                            android:id="@+id/labelgravos"
+                            android:textSize="15sp" />
+                        <TextView
+                            android:id="@+id/points"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@id/labelgravos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/brand_orange"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_keyboard_arrow_right" />
+
+                    </RelativeLayout>
+
 
                 </LinearLayout>
             </LinearLayout>
@@ -142,7 +176,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="Ryme Hobbs"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
@@ -151,18 +184,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="ryme_hobbs@gmail.com"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
                         <TextView
-                            android:layout_gravity="start|left"
                             android:id="@+id/myAddress"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="end|right"
                             android:layout_marginBottom="15dp"
                             android:layout_marginTop="30dp"
-                            android:text="Blk 234 Tampines street 22"
+                            android:gravity="end|right"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -180,50 +212,12 @@
                 android:paddingEnd="0dp"
                 android:paddingStart="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:text="Others"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="#30000000" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:id="@+id/gravosPage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:text="Gravos "
-                            android:textColor="@color/brand_orange"
-                            android:textSize="15sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:src="@drawable/ic_keyboard_arrow_right" />
-
-                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

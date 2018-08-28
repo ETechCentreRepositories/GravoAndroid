@@ -299,7 +299,7 @@ public class LoginActivity extends AppCompatActivity {
                             ShowProgress();
                             FacebookLogin fbLogin = new FacebookLogin();
                             fbLogin.execute(fbname, fbemail, fbpic, fbid);
-
+                            LoginManager.getInstance().logOut();
                         }
 
                     } catch (JSONException e) {
