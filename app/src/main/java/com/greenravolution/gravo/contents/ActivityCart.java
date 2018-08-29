@@ -224,28 +224,9 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                     tvAllPrice.setText("$" + String.format("%.2f", allPrice));
 
-
-//                    if(tvWeight.getText().toString() != "0.0"){
-//                        if(itemRate.substring(itemRate.length()).equalsIgnoreCase("E")){
-//                            //weight reduced to 0.0 and item is in pieces
-//                            String totalWeight = tvTotalWeight.getText().toString();
-//                            double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
-//                            double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
-//                            String newStringPieces = totalWeight.substring(0, totalWeight.indexOf(",") + 1) + " " + newNumberOfPieces + " Piece(s)";
-//                            tvTotalWeight.setText(newStringPieces);
-//                            Log.d("newStringPieces", newStringPieces);
-//                        } else {
-//                            //weight reduced to 0.0 and item is in kg
-//                            String totalWeight = tvTotalWeight.getText().toString();
-//                            double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
-//                            double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
-//                            tvTotalWeight.setText(newNumberOfPieces+ "KG");
-//                        }
-
                     String itemRates = tvRate.getText().toString();
                     Log.i("itemRates", itemRates.substring(itemRates.length() - 1));
                     if (itemRates.substring(itemRates.length() - 1).equalsIgnoreCase("E")) {
-
                         String totalWeight = tvTotalWeight.getText().toString();
                         double numberOfPieces = Double.parseDouble(totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1));
                         double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
@@ -258,7 +239,6 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                         String newStringPieces = newNumberOfPieces + "KG, " + totalWeight.substring(totalWeight.indexOf(",") + 2, totalWeight.indexOf("P") - 1) + " Piece(s)";
                         tvTotalWeight.setText(newStringPieces);
                     }
-
                     String[] paramsArray = {deleteCartDetailsUrl, user_id, cartId + ""};
                     deleteCart.execute(paramsArray);
 
