@@ -43,11 +43,16 @@
         <activity
             android:name=".BulkTransactionDetails"
             android:screenOrientation="portrait" />
-        <activity android:name=".loginsignup.ForgotPassword" />
-        <activity android:name=".profile" />
-        <activity android:name=".profileEdit" />
-        <activity android:name=".history_details" />
-        <activity android:name=".WebView"></activity>
+        <activity android:name=".loginsignup.ForgotPassword"
+            android:screenOrientation="portrait" />
+        <activity android:name=".profile"
+            android:screenOrientation="portrait" />
+        <activity android:name=".profileEdit"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".history_details"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WebView"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

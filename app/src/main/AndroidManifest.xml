@@ -134,8 +134,10 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
         <receiver android:name=".functions.PickUpDayReminder" />
-        <activity android:name=".login.FacebookAddDetailsActivity" />
-        <activity android:name=".contents.BulkDetails"/>
+        <activity android:name=".login.FacebookAddDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".contents.BulkDetails"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
