@@ -39,63 +39,53 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
  */
 public class Calendar extends Fragment {
     LinearLayout transactionLayout;
-    LayoutInflater inflater;
     ExpCalendarView cvCalendar;
     TextView tvMonthYear;
-
     GetAsyncRequest.OnAsyncResult getDates = (resultCode, message) -> {
         Log.i("getTransaction Message", message);
         try {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
             JSONObject result = new JSONObject(message);
             int status = result.getInt("status");
-
             if (status == 200) {
-
                 JSONArray getTransactionArray = result.getJSONArray("result");
-
                 for (int i = 0; i < getTransactionArray.length(); i++) {
-
                     JSONObject transactionObject = getTransactionArray.getJSONObject(i);
                     String transactionID = transactionObject.getString("id");
                     String transactionDate = transactionObject.getString("collection_date");
                     String transactionDateTiming = transactionObject.getString("collection_date_timing");
                     String transactionIDKey = transactionObject.getString("transaction_id_key");
                     int status_id = transactionObject.getInt("status_id");
-
                     String day = transactionDate.substring(transactionDate.lastIndexOf('-') + 1);
                     String month = transactionDate.substring(transactionDate.indexOf('-') + 1, transactionDate.lastIndexOf('-'));
                     String year = transactionDate.substring(0, transactionDate.indexOf('-'));
-
                     String fixedDate = day + "/" + month + "/" + year;
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     Date date = new Date();
-
                     try {
                         date = formatter.parse(fixedDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
                     String newDate = date + "";
                     String monthWord = newDate.substring(newDate.indexOf(" ") + 1, newDate.indexOf(" ") + 4);
-
                     View fragmentCalendar = inflater.inflate(R.layout.transaction_page_item, null);
                     LinearLayout layout = fragmentCalendar.findViewById(R.id.layout);
-
                     TextView tvid = fragmentCalendar.findViewById(R.id.id);
                     TextView tvDetails = fragmentCalendar.findViewById(R.id.tvDetails);
                     cvCalendar = getView().findViewById(R.id.calendar);
-
-                    String dayWord = newDate.substring(0, newDate.indexOf(" "));
                     cvCalendar.markDate(new DateData(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day))).setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
                     Log.e("long date", "getTime : " + date.getTime());
                     if (status_id == 4) {
-                        layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-                        tvDetails.setText("Collected on " + day + " " + monthWord + " " + year + "\nbetween " + transactionDateTiming);
+                        layout.setBackgroundColor(getResources().getColor(R.color.brand_green));
+                        tvDetails.setText("Collected " + transactionDateTiming + ",\n" + day + " " + monthWord + " " + year);
+                    } else if (status_id == 8) {
+                        layout.setBackgroundColor(getResources().getColor(R.color.grey));
+                        tvDetails.setText("Transaction has been cancelled");
                     } else {
-                        tvDetails.setText("Collection booked for " + day + " " + monthWord + " " + year + "\nbetween " + transactionDateTiming);
+                        layout.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+                        tvDetails.setText("Collection booked " + transactionDateTiming + ",\n" + day + " " + monthWord + " " + year);
                     }
 
                     fragmentCalendar.setTag(transactionID);

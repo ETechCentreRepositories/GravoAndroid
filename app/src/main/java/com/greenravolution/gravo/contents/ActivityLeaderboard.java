@@ -1,10 +1,25 @@
 package com.greenravolution.gravo.contents;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +28,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +40,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ActivityLeaderboard extends AppCompatActivity {
@@ -31,9 +49,10 @@ public class ActivityLeaderboard extends AppCompatActivity {
     Toolbar toolbar;
     TextView points, rank, name;
     SharedPreferences sessionManager;
-    TextView share, invite;
+    TextView share;
     CircleImageView profilpic;
     LinearLayout achievements,summary,totalkgpiece;
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +63,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
         rank = findViewById(R.id.rank);
         points = findViewById(R.id.points);
         share = findViewById(R.id.share);
-        invite = findViewById(R.id.invite);
+
 
         achievements = findViewById(R.id.achievements);
         summary = findViewById(R.id.summary);
@@ -59,18 +78,11 @@ public class ActivityLeaderboard extends AppCompatActivity {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String shareBody = "I have " + String.valueOf(sessionManager.getInt("user_total_points", -1)) + " Points in the gravo app doing recycling!\n you can join me too!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
+            String shareBody = "I have " + String.valueOf(sessionManager.getInt("user_total_points", -1)) + " Points in the GRAVO app by recycling!\n you can join me too!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         });
-        invite.setOnClickListener(v -> {
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String shareBody = "I make money and feel good about recycling\n\nJoin me on the new GRAVO App and make money too while saving the environment";
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
-        });
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -109,8 +121,18 @@ public class ActivityLeaderboard extends AppCompatActivity {
                         if(category.equals("paper") || category.equals("metals") || category.equals("ewaste")){
                             achievements.addView(initView(count, title, points, category));
                         }else if(category.equals("total_trees")||category.equals("total_co2")){
-                            summary.addView(initView(count, title, points, category));
-                        }else if(category.equals("total_kg")||category.equals("total_ewaste")){
+                            TextView boxtitle = findViewById(R.id.title);
+                            TextView boxtotalweight = findViewById(R.id.totalweight);
+                            TextView boxtitle2 = findViewById(R.id.title2);
+                            TextView boxtotalweight2 = findViewById(R.id.totalweight2);
+                            if(category.equals("total_co2")){
+                                boxtotalweight.setText(String.format("%s", points));
+                                boxtitle.setText(title.split("-")[0]+"\n"+title.split("-")[1]);
+                            }else if(category.equals("total_trees")){
+                                boxtotalweight2.setText(String.format("%s", points));
+                                boxtitle2.setText(title.split("-")[0]+"\n"+title.split("-")[1]);
+                            }
+                        }else if(category.equals("total_kg")){
                             totalkgpiece.addView(initView(count, title, points, category));
                         }
                     }
@@ -147,7 +169,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
                 }
                 count.setText(getcount);
                 title.setText(gettitle);
-                points.setText(getpoints);
+                points.setText(getpoints+" Points");
                 if (Integer.parseInt(getpoints) >= 100) {
                     progress.setProgress(100);
                 } else {
@@ -157,27 +179,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
             } else {
                 return null;
             }
-        } else if (category.equals("total_co2")|| category.equals("total_trees")) {
-            LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            if (inflater != null) {
-                View view;
-                view = inflater.inflate(R.layout.total_achievements_layout, null);
-                TextView title = view.findViewById(R.id.title);
-                TextView totalweight = view.findViewById(R.id.totalweight);
-                title.setText(gettitle);
-                if(category.equals("total_kg")){
-                    totalweight.setText(String.format("%s KG", getpoints));
-                }else if(category.equals("total_ewaste")){
-                    totalweight.setText(String.format("%s Pieces", getpoints));
-                }else if(category.equals("total_co2")){
-                    totalweight.setText(String.format("%s kgC02w/KG", getpoints));
-                }else if(category.equals("total_trees")){
-                    totalweight.setText(String.format("%.2f", Double.parseDouble(getpoints)));
-                }
-                return view;
-            }
-        }else if(category.equals("total_kg") || category.equals("total_ewaste")){
+        }else if(category.equals("total_kg")){
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             if (inflater != null) {
@@ -188,10 +190,8 @@ public class ActivityLeaderboard extends AppCompatActivity {
                 title.setText(gettitle);
                 if(category.equals("total_kg")){
                     totalweight.setText(String.format("%s KG", getpoints));
-                }else if(category.equals("total_ewaste")){
-                    totalweight.setText(String.format("%s Pieces", getpoints));
                 }else if(category.equals("total_co2")){
-                    totalweight.setText(String.format("%s kgC02w/KG", getpoints));
+                    totalweight.setText(String.format("%s", getpoints));
                 }else if(category.equals("total_trees")){
                     totalweight.setText(String.format("%.2f", Double.parseDouble(getpoints)));
                 }
@@ -200,5 +200,6 @@ public class ActivityLeaderboard extends AppCompatActivity {
         }
         return null;
     }
+
 }
 

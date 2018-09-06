@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateprofile() {
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-
         Glide.with(MainActivity.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profileimage);
         user_points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", 0)) + " ("+sessionManager.getString("user_rank","No rank yet")+")");
         user_name.setText(sessionManager.getString("user_full_name", ""));
@@ -144,22 +143,15 @@ public class MainActivity extends AppCompatActivity {
                     CloseDrawer();
                     return true;
                 case R.id.share:
-
                     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
-                    String shareBody = "I make money and feel good about recycling\n\nJoin me on the new GRAVO App and make money too while saving the environment";
+                    String shareBody = "Hey there! I feel good about recycling. Best Thing? I make money too.\n" +
+                            "Download the GRAVO App now to save mother earth and make some money too.\nhttp://www.greenravolution.com";
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                     startActivity(Intent.createChooser(sharingIntent, "Share via"));
                     CloseDrawer();
                     return true;
-                case R.id.invite:
-                    Intent sharingIntent2 = new Intent(android.content.Intent.ACTION_SEND);
-                    sharingIntent2.setType("text/plain");
-                    String shareBody2 = "I make money and feel good about recycling\n\nJoin me on the new GRAVO App and make money too while saving the environment";
-                    sharingIntent2.putExtra(android.content.Intent.EXTRA_TEXT, shareBody2);
-                    startActivity(Intent.createChooser(sharingIntent2, "Share via"));
-                    CloseDrawer();
-                    return true;
+
             }
             return false;
         });

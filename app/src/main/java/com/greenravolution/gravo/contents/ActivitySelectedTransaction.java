@@ -123,6 +123,11 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                     Log.e("Transaction status", transactionObject.getString("status_id"));
                     setStatusStepper("null");
                 }
+                if(transactionObject.getString("status_id").equals("6")){
+                    tvStatus.setVisibility(View.GONE);
+                }else{
+                    tvStatus.setVisibility(View.VISIBLE);
+                }
                 tvBillingName.setText(transactionObject.getString("collection_user"));
                 if (transactionObject.getString("remarks").equals("")) {
                     tvRemarks.setText(" - No Remarks - ");
@@ -225,12 +230,12 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             ivDetailImage.setImageResource(rateClass.getImage(categoryType));
 
                             tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
-                            tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
+                            tvDetailRate.setText(String.format("$%s\n", detailObject.getString("category_rate")));
 
                             if(formattedType.equals("Metals")){
                                 tvDetailTitle.setText(detailObject.getString("category_type").split("-")[0] + "\n" + detailObject.getString("category_type").split("-")[1]);
                             }else{
-                                tvDetailTitle.setText(detailObject.getString("category_type") + "\n");
+                                tvDetailTitle.setText(detailObject.getString("category_type"));
                             }
                             tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
 
@@ -265,8 +270,17 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         current.add(Calendar.DATE, 14);
         long maxDate = current.getTimeInMillis();
 
-        datePicker.setMinDate(minDate);
-        datePicker.setMaxDate(maxDate);
+        Log.e("Current hour",current.get(Calendar.HOUR_OF_DAY)+"");
+
+        if(current.get(Calendar.HOUR_OF_DAY)<18){
+            datePicker.setMinDate(minDate);
+            datePicker.setMaxDate(maxDate);
+            datePicker.updateDate(mYear,mMonth,mDay+1);
+        }else{
+            datePicker.setMinDate(minDate+1);
+            datePicker.setMaxDate(maxDate+1);
+            datePicker.updateDate(mYear,mMonth,mDay+2);
+        }
 
         datePickerDialog.show();
     }

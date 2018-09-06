@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,8 +47,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ActivityCart extends AppCompatActivity implements View.OnTouchListener, OnItemClickListener {
     public static final String SESSION = "login_status";
@@ -145,7 +148,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             e.printStackTrace();
         }
     };
-    private int mYear, mMonth, mDay;
+    private int mYear, mMonth, mDay, mDate;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     public View initView(String[] itemArray) {
@@ -183,8 +186,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             } else {
                 tvTitle.setText(itemArray[1]);
             }
-
-            tvTotalPrice.setText(String.format("$%s", itemArray[2]));
+            tvTotalPrice.setText(String.format("$%s", String.valueOf(String.format("%.2f", Double.parseDouble(itemArray[2])))));
             tvWeight.setText(itemArray[3]);
             tvRate.setText(String.format("$%s", itemArray[4]));
             double doubleRate = Double.parseDouble(itemArray[4].substring(0, itemArray[4].indexOf("/")));
@@ -200,9 +202,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
                     API links = new API();
                     String deleteCartDetailsUrl = links.deleteCartDetails();
-
                     AsyncDeleteCartDetails deleteCart = new AsyncDeleteCartDetails();
-
                     TextView tvAllPrice = findViewById(R.id.totalPrice);
 
                     double allPrice = Double.parseDouble((tvAllPrice.getText().toString()).substring(1));
@@ -465,7 +465,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 calAlarm.set(Calendar.HOUR, 0);
                 calAlarm.set(Calendar.HOUR_OF_DAY, 0);
                 calAlarm.set(Calendar.MINUTE, 0);
-                calAlarm.set(Calendar.SECOND, 5);
+                calAlarm.set(Calendar.SECOND, 0);
                 calAlarm.set(Calendar.AM_PM, 0);
                 setAlarmForPickUpDay(calAlarm);
                 AsyncAddTransaction addTransaction = new AsyncAddTransaction();
@@ -495,18 +495,25 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         scheduleDate.setOnClickListener(v -> getScheduleDate());
     }
 
+
     public void getScheduleDate() {
         // Get Current Date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
+        mDate = c.get(Calendar.DATE);
+        DatePickerDialog datePickerDialog;
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year, monthOfYear, dayOfMonth) ->
-                        scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth + 1, mDay);
+
+        datePickerDialog = new DatePickerDialog(this,
+                (view, year, month, day) ->
+                        scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(day), String.valueOf(month + 1), year))), mYear, mMonth + 1, mDay);
+
+
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
+
 
         Calendar minC = Calendar.getInstance();
         minC.add(Calendar.DAY_OF_YEAR, 1);
@@ -515,9 +522,19 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         Calendar current = Calendar.getInstance();
         current.add(Calendar.DATE, 14);
         long maxDate = current.getTimeInMillis();
+        Log.e("Current hour",current.get(Calendar.HOUR_OF_DAY)+"");
 
-        datePicker.setMinDate(minDate);
-        datePicker.setMaxDate(maxDate);
+        if(current.get(Calendar.HOUR_OF_DAY)<18){
+            datePicker.setMinDate(minDate);
+            datePicker.setMaxDate(maxDate);
+            datePicker.updateDate(mYear,mMonth,mDay+1);
+        }else{
+            datePicker.setMinDate(minDate+1);
+            datePicker.setMaxDate(maxDate+1);
+            datePicker.updateDate(mYear,mMonth,mDay+2);
+        }
+
+
 
         datePickerDialog.show();
     }

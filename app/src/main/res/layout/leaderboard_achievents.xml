@@ -8,7 +8,7 @@
         android:background="@color/white"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_marginRight="5dp"
@@ -27,7 +27,7 @@
         <ImageView
             android:scaleType="centerCrop"
             android:id="@+id/achievementimage"
-            android:layout_width="101dp"
+            android:layout_width="70dp"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:layout_height="match_parent"/>

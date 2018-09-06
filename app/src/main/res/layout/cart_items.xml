@@ -46,19 +46,18 @@
                 android:background="@mipmap/ic_cross" />
 
             <TextView
-                android:id="@+id/getPrice"
+                android:id="@+id/getRate"
+                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/getTitle"
-                android:text="$99.00"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textColor="@color/black"/>
 
             <RelativeLayout
                 android:id="@+id/llweight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/getPrice"
+                android:layout_below="@id/getRate"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -118,14 +117,16 @@
                     android:text="Est. Price" />
 
                 <TextView
-                    android:id="@+id/getRate"
+                    android:id="@+id/getPrice"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:gravity="center_vertical"
                     android:paddingEnd="5dp"
-                    android:paddingStart="5dp"
-                    android:text="$3.30" />
+                    android:paddingStart="5dp" />
             </RelativeLayout>
 
         </RelativeLayout>

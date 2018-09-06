@@ -191,8 +191,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Unit" />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="2dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Unit - #" />
 
                 <EditText
                     android:id="@+id/etfloor"
@@ -219,6 +222,17 @@
                     android:inputType="number"
                     android:maxLength="4"
                     android:padding="5dp" />
+                <TextView
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*"
+                    android:textColor="@color/brand_pink"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="Enter 0 if not applicable"/>
             </LinearLayout>
 
             <EditText

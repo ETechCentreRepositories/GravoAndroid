@@ -86,7 +86,6 @@ public class EWaste extends Fragment {
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
         itemsWeight.setCursorVisible(false);
         frameLayout = contents.findViewById(R.id.framelayout);
-
         itemLabel.setText(R.string.string_Piece);
 
         Button addToBag = contents.findViewById(R.id.add_to_bag);

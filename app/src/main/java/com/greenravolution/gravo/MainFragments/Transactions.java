@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +33,9 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class Transactions extends Fragment {
     //items are used for temporary purposes. Replace with Listview.
-    LinearLayout item1, item2, transactionLayout, progressbar;
+    LinearLayout transactionLayout, progressbar;
     SwipeRefreshLayout refreshLayout;
     NestedScrollView scrollView;
-
     AsyncGetCompleteTransaction.OnAsyncResult getDates = (int resultCode, String message) -> {
         StopLoading();
         refreshLayout.setRefreshing(false);
@@ -43,13 +43,10 @@ public class Transactions extends Fragment {
             LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getContext()).getSystemService(LAYOUT_INFLATER_SERVICE);
             JSONObject result = new JSONObject(message);
             int status = result.getInt("status");
-
             if (status == 200) {
                 transactionLayout.removeAllViews();
                 JSONArray getTransactionArray = result.getJSONArray("result");
-
                 for (int i = 0; i < getTransactionArray.length(); i++) {
-
                     JSONObject transactionObject = getTransactionArray.getJSONObject(i);
                     String transactionID = transactionObject.getString("id");
                     String transactionDate = transactionObject.getString("collection_date");
@@ -64,39 +61,37 @@ public class Transactions extends Fragment {
                     String fixedDate = day + " " + getmonth(month) + " " + year;
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-                    Date date = new Date();
-                    try {
-                        date = formatter.parse(fixedDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+
 
                     View fragmentTransaction;
                     String transactionStatus = transactionObject.getString("status_type");
+                    String transactionTime = transactionObject.getString("collection_date_timing");
 
-                    if (transactionStatus.equals("Transaction Complete")||transactionStatus.equals("Collected and Paid")) {
+                    if (transactionStatus.equals("Transaction Complete")||transactionStatus.equals("Collected and Paid")||transactionStatus.equalsIgnoreCase("transaction cancelled")) {
                         assert inflater != null;
                         fragmentTransaction = inflater.inflate(R.layout.transaction_page_items_complete, null);
                     } else {
                         assert inflater != null;
                         fragmentTransaction = inflater.inflate(R.layout.transaction_page_items, null);
                     }
-
+                    CardView item = fragmentTransaction.findViewById(R.id.cardview_item);
                     TextView tvTransactionID = fragmentTransaction.findViewById(R.id.tvTransactionID);
                     TextView tvWeight = fragmentTransaction.findViewById(R.id.tvWeight);
                     TextView tvPrice = fragmentTransaction.findViewById(R.id.tvPrice);
                     TextView tvStatus = fragmentTransaction.findViewById(R.id.tvStatus);
-                    TextView tvDate = fragmentTransaction.findViewById(R.id.tvDate);
 
-                    Log.e("long date", "getTime : " + date.getTime());
+
 
                     fragmentTransaction.setTag(transactionID);
 
-                    tvTransactionID.setText(String.format("#%s", transactionIDKey));
+                    tvTransactionID.setText(String.format("#%s", transactionIDKey)+" | "+transactionTime+",\n"+fixedDate);
                     tvWeight.setText(transactionTotalWeight);
                     tvPrice.setText(String.format("$%s", transactionTotalPrice));
+                    if(transactionStatus.equalsIgnoreCase("transaction cancelled")){
+                        item.setCardBackgroundColor(getResources().getColor(R.color.grey));
+                    }
+
                     tvStatus.setText(transactionStatus.toUpperCase());
-                    tvDate.setText(fixedDate);
 
                     fragmentTransaction.setOnClickListener(v -> {
                         Intent intent = new Intent(getContext(), ActivitySelectedTransaction.class);
