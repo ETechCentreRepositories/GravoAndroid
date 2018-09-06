@@ -113,7 +113,6 @@ public class Metals extends Fragment {
                     JSONObject result = new JSONObject(s);
                     frameLayout = getActivity().findViewById(R.id.framelayout);
                     int status = result.getInt("status");
-                    String message = result.getString("message");
                     if (status == 200) {
                         addToBag.setText("Added to gravo bag");
                         addToBag.setClickable(false);
@@ -126,8 +125,6 @@ public class Metals extends Fragment {
                             }
                         }, 3000);
                     }
-                    Log.i("status", status + "");
-                    Log.i("message", message + "");
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

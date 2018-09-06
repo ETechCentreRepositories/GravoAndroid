@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.greenravolution.gravo.R;
-import com.greenravolution.gravo.contents.ActivityCart;
 import com.greenravolution.gravo.functions.HttpReq;
 import com.greenravolution.gravo.functions.Rates;
 import com.greenravolution.gravo.objects.API;
-import com.greenravolution.gravo.objects.Data;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -42,7 +37,6 @@ public class EWaste extends Fragment {
     public static final String SESSION = "login_status";
     int weightInt = 0;
     FrameLayout frameLayout;
-    Data data;
 
     public EWaste() {
     }
@@ -122,21 +116,17 @@ public class EWaste extends Fragment {
                     JSONObject result = new JSONObject(s);
                     frameLayout = getActivity().findViewById(R.id.framelayout);
                     int status = result.getInt("status");
-                    String message = result.getString("message");
                     if (status == 200) {
                         addToBag.setText("Added to gravo bag");
                         addToBag.setClickable(false);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                // do stuff
                                 addToBag.setText("Add to gravo bag");
                                 addToBag.setClickable(true);
                             }
                         }, 3000);
                     }
-                    Log.i("status", status + "");
-                    Log.i("message", message + "");
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
