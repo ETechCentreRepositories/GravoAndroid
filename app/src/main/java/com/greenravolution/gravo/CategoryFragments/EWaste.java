@@ -183,7 +183,6 @@ public class EWaste extends Fragment {
                     itemsWeight.setText(String.valueOf(getWeight));
                     itemLabel.setText(R.string.string_pieces);
                 }
-
             }
         });
         itemView.setBackgroundColor(getResources().getColor(rateClass.getImageColour("E-Waste")));
@@ -205,6 +204,6 @@ public class EWaste extends Fragment {
             HttpReq postReq = new HttpReq();
             return postReq.PostRequest(paramsArray[0], "userid=" + paramsArray[1] + "&weight=" + paramsArray[2] + "&price=" + paramsArray[3] + "&category=" + paramsArray[4]);
         }
-        
+
     }
 }

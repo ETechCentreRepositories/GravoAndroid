@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -106,7 +108,34 @@ public class Metals extends Fragment {
                 double totalPrice = getWeight * itemPrice;
                 AsyncAddCartDetails add = new AsyncAddCartDetails();
                 String[] paramsArray = {links.addCartDetails(), id + "", getWeight + "", totalPrice + "", itemId + ""};
-                add.execute(paramsArray);
+                try {
+                    String s = add.execute(paramsArray).get();
+                    JSONObject result = new JSONObject(s);
+                    frameLayout = getActivity().findViewById(R.id.framelayout);
+                    int status = result.getInt("status");
+                    String message = result.getString("message");
+                    if (status == 200) {
+                        addToBag.setText("Added to gravo bag");
+                        addToBag.setClickable(false);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // do stuff
+                                addToBag.setText("Add to gravo bag");
+                                addToBag.setClickable(true);
+                            }
+                        }, 3000);
+                    }
+                    Log.i("status", status + "");
+                    Log.i("message", message + "");
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         itemsWeight.setText(String.valueOf(weightInt));
@@ -162,40 +191,6 @@ public class Metals extends Fragment {
             return postReq.PostRequest(paramsArray[0], "userid=" + paramsArray[1] + "&weight=" + paramsArray[2] + "&price=" + paramsArray[3] + "&category=" + paramsArray[4]);
         }
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            try {
-                JSONObject result = new JSONObject(s);
-                frameLayout = getActivity().findViewById(R.id.framelayout);
-                int status = result.getInt("status");
-                String message = result.getString("message");
-                if (status == 200) {
-                    Snackbar snackbar = Snackbar.make(frameLayout, "Item added to bag!", Snackbar.LENGTH_LONG)
-                            .setAction("VIEW", v -> getContext().startActivity(new Intent(getContext(), ActivityCart.class)));
-                    snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).show();
-                    View snackbarview = snackbar.getView();
-                    snackbarview.setBackgroundColor(getContext().getResources().getColor(R.color.white));
-                    snackbarview.setMinimumHeight(250);
-                    int snackbarTextId = android.support.design.R.id.snackbar_text;
-                    TextView textView = snackbarview.findViewById(snackbarTextId);
-                    textView.setGravity(Gravity.CENTER_VERTICAL);
-                    textView.setMinimumHeight(250);
-                    Rates rates = new Rates();
-                    textView.setTextColor(getResources().getColor(rates.getImageColour("Metals")));
-                    textView.setTextSize(20);
-                    snackbarview.animate().translationY(-20);
-                    snackbar.setActionTextColor(Objects.requireNonNull(getContext()).getResources().getColor(R.color.brand_pink)).setDuration(Snackbar.LENGTH_LONG).show();
-
-                }
-
-                Log.i("status", status + "");
-                Log.i("message", message + "");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 }
