@@ -121,13 +121,11 @@ public class Paper extends Fragment {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                // do stuff
                                 addToBag.setText("Add to gravo bag");
                                 addToBag.setClickable(true);
                             }
                         }, 3000);
                     }
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {

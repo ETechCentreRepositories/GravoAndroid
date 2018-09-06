@@ -127,7 +127,6 @@ public class EWaste extends Fragment {
                             }
                         }, 3000);
                     }
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
