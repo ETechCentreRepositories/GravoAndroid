@@ -227,18 +227,13 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
                             tvDetailPrice.setText(String.format("$%s", detailObject.getString("price")));
                             tvDetailRate.setText(String.format("$%s", detailObject.getString("category_rate")));
 
-                            if (formattedType.equals("Paper") || formattedType.equals("Metals")) {
-                                if (formattedType.equals("Paper")) {
-                                    tvDetailTitle.setText(detailObject.getString("category_type") + "\n");
-                                } else {
-                                    tvDetailTitle.setText(detailObject.getString("category_type").split("-")[0] + "\n" + detailObject.getString("category_type").split("-")[1]);
-                                }
-                                tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
-
-                            } else if (formattedType.equals("E-Waste")) {
-                                tvDetailWeight.setText(String.format("%s Piece(s)", detailObject.getString("weight")));
+                            if(formattedType.equals("Metals")){
+                                tvDetailTitle.setText(detailObject.getString("category_type").split("-")[0] + "\n" + detailObject.getString("category_type").split("-")[1]);
+                            }else{
                                 tvDetailTitle.setText(detailObject.getString("category_type") + "\n");
                             }
+                            tvDetailWeight.setText(String.format("%s KG", detailObject.getString("weight")));
+
                             detailList.addView(view_selected_transaction);
                         }
                     }
@@ -248,6 +243,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
             e.printStackTrace();
         }
     };
+
     public void getScheduleDate() {
         // Get Current Date
         final Calendar c = Calendar.getInstance();
@@ -274,6 +270,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
         datePickerDialog.show();
     }
+
     public void getScheduleDateTiming() {
         final CharSequence[] items = {"9:00am - 12:00pm", "1:00pm - 4:00pm", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySelectedTransaction.this);

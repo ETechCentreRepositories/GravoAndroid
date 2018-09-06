@@ -30,7 +30,7 @@
             android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBoBznhrZtVl2ZiX03y8dnZHtV1ouBlU9o"/>
+            android:value="AIzaSyBoBznhrZtVl2ZiX03y8dnZHtV1ouBlU9o" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -117,6 +117,7 @@
             android:name=".ActivitySelectedTransactionDone"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+
         <service android:name=".Firebase.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -127,17 +128,24 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/gravo_logo_black_full" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+
         <receiver android:name=".functions.PickUpDayReminder" />
-        <activity android:name=".login.FacebookAddDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".contents.BulkDetails"
-            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".login.FacebookAddDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".contents.BulkDetails"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

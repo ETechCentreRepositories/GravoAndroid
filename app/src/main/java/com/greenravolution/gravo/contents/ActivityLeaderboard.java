@@ -52,9 +52,9 @@ public class ActivityLeaderboard extends AppCompatActivity {
 
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         Glide.with(ActivityLeaderboard.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profilpic);
-        points.setText(String.valueOf("Points: " + sessionManager.getInt("user_total_points", -1)));
+        points.setText(String.valueOf(sessionManager.getInt("user_total_points", -1)));
         name.setText(sessionManager.getString("user_full_name", ""));
-        rank.setText(sessionManager.getString("user_rank", "No Rank"));
+        rank.setText(sessionManager.getString("user_rank", "Status Unavailable"));
         share.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");

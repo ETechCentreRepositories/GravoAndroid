@@ -59,11 +59,11 @@ public class TransactionDetails extends AppCompatActivity {
             Log.e("MESSAGE", message);
             int status = object.getInt("status");
             if (status == 200) {
-
+                DecimalFormat precision = new DecimalFormat("0.00");
                 JSONArray results = object.getJSONArray("result");
                 JSONObject transaction = results.getJSONObject(0);
                 String getTotalWeight = transaction.getString("total_weight");
-                String getTotalPrice = String.valueOf(transaction.getDouble("total_price"));
+                String getTotalPrice = String.valueOf(precision.format(transaction.getDouble("total_price")));
                 totalPrice.setText(String.format("$%s", getTotalPrice));
                 totalWeight.setText(getTotalWeight);
                 JSONArray details = object.getJSONArray("details");
@@ -235,32 +235,23 @@ public class TransactionDetails extends AppCompatActivity {
             String getTotalPrice = totalPrice.getText().toString().substring(1);
             String getTotalWeight = totalWeight.getText().toString();
             double getOnlyWeight = Double.parseDouble(getTotalWeight.split("KG")[0]);
-            double getOnlyPiece = Double.parseDouble(getTotalWeight.split(" ")[1]);
-
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setCancelable(false);
             dialog.setTitle("Delete Item");
             dialog.setMessage("Delete this " + itemArray[0].split(" ")[0] + " item?");
             dialog.setPositiveButton("yes", (dialogInterface, i) -> {
-                if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                    double newTotalPiece = getOnlyPiece - Double.parseDouble(getWeight.getText().toString());
-                    double itemTotalPrice = Double.parseDouble(getTotalPrice);
-                    double newTotalPrice = itemTotalPrice - Double.parseDouble(getPrice.getText().toString().substring(1));
-                    String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
-                    totalWeight.setText(newStringPieces);
-                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
-                    Log.e("newStringPieces", newStringPieces);
-                } else {
+
+                DecimalFormat precision = new DecimalFormat("0.00");
                     double newTotalWeight = getOnlyWeight - Double.parseDouble(getWeight.getText().toString());
                     double itemTotalPrice = Double.parseDouble(getTotalPrice);
                     double newTotalPrice = itemTotalPrice - Double.parseDouble(getPrice.getText().toString().substring(1));
-                    String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
+                    String newStringPieces = newTotalWeight + "KG ";
                     totalWeight.setText(newStringPieces);
-                    totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                    totalPrice.setText(String.format("$%s", String.valueOf(precision.format(newTotalPrice))));
                     Log.e("newStringPieces", newStringPieces);
                     DeleteDetails deleteDetails = new DeleteDetails();
                     deleteDetails.execute(detail_id);
-                }
+
 
 
                 view.setVisibility(View.GONE);
@@ -279,35 +270,23 @@ public class TransactionDetails extends AppCompatActivity {
             String getTotalPrice = totalPrice.getText().toString().substring(1);
             String getTotalWeight = totalWeight.getText().toString();
             double getOnlyWeight = Double.parseDouble(getTotalWeight.split("KG")[0]);
-            double getOnlyPiece = Double.parseDouble(getTotalWeight.split(" ")[1]);
-            if (getWeight.getText().toString().equalsIgnoreCase("1.0") || getWeight.getText().toString().equalsIgnoreCase("1")) {
-                if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                    Toast.makeText(TransactionDetails.this, "Cannot go below 1 Piece", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(TransactionDetails.this, "Cannot go below 1 KG", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                    DecimalFormat precision = new DecimalFormat("0.00");
-                    double newTotalPiece = getOnlyPiece - 1.0;
-                    double itemTotalPrice = Double.parseDouble(getTotalPrice);
-                    double newTotalPrice = itemTotalPrice - doubleRate;
-                    String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
-                    totalWeight.setText(newStringPieces);
-                    totalPrice.setText(String.format("$%s", String.valueOf(precision.format(newTotalPrice))));
-                    Log.e("newStringPieces", newStringPieces);
 
-                } else {
+            if (getWeight.getText().toString().equalsIgnoreCase("1.0") || getWeight.getText().toString().equalsIgnoreCase("1")) {
+
+                    Toast.makeText(TransactionDetails.this, "Cannot go below 1 KG", Toast.LENGTH_SHORT).show();
+
+            } else {
+
                     DecimalFormat precision = new DecimalFormat("0.00");
                     double newTotalWeight = getOnlyWeight - 1.0;
                     double itemTotalPrice = Double.parseDouble(getTotalPrice);
                     double newTotalPrice = itemTotalPrice - doubleRate;
-                    String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
+                    String newStringPieces = newTotalWeight + "KG ";
                     totalWeight.setText(newStringPieces);
                     totalPrice.setText(String.format("$%s", String.valueOf(precision.format(newTotalPrice))));
                     Log.e("newStringPieces", newStringPieces);
-                }
-                DecimalFormat precision = new DecimalFormat("0.00");
+
+
                 getWeight.setText(String.valueOf(Double.parseDouble(getWeight.getText().toString()) - 1.0));
                 getPrice.setText(String.format("$%s", String.valueOf(precision.format(Double.parseDouble(getPrice.getText().toString().substring(1)) - doubleRate))));
 
@@ -321,29 +300,18 @@ public class TransactionDetails extends AppCompatActivity {
             String getTotalPrice = totalPrice.getText().toString().substring(1);
             String getTotalWeight = totalWeight.getText().toString();
             double getOnlyWeight = Double.parseDouble(getTotalWeight.split("KG")[0]);
-            double getOnlyPiece = Double.parseDouble(getTotalWeight.split(" ")[1]);
-
-            if (itemArray[0].split(" ")[0].equalsIgnoreCase("e-waste")) {
-                double newTotalPiece = getOnlyPiece + 1.0;
-                double itemTotalPrice = Double.parseDouble(getTotalPrice);
-                double newTotalPrice = itemTotalPrice + doubleRate;
-                String newStringPieces = getOnlyWeight + "KG, " + newTotalPiece + " Piece(s)";
-                totalWeight.setText(newStringPieces);
-                totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
-                Log.e("newStringPieces", newStringPieces);
-
-            } else {
+            DecimalFormat precision = new DecimalFormat("0.00");
                 double newTotalWeight = getOnlyWeight + 1.0;
                 double itemTotalPrice = Double.parseDouble(getTotalPrice);
                 double newTotalPrice = itemTotalPrice + doubleRate;
-                String newStringPieces = newTotalWeight + "KG, " + getOnlyPiece + " Piece(s)";
+                String newStringPieces = newTotalWeight + "KG ";
                 totalWeight.setText(newStringPieces);
-                totalPrice.setText(String.format("$%s", String.valueOf(newTotalPrice)));
+                totalPrice.setText(String.format("$%s", String.valueOf(precision.format(newTotalPrice))));
                 Log.e("newStringPieces", newStringPieces);
-            }
+
 
             getWeight.setText(String.valueOf(Double.parseDouble(getWeight.getText().toString()) + 1.0));
-            getPrice.setText(String.format("$%s", String.valueOf(Double.parseDouble(getPrice.getText().toString().substring(1)) + doubleRate)));
+            getPrice.setText(String.format("$%s", String.valueOf(precision.format(Double.parseDouble(getPrice.getText().toString().substring(1)) + doubleRate))));
             UpdateDetails updateDetails = new UpdateDetails();
             updateDetails.execute(detail_id, getWeight.getText().toString(), getPrice.getText().toString().substring(1));
 

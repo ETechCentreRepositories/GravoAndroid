@@ -68,7 +68,7 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/brand_green"
                                 android:layout_height="wrap_content"
-                                android:text="GET PAID"/>
+                                android:text="Gravo rewards you"/>
                         </LinearLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -113,7 +113,7 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/brand_green"
                                 android:layout_height="wrap_content"
-                                android:text="GET PAID"/>
+                                android:text="Gravo rewards you"/>
                         </LinearLayout>
 
                     </RelativeLayout>
@@ -166,7 +166,7 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/brand_green"
                                 android:layout_height="wrap_content"
-                                android:text="GET PAID"/>
+                                android:text="Gravo rewards you"/>
                         </LinearLayout>
 
                     </RelativeLayout>
@@ -212,7 +212,7 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/brand_pink"
                                 android:layout_height="wrap_content"
-                                android:text="PAY US"/>
+                                android:text="Gravo quotes you"/>
                         </LinearLayout>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
