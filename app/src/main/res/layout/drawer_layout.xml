@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:gravity="center_vertical"
             android:id="@+id/userProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,16 +38,15 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/user_points"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/brand_pink" />
+                <!--<TextView-->
+                    <!--android:id="@+id/user_points"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/brand_pink" />-->
             </LinearLayout>
 
         </LinearLayout>
         <ImageView
-            android:padding="15dp"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="120dp"

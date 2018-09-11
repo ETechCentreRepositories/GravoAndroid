@@ -130,7 +130,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
                                 boxtitle.setText(title.split("-")[0]+"\n"+title.split("-")[1]);
                             }else if(category.equals("total_trees")){
                                 boxtotalweight2.setText(String.format("%s", points));
-                                boxtitle2.setText(title.split("-")[0]+"\n"+title.split("-")[1]);
+                                boxtitle2.setText(title.split("-")[0]+"\n"+title.split("-")[1]+"\n");
                             }
                         }else if(category.equals("total_kg")){
                             totalkgpiece.addView(initView(count, title, points, category));

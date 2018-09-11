@@ -86,7 +86,6 @@ public class EWaste extends Fragment {
         EditText itemsWeight = contents.findViewById(R.id.itemWeight);
         itemsWeight.setCursorVisible(false);
         frameLayout = contents.findViewById(R.id.framelayout);
-        itemLabel.setText(R.string.string_Piece);
 
         Button addToBag = contents.findViewById(R.id.add_to_bag);
         addToBag.setOnClickListener(v -> {
@@ -94,7 +93,7 @@ public class EWaste extends Fragment {
             if (getWeight == 0) {
                 Toast.makeText(getContext(), "This item is empty.", Toast.LENGTH_LONG).show();
             }else if(getWeight > 999) {
-                Toast.makeText(getContext(), "Items cannot be above 999 Pieces.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Items cannot be above 999 KG.", Toast.LENGTH_LONG).show();
                 itemsWeight.setText("999");
             } else {
                 int itemId = rate.getId();
@@ -140,15 +139,13 @@ public class EWaste extends Fragment {
         itemMinus.setOnClickListener((View v) -> {
             if (itemsWeight.getText().toString().equals("")) {
                 itemsWeight.setText(String.valueOf(weightInt));
-                itemLabel.setText(R.string.string_Piece);
+
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
                 if (getWeight <= 0) {
-                    itemLabel.setText(R.string.string_Piece);
                 } else {
                     getWeight = getWeight - 1;
                     itemsWeight.setText(String.valueOf(getWeight));
-                    itemLabel.setText(R.string.string_pieces);
                 }
             }
         });
@@ -158,18 +155,13 @@ public class EWaste extends Fragment {
                 itemsWeight.setText(String.valueOf(weightInt));
             } else {
                 int getWeight = Integer.parseInt(itemsWeight.getText().toString());
-                if (getWeight == 0 || getWeight == 1) {
-                    itemLabel.setText(R.string.string_Piece);
-                } else {
-                    itemLabel.setText(R.string.string_pieces);
-                }
+
                 if (getWeight >= 999) {
-                    Toast.makeText(getContext(), "Cannot go above 999 pieces", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Cannot go above 999 KG", Toast.LENGTH_LONG).show();
                     itemsWeight.setText("999");
                 } else {
                     getWeight = getWeight + 1;
                     itemsWeight.setText(String.valueOf(getWeight));
-                    itemLabel.setText(R.string.string_pieces);
                 }
             }
         });
