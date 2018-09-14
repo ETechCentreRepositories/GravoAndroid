@@ -97,7 +97,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="BOOK YOUR COLLECTION DATE"
+                android:text="BOOK COLLECTION SCHEDULE"
                 android:textColor="@color/white" />
 
             <ImageView
@@ -325,7 +325,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/brand_green"
-                    android:text="RECYCLE!"
+                    android:text="CONFIRM BOOKING"
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>

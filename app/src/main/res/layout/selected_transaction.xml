@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|left"
-                    android:text="EST.WEIGHT/QTY" />
+                    android:text="EST. KG" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="30dp"
@@ -78,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|left"
-                    android:text="EST.PRICE" />
+                    android:text="EST. PRICE" />
 
                 <android.support.v4.widget.Space
                     android:layout_width="30dp"

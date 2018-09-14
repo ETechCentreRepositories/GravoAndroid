@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:gravity="center_vertical"
-                    android:text="Est. Weight/Qty" />
+                    android:text="Est. KG" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

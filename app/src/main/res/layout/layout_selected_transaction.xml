@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Details"
+            android:text="Booking Details"
             android:textColor="@color/black"
             android:textSize="25sp" />
     </android.support.v7.widget.Toolbar>
@@ -210,28 +210,20 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:gravity="center_vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:orientation="vertical">
-
+                            <!--<TextView-->
+                                <!--android:layout_marginBottom="10dp"-->
+                                <!--android:layout_marginTop="10dp"-->
+                                <!--android:id="@+id/tvStatusDetails"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content" />-->
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <android.support.v4.widget.Space
-                                android:layout_width="20dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:id="@+id/tvStatusDetails"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                            <TextView
-                                android:layout_marginTop="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Payment will be made using PayNOW. Get your mobile number ready!"
+                                android:text="You may use PayNow to recieve payment through GRAVO"
                                 android:textColor="@color/black"
                                 android:textSize="20sp" />
                         </LinearLayout>
@@ -254,14 +246,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="DELIVERY DETAILS" />
+                    android:text="COLLECTION DETAILS" />
 
                 <LinearLayout
                     android:id="@+id/billing_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:text="Name" />
                     <TextView
                         android:id="@+id/tvBillingName"
                         android:layout_width="wrap_content"
@@ -273,7 +270,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/quicksand_bold"
-                        android:text="EMAIL" />
+                        android:text="Email" />
 
                     <TextView
                         android:id="@+id/tvBillingEmail"
@@ -285,7 +282,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/quicksand_bold"
-                        android:text="CONTACT NUMBER" />
+                        android:text="Contact number" />
 
                     <TextView
                         android:id="@+id/tvBillingContact"
@@ -331,7 +328,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/quicksand_bold"
-                        android:text="DELIVERY ADDRESS" />
+                        android:text="COLLECTION ADDRESS" />
 
                     <TextView
                         android:id="@+id/tvBillingAddress"
@@ -362,7 +359,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="TOTAL WEIGHT/QTY" />
+                    android:text="TOTAL EST. WEIGHT" />
 
                 <TextView
                     android:id="@+id/priceLabel"
@@ -370,7 +367,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/weightLabel"
-                    android:text="TOTAL PRICE" />
+                    android:text="TOTAL EST. PRICE" />
 
                 <TextView
                     android:id="@+id/tvWeight"

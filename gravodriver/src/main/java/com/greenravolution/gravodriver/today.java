@@ -498,7 +498,6 @@ public class today extends Fragment {
 
                     today.updatetransaction updatetransaction = new today.updatetransaction();
                     updatetransaction.execute(String.valueOf(orders.getId()),"2","send");
-                    Toast.makeText(getContext(),"clicked on otw " + position + " order id = " + order.getId() ,Toast.LENGTH_SHORT).show();
 
                     getTransactions();
 

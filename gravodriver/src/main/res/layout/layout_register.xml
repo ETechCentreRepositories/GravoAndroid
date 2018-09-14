@@ -268,7 +268,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/grey_text_box"
-                android:hint="Liscense Number"
+                android:hint="License Number"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/white"

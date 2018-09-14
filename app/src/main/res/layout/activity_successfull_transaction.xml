@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Your're ready to recycle!"
+            android:text="You're ready to recycle!"
             android:textAlignment="center"
             android:textColor="@color/brand_green"
             android:textSize="20sp" />
