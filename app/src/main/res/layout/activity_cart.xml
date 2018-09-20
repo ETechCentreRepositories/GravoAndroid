@@ -110,6 +110,7 @@
 
         </RelativeLayout>
 
+
         <LinearLayout
             android:id="@+id/checkoutdetails"
             android:layout_width="match_parent"
@@ -313,6 +314,13 @@
                     android:inputType="textMultiLine"
                     android:padding="5dp" />
             </RelativeLayout>
+            <TextView
+                android:textColor="@android:color/holo_red_light"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="* Minimum weight is 5KG"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

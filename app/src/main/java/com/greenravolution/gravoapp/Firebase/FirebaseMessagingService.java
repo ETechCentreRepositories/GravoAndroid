@@ -13,13 +13,17 @@ import com.greenravolution.gravoapp.MainActivity;
 import com.greenravolution.gravoapp.R;
 import com.greenravolution.gravoapp.functions.DBHelper;
 
+import java.util.Map;
+
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.e("REMOTE MESSAGE", remoteMessage.getData()+"");
         Log.e("FirebaseMessage 19/7", "Receive Message");
+        Log.e("--------------------", remoteMessage+"");
         Log.e("FirebaseMessage GETFROM", remoteMessage.getFrom());
-
+        Map<String, String> map = remoteMessage.getData();
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.e("FirebaseMessage 19/7", "Message data payload: " + remoteMessage.getData());
@@ -36,6 +40,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         showNotification(title, message);
 
     }
+
 
     private void showNotification(String title, String message) {
         Log.i("FirebaseMessage 19/7", "Message: " + message);

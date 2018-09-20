@@ -325,6 +325,7 @@ public class today extends Fragment {
         protected String doInBackground(String... strings) {
             HttpReq req = new HttpReq();
             Log.e("id", strings[0]);
+            Log.e("STRINGS 2", strings[2]);
             @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("h:mm a");
             String date = df.format(Calendar.getInstance().getTime());
             String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status="+strings[1]+"&arrivaltime=" + date + "");
@@ -335,20 +336,20 @@ public class today extends Fragment {
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
-                    if(strings[2].equalsIgnoreCase("send")) {
+
                         String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php", "userID=" + recyclerID);
                         Log.e("reqNotification", reqNotification);
-                    }
+
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
                 }else if(resultObject.getInt("status") == 201){
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
-                    if(strings[2].equalsIgnoreCase("send")) {
+//                    if(strings[2].equalsIgnoreCase("send")) {
                         String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID);
                         Log.e("reqNotification", reqNotification);
-                    }
+//                    }
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
                 }

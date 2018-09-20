@@ -55,18 +55,17 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
 
             datePickerListener = new  DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int selectedYear,
-                              int selectedMonth, int selectedDay)
-        {
+                              int selectedMonth, int selectedDay) {
             SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
             Date dates = new Date(selectedYear, selectedMonth, selectedDay-1);
             String dayOfWeek = simpledateformat.format(dates);
             Log.e("Day", dayOfWeek);
-            if(dayOfWeek.equals("Sunday")){
+            Log.e("Day", dates+"");
+            if (dayOfWeek.equals("Sunday")) {
                 Toast.makeText(ActivitySelectedTransaction.this, "Unfortunately, we do not collect on sundays,\nPlease try another day\n\nWe apologize for any inconvenience caused!", Toast.LENGTH_LONG).show();
-            }else{
-                date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(selectedDay), String.valueOf(selectedMonth), selectedYear)));
+            } else {
+                date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(selectedDay), String.valueOf(selectedMonth+1), selectedYear)));
             }
-
         }
     };
     asyncGetSelectedTransaction.OnAsyncResult getSelectedTransaction = (resultCode, message) -> {

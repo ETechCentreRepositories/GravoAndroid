@@ -29,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class BulkDetails extends AppCompatActivity {
     ImageView bulkimage;
@@ -44,6 +46,24 @@ public class BulkDetails extends AppCompatActivity {
     TextView tvStatusDetails;
     private int mYear, mMonth, mDay;
     public static final String SESSION = "login_status";
+
+    private DatePickerDialog.OnDateSetListener
+
+            datePickerListener = new  DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+            Date dates = new Date(selectedYear, selectedMonth, selectedDay-1);
+            String dayOfWeek = simpledateformat.format(dates);
+            Log.e("Day", dayOfWeek);
+            Log.e("Day", dates+"");
+            if (dayOfWeek.equals("Sunday")) {
+                Toast.makeText(BulkDetails.this, "Unfortunately, we do not collect on sundays,\nPlease try another day\n\nWe apologize for any inconvenience caused!", Toast.LENGTH_LONG).show();
+            } else {
+                scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(selectedDay), String.valueOf(selectedMonth+1), selectedYear)));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +182,6 @@ public class BulkDetails extends AppCompatActivity {
                             refreshLayout.setRefreshing(false);
                             Toast.makeText(BulkDetails.this, "An unexpected error has occurred, please contact the administrator", Toast.LENGTH_LONG).show();
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -305,10 +324,10 @@ public class BulkDetails extends AppCompatActivity {
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year, monthOfYear, dayOfMonth) ->
-                        scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth+1, mDay);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePickerListener, mYear, mMonth, mDay);
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+//                (view, year, monthOfYear, dayOfMonth) ->
+//                        date.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(dayOfMonth), String.valueOf(monthOfYear + 1), year))), mYear, mMonth + 1, mDay);
 
         DatePicker datePicker = datePickerDialog.getDatePicker();
 
@@ -320,8 +339,17 @@ public class BulkDetails extends AppCompatActivity {
         current.add(Calendar.DATE, 14);
         long maxDate = current.getTimeInMillis();
 
-        datePicker.setMinDate(minDate);
-        datePicker.setMaxDate(maxDate);
+        Log.e("Current hour", current.get(Calendar.HOUR_OF_DAY) + "");
+
+        if (current.get(Calendar.HOUR_OF_DAY) < 18) {
+            datePicker.setMinDate(minDate);
+            datePicker.setMaxDate(maxDate);
+            datePicker.updateDate(mYear, mMonth, mDay + 1);
+        } else {
+            datePicker.setMinDate(minDate + 86400000);
+            datePicker.setMaxDate(maxDate + 86400000);
+            datePicker.updateDate(mYear, mMonth, mDay + 3);
+        }
 
         datePickerDialog.show();
     }

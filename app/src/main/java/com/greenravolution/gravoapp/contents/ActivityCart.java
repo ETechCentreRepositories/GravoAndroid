@@ -72,21 +72,20 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
     int no_of_items = 0;
 
     private DatePickerDialog.OnDateSetListener
+            datePickerListener = new DatePickerDialog.OnDateSetListener() {
 
-            datePickerListener = new  DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int selectedYear,
-                              int selectedMonth, int selectedDay)
-        {
+                              int selectedMonth, int selectedDay) {
             SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
             Date date = new Date(selectedYear, selectedMonth, selectedDay-1);
             String dayOfWeek = simpledateformat.format(date);
             Log.e("Day", dayOfWeek);
-            if(dayOfWeek.equals("Sunday")){
+            Log.e("Day", date+"");
+            if (dayOfWeek.equals("Sunday")) {
                 Toast.makeText(ActivityCart.this, "Unfortunately, we do not collect on sundays,\nPlease try another day\n\nWe apologize for any inconvenience caused!", Toast.LENGTH_LONG).show();
-            }else{
-                scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(selectedDay), String.valueOf(selectedMonth), selectedYear)));
+            } else {
+                scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(selectedDay), String.valueOf(selectedMonth+1), selectedYear)));
             }
-
         }
     };
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
@@ -158,7 +157,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                 tvTotalPrice.setText(String.format("$%.2f", totalPrice));
                 Log.e("TOTAL PRICE", String.valueOf(totalPrice));
                 Log.e("TOTAL WEIGHT", String.valueOf(totalWeight));
-                tvTotalWeight.setText(totalWeight + "KG ");
+                tvTotalWeight.setText(totalWeight + "KG");
 
             }
 
@@ -237,8 +236,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     String totalWeight = tvTotalWeight.getText().toString();
                     double numberOfPieces = Double.parseDouble(totalWeight.substring(0, totalWeight.indexOf("K")));
                     double newNumberOfPieces = numberOfPieces - Double.parseDouble(tvWeight.getText().toString());
-                    String newStringPieces = newNumberOfPieces + "KG";
-                    tvTotalWeight.setText(newStringPieces + "KG ");
+                    String newStringPieces = String.valueOf(newNumberOfPieces);
+                    tvTotalWeight.setText(newStringPieces + "KG");
 
                     String[] paramsArray = {deleteCartDetailsUrl, user_id, cartId + ""};
                     deleteCart.execute(paramsArray);
@@ -282,7 +281,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
                     } else {
                         getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) - 1.0);
 
-                        tvTotalWeight.setText(getNewTotalWeight + "KG ");
+                        tvTotalWeight.setText(getNewTotalWeight + "KG");
                         Log.e("getNewTotalWeight", getNewTotalWeight);
                     }
 
@@ -330,7 +329,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 
 //                if (tvWeight.getText().toString().equals("0.0")) {
                     getNewTotalWeight = String.valueOf(Double.parseDouble(getTotalWeight) + 1.0);
-                    tvTotalWeight.setText(getNewTotalWeight + "KG ");
+                    tvTotalWeight.setText(getNewTotalWeight + "KG");
                     Log.e("newTotalWeight", getNewTotalWeight);
 
 
@@ -459,52 +458,56 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userRemarks = etRemarks.getText().toString();
             String userPreTotalPrice = tvTotalPrice.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
-            Log.e("Cart total price", userTotalPrice);
-            Log.e("price", userTotalPrice);
-            if (etPhone.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")
-                    || scheduleDateTiming.getText().toString().equals("SELECT TIME")
-                    || tvaddress.getText().toString().equals("Select address...")
-                    || etFloor.getText().toString().equals("")
-                    || etUnit.getText().toString().equals("")) {
-                Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
-            } else if (no_of_items == 0) {
-                Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
-            } else {
-                int status_id = 6;
+            if(Double.parseDouble(tvTotalWeight.getText().toString().substring(0,tvTotalWeight.getText().toString().length()-2))<5.0){
+                Toast.makeText(this, "You need have 5kg or more to recycle with us!\nWe apologize for any inconvenience caused!", Toast.LENGTH_LONG).show();
+            }else{
+                Log.e("Cart total price", userTotalPrice);
+                Log.e("price", userTotalPrice);
+                if (etPhone.getText().toString().equals("") || scheduleDate.getText().toString().equals("SELECT DATE")
+                        || scheduleDateTiming.getText().toString().equals("SELECT TIME")
+                        || tvaddress.getText().toString().equals("Select address...")
+                        || etFloor.getText().toString().equals("")
+                        || etUnit.getText().toString().equals("")) {
+                    Toast.makeText(this, "Please Fill in ALL Details", Toast.LENGTH_LONG).show();
+                } else if (no_of_items == 0) {
+                    Toast.makeText(this, "No items in cart", Toast.LENGTH_LONG).show();
+                } else {
+                    int status_id = 6;
 
-                String newdate = datetodateformat(scheduleDate.getText().toString());
-                String[] getdatesplit = newdate.split("-");
-                String addTransactionUrl = links.addTransaction();
-                Log.e("CHANGED DATE =", newdate);
-                Calendar calAlarm = Calendar.getInstance();
-                calAlarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(getdatesplit[0]));
-                calAlarm.set(Calendar.MONTH, Integer.parseInt(getdatesplit[1]));
-                calAlarm.set(Calendar.YEAR, Integer.parseInt(getdatesplit[2]));
-                calAlarm.set(Calendar.HOUR, 0);
-                calAlarm.set(Calendar.HOUR_OF_DAY, 0);
-                calAlarm.set(Calendar.MINUTE, 0);
-                calAlarm.set(Calendar.SECOND, 0);
-                calAlarm.set(Calendar.AM_PM, 0);
-                setAlarmForPickUpDay(calAlarm);
-                AsyncAddTransaction addTransaction = new AsyncAddTransaction();
-                String[] paramsArray = {addTransactionUrl, newdate, tvaddress.getText().toString() + " #" + etFloor.getText().toString() + "-" + etUnit.getText().toString(), name, userPhoneNo, userTotalPrice, tvTotalWeight.getText().toString(), userRemarks, "00000", id, status_id + "", scheduleDateTiming.getText().toString()};
-                for (int i = 0; i < paramsArray.length; i++) {
-                    Log.e("params", paramsArray[i]);
-                }
-                AsyncAddTransaction.OnAsyncResult getTransactionId = (resultCode, message) -> {
-                    Log.i("message", message);
-                    Log.i("resultCodeHere", resultCode + "");
-                    if (resultCode == 200) {
-                        Log.e("TRANSACTION ID", message.split(" ")[1]);
-                        startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", scheduleDate.getText().toString()).putExtra("transactionid", message.split(" ")[1]));
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_LONG).show();
+                    String newdate = datetodateformat(scheduleDate.getText().toString());
+                    String[] getdatesplit = newdate.split("-");
+                    String addTransactionUrl = links.addTransaction();
+                    Log.e("CHANGED DATE =", newdate);
+                    Calendar calAlarm = Calendar.getInstance();
+                    calAlarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(getdatesplit[0]));
+                    calAlarm.set(Calendar.MONTH, Integer.parseInt(getdatesplit[1]));
+                    calAlarm.set(Calendar.YEAR, Integer.parseInt(getdatesplit[2]));
+                    calAlarm.set(Calendar.HOUR, 0);
+                    calAlarm.set(Calendar.HOUR_OF_DAY, 0);
+                    calAlarm.set(Calendar.MINUTE, 0);
+                    calAlarm.set(Calendar.SECOND, 0);
+                    calAlarm.set(Calendar.AM_PM, 0);
+                    setAlarmForPickUpDay(calAlarm);
+                    AsyncAddTransaction addTransaction = new AsyncAddTransaction();
+                    String[] paramsArray = {addTransactionUrl, newdate, tvaddress.getText().toString() + " #" + etFloor.getText().toString() + "-" + etUnit.getText().toString(), name, userPhoneNo, userTotalPrice, tvTotalWeight.getText().toString(), userRemarks, "00000", id, status_id + "", scheduleDateTiming.getText().toString()};
+                    for (int i = 0; i < paramsArray.length; i++) {
+                        Log.e("params", paramsArray[i]);
                     }
-                };
-                addTransaction.setOnResultListener(getTransactionId);
-                addTransaction.execute(paramsArray);
-                Log.i("resultCodeHere", "successtransactionpage");
+                    AsyncAddTransaction.OnAsyncResult getTransactionId = (resultCode, message) -> {
+                        Log.i("message", message);
+                        Log.i("resultCodeHere", resultCode + "");
+                        if (resultCode == 200) {
+                            Log.e("TRANSACTION ID", message.split(" ")[1]);
+                            startActivity(new Intent(this, ActivitySuccessfullTransaction.class).putExtra("date", scheduleDate.getText().toString()).putExtra("transactionid", message.split(" ")[1]));
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "An unexpected error has occured, Please notify us through the help centre.", Toast.LENGTH_LONG).show();
+                        }
+                    };
+                    addTransaction.setOnResultListener(getTransactionId);
+                    addTransaction.execute(paramsArray);
+                    Log.i("resultCodeHere", "successtransactionpage");
+                }
             }
         });
         scheduleDate = findViewById(R.id.scheduleDate);
@@ -528,7 +531,7 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
 //                (view, year, month, day) ->
 //                        scheduleDate.setText(dateformattodate(String.format("%s-%s-%d", String.valueOf(day), String.valueOf(month + 1), year))), mYear, mMonth + 1, mDay);
 
-        datePickerDialog = new DatePickerDialog(this, datePickerListener, mYear,mMonth,mDay);
+        datePickerDialog = new DatePickerDialog(this, datePickerListener, mYear, mMonth, mDay);
         DatePicker datePicker = datePickerDialog.getDatePicker();
         Calendar minC = Calendar.getInstance();
         minC.add(Calendar.DAY_OF_YEAR, 1);
@@ -546,9 +549,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
         } else {
             datePicker.setMinDate(minDate + 86400000);
             datePicker.setMaxDate(maxDate + 86400000);
-            datePicker.updateDate(mYear, mMonth, mDay + 3);
+            datePicker.updateDate(mYear, mMonth, mDay + 2);
         }
-
 
 
         datePickerDialog.show();

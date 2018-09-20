@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     public static final String SESSION = "login_status";
@@ -51,19 +53,19 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout llProgress;
     ImageView progressbar;
     SwipeRefreshLayout refreshLayout;
-
+    LinearLayout llviewmore;
+    RelativeLayout llsummaries;
+    TextView totalWeight, totalPrice;
     TextView collectDate;
     SharedPreferences sessionManager;
     LinearLayout list;
     android.support.v7.widget.Toolbar toolbar;
     ImageView btnProfile;
 
-
     GetAsyncRequest.OnAsyncResult asyncResult = (resultCode, message) -> {
         llProgress.setVisibility(View.GONE);
         Log.e("GET TRANSACTION ALL: ", message);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
-
 
         SharedPreferences.Editor editor = sessionManager.edit();
         editor.putString("alltransactionsObject",message);
@@ -82,12 +84,15 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.view_pager);
         FragmentPageAdapter adapter = new FragmentPageAdapter(getSupportFragmentManager());
 
+        llsummaries = findViewById(R.id.summaries);
+        llviewmore = findViewById(R.id.viewmore);
+        totalWeight = findViewById(R.id.total_weight);
+        totalPrice = findViewById(R.id.total_price);
+
         llProgress = findViewById(R.id.llProgress);
         progressbar = findViewById(R.id.progressBar);
-
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-
         if(hasNetworkConnectivity()){
             getTransactions();
         } else {
@@ -122,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         btnProfile = findViewById(R.id.btnProfile);
 
         toolbar = findViewById(R.id.toolbar);
@@ -148,14 +154,15 @@ public class MainActivity extends AppCompatActivity {
         asyncRequest.setOnResultListener(asyncResult);
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         String collectorid = sessionManager.getString("id","");
+        GetSummaries();
         asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id="+collectorid);
+
     }
 
 
 
     @Override
     public void onBackPressed() {
-
         final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
         dialog.setCancelable(false);
         dialog.setTitle("Exit");
@@ -222,9 +229,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("res: ", String.valueOf(requestCode));
         }
     }
-
-
-
     public Boolean hasNetworkConnectivity(){
         ConnectivityManager cm =
                 (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -234,7 +238,56 @@ public class MainActivity extends AppCompatActivity {
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
+    public class getsumamries extends AsyncTask<String, Void, String>{
 
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            sessionManager = getSharedPreferences("login_status",Context.MODE_PRIVATE);
+            String userid = sessionManager.getString("id","");
+            return req.GetRequest("http://ehostingcentre.com/gravo/getsummaries.php?collectorid="+userid);
+        }
+    }
+    public void GetSummaries(){
+        try {
+            String getsumm = new getsumamries().execute().get();
+            JSONObject summaries = new JSONObject(getsumm);
+            int status = summaries.getInt("status");
+            if(status==200){
+                llviewmore.setVisibility(View.VISIBLE);
+                JSONArray summaryarray = summaries.getJSONArray("summaries");
+                JSONObject today = summaryarray.getJSONObject(0);
+                totalWeight.setText("Total weight collected: "+today.getString("total_weight")+"KG");
+                totalPrice.setText("Total amount paid: $"+today.getString("total_price"));
+
+                llviewmore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, SummaryList.class);
+                        Log.e("SUMMARIES AS JSON ARRAY", summaryarray.toString());
+                        intent.putExtra("summaries",summaryarray.toString());
+                        startActivity(intent);
+                    }
+                });
+            }else if(status==404){
+                llviewmore.setVisibility(View.GONE);
+                totalWeight.setText("Unable to get your summary.");
+            }else if(status==400){
+                llviewmore.setVisibility(View.GONE);
+                Toast.makeText(this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
+            }else{
+                llviewmore.setVisibility(View.GONE);
+                Toast.makeText(this, "An unexpected error has occurred", Toast.LENGTH_SHORT).show();
+            }
+            Log.e("SUMMARIES", getsumm);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
