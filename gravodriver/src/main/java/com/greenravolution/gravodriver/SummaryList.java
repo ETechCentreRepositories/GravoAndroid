@@ -75,6 +75,7 @@ public class SummaryList extends AppCompatActivity {
         View view = inflater.inflate(R.layout.summary_item,null,false);
 
         CardView carditem = view.findViewById(R.id.carditem);
+        LinearLayout separator = view.findViewById(R.id.separator);
         TextView totalWeight = view.findViewById(R.id.total_weight);
         TextView weightlabel = view.findViewById(R.id.weightlabel);
         TextView totalPrice = view.findViewById(R.id.total_price);
@@ -104,6 +105,7 @@ public class SummaryList extends AppCompatActivity {
                 date.setText(String.format("%s (Today)", dateformattodate(getdate)));
             }else{
                 carditem.setCardBackgroundColor(getResources().getColor(R.color.grey));
+                separator.setBackgroundColor(getResources().getColor(R.color.white));
                 date.setTextColor(getResources().getColor(R.color.white));
                 totalEwaste.setTextColor(getResources().getColor(R.color.white));
                 totalMetals.setTextColor(getResources().getColor(R.color.white));

@@ -1,9 +1,8 @@
 package com.greenravolution.gravoapp.contents;
 
 import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,13 +12,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,7 +24,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,8 +49,9 @@ public class ActivityLeaderboard extends AppCompatActivity {
     SharedPreferences sessionManager;
     TextView share;
     CircleImageView profilpic;
-    LinearLayout achievements,summary,totalkgpiece;
+    LinearLayout achievements, summary, totalkgpiece, layout;
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 456;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +67,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
         achievements = findViewById(R.id.achievements);
         summary = findViewById(R.id.summary);
         totalkgpiece = findViewById(R.id.totalkgpiece);
+        layout = findViewById(R.id.layout);
 
         sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
         Glide.with(ActivityLeaderboard.this).load(sessionManager.getString("user_image", "https://www.greenravolution.com/API/uploads/291d5076443149a4273f0199fea9db39a3ab4884.png")).into(profilpic);
@@ -82,7 +82,6 @@ public class ActivityLeaderboard extends AppCompatActivity {
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         });
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -118,21 +117,21 @@ public class ActivityLeaderboard extends AppCompatActivity {
                         String title = item.getString("achievement_name");
                         String points = item.getString("points");
                         String category = item.getString("category_id");
-                        if(category.equals("paper") || category.equals("metals") || category.equals("ewaste")){
+                        if (category.equals("paper") || category.equals("metals") || category.equals("ewaste")) {
                             achievements.addView(initView(count, title, points, category));
-                        }else if(category.equals("total_trees")||category.equals("total_co2")){
+                        } else if (category.equals("total_trees") || category.equals("total_co2")) {
                             TextView boxtitle = findViewById(R.id.title);
                             TextView boxtotalweight = findViewById(R.id.totalweight);
                             TextView boxtitle2 = findViewById(R.id.title2);
                             TextView boxtotalweight2 = findViewById(R.id.totalweight2);
-                            if(category.equals("total_co2")){
+                            if (category.equals("total_co2")) {
                                 boxtotalweight.setText(String.format("%s", points));
-                                boxtitle.setText(title.split("-")[0]+"\n"+title.split("-")[1]);
-                            }else if(category.equals("total_trees")){
+                                boxtitle.setText(title.split("-")[0] + "\n" + title.split("-")[1]);
+                            } else if (category.equals("total_trees")) {
                                 boxtotalweight2.setText(String.format("%s", points));
-                                boxtitle2.setText(title.split("-")[0]+"\n"+title.split("-")[1]);
+                                boxtitle2.setText(title.split("-")[0] + "\n" + title.split("-")[1]);
                             }
-                        }else if(category.equals("total_kg")||category.equals("total_price")){
+                        } else if (category.equals("total_kg") || category.equals("total_price")) {
                             totalkgpiece.addView(initView(count, title, points, category));
                         }
                     }
@@ -144,7 +143,6 @@ public class ActivityLeaderboard extends AppCompatActivity {
             }
         }
     }
-
     public View initView(String getcount, String gettitle, String getpoints, String category) {
         if (category.equals("paper") || category.equals("metals") || category.equals("ewaste")) {
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -169,7 +167,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
                 }
                 count.setText(getcount);
                 title.setText(gettitle);
-                points.setText(getpoints+" Points");
+                points.setText(getpoints + " Points");
                 if (Integer.parseInt(getpoints) >= 100) {
                     progress.setProgress(100);
                 } else {
@@ -179,7 +177,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
             } else {
                 return null;
             }
-        }else if(category.equals("total_kg")||category.equals("total_price")){
+        } else if (category.equals("total_kg") || category.equals("total_price")) {
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             if (inflater != null) {
@@ -188,19 +186,51 @@ public class ActivityLeaderboard extends AppCompatActivity {
                 TextView title = view.findViewById(R.id.title);
                 TextView totalweight = view.findViewById(R.id.totalweight);
                 title.setText(gettitle);
-                if(category.equals("total_kg")){
+                if (category.equals("total_kg")) {
                     totalweight.setText(String.format("%s KG", getpoints));
-                }else if(category.equals("total_co2")){
+                } else if (category.equals("total_co2")) {
                     totalweight.setText(String.format("%s", getpoints));
-                }else if(category.equals("total_trees")){
+                } else if (category.equals("total_trees")) {
                     totalweight.setText(String.format("%.2f", Double.parseDouble(getpoints)));
-                }else if(category.equals("total_price")){
+                } else if (category.equals("total_price")) {
                     totalweight.setText(String.format("$%.2f", Double.parseDouble(getpoints)));
                 }
                 return view;
             }
         }
         return null;
+    }
+    public Bitmap takeScreenShot(View view) {
+        // configuramos para que la view almacene la cache en una imagen
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        view.buildDrawingCache();
+
+        if (view.getDrawingCache() == null) return null; // Verificamos antes de que no sea null
+
+        // utilizamos esa cache, para crear el bitmap que tendra la imagen de la view actual
+        Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        view.destroyDrawingCache();
+
+        return snapshot;
+    }
+    private Uri StoreBitmap(Bitmap bmp){
+        String filename = "achievements.png";
+        File sd = Environment.getExternalStorageDirectory();
+        File dest = new File(sd, filename);
+        Log.e("FILE NAME", dest.getAbsolutePath());
+
+        Bitmap bitmap = bmp;
+        try {
+            FileOutputStream out = new FileOutputStream(dest);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Uri.parse(dest.getAbsolutePath());
     }
 
 }

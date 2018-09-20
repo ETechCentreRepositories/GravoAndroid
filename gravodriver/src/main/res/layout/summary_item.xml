@@ -30,6 +30,13 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp" />
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/separator"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -64,6 +71,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -107,6 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Total Metals Collection"/>
+
                 <TextView
                     android:gravity="end"
                     android:id="@+id/total_metals"
@@ -114,6 +125,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
             </RelativeLayout>
 
         </LinearLayout>
