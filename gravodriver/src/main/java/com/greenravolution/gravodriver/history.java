@@ -198,9 +198,6 @@ public class history extends Fragment {
         });
 
         getLocalTransactions();
-
-
-
         return view;
     }
 
@@ -404,7 +401,6 @@ public class history extends Fragment {
                     }
                 }
             }
-
             Log.i("doInsertionSortedPrev",newResult.toString());
             return object.put("result",results).toString();
         } catch (JSONException e){

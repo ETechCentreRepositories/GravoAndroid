@@ -77,7 +77,7 @@ public class Calendar extends Fragment {
                     cvCalendar.markDate(new DateData(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day))).setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
                     Log.e("long date", "getTime : " + date.getTime());
-                    if (status_id == 4) {
+                    if (status_id == 4 || status_id == 5) {
                         layout.setBackgroundColor(getResources().getColor(R.color.brand_green));
                         tvDetails.setText("Collected " + transactionDateTiming + ",\n" + day + " " + monthWord + " " + year);
                     } else if (status_id == 8) {

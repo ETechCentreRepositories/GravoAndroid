@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.greenravolution.gravoapp.R;
 import com.greenravolution.gravoapp.functions.HttpReq;
@@ -400,6 +401,7 @@ public class ActivitySelectedTransaction extends AppCompatActivity {
         switch (itemId) {
             case R.id.help:
                 Log.i("MainActivity", "clicked on help");
+//                startActivity(new Intent(this, ActivityHelp.class));
                 startActivity(new Intent(this, ActivityHelp.class));
                 return true;
         }

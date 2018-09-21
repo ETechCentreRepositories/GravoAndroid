@@ -21,12 +21,27 @@
             android:layout_gravity="center" />
     </android.support.v7.widget.Toolbar>
     <LinearLayout
+        android:id="@+id/wv"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="WebViewLayout">
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </WebView>
+    </LinearLayout>
+    <LinearLayout
         android:gravity="center"
         android:layout_above="@id/send"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:orientation="vertical"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/wv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText

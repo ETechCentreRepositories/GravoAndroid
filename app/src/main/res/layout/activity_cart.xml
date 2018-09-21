@@ -235,18 +235,29 @@
                     android:layout_marginStart="5dp"
                     android:text="Enter 0 if not applicable"/>
             </LinearLayout>
-
+            <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:text="+65"/>
             <EditText
+                android:maxLength="8"
+                android:inputType="phone"
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:background="@drawable/text_field_background"
-                android:gravity="top"
-                android:hint="Contact Number"
-                android:inputType="phone"
-                android:maxLength="15"
+                android:hint="@string/contact_number"
                 android:padding="5dp" />
+        </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

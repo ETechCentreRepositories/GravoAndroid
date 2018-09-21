@@ -11,16 +11,12 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,11 +27,9 @@ import android.widget.Toast;
 
 import com.greenravolution.gravodriver.Objects.OrderDetails;
 import com.greenravolution.gravodriver.Objects.Orders;
-import com.greenravolution.gravodriver.adapters.FragmentPageAdapter;
 import com.greenravolution.gravodriver.functions.GetAsyncRequest;
 import com.greenravolution.gravodriver.functions.HttpReq;
 import com.greenravolution.gravodriver.loginsignup.Login;
-import com.greenravolution.gravodriver.loginsignup.RegisterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +66,7 @@ public class today extends Fragment {
     CardView cardView;
     LinearLayout llotw, llarr, llContent;
     Button botw, barr, bmap;
-    TextView tt, ta, tpc, tst,tName, dt;
+    TextView tt, ta, tpc, tst, tName, dt;
     Boolean allowRefresh = false;
 
     GetAsyncRequest.OnAsyncResult getRates = (resultCode, message) -> {
@@ -95,9 +89,8 @@ public class today extends Fragment {
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
 
         SharedPreferences.Editor editor = sessionManager.edit();
-        editor.putString("alltransactionsObject",message);
+        editor.putString("alltransactionsObject", message);
         editor.commit();
-
 
         progressDrawable.stop();
         try {
@@ -107,7 +100,7 @@ public class today extends Fragment {
             Double price = 0.00;
 
             String sortedMessage = doInsertionSort(message);
-            Log.i("doInsertionSorted",sortedMessage);
+            Log.i("doInsertionSorted", sortedMessage);
             JSONObject object = new JSONObject(sortedMessage);
 
             int status = object.getInt("status");
@@ -152,12 +145,12 @@ public class today extends Fragment {
 
                 }
 
-            } else if (status == 404){
+            } else if (status == 404) {
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(getActivity(),"No transactions",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "No transactions", Toast.LENGTH_SHORT).show();
             } else {
                 refreshLayout.setRefreshing(false);
-                Toast.makeText(getActivity(),"Failed to load data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -195,7 +188,7 @@ public class today extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(hasNetworkConnectivity()){
+                if (hasNetworkConnectivity()) {
                     getTransactions();
                 } else {
                     refreshLayout.setRefreshing(false);
@@ -204,7 +197,7 @@ public class today extends Fragment {
                     final View gtnc = li.inflate(R.layout.dialog_noconnectivity, null);
                     dialog.setCancelable(true);
                     dialog.setView(gtnc);
-                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(getActivity(),Login.class)));
+                    dialog.setPositiveButton("Ok", (dialogInterface, i) -> startActivity(new Intent(getActivity(), Login.class)));
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
                 }
@@ -238,7 +231,7 @@ public class today extends Fragment {
         }
     }
 
-    public void getLocalTransactions(){
+    public void getLocalTransactions() {
 //        llProgress.setVisibility(View.VISIBLE);
 //        AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
 //        progressDrawable.start();
@@ -246,8 +239,8 @@ public class today extends Fragment {
         try {
 
             sessionManager = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String message = sessionManager.getString("alltransactionsObject",null);
-            if(message != null){
+            String message = sessionManager.getString("alltransactionsObject", null);
+            if (message != null) {
 
                 oal.clear();
                 list.removeAllViews();
@@ -255,7 +248,7 @@ public class today extends Fragment {
                 Double price = 0.00;
 
                 String sortedMessage = doInsertionSort(message);
-                Log.i("doInsertionSorted",sortedMessage);
+                Log.i("doInsertionSorted", sortedMessage);
                 JSONObject object = new JSONObject(sortedMessage);
 
                 int status = object.getInt("status");
@@ -275,24 +268,24 @@ public class today extends Fragment {
                         String cTime = detail.getString("collection_date_timing");
 
                         price = price + totalprice;
-                        Orders neworder = new Orders(id, tc, ad, uid, stid,cName, cDate, cTime);
-                        if(stid !=4){
+                        Orders neworder = new Orders(id, tc, ad, uid, stid, cName, cDate, cTime);
+                        if (stid != 4) {
                             Calendar cal = Calendar.getInstance();
                             String todayDate = cal.get(Calendar.YEAR) + "";
                             if (cal.get(Calendar.MONTH) < 10) {
-                                todayDate = todayDate + "-0" + (cal.get(Calendar.MONTH)+1);
+                                todayDate = todayDate + "-0" + (cal.get(Calendar.MONTH) + 1);
                             } else {
-                                todayDate = todayDate + "-" + (cal.get(Calendar.MONTH)+1);
+                                todayDate = todayDate + "-" + (cal.get(Calendar.MONTH) + 1);
                             }
 
-                            if(cal.get(Calendar.DAY_OF_MONTH) < 10){
+                            if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
                                 todayDate = todayDate + "-0" + cal.get(Calendar.DAY_OF_MONTH);
                             } else {
                                 todayDate = todayDate + "-" + cal.get(Calendar.DAY_OF_MONTH);
                             }
 
-                            Log.i("today's Date",todayDate + ", " + results.length());
-                            if(cDate.equalsIgnoreCase(todayDate)){
+                            Log.i("today's Date", todayDate + ", " + results.length());
+                            if (cDate.equalsIgnoreCase(todayDate)) {
                                 list.addView(initview(neworder, i + 1));
                             }
                         }
@@ -315,8 +308,8 @@ public class today extends Fragment {
         GetAsyncRequest asyncRequest = new GetAsyncRequest();
         asyncRequest.setOnResultListener(asyncResult);
         sessionManager = getActivity().getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-        String collectorid = sessionManager.getString("id","");
-        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id="+collectorid);
+        String collectorid = sessionManager.getString("id", "");
+        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id=" + collectorid);
     }
 
     public static class updatetransaction extends AsyncTask<String, Void, String> {
@@ -328,7 +321,7 @@ public class today extends Fragment {
             Log.e("STRINGS 2", strings[2]);
             @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("h:mm a");
             String date = df.format(Calendar.getInstance().getTime());
-            String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status="+strings[1]+"&arrivaltime=" + date + "");
+            String reqResult = req.PostRequest("http://ehostingcentre.com/gravo/updatetransactionstatus.php", "transactionid=" + strings[0] + "&status=" + strings[1] + "&arrivaltime=" + date + "");
             Log.e("reqResult", reqResult);
             try {
                 JSONObject resultObject = new JSONObject(reqResult);
@@ -336,19 +329,17 @@ public class today extends Fragment {
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
-
-                        String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php", "userID=" + recyclerID);
-                        Log.e("reqNotification", reqNotification);
-
+                    String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotification.php", "userID=" + recyclerID + "&transaction_code=" + strings[0]);
+                    Log.e("reqNotification", reqNotification);
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
-                }else if(resultObject.getInt("status") == 201){
+                } else if (resultObject.getInt("status") == 201) {
                     JSONArray resultArray = resultObject.getJSONArray("result");
                     JSONObject transactionObject = resultArray.getJSONObject(0);
                     String recyclerID = transactionObject.getString("recycler_id");
 //                    if(strings[2].equalsIgnoreCase("send")) {
-                        String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID);
-                        Log.e("reqNotification", reqNotification);
+                    String reqNotification = req.PostRequest("http://ehostingcentre.com/gravo/sendNotificationOtw.php", "userID=" + recyclerID + "&transaction_code=" + strings[0]);
+                    Log.e("reqNotification", reqNotification);
 //                    }
                     JSONObject items = resultObject.getJSONArray("result").getJSONObject(0);
                     int transactionID = items.getInt("id");
@@ -425,8 +416,7 @@ public class today extends Fragment {
         dt = view.findViewById(R.id.pickupDatetime);
 
 
-
-       if (order.getStatus_id() == 3) {
+        if (order.getStatus_id() == 3) {
 
             botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
             botw.setEnabled(false);
@@ -449,10 +439,10 @@ public class today extends Fragment {
 //            cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
 //            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
-           cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
-           llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
+            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
 
-        } else if (order.getStatus_id() == 2){
+        } else if (order.getStatus_id() == 2) {
             botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
             botw.setEnabled(false);
             barr.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_green_round));
@@ -467,14 +457,14 @@ public class today extends Fragment {
             ta.setTextColor(getResources().getColor(R.color.white));
             tpc.setText(String.format("Transaction Code: %s", String.valueOf(order.getTransaction_code())));
             tpc.setTextColor(getResources().getColor(R.color.white));
-           dt.setTextColor(getResources().getColor(R.color.white));
-           dt.setText(order.getCollection_date() + " " + order.getCollection_time());
+            dt.setTextColor(getResources().getColor(R.color.white));
+            dt.setText(order.getCollection_date() + " " + order.getCollection_time());
 //                holder.tst.setText(String.valueOf(order.getSession_id()));
 //                holder.tst.setTextColor(context.getResources().getColor(R.color.white));
             //cardView.setBackgroundColor(getResources().getColor(R.color.brand_pink));
             //llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
-           cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
-           llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
+            llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
         } else {
             //normal pickup
             tName.setText(order.getCollecter_name());
@@ -489,7 +479,7 @@ public class today extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(hasNetworkConnectivity()){
+                if (hasNetworkConnectivity()) {
                     botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
                     botw.setEnabled(false);
                     barr.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_green_round));
@@ -498,7 +488,7 @@ public class today extends Fragment {
                     Orders orders = order;
 
                     today.updatetransaction updatetransaction = new today.updatetransaction();
-                    updatetransaction.execute(String.valueOf(orders.getId()),"2","send");
+                    updatetransaction.execute(String.valueOf(orders.getId()), "2", "send", order.getTransaction_code());
 
                     getTransactions();
 
@@ -509,7 +499,7 @@ public class today extends Fragment {
                     final View gtnc = li.inflate(R.layout.dialog_noconnectivity, null);
                     dialog.setCancelable(true);
                     dialog.setView(gtnc);
-                    dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(getActivity(),Login.class)));
+                    dialog.setPositiveButton("Ok", (dialogInterface, i) -> startActivity(new Intent(getActivity(), Login.class)));
                     AlertDialog dialogue = dialog.create();
                     dialogue.show();
                 }
@@ -517,7 +507,7 @@ public class today extends Fragment {
         });
 
         barr.setOnClickListener(v -> {
-            if(hasNetworkConnectivity()){
+            if (hasNetworkConnectivity()) {
 
                 Intent intent = new Intent(getContext(), TransactionDetails.class);
                 Orders orders = order;
@@ -525,9 +515,9 @@ public class today extends Fragment {
                 intent.putExtra("transaction_id", orders.getTransaction_code());
                 intent.putExtra("id", orders.getId());
 
-                if(String.valueOf(orders.getStatus_id()) != null){
-                    Log.i("clicked","checking for transactionCode");
-                    if(orders.getStatus_id() == 2) {
+                if (String.valueOf(orders.getStatus_id()) != null) {
+                    Log.i("clicked", "checking for transactionCode");
+                    if (orders.getStatus_id() == 2) {
                         botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
                         botw.setEnabled(false);
                         barr.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_green_round));
@@ -537,16 +527,16 @@ public class today extends Fragment {
                         updatetransaction.execute(String.valueOf(orders.getId()), "3", "send");
                         startActivityForResult(intent, 1);
 
-                    } else if(orders.getStatus_id() == 3){
+                    } else if (orders.getStatus_id() == 3) {
 
                         today.updatetransaction updatetransaction = new today.updatetransaction();
-                        updatetransaction.execute(String.valueOf(orders.getId()),"3","dontsend");
+                        updatetransaction.execute(String.valueOf(orders.getId()), "3", "dontsend");
                         startActivityForResult(intent, 1);
                     } else {
-                        Toast.makeText(getContext(),"An error has occured1",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "An error has occured1", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getContext(),"An error has occured2",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "An error has occured2", Toast.LENGTH_SHORT).show();
                 }
 
             } else {
@@ -556,7 +546,7 @@ public class today extends Fragment {
                 final View gtnc = li.inflate(R.layout.dialog_noconnectivity, null);
                 dialog.setCancelable(true);
                 dialog.setView(gtnc);
-                dialog.setPositiveButton("Ok", (dialogInterface, i) ->  startActivity(new Intent(getActivity(),Login.class)));
+                dialog.setPositiveButton("Ok", (dialogInterface, i) -> startActivity(new Intent(getActivity(), Login.class)));
                 AlertDialog dialogue = dialog.create();
                 dialogue.show();
             }
@@ -591,9 +581,9 @@ public class today extends Fragment {
         return view;
     }
 
-    public Boolean hasNetworkConnectivity(){
+    public Boolean hasNetworkConnectivity() {
         ConnectivityManager cm =
-                (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -601,98 +591,38 @@ public class today extends Fragment {
         return isConnected;
     }
 
-
     @Override
-    public  void onResume(){
+    public void onResume() {
         super.onResume();
-        Log.i("Called","today onResume");
+        Log.i("Called", "today onResume");
         getLocalTransactions();
     }
 
-    public String doInsertionSort(String jsonString){
-        try{
+    public String doInsertionSort(String jsonString) {
+        try {
             JSONObject object = new JSONObject(jsonString);
             JSONArray results = object.getJSONArray("result");
             //JSONArray newResult = results;
             JSONArray newResult = new JSONArray();
 
-            for(int i = 0; i < results.length(); i++){
+            for (int i = 0; i < results.length(); i++) {
                 JSONObject curr = results.getJSONObject(i);
-                if(curr.getString("collection_date_timing").equalsIgnoreCase("9:00am - 12:00pm")){
+                if (curr.getString("collection_date_timing").equalsIgnoreCase("9:00am - 12:00pm")) {
                     newResult.put(curr);
                 }
             }
 
-            for(int i = 0; i < results.length(); i++){
+            for (int i = 0; i < results.length(); i++) {
                 JSONObject curr = results.getJSONObject(i);
-                if(curr.getString("collection_date_timing").equalsIgnoreCase("1:00pm - 4:00pm")){
+                if (curr.getString("collection_date_timing").equalsIgnoreCase("1:00pm - 4:00pm")) {
                     newResult.put(curr);
                 }
             }
-
-//            JSONObject tempDetail = null;
-//            int counter = 0;
-//            for (int i = 1; i < newResult.length(); i++) {
-//                counter++;
-//                JSONObject currDetail = newResult.getJSONObject(i);
-//                for(int j = i ; j > 0 ; j--){
-//                    JSONObject prevDetail = newResult.getJSONObject(i);
-//                    String isEarlierResult = dateTimeCompare(currDetail.getString("collection_date"),currDetail.getString("collection_date_timing"),prevDetail.getString("collection_date"),prevDetail.getString("collection_date_timing"));
-//                    Log.i("isEarlier",counter+ " " +isEarlierResult);
-//                    if(isEarlierResult.equalsIgnoreCase("isBefore")){
-//                        tempDetail = prevDetail;
-//                        newResult.put(j,currDetail);
-//                        newResult.put(i,tempDetail);
-//                    }
-//                    if(currDetail.getString("collection_date_timing").equalsIgnoreCase("9:00am - 12:00pm")){
-//                        tempDetail = prevDetail;
-//                        newResult.put(j,currDetail);
-//                        newResult.put(i,tempDetail);
-//                    }
-//                }
-//            }
-
-            Log.i("doInsertionSortedPrev",newResult.toString());
-            return object.put("result",newResult).toString();
-        } catch (JSONException e){
+            Log.i("doInsertionSortedPrev", newResult.toString());
+            return object.put("result", newResult).toString();
+        } catch (JSONException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    private String dateTimeCompare(String currDate, String currTime , String prevDate , String prevTime){
-        int currYear=Integer.parseInt(currDate.split("-")[0]);
-        int currMonth=Integer.parseInt(currDate.split("-")[1]);
-        int currDay=Integer.parseInt(currDate.split("-")[2]);
-
-        int prevYear=Integer.parseInt(prevDate.split("-")[0]);
-        int prevMonth=Integer.parseInt(prevDate.split("-")[1]);
-        int prevDay=Integer.parseInt(prevDate.split("-")[2]);
-
-        if(currYear > prevYear){
-            return "isAfter";
-        } else if (currYear < prevYear){
-            return "isBefore";
-        } else {
-            if(currMonth > prevMonth){
-                return "isAfter";
-            } else if (currMonth < prevMonth){
-                return "isBefore";
-            } else {
-                if(currDay > prevDay){
-                    return "isAfter";
-                } else if (currDay < prevDay){
-                    return "isBefore";
-                } else {
-                    if(currTime.equalsIgnoreCase("9:00am - 12:00pm") && prevTime.equalsIgnoreCase("1:00pm - 4:00pm")){
-                        return "isBefore";
-                    } else if (currTime.equalsIgnoreCase("1:00pm - 4:00pm") && prevTime.equalsIgnoreCase("9:00am - 12:00pm")){
-                        return "isAfter";
-                    } else {
-                        return "isEqual";
-                    }
-                }
-            }
         }
     }
 

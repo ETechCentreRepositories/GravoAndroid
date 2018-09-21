@@ -2,12 +2,15 @@ package com.greenravolution.gravoapp.contents;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import org.json.JSONObject;
 public class ActivityHelp extends AppCompatActivity {
     TextView name, email, phone, message;
     Toolbar toolbar;
+    WebView webView;
     LinearLayout progressbar;
     public static final String SESSION = "login_status";
     SharedPreferences sessionManager;
@@ -52,6 +56,20 @@ public class ActivityHelp extends AppCompatActivity {
             sendHelp.execute();
 
         });
+
+        webView = findViewById(R.id.webview);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = (size.x)/2;
+        int height = (size.x)/3;
+//        String path = "<iframe width=\""+String.valueOf(width)+"\" height=\""+String.valueOf(height)+"\" src=\"https://www.youtube-nocookie.com/embed/ksbl_Yues4A\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
+        String path = "<div style=\"text-align:center;\"><iframe width=\""+String.valueOf(width)+"\" height=\""+String.valueOf(height)+"\" src=\"https://www.youtube-nocookie.com/embed/ksbl_Yues4A?rel=0&amp;controls=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></div>";
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.loadData(path, "text/html", "UTF-8");
     }
 
     public class SendHelp extends AsyncTask<String, Void, String> {

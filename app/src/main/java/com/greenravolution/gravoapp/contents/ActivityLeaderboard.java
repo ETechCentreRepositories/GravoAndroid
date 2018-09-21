@@ -1,20 +1,18 @@
 package com.greenravolution.gravoapp.contents;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,9 +34,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,8 +51,11 @@ public class ActivityLeaderboard extends AppCompatActivity {
     TextView share;
     CircleImageView profilpic;
     LinearLayout achievements, summary, totalkgpiece, layout;
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 456;
+    // Creating Separate Directory for saving Generated Images
+    String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
+    String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+    String StoredPath = DIRECTORY + pic_name + ".png";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +79,63 @@ public class ActivityLeaderboard extends AppCompatActivity {
         name.setText(sessionManager.getString("user_full_name", ""));
         rank.setText(sessionManager.getString("user_rank", "Status Unavailable"));
         share.setOnClickListener(v -> {
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String shareBody = "I have earned " + String.valueOf(sessionManager.getInt("user_total_points", -1)) + " Points in the GRAVO app by recycling!\nYou can join me too!\n\nhttps://www.greenravolution.com/\n\nCome and Join me now!";
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+//            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+//            sharingIntent.setType("text/plain");
+//            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+            String shareBody = "Hey… Use GRAVO to record what you recycle, what you achieve and the rewards you get. \n" +
+                    " Join GRAVO and save Mother Earth\n\nDownload here NOW!\nhttps://www.greenravolution.com/";
+//            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+//            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            layout.setPadding(20,20,20,20);
+            share.setVisibility(View.GONE);
+            layout.setDrawingCacheEnabled(true);
+            layout.buildDrawingCache();
+            Bitmap bitmap = layout.getDrawingCache();
+            layout.setPadding(0,0,0,0);
+            share.setVisibility(View.VISIBLE);
+            // save bitmap to cache directory
+            try {
+                File cachePath = new File(getCacheDir(), "images");
+                cachePath.mkdirs(); // don't forget to make the directory
+                FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                stream.close();
+                File imagePath = new File(getCacheDir(), "images");
+                File newFile = new File(imagePath, "image.png");
+                Uri contentUri = FileProvider.getUriForFile(this, "com.greenravolution.gravoapp.fileprovider", newFile);
+
+                if (contentUri != null) {
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.setType("image/png");
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // temp permission for receiving app to read this file
+                    shareIntent.setDataAndType(contentUri, getContentResolver().getType(contentUri));
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+
+// See if official Facebook app is found
+//                    boolean facebookAppFound = false;
+//                    List<ResolveInfo> matches = getPackageManager().queryIntentActivities(shareIntent, 0);
+//                    for (ResolveInfo info : matches) {
+//                        if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
+//                            shareIntent.setPackage(info.activityInfo.packageName);
+//                            facebookAppFound = true;
+//                            break;
+//                        }
+//                    }
+//
+//// As fallback, launch sharer.php in a browser
+//                    if (!facebookAppFound) {
+//                        String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + shareBody;
+//                        shareIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
+//                    }
+                    startActivity(Intent.createChooser(shareIntent, "Choose an app"));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
         });
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -143,6 +198,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
             }
         }
     }
+
     public View initView(String getcount, String gettitle, String getpoints, String category) {
         if (category.equals("paper") || category.equals("metals") || category.equals("ewaste")) {
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -200,38 +256,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
         }
         return null;
     }
-    public Bitmap takeScreenShot(View view) {
-        // configuramos para que la view almacene la cache en una imagen
-        view.setDrawingCacheEnabled(true);
-        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        view.buildDrawingCache();
 
-        if (view.getDrawingCache() == null) return null; // Verificamos antes de que no sea null
-
-        // utilizamos esa cache, para crear el bitmap que tendra la imagen de la view actual
-        Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
-        view.setDrawingCacheEnabled(false);
-        view.destroyDrawingCache();
-
-        return snapshot;
-    }
-    private Uri StoreBitmap(Bitmap bmp){
-        String filename = "achievements.png";
-        File sd = Environment.getExternalStorageDirectory();
-        File dest = new File(sd, filename);
-        Log.e("FILE NAME", dest.getAbsolutePath());
-
-        Bitmap bitmap = bmp;
-        try {
-            FileOutputStream out = new FileOutputStream(dest);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Uri.parse(dest.getAbsolutePath());
-    }
 
 }
 

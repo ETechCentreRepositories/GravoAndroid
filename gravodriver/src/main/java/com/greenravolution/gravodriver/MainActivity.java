@@ -113,29 +113,21 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
-
         btnProfile = findViewById(R.id.btnProfile);
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) if (getSupportActionBar().getTitle() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,9 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
-
     public void getTransactions() {     //get list of items
         llProgress.setVisibility(View.VISIBLE);
         AnimationDrawable progressDrawable = (AnimationDrawable) progressbar.getDrawable();
@@ -158,9 +148,6 @@ public class MainActivity extends AppCompatActivity {
         asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id="+collectorid);
 
     }
-
-
-
     @Override
     public void onBackPressed() {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -173,14 +160,12 @@ public class MainActivity extends AppCompatActivity {
 
         dialogue.show();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -207,12 +207,10 @@ public class ActivityEditUser extends AppCompatActivity {
                         REQUEST_CODE_ASK_PERMISSIONS);
                 return;
             }
-            Intent intent = new Intent();
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
         }
-
     }
 
     @Override

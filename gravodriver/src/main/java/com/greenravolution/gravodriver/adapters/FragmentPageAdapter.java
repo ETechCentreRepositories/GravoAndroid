@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.greenravolution.gravodriver.bigitems;
 import com.greenravolution.gravodriver.history;
 import com.greenravolution.gravodriver.today;
 
@@ -19,6 +20,8 @@ public class FragmentPageAdapter extends FragmentPagerAdapter{
                 return new today();
             case 1:
                 return new history();
+            case 2:
+                return new bigitems();
 
             default:
                 return null;
@@ -32,6 +35,8 @@ public class FragmentPageAdapter extends FragmentPagerAdapter{
                 return "Today";
             case 1:
                 return "History";
+            case 2:
+                return "Big Items";
 
             default:
                 return null;
@@ -40,6 +45,6 @@ public class FragmentPageAdapter extends FragmentPagerAdapter{
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }

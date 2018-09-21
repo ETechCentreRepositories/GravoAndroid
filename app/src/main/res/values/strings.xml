@@ -34,4 +34,5 @@
     <string name="userhasnotregistered">The email you provided does not have a account with us, Please register for an account.</string>
     <string name="userhasregistered">The email you provided already has an existing account. Please try logging in.</string>
     <string name="file_procider_authority" translatable="false">com.greenravolution.gravoapp.fileprovider</string>
+    <string name="title_activity_video_page">VideoPage</string>
 </resources>

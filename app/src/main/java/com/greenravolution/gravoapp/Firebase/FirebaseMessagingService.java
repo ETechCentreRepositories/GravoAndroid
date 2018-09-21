@@ -11,7 +11,6 @@ import android.util.Log;
 import com.google.firebase.messaging.RemoteMessage;
 import com.greenravolution.gravoapp.MainActivity;
 import com.greenravolution.gravoapp.R;
-import com.greenravolution.gravoapp.functions.DBHelper;
 
 import java.util.Map;
 
@@ -44,9 +43,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     private void showNotification(String title, String message) {
         Log.i("FirebaseMessage 19/7", "Message: " + message);
-        DBHelper helper = new DBHelper(this.getApplicationContext());
-        helper.AddNotification(message,title);
-
         Intent i = new Intent(this, MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

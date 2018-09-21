@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,8 +45,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -56,6 +61,8 @@ public class Bulk extends Fragment {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     TextView bulk_description;
     String userChosenTask;
+    private Bitmap mImageBitmap;
+    private String mCurrentPhotoPath;
     LinearLayout bulklist,progress;
 
     public static final String SESSION = "login_status";
@@ -144,9 +151,42 @@ public class Bulk extends Fragment {
                         REQUEST_CODE_ASK_PERMISSIONS);
                 return;
             }
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, REQUEST_CAMERA);
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, REQUEST_CAMERA);
+//            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+//                // Create the File where the photo should go
+//                File photoFile = null;
+//                try {
+//                    photoFile = createImageFile();
+//                } catch (IOException ex) {
+//                    // Error occurred while creating the File
+//                    Log.i("ERROR", "IOException");
+//                }
+//                // Continue only if the File was successfully created
+//                if (photoFile != null) {
+//                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+//                    startActivityForResult(cameraIntent, REQUEST_CAMERA);
+//                }
+//            }
+
         }
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  // prefix
+                ".png",         // suffix
+                storageDir      // directory
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 
     public void galleryIntent() {
@@ -158,9 +198,9 @@ public class Bulk extends Fragment {
                         REQUEST_CODE_ASK_PERMISSIONS);
                 return;
             }
-            Intent intent = new Intent();
+
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
         }
 
@@ -175,8 +215,19 @@ public class Bulk extends Fragment {
                 Log.e("BULK: request code", requestCode + "");
                 onSelectFromGalleryResult(data);
             } else if (requestCode == REQUEST_CAMERA) {
-                Log.e("BULK: ", requestCode + "");
-                onCaptureImageResult(data);
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                Glide.with(getContext()).load(photo).into(bulk_image);
+//                bulk_image.setVisibility(View.VISIBLE);
+//                bulk_take_photo.setVisibility(View.GONE);
+//                bulk_image.setImageBitmap(cameraImage);
+//                onCaptureImageResult(data);
+                try {
+                    mImageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(mCurrentPhotoPath));
+                    bulk_image.setImageBitmap(mImageBitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
@@ -214,12 +265,7 @@ public class Bulk extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.e("BULK: bitmap:", thumbnail.toString());
-//        bulk_image.setImageBitmap(thumbnail);
-        bulk_image.setVisibility(View.VISIBLE);
-        bulk_take_photo.setVisibility(View.GONE);
-//                bulk_image.setImageBitmap(cameraImage);
-        Glide.with(Objects.requireNonNull(getContext())).load(bitmapToByte(Objects.requireNonNull(thumbnail))).into(bulk_image);
+
     }
 
     private String bitmapToBase64(Bitmap bitmap) {
@@ -349,6 +395,66 @@ public class Bulk extends Fragment {
             Glide.with(getContext()).load(link).into(image);
             return view;
         } else {
+            return null;
+        }
+    }
+    private Bitmap getBitmap(String path) {
+
+        Uri uri = Uri.fromFile(new File(path));
+        InputStream in = null;
+        try {
+            final int IMAGE_MAX_SIZE = 1200000; // 1.2MP
+            in = getContext().getContentResolver().openInputStream(uri);
+
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(in, null, o);
+            in.close();
+
+
+            int scale = 1;
+            while ((o.outWidth * o.outHeight) * (1 / Math.pow(scale, 2)) >
+                    IMAGE_MAX_SIZE) {
+                scale++;
+            }
+            Log.d("", "scale = " + scale + ", orig-width: " + o.outWidth + ", orig-height: " + o.outHeight);
+
+            Bitmap b = null;
+            in = getContext().getContentResolver().openInputStream(uri);
+            if (scale > 1) {
+                scale--;
+                // scale to max possible inSampleSize that still yields an image
+                // larger than target
+                o = new BitmapFactory.Options();
+                o.inSampleSize = scale;
+                b = BitmapFactory.decodeStream(in, null, o);
+
+                // resize to desired dimensions
+                int height = b.getHeight();
+                int width = b.getWidth();
+                Log.d("", "1th scale operation dimenions - width: " + width + ", height: " + height);
+
+                double y = Math.sqrt(IMAGE_MAX_SIZE
+                        / (((double) width) / height));
+                double x = (y / height) * width;
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, (int) x,
+                        (int) y, true);
+                b.recycle();
+                b = scaledBitmap;
+
+                System.gc();
+            } else {
+                b = BitmapFactory.decodeStream(in);
+            }
+            in.close();
+
+            Log.d("", "bitmap size - width: " + b.getWidth() + ", height: " +
+                    b.getHeight());
+            return b;
+        } catch (IOException e) {
+            Log.e("", e.getMessage(), e);
             return null;
         }
     }

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.greenravolution.gravoapp.MainFragments.Calendar;
@@ -29,6 +30,7 @@ import com.greenravolution.gravoapp.MainFragments.Transactions;
 import com.greenravolution.gravoapp.contents.ActivityCart;
 import com.greenravolution.gravoapp.contents.ActivityHelp;
 import com.greenravolution.gravoapp.contents.ActivityUser;
+import com.greenravolution.gravoapp.contents.VideoPage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -199,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.help:
                 Log.i("MainActivity", "clicked on help");
+//                startActivity(new Intent(this, ActivityHelp.class));
                 startActivity(new Intent(this, ActivityHelp.class));
                 return true;
 

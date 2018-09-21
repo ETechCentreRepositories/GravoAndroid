@@ -15,7 +15,7 @@ public class Notification {
     private String userId;
     private String message;
     private String title;
-    private Long time;
+    private String time;
 
     @NonNull
     public int getId() {
@@ -45,7 +45,7 @@ public class Notification {
     }
 
     public Notification(){}
-    public Notification(int id, String userId,String title, String message,Long time) {
+    public Notification(int id, String userId,String title, String message,String time) {
         this.id = id;
         this.userId = userId;
         this.message = message;
@@ -63,9 +63,9 @@ public class Notification {
 
     public String getMessage(){return this.message;}
 
-    public Long getTime(){return this.time;}
+    public String getTime(){return this.time;}
 
-    public void setTime(Long time){this.time = time;}
+    public void setTime(String time){this.time = time;}
 
     public int getMessageId(){ return this.messageId;}
 
