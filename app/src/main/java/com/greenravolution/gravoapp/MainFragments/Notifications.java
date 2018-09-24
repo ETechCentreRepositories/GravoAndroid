@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.greenravolution.gravoapp.R;
+import com.greenravolution.gravoapp.functions.GetAsyncRequest;
 import com.greenravolution.gravoapp.functions.HttpReq;
 import com.greenravolution.gravoapp.objects.Notification;
 
@@ -92,10 +94,29 @@ public class Notifications extends Fragment {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getNotifications();
+                int id = notification.getId();
+                deletenotifications deletenotifications = new deletenotifications();
+                try {
+                    String delete = deletenotifications.execute(String.valueOf(id)).get();
+                    int status = new JSONObject(delete).getInt("status");
+                    if(status==200){
+                        getNotifications();
+                    }else{
+                        Toast.makeText(getContext(), "An unexpected error has occurred", Toast.LENGTH_LONG).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         message.setText(notification.getTitle() + "\n\n" + notification.getMessage());
+
+
         return view;
     }
 
@@ -111,7 +132,22 @@ public class Notifications extends Fragment {
             SharedPreferences sp = getContext().getSharedPreferences("login_status",Context.MODE_PRIVATE);
             String id = String.valueOf(sp.getInt("user_id",-1));
             HttpReq req = new HttpReq();
-            return req.GetRequest("http://www.ehostingcenter.com/gravo/getnotifications.php?id="+id);
+            return req.GetRequest("https://www.ehostingcentre.com/gravo/getnotifications.php?id="+id);
         }
     }
+    public class deletenotifications extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpReq req = new HttpReq();
+            return req.PostRequest("https://www.ehostingcentre.com/gravo/deletenotification.php","id="+strings[0]);
+        }
+    }
+    public void getTransactions() {     //get list of items
+        GetAsyncRequest asyncRequest = new GetAsyncRequest();
+        SharedPreferences sessionManager = getActivity().getSharedPreferences("login_status", Context.MODE_PRIVATE);
+        String collectorid = sessionManager.getString("id", "");
+        asyncRequest.execute("http://ehostingcentre.com/gravo/gettransaction.php?type=withcollectorid&id=" + collectorid);
+    }
 }
+

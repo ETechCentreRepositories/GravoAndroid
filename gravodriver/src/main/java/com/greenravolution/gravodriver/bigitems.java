@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,14 +55,13 @@ public class bigitems extends Fragment {
         editor.putString("alltransactionsObject", message);
         editor.commit();
         try {
+            bigItemsList.removeAllViews();
             JSONObject result = new JSONObject(message);
             JSONArray bulk_items = result.getJSONArray("bulk_items");
             Log.e("Bulk array",bulk_items.toString());
-            bigItemsList.removeAllViews();
             for (int i =0; i< bulk_items.length();i++){
                 int status = bulk_items.getJSONObject(i).getInt("bulk_transaction_status_id");
                 if(status == 1 || status == 2 || status == 7 || status == 12){
-
 //                    bigItemsList.addView(initView(bulk_items.getJSONObject(i)));
                 }else{
                     bigItemsList.addView(initView(bulk_items.getJSONObject(i)));
@@ -71,6 +71,7 @@ public class bigitems extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     };
 
     public bigitems() {
@@ -100,7 +101,6 @@ public class bigitems extends Fragment {
             for (int i =0; i< bulk_items.length();i++){
                 int status = bulk_items.getJSONObject(i).getInt("bulk_transaction_status_id");
                 if(status == 1 || status == 2 || status == 7 || status == 12){
-
 //                    bigItemsList.addView(initView(bulk_items.getJSONObject(i)));
                 }else{
                     bigItemsList.addView(initView(bulk_items.getJSONObject(i)));
@@ -114,7 +114,6 @@ public class bigitems extends Fragment {
             @Override
             public void onRefresh() {
                 getTransactions();
-
             }
         });
 
@@ -134,13 +133,53 @@ public class bigitems extends Fragment {
         TextView address = view.findViewById(R.id.pickupAddress);
         TextView datetime = view.findViewById(R.id.pickupDatetime);
         TextView postal = view.findViewById(R.id.pickupPostal);
+        CardView cardView = view.findViewById(R.id.cardView);
+        LinearLayout llContent = view.findViewById(R.id.llContent);
         Button botw = view.findViewById(R.id.botw);
         Button barr = view.findViewById(R.id.barr);
         Button bmap = view.findViewById(R.id.bmap);
 
         try {
+            int id = j.getInt("bulk_transaction_status_id");
+            if(id==5){
+                botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
+                botw.setEnabled(false);
+                barr.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_green_round));
+                barr.setEnabled(true);
+
+                name.setTextColor(getResources().getColor(R.color.white));
+                title.setTextColor(getResources().getColor(R.color.white));
+                address.setTextColor(getResources().getColor(R.color.white));
+                postal.setTextColor(getResources().getColor(R.color.white));
+                datetime.setTextColor(getResources().getColor(R.color.white));
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
+                llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            }else if(id==4){
+                botw.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_pink_round_disabled));
+                botw.setEnabled(false);
+                barr.setBackground(getActivity().getResources().getDrawable(R.drawable.btn_brand_green_round));
+                barr.setEnabled(true);
+                name.setTextColor(getResources().getColor(R.color.white));
+                title.setTextColor(getResources().getColor(R.color.white));
+                address.setTextColor(getResources().getColor(R.color.white));
+                postal.setTextColor(getResources().getColor(R.color.white));
+                datetime.setTextColor(getResources().getColor(R.color.white));
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.brand_pink));
+                llContent.setBackgroundColor(getResources().getColor(R.color.brand_pink));
+            }else if(id==6){
+                botw.setVisibility(View.GONE);
+                barr.setVisibility(View.GONE);
+                bmap.setVisibility(View.GONE);
+                name.setTextColor(getResources().getColor(R.color.white));
+                title.setTextColor(getResources().getColor(R.color.white));
+                address.setTextColor(getResources().getColor(R.color.white));
+                postal.setTextColor(getResources().getColor(R.color.white));
+                datetime.setTextColor(getResources().getColor(R.color.white));
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.grey));
+                llContent.setBackgroundColor(getResources().getColor(R.color.grey));
+            }
             name.setText(j.getString("full_name"));
-            title.setText(j.getString("status"));
+            title.setText(j.getString("status"));;
             address.setText(j.getString("address"));
             postal.setText(j.getString("collection_date"));
             datetime.setText(j.getString("collection_date_timing"));
@@ -150,10 +189,17 @@ public class bigitems extends Fragment {
                     try {
                         int id = j.getInt("id");
                         String updatestatus = new UpdateBulkStatusOtw().execute(String.valueOf(id)).get();
-                        if(new JSONObject(updatestatus).getInt("status")==200){
+                        Log.e("status", updatestatus);
+                        JSONObject result = new JSONObject(updatestatus);
+                        int status = result.getInt("status");
+                        if(status==200){
                             String t_code = j.getString("transaction_id_key");
                             String r_id = j.getString("recycler_id");
-                            if(new JSONObject(new SendNotificationOtw().execute(t_code,r_id).get()).getInt("status")==200);
+                            JSONObject object = new JSONObject(new SendNotificationOtw().execute(t_code, r_id).get());
+                            int status2 = object.getInt("success");
+                            if(status2==1){
+                                getTransactions();
+                            }
                         }
 
                     } catch (JSONException e) {
@@ -163,7 +209,6 @@ public class bigitems extends Fragment {
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
-
                 }
             });
             barr.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +220,11 @@ public class bigitems extends Fragment {
                         if(new JSONObject(updatestatus).getInt("status")==200){
                             String t_code = j.getString("transaction_id_key");
                             String r_id = j.getString("recycler_id");
-                            if(new JSONObject(new SendNotificationArrived().execute(t_code,r_id).get()).getInt("status")==200);
+                            JSONObject object = new JSONObject(new SendNotificationArrived().execute(t_code, r_id).get());
+                            int status2 = object.getInt("success");
+                            if(status2==1){
+                                startActivity(new Intent(getContext(),BulkTransactionDetails.class).putExtra("id",id));
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

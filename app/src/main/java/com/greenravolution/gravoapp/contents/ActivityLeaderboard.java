@@ -112,23 +112,6 @@ public class ActivityLeaderboard extends AppCompatActivity {
                     shareIntent.setDataAndType(contentUri, getContentResolver().getType(contentUri));
                     shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-
-// See if official Facebook app is found
-//                    boolean facebookAppFound = false;
-//                    List<ResolveInfo> matches = getPackageManager().queryIntentActivities(shareIntent, 0);
-//                    for (ResolveInfo info : matches) {
-//                        if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-//                            shareIntent.setPackage(info.activityInfo.packageName);
-//                            facebookAppFound = true;
-//                            break;
-//                        }
-//                    }
-//
-//// As fallback, launch sharer.php in a browser
-//                    if (!facebookAppFound) {
-//                        String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + shareBody;
-//                        shareIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
-//                    }
                     startActivity(Intent.createChooser(shareIntent, "Choose an app"));
                 }
             } catch (IOException e) {
