@@ -407,7 +407,7 @@ public class BulkDetails extends AppCompatActivity {
             statusthree.setVisibility(View.GONE);
             scheduledate.setVisibility(View.GONE);
             scheduleddate.setVisibility(View.GONE);
-        }else if(status_id==6){
+        }else if(status_id==7){
             btmlayout.setVisibility(View.GONE);
             statustwo.setVisibility(View.GONE);
             statusthree.setVisibility(View.VISIBLE);

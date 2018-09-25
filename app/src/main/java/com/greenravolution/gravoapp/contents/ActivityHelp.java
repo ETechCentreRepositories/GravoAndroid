@@ -62,10 +62,11 @@ public class ActivityHelp extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = (size.x)/2;
-        int height = (size.x)/3;
-//        String path = "<iframe width=\""+String.valueOf(width)+"\" height=\""+String.valueOf(height)+"\" src=\"https://www.youtube-nocookie.com/embed/ksbl_Yues4A\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
-        String path = "<div style=\"text-align:center;\"><iframe width=\""+String.valueOf(width)+"\" height=\""+String.valueOf(height)+"\" src=\"https://www.youtube-nocookie.com/embed/ksbl_Yues4A?rel=0&amp;controls=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></div>";
+//        int width = (size.x);
+        int width = 100;
+        int height = (size.x)-100;
+//        String path = "<div style=\"text-align:center;\"><iframe width=\""+String.valueOf(width)+"%\" height=\""+String.valueOf(height)+"\" src=\"https://www.youtube-nocookie.com/embed/ksbl_Yues4A?rel=0&amp;controls=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></div>";
+        String path = "<div style=\"text-align:center;\"><iframe width=\""+String.valueOf(width)+"%\" height=\""+String.valueOf(height)+"\" src=\"https://www.youtube-nocookie.com/embed/LrkMH_EnRas?controls=0&amp;showinfo=0\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe></div>";
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);

@@ -100,7 +100,7 @@ public class bigitems extends Fragment {
             Log.e("Bulk array",bulk_items.toString());
             for (int i =0; i< bulk_items.length();i++){
                 int status = bulk_items.getJSONObject(i).getInt("bulk_transaction_status_id");
-                if(status == 1 || status == 2 || status == 7 || status == 12){
+                if(status == 1 || status == 2 || status == 8 || status == 12){
 //                    bigItemsList.addView(initView(bulk_items.getJSONObject(i)));
                 }else{
                     bigItemsList.addView(initView(bulk_items.getJSONObject(i)));
