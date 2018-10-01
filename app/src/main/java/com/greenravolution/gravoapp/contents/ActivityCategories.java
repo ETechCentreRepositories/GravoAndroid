@@ -1,9 +1,15 @@
 package com.greenravolution.gravoapp.contents;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.greenravolution.gravoapp.R;
 import com.greenravolution.gravoapp.adapters.CategoryPagerAdapter;
@@ -23,6 +30,11 @@ public class ActivityCategories extends AppCompatActivity {
     Toolbar toolbar;
     LinearLayout ll1, ll2, ll3, ll4;
     TabLayout tab;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS_CAMERA = 2018;
+    final private int REQUEST_CODE_ASK_PERMISSIONS_GALLERY = 2019;
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,4 +105,5 @@ public class ActivityCategories extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.nav_menu, menu);//Menu Resource, Menu
         return true;
     }
+
 }

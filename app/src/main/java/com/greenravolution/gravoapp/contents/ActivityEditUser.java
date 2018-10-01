@@ -8,8 +8,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -48,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ActivityEditUser extends AppCompatActivity {
     Toolbar toolbar;
-    LinearLayout progressbar,getaddresslayout;
+    LinearLayout progressbar, getaddresslayout;
     public static final String SESSION = "login_status";
     SharedPreferences sessionManager;
     EditText newFirstName, newLastName, newPhone, etFloor, etUnit;
@@ -58,7 +61,8 @@ public class ActivityEditUser extends AppCompatActivity {
     String getName, getImage, getAddress, getEmail, getFirstName, getLastName, getPhone, userChosenTask;
     int getId;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 1962018;
+    final private int REQUEST_CODE_ASK_PERMISSIONS_CAMERA = 2018;
+    final private int REQUEST_CODE_ASK_PERMISSIONS_GALLERY = 2019;
 
     private PlaceAutocompleteFragment placeAutocompleteFragment;
 
@@ -81,7 +85,6 @@ public class ActivityEditUser extends AppCompatActivity {
         etFloor = findViewById(R.id.etfloor);
         etUnit = findViewById(R.id.etunit);
 
-
         placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         getaddresslayout = findViewById(R.id.getaddresslayout);
         getaddresslayout.setVisibility(View.GONE);
@@ -90,9 +93,9 @@ public class ActivityEditUser extends AppCompatActivity {
         tvaddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getaddresslayout.getVisibility()==View.GONE){
+                if (getaddresslayout.getVisibility() == View.GONE) {
                     getaddresslayout.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     getaddresslayout.setVisibility(View.GONE);
                 }
             }
@@ -143,12 +146,12 @@ public class ActivityEditUser extends AppCompatActivity {
         newFirstName.setText(getFirstName);
         newLastName.setText(getLastName);
         newEmail.setText(getEmail);
-        if(sessionManager.getString("user_address_unit","").equals("")||sessionManager.getString("user_address_unit","").equals("-")){
+        if (sessionManager.getString("user_address_unit", "").equals("") || sessionManager.getString("user_address_unit", "").equals("-")) {
             etFloor.setText("");
             etUnit.setText("");
-        }else{
-            etFloor.setText(sessionManager.getString("user_address_unit","").split("-")[0]);
-            etUnit.setText(sessionManager.getString("user_address_unit","").split("-")[1]);
+        } else {
+            etFloor.setText(sessionManager.getString("user_address_unit", "").split("-")[0]);
+            etUnit.setText(sessionManager.getString("user_address_unit", "").split("-")[1]);
         }
 
         newPhone.setText(getPhone);
@@ -166,17 +169,17 @@ public class ActivityEditUser extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityEditUser.this);
         builder.setTitle("Pick Profile Image");
         builder.setItems(items, (dialog, item) -> {
-            boolean result = Utility.checkPermission(ActivityEditUser.this);
+//            boolean result = Utility.checkPermission(ActivityEditUser.this);
             if (items[item].equals("Take a photo")) {
                 userChosenTask = "Take a photo";
-                if (result) {
+//                if (result) {
                     cameraIntent();
-                }
+//                }
             } else if (items[item].equals("Choose from Library")) {
                 userChosenTask = "Choose from Library";
-                if (result) {
+//                if (result) {
                     galleryIntent();
-                }
+//                }
             } else {
                 dialog.dismiss();
             }
@@ -185,32 +188,44 @@ public class ActivityEditUser extends AppCompatActivity {
     }
 
     public void cameraIntent() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                Log.i("Test 19/6", "Requesting permissions");
-                requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        REQUEST_CODE_ASK_PERMISSIONS);
-                return;
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.e("Permission State", ContextCompat.checkSelfPermission(ActivityEditUser.this, Manifest.permission.CAMERA) + "");
+
+            // Here, thisActivity is the current activity
+            if (ActivityCompat.checkSelfPermission(ActivityEditUser.this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CAMERA);
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(ActivityEditUser.this, new String[]{android.Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS_CAMERA);
             }
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        } else {
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, REQUEST_CAMERA);
         }
+
+
     }
 
     public void galleryIntent() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int hasCameraPermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                Log.i("Test", "Requesting permissions");
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
-                return;
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.e("Permission State", ContextCompat.checkSelfPermission(ActivityEditUser.this, Manifest.permission.READ_EXTERNAL_STORAGE) + "");
+
+            // Here, thisActivity is the current activity
+            if (ActivityCompat.checkSelfPermission(ActivityEditUser.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(ActivityEditUser.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS_GALLERY);
             }
+        } else {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
             startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
         }
+
     }
 
     @Override
@@ -244,7 +259,7 @@ public class ActivityEditUser extends AppCompatActivity {
             }
         }
 
-        newProfile.setImageBitmap(bm);
+//        newProfile.setImageBitmap(bm);
         UploadPhoto(bm);
         ShowProgress();
 //                bulk_image.setImageBitmap(cameraImage);
@@ -256,7 +271,7 @@ public class ActivityEditUser extends AppCompatActivity {
         assert thumbnail != null;
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
         Log.e("BULK: bitmap:", thumbnail.toString());
-        newProfile.setImageBitmap(thumbnail);
+//        newProfile.setImageBitmap(thumbnail);
         UploadPhoto(thumbnail);
         ShowProgress();
 
@@ -266,21 +281,27 @@ public class ActivityEditUser extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CODE_ASK_PERMISSIONS:
+            case REQUEST_CODE_ASK_PERMISSIONS_CAMERA:
                 Log.i("permissions", permissions[0]);
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    if (permissions[0].equalsIgnoreCase("android.permission.CAMERA")) {
-                        cameraIntent();
-                    } else if (permissions[0].equalsIgnoreCase("android.permission.READ_EXTERNAL_STORAGE")) {
-                        galleryIntent();
-                    }
+                    cameraIntent();
+
                 } else {
                     // Permission Denied
                     Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_LONG)
                             .show();
                 }
                 break;
+            case REQUEST_CODE_ASK_PERMISSIONS_GALLERY:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    galleryIntent();
+
+                } else {
+                    // Permission Denied
+                    Toast.makeText(getBaseContext(), "Permissions Denied", Toast.LENGTH_LONG)
+                            .show();
+                }
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -299,7 +320,7 @@ public class ActivityEditUser extends AppCompatActivity {
                             + "&email=" + newEmail.getText().toString()
                             + "&contactnumber=" + newPhone.getText().toString()
                             + "&address=" + tvaddress.getText().toString()
-                            + "&unit="+etUnit.getText().toString()+"-"+etFloor.getText().toString());
+                            + "&unit=" + etUnit.getText().toString() + "-" + etFloor.getText().toString());
         }
 
         @Override
@@ -443,4 +464,5 @@ public class ActivityEditUser extends AppCompatActivity {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
+
 }

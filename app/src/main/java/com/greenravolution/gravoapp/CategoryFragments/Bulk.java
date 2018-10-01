@@ -3,7 +3,6 @@ package com.greenravolution.gravoapp.CategoryFragments;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,14 +10,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -35,7 +35,6 @@ import com.bumptech.glide.Glide;
 import com.greenravolution.gravoapp.R;
 import com.greenravolution.gravoapp.contents.BulkDetails;
 import com.greenravolution.gravoapp.functions.HttpReq;
-import com.greenravolution.gravoapp.functions.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,11 +62,12 @@ public class Bulk extends Fragment {
     String userChosenTask;
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
-    LinearLayout bulklist,progress;
+    LinearLayout bulklist, progress;
 
     public static final String SESSION = "login_status";
 
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 1962;
+    final private int REQUEST_CODE_ASK_PERMISSIONS_CAMERA = 2018;
+    final private int REQUEST_CODE_ASK_PERMISSIONS_GALLERY = 2019;
 
     public Bulk() {
 
@@ -124,17 +124,17 @@ public class Bulk extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Pick Profile Image");
         builder.setItems(items, (dialog, item) -> {
-            boolean result = Utility.checkPermission(getContext());
+//            boolean result = Utility.checkPermission(getContext());
             if (items[item].equals("Take a photo")) {
                 userChosenTask = "Take a photo";
-                if (result) {
-                    cameraIntent();
-                }
+//                if (result) {
+                cameraIntent();
+//                }
             } else if (items[item].equals("Choose from Library")) {
                 userChosenTask = "Choose from Library";
-                if (result) {
-                    galleryIntent();
-                }
+//                if (result) {
+                galleryIntent();
+//                }
             } else {
                 dialog.dismiss();
             }
@@ -142,73 +142,46 @@ public class Bulk extends Fragment {
         builder.show();
     }
 
+
     public void cameraIntent() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int hasCameraPermission = getContext().checkSelfPermission(Manifest.permission.CAMERA);
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                Log.i("Test 19/6", "Requesting permissions");
-                requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        REQUEST_CODE_ASK_PERMISSIONS);
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.e("Permission State", getActivity().checkSelfPermission(Manifest.permission.CAMERA) + "");
 
-            }else{
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_CAMERA);
+            // Here, thisActivity is the current activity
+            if (getActivity().checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CAMERA);
+            } else {
+                // No explanation needed, we can request the permission.
+                getActivity().requestPermissions(new String[]{android.Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS_CAMERA);
             }
-
-//            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
-//                // Create the File where the photo should go
-//                File photoFile = null;
-//                try {
-//                    photoFile = createImageFile();
-//                } catch (IOException ex) {
-//                    // Error occurred while creating the File
-//                    Log.i("ERROR", "IOException");
-//                }
-//                // Continue only if the File was successfully created
-//                if (photoFile != null) {
-//                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-//                    startActivityForResult(cameraIntent, REQUEST_CAMERA);
-//                }
-//            }
-
+        } else {
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, REQUEST_CAMERA);
         }
-    }
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  // prefix
-                ".png",         // suffix
-                storageDir      // directory
-        );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
+
     }
 
     public void galleryIntent() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int hasCameraPermission = getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                Log.i("Test", "Requesting permissions");
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
+        if (Build.VERSION.SDK_INT >= 23) {
+            Log.e("Permission State", getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) + "");
 
-            }else{
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.setType("image/*");
+            // Here, thisActivity is the current activity
+            if (getActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).setType("image/*");
                 startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
+            } else {
+                // No explanation needed, we can request the permission.
+                getActivity().requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS_GALLERY);
             }
-
-
+        } else {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
         }
 
     }
+    
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -219,18 +192,14 @@ public class Bulk extends Fragment {
                 Log.e("BULK: request code", requestCode + "");
                 onSelectFromGalleryResult(data);
             } else if (requestCode == REQUEST_CAMERA) {
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                Glide.with(getContext()).load(photo).into(bulk_image);
-//                bulk_image.setVisibility(View.VISIBLE);
-//                bulk_take_photo.setVisibility(View.GONE);
-//                bulk_image.setImageBitmap(cameraImage);
-//                onCaptureImageResult(data);
-                try {
-                    mImageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(mCurrentPhotoPath));
-                    bulk_image.setImageBitmap(mImageBitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                assert thumbnail != null;
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                bulk_image.setImageBitmap(thumbnail);
+                bulk_image.setVisibility(View.VISIBLE);
+                bulk_take_photo.setVisibility(View.GONE);
 
             }
         }
@@ -308,14 +277,14 @@ public class Bulk extends Fragment {
                 if (status == 200) {
                     Log.e("STATUS", "Success");
                     JSONArray result = results.getJSONArray("result");
-                    for(int i = 0; i < result.length();i++){
+                    for (int i = 0; i < result.length(); i++) {
                         JSONObject item = result.getJSONObject(i);
                         int id = item.getInt("id");
                         String quote = item.getString("price_quote");
                         String link = item.getString("image");
                         String description = item.getString("description");
                         String code = item.getString("transaction_id_key");
-                        bulklist.addView(initView(id,code,description,quote,link));
+                        bulklist.addView(initView(id, code, description, quote, link));
                     }
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setCancelable(false);
@@ -359,14 +328,14 @@ public class Bulk extends Fragment {
                 if (status == 200) {
                     Log.e("STATUS", "Success");
                     JSONArray result = results.getJSONArray("result");
-                    for(int i = 0; i < result.length();i++){
+                    for (int i = 0; i < result.length(); i++) {
                         JSONObject item = result.getJSONObject(i);
                         int id = item.getInt("id");
                         String quote = item.getString("status");
                         String link = item.getString("image");
                         String description = item.getString("description");
                         String code = item.getString("transaction_id_key");
-                        bulklist.addView(initView(id,code,description,quote,link));
+                        bulklist.addView(initView(id, code, description, quote, link));
                     }
                 } else if (status == 404) {
                     Log.e("STATUS", "No transactions");
@@ -377,7 +346,7 @@ public class Bulk extends Fragment {
         }
     }
 
-    public View initView(int id, String getCode, String getDescription, String getQuote,String link) {
+    public View initView(int id, String getCode, String getDescription, String getQuote, String link) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
         if (inflater != null) {
@@ -387,8 +356,8 @@ public class Bulk extends Fragment {
             ImageView image;
             Button viewmore;
             viewmore = view.findViewById(R.id.viewmore);
-            view.setOnClickListener((View v)->startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid",id)));
-            viewmore.setOnClickListener((View v)-> startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid",id)));
+            view.setOnClickListener((View v) -> startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid", id)));
+            viewmore.setOnClickListener((View v) -> startActivity(new Intent(getContext(), BulkDetails.class).putExtra("bulkid", id)));
             code = view.findViewById(R.id.code);
             description = view.findViewById(R.id.description);
             price_quote = view.findViewById(R.id.price_quote);
@@ -402,6 +371,7 @@ public class Bulk extends Fragment {
             return null;
         }
     }
+
     private Bitmap getBitmap(String path) {
 
         Uri uri = Uri.fromFile(new File(path));
@@ -460,6 +430,34 @@ public class Bulk extends Fragment {
         } catch (IOException e) {
             Log.e("", e.getMessage(), e);
             return null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS_CAMERA:
+                Log.i("permissions", permissions[0]);
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    cameraIntent();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(getContext(), "Permissions Denied", Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            case REQUEST_CODE_ASK_PERMISSIONS_GALLERY:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    galleryIntent();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(getContext(), "Permissions Denied", Toast.LENGTH_LONG)
+                            .show();
+                }
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
