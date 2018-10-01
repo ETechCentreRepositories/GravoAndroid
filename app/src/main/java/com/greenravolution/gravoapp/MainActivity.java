@@ -164,15 +164,15 @@ public class MainActivity extends AppCompatActivity {
                     title.setVisibility(View.VISIBLE);
                     CloseDrawer();
                     return true;
-                case R.id.share:
-                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                    sharingIntent.setType("text/plain");
-                    String shareBody = "Hey there! I feel good about recycling. Best Thing? I make money too.\n" +
-                            "Download the GRAVO App now to save mother earth and make some money too.\nhttp://www.greenravolution.com";
-                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
-                    CloseDrawer();
-                    return true;
+//                case R.id.share:
+//                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+//                    sharingIntent.setType("text/plain");
+//                    String shareBody = "Hey there! I feel good about recycling. Best Thing? I make money too.\n" +
+//                            "Download the GRAVO App now to save mother earth and make some money too.\nhttp://www.greenravolution.com";
+//                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+//                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+//                    CloseDrawer();
+//                    return true;
 
             }
             return false;

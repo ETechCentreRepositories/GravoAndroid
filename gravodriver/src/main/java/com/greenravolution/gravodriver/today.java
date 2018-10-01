@@ -126,16 +126,17 @@ public class today extends Fragment {
                     if (stid != 4) {
                         Calendar cal = Calendar.getInstance();
                         String todayDate = cal.get(Calendar.YEAR) + "";
-                        if (cal.get(Calendar.MONTH) < 10) {
-                            todayDate = todayDate + "-0" + (cal.get(Calendar.MONTH) + 1);
+                        int month = cal.get(Calendar.MONTH)+1;
+                        if (month == 10 || month == 11 || month == 12) {
+                            todayDate = todayDate + "-" + month;
                         } else {
-                            todayDate = todayDate + "-" + (cal.get(Calendar.MONTH) + 1);
+                            todayDate = todayDate + "-0" + month;
                         }
 
-                        if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
-                            todayDate = todayDate + "-0" + cal.get(Calendar.DAY_OF_MONTH);
-                        } else {
+                        if (cal.get(Calendar.DAY_OF_MONTH) >= 10) {
                             todayDate = todayDate + "-" + cal.get(Calendar.DAY_OF_MONTH);
+                        } else {
+                            todayDate = todayDate + "-0" + cal.get(Calendar.DAY_OF_MONTH);
                         }
                         Log.i("today's Date", todayDate + ", " + results.length());
                         if (cDate.equalsIgnoreCase(todayDate)) {
@@ -155,14 +156,11 @@ public class today extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     };
 
     public today() {
         // Required empty public constructor
     }
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -175,7 +173,6 @@ public class today extends Fragment {
         llProgress = view.findViewById(R.id.llProgress);
         progressbar = view.findViewById(R.id.progressBar);
         list = view.findViewById(R.id.list);
-
 
         oal = new ArrayList<>();
         odal = new ArrayList<>();
@@ -206,7 +203,6 @@ public class today extends Fragment {
 
         return view;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

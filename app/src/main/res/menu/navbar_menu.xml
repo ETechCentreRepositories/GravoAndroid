@@ -22,9 +22,9 @@
             android:icon="@drawable/ic_info"
             android:title="About us" />
     </group>
-    <group>
-        <item
-            android:id="@+id/share"
-            android:title="Invite" />
-    </group>
+    <!--<group>-->
+        <!--<item-->
+            <!--android:id="@+id/share"-->
+            <!--android:title="Invite" />-->
+    <!--</group>-->
 </menu>

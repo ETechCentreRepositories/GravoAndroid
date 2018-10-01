@@ -458,8 +458,8 @@ public class ActivityCart extends AppCompatActivity implements View.OnTouchListe
             String userRemarks = etRemarks.getText().toString();
             String userPreTotalPrice = tvTotalPrice.getText().toString();
             String userTotalPrice = userPreTotalPrice.substring(1);
-            if(Double.parseDouble(tvTotalWeight.getText().toString().substring(0,tvTotalWeight.getText().toString().length()-2))<5.0){
-                Toast.makeText(this, "You need have 5kg or more to recycle with us!\nWe apologize for any inconvenience caused!", Toast.LENGTH_LONG).show();
+            if(Double.parseDouble(tvTotalWeight.getText().toString().substring(0,tvTotalWeight.getText().toString().length()-2))<50.0){
+                Toast.makeText(this, "You need have 50kg or more to recycle with us!\nWe apologize for any inconvenience caused!", Toast.LENGTH_LONG).show();
             }else{
                 Log.e("Cart total price", userTotalPrice);
                 Log.e("price", userTotalPrice);

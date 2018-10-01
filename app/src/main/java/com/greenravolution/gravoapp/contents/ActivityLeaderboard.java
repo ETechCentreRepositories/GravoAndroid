@@ -1,19 +1,11 @@
 package com.greenravolution.gravoapp.contents;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,12 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -78,48 +66,7 @@ public class ActivityLeaderboard extends AppCompatActivity {
         points.setText(String.valueOf(sessionManager.getInt("user_total_points", -1)));
         name.setText(sessionManager.getString("user_full_name", ""));
         rank.setText(sessionManager.getString("user_rank", "Status Unavailable"));
-        share.setOnClickListener(v -> {
-//            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-//            sharingIntent.setType("text/plain");
-//            sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
-            String shareBody = "Hey… Use GRAVO to record what you recycle, what you achieve and the rewards you get. \n" +
-                    " Join GRAVO and save Mother Earth\n\nDownload here NOW!\nhttps://www.greenravolution.com/";
-//            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-//            startActivity(Intent.createChooser(sharingIntent, "Share via"));
-            layout.setPadding(20,20,20,20);
-            share.setVisibility(View.GONE);
-            layout.setDrawingCacheEnabled(true);
-            layout.buildDrawingCache();
-            Bitmap bitmap = layout.getDrawingCache();
-            layout.setPadding(0,0,0,0);
-            share.setVisibility(View.VISIBLE);
-            // save bitmap to cache directory
-            try {
-                File cachePath = new File(getCacheDir(), "images");
-                cachePath.mkdirs(); // don't forget to make the directory
-                FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                stream.close();
-                File imagePath = new File(getCacheDir(), "images");
-                File newFile = new File(imagePath, "image.png");
-                Uri contentUri = FileProvider.getUriForFile(this, "com.greenravolution.gravoapp.fileprovider", newFile);
 
-                if (contentUri != null) {
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.setType("image/png");
-                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // temp permission for receiving app to read this file
-                    shareIntent.setDataAndType(contentUri, getContentResolver().getType(contentUri));
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                    startActivity(Intent.createChooser(shareIntent, "Choose an app"));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-        });
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -149,6 +96,8 @@ public class ActivityLeaderboard extends AppCompatActivity {
                 int status = results.getInt("status");
                 if (status == 200) {
                     JSONArray result = results.getJSONArray("result");
+                    String treessaved = "";
+                    String c02 = "";
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject item = result.getJSONObject(i);
                         String count = String.valueOf(i + 1);
@@ -163,23 +112,75 @@ public class ActivityLeaderboard extends AppCompatActivity {
                             TextView boxtitle2 = findViewById(R.id.title2);
                             TextView boxtotalweight2 = findViewById(R.id.totalweight2);
                             if (category.equals("total_co2")) {
+                                c02 = points;
                                 boxtotalweight.setText(String.format("%s", points));
                                 boxtitle.setText(title.split("-")[0] + "\n" + title.split("-")[1]);
                             } else if (category.equals("total_trees")) {
+                                treessaved = points;
                                 boxtotalweight2.setText(String.format("%s", points));
                                 boxtitle2.setText(title.split("-")[0] + "\n" + title.split("-")[1]);
                             }
+
+
                         } else if (category.equals("total_kg") || category.equals("total_price")) {
                             totalkgpiece.addView(initView(count, title, points, category));
                         }
                     }
+                    String finalTreessaved = treessaved;
+                    String finalC0 = c02;
+                    share.setOnClickListener(v -> {
+                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                        sharingIntent.setType("text/plain");
+                        sessionManager = getSharedPreferences(SESSION, Context.MODE_PRIVATE);
+
+                        String shareBody = "Hey: I have saved " + finalTreessaved + " trees and prevented " + finalC0 + "KG of C02 from being emitted into the air.\n\nCome and join me and use the Gravo app to recycle and get paid.\n\nDownload the Gravo app now!\nhttps://play.google.com/store/apps/details?id=com.greenravolution.gravoapp";
+                        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+
+//            layout.setPadding(20,20,20,20);
+//            share.setVisibility(View.GONE);
+//            layout.setDrawingCacheEnabled(true);
+//            layout.buildDrawingCache();
+//            Bitmap bitmap = layout.getDrawingCache();
+//            layout.setPadding(0,0,0,0);
+//            share.setVisibility(View.VISIBLE);
+//            // save bitmap to cache directory
+//            try {
+//                File cachePath = new File(getCacheDir(), "images");
+//                cachePath.mkdirs(); // don't forget to make the directory
+//                FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                stream.close();
+//                File imagePath = new File(getCacheDir(), "images");
+//                File newFile = new File(imagePath, "image.png");
+//                Uri contentUri = FileProvider.getUriForFile(this, "com.greenravolution.gravoapp.fileprovider", newFile);
+//
+//                if (contentUri != null) {
+//                    Intent shareIntent = new Intent();
+//                    shareIntent.setAction(Intent.ACTION_SEND);
+//                    shareIntent.setType("image/png");
+//                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); // temp permission for receiving app to read this file
+//                    shareIntent.setDataAndType(contentUri, getContentResolver().getType(contentUri));
+//                    shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
+//                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+//                    startActivity(Intent.createChooser(shareIntent, "Choose an app"));
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+                    });
+
                 } else if (status == 404) {
                     Toast.makeText(ActivityLeaderboard.this, "Unable to get achievements", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
         }
+
     }
 
     public View initView(String getcount, String gettitle, String getpoints, String category) {

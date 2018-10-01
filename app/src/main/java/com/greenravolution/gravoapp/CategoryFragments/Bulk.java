@@ -149,10 +149,12 @@ public class Bulk extends Fragment {
                 Log.i("Test 19/6", "Requesting permissions");
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
                         REQUEST_CODE_ASK_PERMISSIONS);
-                return;
+
+            }else{
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, REQUEST_CAMERA);
             }
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, REQUEST_CAMERA);
+
 //            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //            if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
 //                // Create the File where the photo should go
@@ -196,12 +198,14 @@ public class Bulk extends Fragment {
                 Log.i("Test", "Requesting permissions");
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_CODE_ASK_PERMISSIONS);
-                return;
+
+            }else{
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
             }
 
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.setType("image/*");
-            startActivityForResult(Intent.createChooser(intent, "Select An Image"), SELECT_FILE);
+
         }
 
     }

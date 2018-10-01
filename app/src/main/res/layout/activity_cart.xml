@@ -331,7 +331,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="* Minimum weight is 5KG"/>
+                android:text="* Minimum weight is 50KG"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
